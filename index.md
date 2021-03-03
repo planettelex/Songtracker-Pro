@@ -1,3 +1,1 @@
-# Songtracker Pro
-
-Pages
+Pages for documentation and prototypes.
