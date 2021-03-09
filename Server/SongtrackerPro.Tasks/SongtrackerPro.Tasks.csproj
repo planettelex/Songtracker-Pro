@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SongtrackerPro.Data\SongtrackerPro.Data.csproj" />
+    <ProjectReference Include="..\SongtrackerPro.Utilities\SongtrackerPro.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

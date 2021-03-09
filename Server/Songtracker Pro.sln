@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Api", "SongtrackerPro.Api\SongtrackerPro.Api.csproj", "{A47F237F-17CB-4D10-B769-8701581B58CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Tasks", "SongtrackerPro.Tasks\SongtrackerPro.Tasks.csproj", "{BC448DE1-10B2-43F1-9B13-85D01A9B17C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Utilities", "SongtrackerPro.Utilities\SongtrackerPro.Utilities.csproj", "{29E0F124-F8C4-4255-8D81-A39CA70BDEDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Data", "SongtrackerPro.Data\SongtrackerPro.Data.csproj", "{5A6289D5-B3B6-4DA7-83F8-2462DF36C8D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Tasks.Tests", "SongtrackerPro.Tasks.Tests\SongtrackerPro.Tasks.Tests.csproj", "{FBADB6F5-C1BF-41C9-ADD1-E1B15B298FD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Utilities.Tests", "SongtrackerPro.Utilities.Tests\SongtrackerPro.Utilities.Tests.csproj", "{00D4A041-3036-4F1F-8B30-064A15FFDF9C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A47F237F-17CB-4D10-B769-8701581B58CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A47F237F-17CB-4D10-B769-8701581B58CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47F237F-17CB-4D10-B769-8701581B58CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47F237F-17CB-4D10-B769-8701581B58CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC448DE1-10B2-43F1-9B13-85D01A9B17C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC448DE1-10B2-43F1-9B13-85D01A9B17C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC448DE1-10B2-43F1-9B13-85D01A9B17C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC448DE1-10B2-43F1-9B13-85D01A9B17C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29E0F124-F8C4-4255-8D81-A39CA70BDEDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E0F124-F8C4-4255-8D81-A39CA70BDEDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E0F124-F8C4-4255-8D81-A39CA70BDEDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E0F124-F8C4-4255-8D81-A39CA70BDEDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A6289D5-B3B6-4DA7-83F8-2462DF36C8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A6289D5-B3B6-4DA7-83F8-2462DF36C8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A6289D5-B3B6-4DA7-83F8-2462DF36C8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A6289D5-B3B6-4DA7-83F8-2462DF36C8D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBADB6F5-C1BF-41C9-ADD1-E1B15B298FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBADB6F5-C1BF-41C9-ADD1-E1B15B298FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBADB6F5-C1BF-41C9-ADD1-E1B15B298FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBADB6F5-C1BF-41C9-ADD1-E1B15B298FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D4A041-3036-4F1F-8B30-064A15FFDF9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D4A041-3036-4F1F-8B30-064A15FFDF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D4A041-3036-4F1F-8B30-064A15FFDF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D4A041-3036-4F1F-8B30-064A15FFDF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09553CB7-95BF-4AC3-93B4-03F0CE95B022}
+	EndGlobalSection
+EndGlobal
