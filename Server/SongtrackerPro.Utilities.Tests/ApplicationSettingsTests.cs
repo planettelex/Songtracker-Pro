@@ -6,7 +6,7 @@ namespace SongtrackerPro.Utilities.Tests
     public class ApplicationSettingsTests
     {
         [TestMethod]
-        public void TestApplicationSettings()
+        public void ConnectionStringTest()
         {
             Assert.IsNotNull(ApplicationSettings.ConnectionString);
             Assert.IsTrue(ApplicationSettings.ConnectionString.Length > 0);

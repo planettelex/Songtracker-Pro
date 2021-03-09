@@ -11,7 +11,6 @@ namespace SongtrackerPro.Tasks.InstallationTasks
     {
         public GetInstallationTask(ApplicationDbContext dbContext)
         {
-            
             _dbContext = dbContext;
         }
         private readonly ApplicationDbContext _dbContext;

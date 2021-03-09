@@ -14,10 +14,10 @@
             Exception = exception;
         }
 
-        public bool Success { get; set; }
+        public bool Success { get; }
 
-        public T Data { get; set; }
+        public T Data { get; }
 
-        public TaskException Exception { get; set; }
+        public TaskException Exception { get; }
     }
 }

@@ -5,6 +5,8 @@ namespace SongtrackerPro.Utilities
 {
     public static class ApplicationSettings
     {
+        private const string AppDirectory = "SongtrackerPro.Api";
+        private const string AppSettingsJson = "appsettings.json";
         private static bool _hasLoaded;
 
         public static string ConnectionString
@@ -19,6 +21,18 @@ namespace SongtrackerPro.Utilities
         }
         private static string _connectionString;
 
+        public static bool MinifyJson
+        {
+            get
+            {
+                if (!_hasLoaded)
+                    LoadSettings();
+
+                return _minifyJson;
+            }
+        }
+        private static bool _minifyJson;
+
         private static void LoadSettings()
         {
             var configurationBuilder = new ConfigurationBuilder();
@@ -29,6 +43,7 @@ namespace SongtrackerPro.Utilities
             var configuration = configurationBuilder.Build();
 
             _connectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
+            _minifyJson = bool.Parse(configuration.GetSection("ApiOptions").GetSection("MinifyJson").Value);
             _hasLoaded = true;
         }
 
@@ -50,10 +65,7 @@ namespace SongtrackerPro.Utilities
             if (Directory.Exists(upDirectoryPath))
                 return FindApplicationSettingsFile(upDirectoryPath);
 
-            throw new FileNotFoundException(AppSettingsJson);
+            throw new FileNotFoundException(path);
         }
-
-        private const string AppDirectory = "SongtrackerPro.Api";
-        private const string AppSettingsJson = "appsettings.json";
     }
 }

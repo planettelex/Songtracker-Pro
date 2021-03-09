@@ -5,7 +5,7 @@ using SongtrackerPro.Tasks.InstallationTasks;
 namespace SongtrackerPro.Api.Controllers
 {
     [ApiController]
-    public class InstallationController : ControllerBase
+    public class InstallationController : ApiController
     {
         public InstallationController(IGetInstallationTask getInstallationTask)
         {
@@ -20,8 +20,8 @@ namespace SongtrackerPro.Api.Controllers
             var taskResults = _getInstallationTask.DoTask();
 
             return taskResults.Success ?
-                JsonSerializer.Serialize(taskResults.Data) : 
-                JsonSerializer.Serialize(taskResults.Exception);
+                JsonSerializer.Serialize(taskResults.Data, SerializerOptions) : 
+                JsonSerializer.Serialize(taskResults.Exception, SerializerOptions);
         }
     }
 }
