@@ -1,10 +1,10 @@
 ﻿namespace SongtrackerPro.Tasks
 {
-    public class TaskResult<T> 
+    public class TaskResult<T>
     {
-        public TaskResult(bool success, T data)
+        public TaskResult(T data)
         {
-            Success = success;
+            Success = true;
             Data = data;
         }
 

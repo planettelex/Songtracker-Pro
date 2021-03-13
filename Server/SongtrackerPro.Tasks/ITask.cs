@@ -1,7 +1,7 @@
 ﻿namespace SongtrackerPro.Tasks
 {
-    public interface ITask<T>
+    public interface ITask<in T1, T2>
     {
-        TaskResult<T> DoTask();
+        TaskResult<T2> DoTask(T1 input);
     }
 }

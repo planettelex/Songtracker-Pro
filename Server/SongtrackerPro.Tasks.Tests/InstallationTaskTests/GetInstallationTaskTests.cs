@@ -12,8 +12,8 @@ namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Installation> task = new GetInstallationTask(new ApplicationDbContext(ApplicationSettings.ConnectionString));
-            var result = task.DoTask();
+            ITask<Nothing, Installation> task = new GetInstallationTask(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
             Assert.IsNull(result.Exception);
@@ -31,8 +31,8 @@ namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Installation> task = new GetInstallationTask(new ApplicationDbContext(string.Empty));
-            var result = task.DoTask();
+            ITask<Nothing, Installation> task = new GetInstallationTask(new ApplicationDbContext(string.Empty));
+            var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Exception);

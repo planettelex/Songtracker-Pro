@@ -5,9 +5,9 @@ using SongtrackerPro.Data.Models;
 
 namespace SongtrackerPro.Tasks.InstallationTasks
 {
-    public interface IGetInstallationTask { TaskResult<Installation> DoTask(); }
+    public interface IGetInstallationTask : ITask<Nothing, Installation> { }
 
-    public class GetInstallationTask : ITask<Installation>, IGetInstallationTask
+    public class GetInstallationTask : IGetInstallationTask
     {
         public GetInstallationTask(ApplicationDbContext dbContext)
         {
@@ -15,12 +15,12 @@ namespace SongtrackerPro.Tasks.InstallationTasks
         }
         private readonly ApplicationDbContext _dbContext;
 
-        public TaskResult<Installation> DoTask()
+        public TaskResult<Installation> DoTask(Nothing nothing)
         {
             try
             {
                 var installation = _dbContext.Installation.Single();
-                return new TaskResult<Installation>(true, installation);
+                return new TaskResult<Installation>(installation);
             }
             catch (Exception e)
             {

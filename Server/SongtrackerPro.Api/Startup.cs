@@ -18,11 +18,6 @@ namespace SongtrackerPro.Api
 
         public IConfiguration Configuration { get; }
 
-        public void RegisterTasks(IServiceCollection services)
-        {
-            services.AddScoped<IGetInstallationTask, GetInstallationTask>();
-        }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -50,6 +45,11 @@ namespace SongtrackerPro.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void RegisterTasks(IServiceCollection services)
+        {
+            services.AddScoped<IGetInstallationTask, GetInstallationTask>();
         }
     }
 }

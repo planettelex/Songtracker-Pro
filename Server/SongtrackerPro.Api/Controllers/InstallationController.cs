@@ -17,7 +17,7 @@ namespace SongtrackerPro.Api.Controllers
         [HttpGet]
         public string Get()
         {
-            var taskResults = _getInstallationTask.DoTask();
+            var taskResults = _getInstallationTask.DoTask(null);
 
             return taskResults.Success ?
                 JsonSerializer.Serialize(taskResults.Data, SerializerOptions) : 
