@@ -29,5 +29,20 @@ namespace SongtrackerPro.Data.Models
         [Required]
         [Column("oauth_id", Order = 5)]
         public string OAuthId { get; set; }
+
+        [Column("oauth_console_url", Order = 6)]
+        public string OAuthConsoleUrl { get; set; }
+
+        [Column("hosting_console_url", Order = 7)]
+        public string HostingConsoleUrl { get; set; }
+
+        [Column("api_hosting_console_url", Order = 8)]
+        public string ApiHostingConsoleUrl { get; set; }
+
+        [Column("database_console_url", Order = 9)]
+        public string DatabaseConsoleUrl { get; set; }
+
+        [NotMapped]
+        public string DatabaseName { get; set; }
     }
 }
