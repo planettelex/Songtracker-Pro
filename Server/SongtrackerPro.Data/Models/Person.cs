@@ -34,7 +34,7 @@ namespace SongtrackerPro.Data.Models
         public string Phone { get; set; }
 
         [Column("address_id", Order = 8)]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public Address Address { get; set; }
     }
 }

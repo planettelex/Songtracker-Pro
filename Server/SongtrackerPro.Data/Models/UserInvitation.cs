@@ -27,27 +27,26 @@ namespace SongtrackerPro.Data.Models
         public UserType Type { get; set; }
 
         [Column("publisher_id", Order = 5)]
-        public int PublisherId { get; set; }
+        public int? PublisherId { get; set; }
         public Publisher Publisher { get; set; }
 
         [Column("record_label_id", Order = 6)]
-        public int RecordLabelId { get; set; }
+        public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
         [Column("artist_id", Order = 7)]
-        public int ArtistId { get; set; }
+        public int? ArtistId { get; set; }
         public Artist Artist { get; set; }
 
         [Required]
         [Column("sent_on", Order = 8)]
         public DateTime SentOn { get; set; }
 
-        [Required]
         [Column("accepted_on", Order = 9)]
         public DateTime? AcceptedOn { get; set; }
 
         [Column("created_user_id", Order = 2)]
-        public int CreatedUserId { get; set; }
+        public int? CreatedUserId { get; set; }
         public User CreatedUser { get; set; }
     }
 }

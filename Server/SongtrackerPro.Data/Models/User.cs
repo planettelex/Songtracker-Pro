@@ -29,26 +29,25 @@ namespace SongtrackerPro.Data.Models
         public string AuthenticationToken { get; set; }
 
         [Column("last_login", Order = 6)]
-        public DateTime LastLogin { get; set; }
+        public DateTime? LastLogin { get; set; }
 
-        [Required]
         [Column("person_id", Order = 7)]
-        public int PersonId { get; set; }
+        public int? PersonId { get; set; }
         public Person Person { get; set; }
 
         [Column("social_security_number", Order = 8)]
         public string SocialSecurityNumber { get; set; }
 
         [Column("publisher_id", Order = 9)]
-        public int PublisherId { get; set; }
+        public int? PublisherId { get; set; }
         public Publisher Publisher { get; set; }
 
         [Column("record_label_id", Order = 10)]
-        public int RecordLabelId { get; set; }
+        public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
         [Column("performing_rights_organization_id", Order = 11)]
-        public int PerformingRightsOrganizationId { get; set; }
+        public int? PerformingRightsOrganizationId { get; set; }
         public PerformingRightsOrganization PerformingRightsOrganization { get; set; }
 
         [Column("performing_rights_organization_member_number", Order = 12)]

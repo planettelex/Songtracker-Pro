@@ -27,13 +27,12 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(20)]
         public string Phone { get; set; }
 
-        [Required]
         [Column("address_id", Order = 6)]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public Address Address { get; set; }
 
         [Column("performing_rights_organization_id", Order = 7)]
-        public int PerformingRightsOrganizationId { get; set; }
+        public int? PerformingRightsOrganizationId { get; set; }
         public PerformingRightsOrganization PerformingRightsOrganization { get; set; }
 
         [Column("performing_rights_organization_publisher_number", Order = 8)]

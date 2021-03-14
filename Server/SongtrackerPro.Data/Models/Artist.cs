@@ -30,9 +30,8 @@ namespace SongtrackerPro.Data.Models
         [Column("press_kit_url", Order = 6)]
         public string PressKitUrl { get; set; }
 
-        [Required]
         [Column("record_label_id", Order = 7)]
-        public int RecordLabelId { get; set; }
+        public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
         public List<ArtistMember> Members { get; set; }

@@ -15,9 +15,8 @@ namespace SongtrackerPro.Data.Models
         [Column("name", Order = 2)]
         public string Name { get; set; }
 
-        [Required]
         [Column("country_id", Order = 3)]
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
         public Country Country { get; set; }
     }
 }

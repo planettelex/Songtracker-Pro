@@ -27,9 +27,8 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(20)]
         public string Phone { get; set; }
 
-        [Required]
         [Column("address_id", Order = 6)]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public Address Address { get; set; }
     }
 }

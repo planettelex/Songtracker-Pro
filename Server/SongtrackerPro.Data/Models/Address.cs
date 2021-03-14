@@ -28,9 +28,8 @@ namespace SongtrackerPro.Data.Models
         [Column("postal_code", Order = 5)]
         public string PostalCode { get; set; }
 
-        [Required]
         [Column("country_id", Order = 6)]
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
         public Country Country { get; set; }
     }
 }
