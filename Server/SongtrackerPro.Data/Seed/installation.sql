@@ -13,7 +13,7 @@ SET @name = 'Songtracker Pro';
 SET @tagline = 'Royalties Tracking and Management';
 SET @oauthid = '1084971919395-tkrcdm6pm9fal8d21c4vk552gpqmvq6o.apps.googleusercontent.com';
 
-INSERT INTO installation ([uuid], [version], [name], [tagline], [oauth_id])
+INSERT INTO [installation] ([uuid], [version], [name], [tagline], [oauth_id])
 VALUES (@uuid, @version, @name, @tagline, @oauth_id);
 GO
 
