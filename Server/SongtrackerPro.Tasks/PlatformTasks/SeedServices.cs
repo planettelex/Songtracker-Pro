@@ -32,6 +32,8 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                 _dbContext.Services.Add(new Service { Name = "Digital Sales" });
                 _dbContext.Services.Add(new Service { Name = "Physical Sales" });
                 _dbContext.Services.Add(new Service { Name = "Payment" });
+                _dbContext.Services.Add(new Service { Name = "Music Identification" });
+                _dbContext.Services.Add(new Service { Name = "Event Management" });
 
                 _dbContext.SaveChanges();
 

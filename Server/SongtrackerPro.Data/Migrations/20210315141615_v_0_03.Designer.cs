@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210314025547_v_0_03")]
+    [Migration("20210315141615_v_0_03")]
     partial class v_0_03
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -271,32 +271,11 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("uuid");
 
-                    b.Property<string>("ApiHostingConsoleUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("api_hosting_console_url");
-
-                    b.Property<string>("DatabaseConsoleUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("database_console_url");
-
-                    b.Property<string>("HostingConsoleUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("hosting_console_url");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("name");
-
-                    b.Property<string>("OAuthConsoleUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("oauth_console_url");
-
-                    b.Property<string>("OAuthId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("oauth_id");
 
                     b.Property<string>("Tagline")
                         .HasMaxLength(200)
@@ -397,6 +376,10 @@ namespace SongtrackerPro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("website");
 
                     b.HasKey("Id");
 
@@ -754,7 +737,7 @@ namespace SongtrackerPro.Data.Migrations
             modelBuilder.Entity("SongtrackerPro.Data.Models.PlatformService", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.Platform", "Platform")
-                        .WithMany()
+                        .WithMany("PlatformServices")
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -849,6 +832,11 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Managers");
 
                     b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Platform", b =>
+                {
+                    b.Navigation("PlatformServices");
                 });
 #pragma warning restore 612, 618
         }

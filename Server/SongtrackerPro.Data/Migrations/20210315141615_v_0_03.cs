@@ -7,30 +7,6 @@ namespace SongtrackerPro.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "api_hosting_console_url",
-                table: "installation",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "database_console_url",
-                table: "installation",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "hosting_console_url",
-                table: "installation",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "oauth_console_url",
-                table: "installation",
-                type: "nvarchar(max)",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "countries",
                 columns: table => new
@@ -46,12 +22,27 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "installation",
+                columns: table => new
+                {
+                    uuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    version = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    tagline = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_installation", x => x.uuid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "platforms",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    website = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -563,6 +554,9 @@ namespace SongtrackerPro.Data.Migrations
                 name: "artist_members");
 
             migrationBuilder.DropTable(
+                name: "installation");
+
+            migrationBuilder.DropTable(
                 name: "platform_services");
 
             migrationBuilder.DropTable(
@@ -597,22 +591,6 @@ namespace SongtrackerPro.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "countries");
-
-            migrationBuilder.DropColumn(
-                name: "api_hosting_console_url",
-                table: "installation");
-
-            migrationBuilder.DropColumn(
-                name: "database_console_url",
-                table: "installation");
-
-            migrationBuilder.DropColumn(
-                name: "hosting_console_url",
-                table: "installation");
-
-            migrationBuilder.DropColumn(
-                name: "oauth_console_url",
-                table: "installation");
         }
     }
 }

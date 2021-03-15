@@ -100,8 +100,8 @@ namespace SongtrackerPro.Utilities
         {
             get
             {
-                var version = Assembly.GetEntryAssembly()?.GetName().Version;
-                return version == null ? null : $"{version.Major}.{version.Minor}";
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                return version == null ? null : $"{version.Major}.{version.Minor}{version.Build}";
             }
         }
 

@@ -25,6 +25,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                     throw new TaskException("Platform not found.");
 
                 platform.Name = update.Name;
+                platform.Website = update.Website;
                 _dbContext.SaveChanges();
 
                 if (update.Services != null)

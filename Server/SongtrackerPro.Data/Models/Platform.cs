@@ -18,6 +18,9 @@ namespace SongtrackerPro.Data.Models
         [Column("name", Order = 2)]
         public string Name { get; set; }
 
+        [Column("website", Order = 3)]
+        public string Website { get; set; }
+
         [JsonIgnore]
         public List<PlatformService> PlatformServices { get; set; }
 

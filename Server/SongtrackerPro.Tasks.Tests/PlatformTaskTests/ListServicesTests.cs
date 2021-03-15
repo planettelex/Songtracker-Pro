@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.PlatformTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
@@ -12,10 +10,10 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Nothing, bool> seedServices = new SeedServices(DbContext);
+            var seedServices = new SeedServices(DbContext);
             seedServices.DoTask(null);
 
-            ITask<Nothing, List<Service>> task = new ListServices(DbContext);
+            var task = new ListServices(DbContext);
             var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
@@ -32,7 +30,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Nothing, List<Service>> task = new ListServices(EmptyDbContext);
+            var task = new ListServices(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

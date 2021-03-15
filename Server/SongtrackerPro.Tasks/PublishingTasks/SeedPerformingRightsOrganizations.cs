@@ -27,7 +27,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                     return new TaskResult<bool>(false);
 
                 _seedCountriesTask.DoTask(nothing);
-                var usa = _dbContext.Countries.SingleOrDefault(c => c.IsoCode.Equals("USA", StringComparison.InvariantCultureIgnoreCase));
+                var usa = _dbContext.Countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "USA");
 
                 if (usa == null)
                     throw new NullReferenceException("USA cannot be null");

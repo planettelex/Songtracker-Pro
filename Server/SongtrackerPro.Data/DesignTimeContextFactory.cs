@@ -16,7 +16,9 @@ namespace SongtrackerPro.Data
 
            Remove-Migration -project SongtrackerPro.Data
         
-           Script-Migration v_0_02 v_0_03 -project SongtrackerPro.Data -output SongtrackerPro.Data/Migrations/SQL/v_0_02_to_v_0_03.sql
+           Script-Migration 0 v_0_03 -project SongtrackerPro.Data -output SongtrackerPro.Data/Migrations/SQL/0_to_v_0_03.sql
+
+           Update-Database -project SongtrackerPro.Data
         
          */
     }

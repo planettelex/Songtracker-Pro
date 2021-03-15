@@ -10,39 +10,81 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
     [TestClass]
     public class UpdatePlatformTests : TestsBase
     {
-        public readonly Platform Platform = new Platform
+        public void UpdatePlatformModel(Platform platform)
         {
-            Id = 4,
-            Name = "Update " + DateTime.Now.Ticks,
-            Services = new List<Service>
+            var listServicesTask = new ListServices(DbContext);
+            var allServices = listServicesTask.DoTask(null).Data;
+
+            const int maxServiceCount = 5;
+            var numberOfServices = new Random().Next(1, maxServiceCount);
+
+            platform.Name = nameof(Platform) + " " + DateTime.Now.Ticks;
+            platform.Website = "https://update.com";
+            platform.Services = new List<Service>();
+            for (var i = 0; i < numberOfServices; i++)
             {
-                new Service { Id = 2 },
-                new Service { Id = 4 },
-                new Service { Id = 5 }
+                var randomIndex = new Random().Next(allServices.Count - 1);
+                platform.Services.Add(allServices[randomIndex]);
             }
-        };
-        
+        }
+
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Platform, Nothing> updateTask = new UpdatePlatform(DbContext);
-            var toUpdate = Platform;
-            var updateResult = updateTask.DoTask(toUpdate);
+            var seedServices = new SeedServices(DbContext);
+            seedServices.DoTask(null);
+            var seedPlatforms = new SeedPlatforms(DbContext, new ListServices(DbContext), new AddPlatform(DbContext));
+            seedPlatforms.DoTask(null);
+
+            var listPlatforms = new ListPlatforms(DbContext);
+            var allPlatforms = listPlatforms.DoTask(null);
+            var randomIndex = new Random().Next(allPlatforms.Data.Count);
+            var randomPlatform = allPlatforms.Data[randomIndex];
+            Assert.IsNotNull(randomPlatform);
+
+            var oldPlatform = new Platform
+            {
+                Id = randomPlatform.Id,
+                Name = randomPlatform.Name,
+                Website = randomPlatform.Website,
+                Services = randomPlatform.Services
+            };
+
+            var task = new UpdatePlatform(DbContext);
+            var toUpdate = randomPlatform;
+            UpdatePlatformModel(toUpdate);
+            var result = task.DoTask(toUpdate);
             
-            Assert.IsTrue(updateResult.Success);
-            Assert.IsNull(updateResult.Exception);
-            Assert.IsNull(updateResult.Data);
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Exception);
+            Assert.IsNull(result.Data);
 
-            ITask<int, Platform> getTask = new GetPlatform(DbContext);
-            var getResult = getTask.DoTask(toUpdate.Id);
+            var getPlatformTask = new GetPlatform(DbContext);
+            var platform = getPlatformTask.DoTask(toUpdate.Id)?.Data;
 
-            Assert.IsTrue(getResult.Success);
-            Assert.IsNotNull(getResult.Data);
-
-            var platform = getResult.Data;
+            Assert.IsNotNull(platform);
             Assert.AreEqual(toUpdate.Name, platform.Name);
+            Assert.AreEqual(toUpdate.Website, platform.Website);
             Assert.AreEqual(toUpdate.Services.Count, platform.PlatformServices.Count);
             foreach (var service in toUpdate.Services)
+            {
+                var platformService = platform.PlatformServices.SingleOrDefault(ps => ps.ServiceId == service.Id);
+                Assert.IsNotNull(platformService);
+            }
+
+            var revertPlatformResult = task.DoTask(oldPlatform);
+
+            Assert.IsTrue(revertPlatformResult.Success);
+            Assert.IsNull(revertPlatformResult.Exception);
+
+            getPlatformTask = new GetPlatform(DbContext);
+            platform = getPlatformTask.DoTask(oldPlatform.Id)?.Data;
+
+            Assert.IsNotNull(platform);
+            Assert.AreEqual(oldPlatform.Name, platform.Name);
+            Assert.AreEqual(oldPlatform.Website, platform.Website);
+            Assert.AreEqual(oldPlatform.Services.Count, platform.PlatformServices.Count);
+            foreach (var service in oldPlatform.Services)
             {
                 var platformService = platform.PlatformServices.SingleOrDefault(ps => ps.ServiceId == service.Id);
                 Assert.IsNotNull(platformService);
@@ -52,7 +94,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Platform, Nothing> task = new UpdatePlatform(EmptyDbContext);
+            var task = new UpdatePlatform(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

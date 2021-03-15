@@ -1,16 +1,14 @@
-﻿BEGIN TRANSACTION;
+﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
 GO
 
-ALTER TABLE [installation] ADD [api_hosting_console_url] nvarchar(max) NULL;
-GO
-
-ALTER TABLE [installation] ADD [database_console_url] nvarchar(max) NULL;
-GO
-
-ALTER TABLE [installation] ADD [hosting_console_url] nvarchar(max) NULL;
-GO
-
-ALTER TABLE [installation] ADD [oauth_console_url] nvarchar(max) NULL;
+BEGIN TRANSACTION;
 GO
 
 CREATE TABLE [countries] (
@@ -21,9 +19,19 @@ CREATE TABLE [countries] (
 );
 GO
 
+CREATE TABLE [installation] (
+    [uuid] uniqueidentifier NOT NULL,
+    [version] nvarchar(25) NOT NULL,
+    [name] nvarchar(50) NOT NULL,
+    [tagline] nvarchar(200) NULL,
+    CONSTRAINT [PK_installation] PRIMARY KEY ([uuid])
+);
+GO
+
 CREATE TABLE [platforms] (
     [id] int NOT NULL IDENTITY,
     [name] nvarchar(max) NOT NULL,
+    [website] nvarchar(max) NULL,
     CONSTRAINT [PK_platforms] PRIMARY KEY ([id])
 );
 GO
@@ -273,7 +281,7 @@ CREATE INDEX [IX_users_record_label_id] ON [users] ([record_label_id]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20210314025547_v_0_03', N'5.0.3');
+VALUES (N'20210315141615_v_0_03', N'5.0.3');
 GO
 
 COMMIT;

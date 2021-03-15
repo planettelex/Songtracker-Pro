@@ -33,6 +33,7 @@ namespace SongtrackerPro.Tasks.InstallationTasks
                 };
 
                 _dbContext.Installation.Add(installation);
+                _dbContext.SaveChanges();
 
                 return new TaskResult<bool>(true);
             }
