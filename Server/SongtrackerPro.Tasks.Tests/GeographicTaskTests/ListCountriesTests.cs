@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.GeographicTasks;
-using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.Tests.GeographicTaskTests
 {
     [TestClass]
-    public class ListCountriesTests
+    public class ListCountriesTests : TestsBase
     {
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Nothing, List<Country>> task = new ListCountries(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<Nothing, bool> seedCountries = new SeedCountries(DbContext);
+            seedCountries.DoTask(null);
+            
+            ITask<Nothing, List<Country>> task = new ListCountries(DbContext);
             var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
@@ -32,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.GeographicTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Nothing, List<Country>> task = new ListCountries(new ApplicationDbContext(string.Empty));
+            ITask<Nothing, List<Country>> task = new ListCountries(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

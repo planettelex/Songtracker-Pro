@@ -1,21 +1,19 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.PlatformTasks;
-using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
 {
     [TestClass]
-    public class GetPlatformTests
+    public class GetPlatformTests : TestsBase
     {
         public const int TestPlatformId = 1;
 
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<int, Platform> task = new GetPlatform(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<int, Platform> task = new GetPlatform(DbContext);
             var result = task.DoTask(TestPlatformId);
             
             Assert.IsTrue(result.Success);
@@ -35,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<int, Platform> task = new GetPlatform(new ApplicationDbContext(string.Empty));
+            ITask<int, Platform> task = new GetPlatform(EmptyDbContext);
             var result = task.DoTask(TestPlatformId);
             
             Assert.IsFalse(result.Success);

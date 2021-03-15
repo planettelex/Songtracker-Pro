@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.PlatformTasks;
-using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
 {
     [TestClass]
-    public class UpdatePlatformTests
+    public class UpdatePlatformTests : TestsBase
     {
         public readonly Platform Platform = new Platform
         {
@@ -27,7 +25,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Platform, Nothing> updateTask = new UpdatePlatform(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<Platform, Nothing> updateTask = new UpdatePlatform(DbContext);
             var toUpdate = Platform;
             var updateResult = updateTask.DoTask(toUpdate);
             
@@ -35,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
             Assert.IsNull(updateResult.Exception);
             Assert.IsNull(updateResult.Data);
 
-            ITask<int, Platform> getTask = new GetPlatform(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<int, Platform> getTask = new GetPlatform(DbContext);
             var getResult = getTask.DoTask(toUpdate.Id);
 
             Assert.IsTrue(getResult.Success);
@@ -54,7 +52,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Platform, Nothing> task = new UpdatePlatform(new ApplicationDbContext(string.Empty));
+            ITask<Platform, Nothing> task = new UpdatePlatform(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

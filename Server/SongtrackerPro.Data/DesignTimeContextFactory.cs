@@ -7,7 +7,7 @@ namespace SongtrackerPro.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            return new ApplicationDbContext(ApplicationSettings.ConnectionString);
+            return new ApplicationDbContext(ApplicationSettings.Database.ConnectionString);
         }
 
         /* PMC Commands (https://docs.microsoft.com/en-us/ef/core/cli/powershell):

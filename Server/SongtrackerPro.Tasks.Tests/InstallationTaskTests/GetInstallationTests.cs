@@ -1,18 +1,19 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.InstallationTasks;
-using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
 {
     [TestClass]
-    public class GetInstallationInfoTests
+    public class GetInstallationTests : TestsBase
     {
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Nothing, Installation> task = new GetInstallationInfo(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<Nothing, bool> seedInstallation = new SeedInstallation(DbContext);
+            seedInstallation.DoTask(null);
+            
+            ITask<Nothing, Installation> task = new GetInstallation(DbContext);
             var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
@@ -33,7 +34,7 @@ namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Nothing, Installation> task = new GetInstallationInfo(new ApplicationDbContext(string.Empty));
+            ITask<Nothing, Installation> task = new GetInstallation(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

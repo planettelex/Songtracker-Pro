@@ -12,7 +12,7 @@ namespace SongtrackerPro.Api
             new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = !ApplicationSettings.MinifyJson
+                WriteIndented = !ApplicationSettings.Api.MinifyJson
             };
 
         protected string JsonSerialize<T>(TaskResult<T> taskResults)

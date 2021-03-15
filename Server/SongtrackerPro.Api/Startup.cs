@@ -52,7 +52,7 @@ namespace SongtrackerPro.Api
 
         public void RegisterTasks(IServiceCollection services)
         {
-            services.AddScoped<IGetInstallationInfoTask, GetInstallationInfo>();
+            services.AddScoped<IGetInstallationInfoTask, GetInstallation>();
             services.AddScoped<IListCountriesTask, ListCountries>();
             services.AddScoped<IListServicesTask, ListServices>();
             services.AddScoped<IListPerformingRightsOrganizationsTask, ListPerformingRightsOrganizations>();

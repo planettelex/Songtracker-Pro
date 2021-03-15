@@ -1,20 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
-using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
 {
     [TestClass]
-    public class ListPerformingRightsOrganizationsTests
+    public class ListPerformingRightsOrganizationsTests : TestsBase
     {
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Nothing, List<PerformingRightsOrganization>> task = new ListPerformingRightsOrganizations(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<Nothing, bool> seedPros = new SeedPerformingRightsOrganizations(DbContext, new SeedCountries(DbContext));
+            seedPros.DoTask(null);
+
+            ITask<Nothing, List<PerformingRightsOrganization>> task = new ListPerformingRightsOrganizations(DbContext);
             var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
@@ -34,7 +36,7 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Nothing, List<PerformingRightsOrganization>> task = new ListPerformingRightsOrganizations(new ApplicationDbContext(string.Empty));
+            ITask<Nothing, List<PerformingRightsOrganization>> task = new ListPerformingRightsOrganizations(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

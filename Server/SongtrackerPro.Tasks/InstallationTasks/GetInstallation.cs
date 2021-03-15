@@ -9,9 +9,9 @@ namespace SongtrackerPro.Tasks.InstallationTasks
 {
     public interface IGetInstallationInfoTask : ITask<Nothing, Installation> { }
 
-    public class GetInstallationInfo : IGetInstallationInfoTask
+    public class GetInstallation : IGetInstallationInfoTask
     {
-        public GetInstallationInfo(ApplicationDbContext dbContext)
+        public GetInstallation(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,8 +22,12 @@ namespace SongtrackerPro.Tasks.InstallationTasks
             try
             {
                 var installation = _dbContext.Installation.Single();
-                var connectionStringBuilder = new SqlConnectionStringBuilder(ApplicationSettings.ConnectionString);
+                var connectionStringBuilder = new SqlConnectionStringBuilder(ApplicationSettings.Database.ConnectionString);
                 installation.DatabaseName = connectionStringBuilder.InitialCatalog;
+                installation.DatabaseConsole = ApplicationSettings.Database.HostingConsole;
+                installation.OAuthId = ApplicationSettings.Web.OAuthId;
+                installation.OAuthConsole = ApplicationSettings.Web.OAuthConsole;
+                installation.ApiHostingConsole = ApplicationSettings.Api.HostingConsole;
 
                 return new TaskResult<Installation>(installation);
             }

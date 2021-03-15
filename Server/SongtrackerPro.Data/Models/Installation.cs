@@ -26,21 +26,20 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(200)]
         public string Tagline { get; set; }
 
-        [Required]
-        [Column("oauth_id", Order = 5)]
+        [NotMapped]
         public string OAuthId { get; set; }
 
-        [Column("oauth_console_url", Order = 6)]
-        public string OAuthConsoleUrl { get; set; }
+        [NotMapped]
+        public string OAuthConsole { get; set; }
 
-        [Column("hosting_console_url", Order = 7)]
-        public string HostingConsoleUrl { get; set; }
+        [NotMapped]
+        public string HostingConsole { get; set; }
 
-        [Column("api_hosting_console_url", Order = 8)]
-        public string ApiHostingConsoleUrl { get; set; }
+        [NotMapped]
+        public string ApiHostingConsole { get; set; }
 
-        [Column("database_console_url", Order = 9)]
-        public string DatabaseConsoleUrl { get; set; }
+        [NotMapped]
+        public string DatabaseConsole { get; set; }
 
         [NotMapped]
         public string DatabaseName { get; set; }

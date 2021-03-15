@@ -8,8 +8,8 @@ namespace SongtrackerPro.Utilities.Tests
         [TestMethod]
         public void ConnectionStringTest()
         {
-            Assert.IsNotNull(ApplicationSettings.ConnectionString);
-            Assert.IsTrue(ApplicationSettings.ConnectionString.Length > 0);
+            Assert.IsNotNull(ApplicationSettings.Database.ConnectionString);
+            Assert.IsTrue(ApplicationSettings.Database.ConnectionString.Length > 0);
         }
     }
 }

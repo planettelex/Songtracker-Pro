@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Reflection;
 
 namespace SongtrackerPro.Utilities
 {
@@ -9,29 +10,100 @@ namespace SongtrackerPro.Utilities
         private const string AppSettingsJson = "appsettings.json";
         private static bool _hasLoaded;
 
-        public static string ConnectionString
+        public static class Database
+        {
+            public static string ConnectionString
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _connectionString;
+                }
+                set => _connectionString = value;
+            }
+            private static string _connectionString;
+
+            public static string HostingConsole
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _hostingConsole;
+                }
+                set => _hostingConsole = value;
+            }
+            private static string _hostingConsole;
+        }
+
+        public static class Api
+        {
+            public static bool MinifyJson
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _minifyJson;
+                }
+                set => _minifyJson = value;
+            }
+            private static bool _minifyJson;
+
+            public static string HostingConsole
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _hostingConsole;
+                }
+                set => _hostingConsole = value;
+            }
+            private static string _hostingConsole;
+        }
+
+        public static class Web
+        {
+            public static string OAuthId
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _oauthId;
+                }
+                set => _oauthId = value;
+            }
+            private static string _oauthId;
+
+            public static string OAuthConsole
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _oauthConsole;
+                }
+                set => _oauthConsole = value;
+            }
+            private static string _oauthConsole;
+
+            public static string HostingConsole
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _hostingConsole;
+                }
+                set => _hostingConsole = value;
+            }
+            private static string _hostingConsole;
+        }
+
+        public static string Version
         {
             get
             {
-                if (!_hasLoaded)
-                    LoadSettings();
-
-                return _connectionString;
+                var version = Assembly.GetEntryAssembly()?.GetName().Version;
+                return version == null ? null : $"{version.Major}.{version.Minor}";
             }
         }
-        private static string _connectionString;
-
-        public static bool MinifyJson
-        {
-            get
-            {
-                if (!_hasLoaded)
-                    LoadSettings();
-
-                return _minifyJson;
-            }
-        }
-        private static bool _minifyJson;
 
         private static void LoadSettings()
         {
@@ -42,8 +114,14 @@ namespace SongtrackerPro.Utilities
 
             var configuration = configurationBuilder.Build();
 
-            _connectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
-            _minifyJson = bool.Parse(configuration.GetSection("ApiOptions").GetSection("MinifyJson").Value);
+            Database.ConnectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
+            Database.HostingConsole = configuration.GetSection("Database")?.GetSection("HostingConsole")?.Value;
+            Api.MinifyJson = bool.Parse(configuration.GetSection("Api")?.GetSection("MinifyJson")?.Value ?? bool.TrueString);
+            Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
+            Web.OAuthId = configuration.GetSection("Web")?.GetSection("OAuthId")?.Value;
+            Web.OAuthConsole = configuration.GetSection("Web")?.GetSection("OAuthConsole")?.Value;
+            Web.HostingConsole = configuration.GetSection("Web")?.GetSection("HostingConsole")?.Value;
+
             _hasLoaded = true;
         }
 

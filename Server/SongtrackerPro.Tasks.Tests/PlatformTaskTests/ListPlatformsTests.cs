@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.PlatformTasks;
-using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
 {
     [TestClass]
-    public class ListPlatformsTests
+    public class ListPlatformsTests : TestsBase
     {
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Nothing, List<Platform>> task = new ListPlatforms(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<Nothing, List<Platform>> task = new ListPlatforms(DbContext);
             var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
@@ -26,10 +24,12 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
             {
                 Assert.IsTrue(platform.Name.Length > 0);
                 Assert.IsNotNull(platform.Services);
-                Assert.IsTrue(platform.Services.Any());
-                foreach (var service in platform.Services)
+                if (platform.Services.Any())
                 {
-                    Assert.IsTrue(service.Name.Length > 0);
+                    foreach (var service in platform.Services)
+                    {
+                        Assert.IsTrue(service.Name.Length > 0);
+                    }
                 }
             }
         }
@@ -37,7 +37,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Nothing, List<Platform>> task = new ListPlatforms(new ApplicationDbContext(string.Empty));
+            ITask<Nothing, List<Platform>> task = new ListPlatforms(EmptyDbContext);
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);
