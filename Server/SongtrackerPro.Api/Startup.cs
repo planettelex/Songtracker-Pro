@@ -5,7 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SongtrackerPro.Data;
+using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
+using SongtrackerPro.Tasks.PlatformTasks;
+using SongtrackerPro.Tasks.PublishingTasks;
 
 namespace SongtrackerPro.Api
 {
@@ -49,7 +52,10 @@ namespace SongtrackerPro.Api
 
         public void RegisterTasks(IServiceCollection services)
         {
-            services.AddScoped<IGetInstallationTask, GetInstallationTask>();
+            services.AddScoped<IGetInstallationInfoTask, GetInstallationInfo>();
+            services.AddScoped<IListCountriesTask, ListCountries>();
+            services.AddScoped<IListServicesTask, ListServices>();
+            services.AddScoped<IListPerformingRightsOrganizationsTask, ListPerformingRightsOrganizations>();
         }
     }
 }

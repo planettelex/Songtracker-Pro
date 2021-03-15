@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SongtrackerPro.Data.Models
 {
@@ -15,6 +16,7 @@ namespace SongtrackerPro.Data.Models
         [Column("name", Order = 2)]
         public string Name { get; set; }
 
+        [JsonIgnore]
         [Column("country_id", Order = 3)]
         public int? CountryId { get; set; }
         public Country Country { get; set; }

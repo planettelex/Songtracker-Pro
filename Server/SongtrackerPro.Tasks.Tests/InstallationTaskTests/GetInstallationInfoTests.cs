@@ -7,12 +7,12 @@ using SongtrackerPro.Utilities;
 namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
 {
     [TestClass]
-    public class GetInstallationTaskTests
+    public class GetInstallationInfoTests
     {
         [TestMethod]
         public void TaskSuccessTest()
         {
-            ITask<Nothing, Installation> task = new GetInstallationTask(new ApplicationDbContext(ApplicationSettings.ConnectionString));
+            ITask<Nothing, Installation> task = new GetInstallationInfo(new ApplicationDbContext(ApplicationSettings.ConnectionString));
             var result = task.DoTask(null);
             
             Assert.IsTrue(result.Success);
@@ -22,16 +22,18 @@ namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
             Assert.IsNotNull(result.Data.Name);
             Assert.IsNotNull(result.Data.Version);
             Assert.IsNotNull(result.Data.OAuthId);
+            Assert.IsNotNull(result.Data.DatabaseName);
 
             Assert.IsTrue(result.Data.Name.Length > 0);
             Assert.IsTrue(result.Data.Version.Length > 0);
             Assert.IsTrue(result.Data.OAuthId.Length > 0);
+            Assert.IsTrue(result.Data.DatabaseName.Length > 0);
         }
 
         [TestMethod]
         public void TaskFailTest()
         {
-            ITask<Nothing, Installation> task = new GetInstallationTask(new ApplicationDbContext(string.Empty));
+            ITask<Nothing, Installation> task = new GetInstallationInfo(new ApplicationDbContext(string.Empty));
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Data.SqlClient;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.InstallationTasks
 {
-    public interface IGetInstallationTask : ITask<Nothing, Installation> { }
+    public interface IGetInstallationInfoTask : ITask<Nothing, Installation> { }
 
-    public class GetInstallationTask : IGetInstallationTask
+    public class GetInstallationInfo : IGetInstallationInfoTask
     {
-        public GetInstallationTask(ApplicationDbContext dbContext)
+        public GetInstallationInfo(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -20,6 +22,9 @@ namespace SongtrackerPro.Tasks.InstallationTasks
             try
             {
                 var installation = _dbContext.Installation.Single();
+                var connectionStringBuilder = new SqlConnectionStringBuilder(ApplicationSettings.ConnectionString);
+                installation.DatabaseName = connectionStringBuilder.InitialCatalog;
+
                 return new TaskResult<Installation>(installation);
             }
             catch (Exception e)
