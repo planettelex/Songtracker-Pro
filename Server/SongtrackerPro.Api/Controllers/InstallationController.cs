@@ -14,7 +14,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Root)]
         [HttpGet]
-        public string Get()
+        public string GetInstallationInfo()
         {
             var taskResults = _getInstallationTask.DoTask(null);
 

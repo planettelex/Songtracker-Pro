@@ -14,7 +14,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.PerformingRightsOrganizations)]
         [HttpGet]
-        public string Get()
+        public string ListPerformingRightsOrganizations()
         {
             var taskResults = _listPerformingRightsOrganizationsTask.DoTask(null);
 

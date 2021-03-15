@@ -6,5 +6,7 @@
         public const string Countries = "/countries";
         public const string Services = "/services";
         public const string PerformingRightsOrganizations = "/performing-rights-organizations";
+        public const string Platforms = "/platforms";
+        public const string Platform = "/platforms/{platformid}";
     }
 }

@@ -14,7 +14,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Countries)]
         [HttpGet]
-        public string Get()
+        public string ListCountries()
         {
             var taskResults = _listCountriesTask.DoTask(null);
 
