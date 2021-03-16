@@ -21,7 +21,9 @@ namespace SongtrackerPro.Tasks.PlatformTasks
         {
             try
             {
-                var platforms = _dbContext.Platforms.Include(p => p.PlatformServices).ThenInclude(ps => ps.Service).ToList();
+                var platforms = _dbContext.Platforms
+                    .Include(p => p.PlatformServices).ThenInclude(ps => ps.Service)
+                    .ToList();
 
                 return new TaskResult<List<Platform>>(platforms);
             }

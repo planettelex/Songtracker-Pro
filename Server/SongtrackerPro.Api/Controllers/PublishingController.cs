@@ -54,18 +54,18 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Publisher)]
         [HttpGet]
-        public string GetPublisher(int publisherId)
+        public string GetPublisher(int id)
         {
-            var taskResults = _getPublisherTask.DoTask(publisherId);
+            var taskResults = _getPublisherTask.DoTask(id);
 
             return JsonSerialize(taskResults);
         }
 
         [Route(Routes.Publisher)]
         [HttpPut]
-        public void UpdatePublisher(int publisherId, Publisher publisher)
+        public void UpdatePublisher(int id, Publisher publisher)
         {
-            publisher.Id = publisherId;
+            publisher.Id = id;
             _updatePublisherTask.DoTask(publisher);
         }
     }

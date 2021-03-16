@@ -6,7 +6,7 @@ using SongtrackerPro.Tasks.PublishingTasks;
 namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
 {
     [TestClass]
-    public class UpdatePublisherTest : TestsBase
+    public class UpdatePublisherTests : TestsBase
     {
         public void UpdatePublisherModel(Publisher publisher)
         {

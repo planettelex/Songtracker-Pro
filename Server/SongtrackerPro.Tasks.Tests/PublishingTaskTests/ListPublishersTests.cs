@@ -41,6 +41,10 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
             Assert.AreEqual(testPublisher1.Address.PostalCode, publisher1.Address.PostalCode);
             Assert.IsNotNull(publisher1.Address.Country);
             Assert.AreEqual(testPublisher1.Address.Country.Name, publisher1.Address.Country.Name);
+            Assert.AreEqual(testPublisher1.Address.Country.IsoCode, publisher1.Address.Country.IsoCode);
+            Assert.IsNotNull(testPublisher1.PerformingRightsOrganization.Country);
+            Assert.AreEqual(testPublisher1.PerformingRightsOrganization.Country.Name, publisher1.PerformingRightsOrganization.Country.Name);
+            Assert.AreEqual(testPublisher1.PerformingRightsOrganization.Country.IsoCode, publisher1.PerformingRightsOrganization.Country.IsoCode);
 
             var publisher2 = publishers.SingleOrDefault(p => p.Id == testPublisher2Id.Data.Value);
             Assert.IsNotNull(publisher2);
@@ -55,6 +59,10 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
             Assert.AreEqual(testPublisher2.Address.PostalCode, publisher2.Address.PostalCode);
             Assert.IsNotNull(publisher2.Address.Country);
             Assert.AreEqual(testPublisher2.Address.Country.Name, publisher2.Address.Country.Name);
+            Assert.AreEqual(testPublisher2.Address.Country.IsoCode, publisher2.Address.Country.IsoCode);
+            Assert.IsNotNull(testPublisher2.PerformingRightsOrganization.Country);
+            Assert.AreEqual(testPublisher2.PerformingRightsOrganization.Country.Name, publisher2.PerformingRightsOrganization.Country.Name);
+            Assert.AreEqual(testPublisher2.PerformingRightsOrganization.Country.IsoCode, publisher2.PerformingRightsOrganization.Country.IsoCode);
 
             var removePublisherTask = new RemovePublisher(DbContext);
             var removeResult1 = removePublisherTask.DoTask(publisher1);

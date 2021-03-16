@@ -21,7 +21,9 @@ namespace SongtrackerPro.Tasks.PublishingTasks
         {
             try
             {
-                var performingRightsOrganizations = _dbContext.PerformingRightsOrganizations.Include(pro => pro.Country).ToList();
+                var performingRightsOrganizations = _dbContext.PerformingRightsOrganizations
+                    .Include(pro => pro.Country)
+                    .ToList();
 
                 return new TaskResult<List<PerformingRightsOrganization>>(performingRightsOrganizations);
             }

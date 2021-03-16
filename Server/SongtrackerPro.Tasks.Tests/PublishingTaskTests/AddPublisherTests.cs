@@ -38,6 +38,8 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
             Assert.IsNotNull(testPublisher.Address.Country);
             Assert.AreEqual(testPublisher.Address.Country.Name, publisher.Address.Country.Name);
             Assert.AreEqual(testPublisher.Address.Country.IsoCode, publisher.Address.Country.IsoCode);
+            Assert.IsNotNull(testPublisher.PerformingRightsOrganization);
+            Assert.AreEqual(testPublisher.PerformingRightsOrganization.Name, publisher.PerformingRightsOrganization.Name);
 
             var removePublisherTask = new RemovePublisher(DbContext);
             var removeResult = removePublisherTask.DoTask(publisher);

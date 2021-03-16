@@ -55,18 +55,18 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Platform)]
         [HttpGet]
-        public string GetPlatform(int platformId)
+        public string GetPlatform(int id)
         {
-            var taskResults = _getPlatformTask.DoTask(platformId);
+            var taskResults = _getPlatformTask.DoTask(id);
 
             return JsonSerialize(taskResults);
         }
 
         [Route(Routes.Platform)]
         [HttpPut]
-        public void UpdatePlatform(int platformId, Platform platform)
+        public void UpdatePlatform(int id, Platform platform)
         {
-            platform.Id = platformId;
+            platform.Id = id;
             _updatePlatformTask.DoTask(platform);
         }
     }

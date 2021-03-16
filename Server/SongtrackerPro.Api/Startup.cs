@@ -9,6 +9,7 @@ using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
+using SongtrackerPro.Tasks.RecordLabelTasks;
 
 namespace SongtrackerPro.Api
 {
@@ -66,6 +67,11 @@ namespace SongtrackerPro.Api
             services.AddScoped<IGetPublisherTask, GetPublisher>();
             services.AddScoped<IAddPublisherTask, AddPublisher>();
             services.AddScoped<IUpdatePublisherTask, UpdatePublisher>();
+
+            services.AddScoped<IListRecordLabelsTask, ListRecordLabels>();
+            services.AddScoped<IGetRecordLabelTask, GetRecordLabel>();
+            services.AddScoped<IAddRecordLabelTask, AddRecordLabel>();
+            services.AddScoped<IUpdateRecordLabelTask, UpdateRecordLabel>();
         }
     }
 }

@@ -20,7 +20,10 @@ namespace SongtrackerPro.Tasks.PublishingTasks
         {
             try
             {
-                var publisher = _dbContext.Publishers.Where(p => p.Id == publisherId).Include(p => p.Address).ThenInclude(a => a.Country).Include(p => p.PerformingRightsOrganization).SingleOrDefault();
+                var publisher = _dbContext.Publishers.Where(p => p.Id == publisherId)
+                    .Include(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(p => p.PerformingRightsOrganization).ThenInclude(a => a.Country)
+                    .SingleOrDefault();
 
                 return new TaskResult<Publisher>(publisher);
             }

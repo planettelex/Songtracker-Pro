@@ -116,5 +116,21 @@ namespace SongtrackerPro.Tasks.Tests
                 };
             }
         }
+
+        public RecordLabel RecordLabel
+        {
+            get
+            {
+                var stamp = DateTime.Now.Ticks;
+                return new RecordLabel
+                {
+                    Name = nameof(Publisher) + " " + stamp,
+                    TaxId = stamp.ToString(),
+                    Email = $"test@publisher{stamp}.com",
+                    Phone = PhoneNumber,
+                    Address = Address
+                };
+            }
+        }
     }
 }
