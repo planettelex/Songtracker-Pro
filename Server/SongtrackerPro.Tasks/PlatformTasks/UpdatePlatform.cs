@@ -20,7 +20,9 @@ namespace SongtrackerPro.Tasks.PlatformTasks
         {
             try
             {
-                var platform = _dbContext.Platforms.Where(p => p.Id == update.Id).Include(p => p.PlatformServices).ThenInclude(ps => ps.Service).SingleOrDefault();
+                var platform = _dbContext.Platforms.Where(p => p.Id == update.Id)
+                    .Include(p => p.PlatformServices).ThenInclude(ps => ps.Service).SingleOrDefault();
+
                 if (platform == null)
                     throw new TaskException("Platform not found.");
 

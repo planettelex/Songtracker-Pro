@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SongtrackerPro.Data.Models
 {
@@ -27,10 +28,12 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(20)]
         public string Phone { get; set; }
 
+        [JsonIgnore]
         [Column("address_id", Order = 6)]
         public int? AddressId { get; set; }
         public Address Address { get; set; }
 
+        [JsonIgnore]
         [Column("performing_rights_organization_id", Order = 7)]
         public int? PerformingRightsOrganizationId { get; set; }
         public PerformingRightsOrganization PerformingRightsOrganization { get; set; }

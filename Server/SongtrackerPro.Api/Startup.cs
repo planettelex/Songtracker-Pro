@@ -56,10 +56,16 @@ namespace SongtrackerPro.Api
             services.AddScoped<IListCountriesTask, ListCountries>();
             services.AddScoped<IListServicesTask, ListServices>();
             services.AddScoped<IListPerformingRightsOrganizationsTask, ListPerformingRightsOrganizations>();
+
             services.AddScoped<IListPlatformsTask, ListPlatforms>();
             services.AddScoped<IGetPlatformTask, GetPlatform>();
             services.AddScoped<IAddPlatformTask, AddPlatform>();
             services.AddScoped<IUpdatePlatformTask, UpdatePlatform>();
+
+            services.AddScoped<IListPublishersTask, ListPublishers>();
+            services.AddScoped<IGetPublisherTask, GetPublisher>();
+            services.AddScoped<IAddPublisherTask, AddPublisher>();
+            services.AddScoped<IUpdatePublisherTask, UpdatePublisher>();
         }
     }
 }

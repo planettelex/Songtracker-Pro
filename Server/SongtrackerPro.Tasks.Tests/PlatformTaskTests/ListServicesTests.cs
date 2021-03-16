@@ -10,9 +10,6 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var seedServices = new SeedServices(DbContext);
-            seedServices.DoTask(null);
-
             var task = new ListServices(DbContext);
             var result = task.DoTask(null);
             

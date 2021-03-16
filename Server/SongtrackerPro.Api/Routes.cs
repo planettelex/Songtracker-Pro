@@ -8,5 +8,7 @@
         public const string PerformingRightsOrganizations = "/performing-rights-organizations";
         public const string Platforms = "/platforms";
         public const string Platform = "/platforms/{platformid}";
+        public const string Publishers = "/publishers";
+        public const string Publisher = "/publishers/{publisherid}";
     }
 }

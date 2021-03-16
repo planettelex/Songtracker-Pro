@@ -31,13 +31,8 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var seedServices = new SeedServices(DbContext);
-            seedServices.DoTask(null);
-            var seedPlatforms = new SeedPlatforms(DbContext, new ListServices(DbContext), new AddPlatform(DbContext));
-            seedPlatforms.DoTask(null);
-
-            var listPlatforms = new ListPlatforms(DbContext);
-            var allPlatforms = listPlatforms.DoTask(null);
+            var listPlatformsTask = new ListPlatforms(DbContext);
+            var allPlatforms = listPlatformsTask.DoTask(null);
             var randomIndex = new Random().Next(allPlatforms.Data.Count);
             var randomPlatform = allPlatforms.Data[randomIndex];
             Assert.IsNotNull(randomPlatform);

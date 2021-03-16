@@ -9,9 +9,6 @@ namespace SongtrackerPro.Tasks.Tests.InstallationTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var seedInstallation = new SeedInstallation(DbContext);
-            seedInstallation.DoTask(null);
-            
             var task = new GetInstallation(DbContext);
             var result = task.DoTask(null);
             
