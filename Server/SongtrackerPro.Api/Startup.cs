@@ -54,6 +54,13 @@ namespace SongtrackerPro.Api
 
         public void RegisterTasks(IServiceCollection services)
         {
+            services.AddScoped<ISeedInstallationTask, SeedInstallation>();
+            services.AddScoped<ISeedCountriesTask, SeedCountries>();
+            services.AddScoped<ISeedPerformingRightsOrganizationsTask, SeedPerformingRightsOrganizations>();
+            services.AddScoped<ISeedServicesTask, SeedServices>();
+            services.AddScoped<ISeedPlatformsTask, SeedPlatforms>();
+            services.AddScoped<ISeedSystemDataTask, SeedSystemData>();
+
             services.AddScoped<IGetInstallationInfoTask, GetInstallation>();
             services.AddScoped<IListCountriesTask, ListCountries>();
             services.AddScoped<IListServicesTask, ListServices>();

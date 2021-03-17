@@ -2,7 +2,7 @@
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
-namespace SongtrackerPro.Tasks.Tests.RecordLabelTasks
+namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 {
     [TestClass]
     public class AddRecordLabelTests : TestsBase

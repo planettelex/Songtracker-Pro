@@ -2,7 +2,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
-namespace SongtrackerPro.Tasks.Tests.RecordLabelTasks
+namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 {
     [TestClass]
     public class ListRecordLabelsTests : TestsBase

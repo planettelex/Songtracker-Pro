@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
-namespace SongtrackerPro.Tasks.Tests.RecordLabelTasks
+namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 {
     [TestClass]
     public class UpdateRecordLabelTests : TestsBase
