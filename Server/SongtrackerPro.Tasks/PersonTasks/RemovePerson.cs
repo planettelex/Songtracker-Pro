@@ -3,28 +3,28 @@ using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 
-namespace SongtrackerPro.Tasks.RecordLabelTasks
+namespace SongtrackerPro.Tasks.PersonTasks
 {
-    public interface IRemoveRecordLabelTask : ITask<RecordLabel, bool> { }
+    public interface IRemovePersonTask : ITask<Person, bool> { }
 
-    public class RemoveRecordLabel : IRemoveRecordLabelTask
+    public class RemovePerson : IRemovePersonTask
     {
-        public RemoveRecordLabel(ApplicationDbContext dbContext)
+        public RemovePerson(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         private readonly ApplicationDbContext _dbContext;
 
-        public TaskResult<bool> DoTask(RecordLabel recordLabel)
+        public TaskResult<bool> DoTask(Person person)
         {
             try
             {
-                var toRemove = _dbContext.RecordLabels.SingleOrDefault(l => l.Id == recordLabel.Id);
+                var toRemove = _dbContext.People.SingleOrDefault(p => p.Id == person.Id);
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 
                 var addressId = toRemove.AddressId;
-                _dbContext.RecordLabels.Remove(toRemove);
+                _dbContext.People.Remove(toRemove);
                 _dbContext.SaveChanges();
 
                 if (addressId.HasValue)

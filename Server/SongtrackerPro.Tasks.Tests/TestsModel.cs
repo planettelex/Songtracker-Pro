@@ -160,5 +160,31 @@ namespace SongtrackerPro.Tasks.Tests
                 };
             }
         }
+
+        public Person Person
+        {
+            get
+            {
+                var firstNameIndex = new Random().Next(0, _firstNames.Count);
+                var middleNameIndex = new Random().Next(0, _middleNames.Count);
+                var lastNameIndex = new Random().Next(0, _lastNames.Count);
+                var nameSuffixIndex = new Random().Next(0, _nameSuffices.Count);
+                var stamp = DateTime.Now.Ticks;
+                return new Person
+                {
+                    FirstName = _firstNames[firstNameIndex],
+                    MiddleName = _middleNames[middleNameIndex],
+                    LastName = _lastNames[lastNameIndex],
+                    NameSuffix = _nameSuffices[nameSuffixIndex],
+                    Email = $"test@person{stamp}.com",
+                    Phone = PhoneNumber,
+                    Address = Address
+                };
+            }
+        }
+        private readonly List<string> _firstNames = new List<string> { "John", "Scott", "Dave", "Chris", "Robert" };
+        private readonly List<string> _middleNames = new List<string> { null, "William", "Q.", "Jefferson", null };
+        private readonly List<string> _lastNames = new List<string> { "Smith", "Adams", "Douglas", "Rogers", "Long" };
+        private readonly List<string> _nameSuffices = new List<string> { null, "Jr.", "III", null, null };
     }
 }

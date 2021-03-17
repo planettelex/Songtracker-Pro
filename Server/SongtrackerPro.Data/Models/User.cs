@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using SongtrackerPro.Data.Enums;
 
 namespace SongtrackerPro.Data.Models
@@ -31,6 +32,7 @@ namespace SongtrackerPro.Data.Models
         [Column("last_login", Order = 6)]
         public DateTime? LastLogin { get; set; }
 
+        [JsonIgnore]
         [Column("person_id", Order = 7)]
         public int? PersonId { get; set; }
         public Person Person { get; set; }
@@ -38,14 +40,17 @@ namespace SongtrackerPro.Data.Models
         [Column("social_security_number", Order = 8)]
         public string SocialSecurityNumber { get; set; }
 
+        [JsonIgnore]
         [Column("publisher_id", Order = 9)]
         public int? PublisherId { get; set; }
         public Publisher Publisher { get; set; }
 
+        [JsonIgnore]
         [Column("record_label_id", Order = 10)]
         public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
+        [JsonIgnore]
         [Column("performing_rights_organization_id", Order = 11)]
         public int? PerformingRightsOrganizationId { get; set; }
         public PerformingRightsOrganization PerformingRightsOrganization { get; set; }

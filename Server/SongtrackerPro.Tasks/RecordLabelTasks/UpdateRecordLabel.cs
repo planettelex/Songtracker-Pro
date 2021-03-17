@@ -20,7 +20,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
         {
             try
             {
-                var recordLabel = _dbContext.RecordLabels.Where(p => p.Id == update.Id)
+                var recordLabel = _dbContext.RecordLabels.Where(l => l.Id == update.Id)
                     .Include(p => p.Address)
                     .SingleOrDefault();
 
