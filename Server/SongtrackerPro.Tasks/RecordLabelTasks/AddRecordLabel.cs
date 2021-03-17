@@ -32,6 +32,8 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                 _dbContext.RecordLabels.Add(recordLabel);
                 _dbContext.SaveChanges();
 
+                recordLabel.Address = address;
+
                 return new TaskResult<int?>(recordLabel.Id);
             }
             catch (Exception e)

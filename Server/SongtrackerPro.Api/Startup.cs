@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SongtrackerPro.Data;
+using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
@@ -72,6 +73,11 @@ namespace SongtrackerPro.Api
             services.AddScoped<IGetRecordLabelTask, GetRecordLabel>();
             services.AddScoped<IAddRecordLabelTask, AddRecordLabel>();
             services.AddScoped<IUpdateRecordLabelTask, UpdateRecordLabel>();
+
+            services.AddScoped<IListArtistsTask, ListArtists>();
+            services.AddScoped<IGetArtistTask, GetArtist>();
+            services.AddScoped<IAddArtistTask, AddArtist>();
+            services.AddScoped<IUpdateArtistTask, UpdateArtist>();
         }
     }
 }

@@ -6,7 +6,7 @@ using SongtrackerPro.Tasks.RecordLabelTasks;
 namespace SongtrackerPro.Tasks.Tests.RecordLabelTasks
 {
     [TestClass]
-    public class UpdateRecordLabelTest : TestsBase
+    public class UpdateRecordLabelTests : TestsBase
     {
         public void UpdateRecordLabelModel(RecordLabel recordLabel)
         {

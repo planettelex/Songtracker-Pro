@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 
@@ -27,7 +28,9 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 _dbContext.SaveChanges();
 
                 var proId = publisher.PerformingRightsOrganization?.Id ?? publisher.PerformingRightsOrganizationId;
-                var pro = _dbContext.PerformingRightsOrganizations.SingleOrDefault(p => p.Id == proId);
+                var pro = _dbContext.PerformingRightsOrganizations.Where(p => p.Id == proId)
+                    .Include(p => p.Country)
+                    .SingleOrDefault();
 
                 publisher.Address = null;
                 publisher.AddressId = address.Id;
@@ -36,6 +39,9 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 
                 _dbContext.Publishers.Add(publisher);
                 _dbContext.SaveChanges();
+
+                publisher.Address = address;
+                publisher.PerformingRightsOrganization = pro;
 
                 return new TaskResult<int?>(publisher.Id);
             }

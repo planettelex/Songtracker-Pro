@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SongtrackerPro.Data.Models
 {
@@ -30,6 +31,7 @@ namespace SongtrackerPro.Data.Models
         [Column("press_kit_url", Order = 6)]
         public string PressKitUrl { get; set; }
 
+        [JsonIgnore]
         [Column("record_label_id", Order = 7)]
         public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }

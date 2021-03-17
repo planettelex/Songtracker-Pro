@@ -12,5 +12,7 @@
         public const string Publisher = "/publishers/{id}";
         public const string RecordLabels = "/record-labels";
         public const string RecordLabel = "/record-labels/{id}";
+        public const string Artists = "/artists";
+        public const string Artist = "/artists/{id}";
     }
 }

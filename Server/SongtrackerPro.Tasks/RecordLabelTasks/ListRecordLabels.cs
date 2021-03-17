@@ -21,7 +21,9 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
         {
             try
             {
-                var recordLabels = _dbContext.RecordLabels.Include(p => p.Address).ThenInclude(a => a.Country).ToList();
+                var recordLabels = _dbContext.RecordLabels
+                    .Include(p => p.Address).ThenInclude(a => a.Country)
+                    .ToList();
 
                 return new TaskResult<List<RecordLabel>>(recordLabels);
             }

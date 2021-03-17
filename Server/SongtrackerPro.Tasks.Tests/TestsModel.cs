@@ -7,6 +7,7 @@ using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
+using SongtrackerPro.Tasks.RecordLabelTasks;
 
 namespace SongtrackerPro.Tasks.Tests
 {
@@ -129,6 +130,33 @@ namespace SongtrackerPro.Tasks.Tests
                     Email = $"test@publisher{stamp}.com",
                     Phone = PhoneNumber,
                     Address = Address
+                };
+            }
+        }
+
+        public Artist Artist
+        {
+            get
+            {
+                var labels = new ListRecordLabels(_dbContext).DoTask(null).Data;
+                RecordLabel label = null;
+
+                if (labels != null && labels.Any())
+                {
+                    var labelIndex = new Random().Next(0, labels.Count);
+                    label = labels[labelIndex];
+                }
+
+                var stamp = DateTime.Now.Ticks;
+                var fiftyFifty = new Random().Next(0, 2) == 0;
+                return new Artist
+                {
+                    Name = nameof(Artist) + " " + stamp,
+                    TaxId = stamp.ToString(),
+                    HasServiceMark = fiftyFifty,
+                    WebsiteUrl = "http://www.artist.com",
+                    PressKitUrl = "http://www.presskit.com",
+                    RecordLabel = label
                 };
             }
         }

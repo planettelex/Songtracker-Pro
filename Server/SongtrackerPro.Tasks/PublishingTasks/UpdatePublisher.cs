@@ -38,7 +38,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 publisher.Address.Country = null;
                 publisher.Address.CountryId = update.Address.Country.Id;
                 publisher.PerformingRightsOrganization = null;
-                publisher.PerformingRightsOrganizationId = update.PerformingRightsOrganization.Id;
+                publisher.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id ?? update.PerformingRightsOrganizationId;
                 publisher.PerformingRightsOrganizationPublisherNumber = update.PerformingRightsOrganizationPublisherNumber;
                 _dbContext.SaveChanges();
 
