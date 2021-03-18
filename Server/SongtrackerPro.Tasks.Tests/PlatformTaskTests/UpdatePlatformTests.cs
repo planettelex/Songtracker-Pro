@@ -60,7 +60,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
             Assert.IsNotNull(platform);
             Assert.AreEqual(toUpdate.Name, platform.Name);
             Assert.AreEqual(toUpdate.Website, platform.Website);
-            Assert.AreEqual(toUpdate.Services.Count, platform.PlatformServices.Count);
+
             foreach (var service in toUpdate.Services)
             {
                 var platformService = platform.PlatformServices.SingleOrDefault(ps => ps.ServiceId == service.Id);

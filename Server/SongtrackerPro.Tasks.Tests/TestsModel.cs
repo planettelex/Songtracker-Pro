@@ -282,10 +282,11 @@ namespace SongtrackerPro.Tasks.Tests
                     new AddArtist(_dbContext).DoTask(artist);
                 }
 
-                var invitedByUserId = 0;
                 var users = new ListUsers(_dbContext).DoTask(null).Data;
+
+                int invitedByUserId;
                 if (users.Any())
-                    invitedByUserId = users[new Random().Next(0, artists.Count)].Id;
+                    invitedByUserId = users[new Random().Next(0, users.Count)].Id;
                 else
                 {
                     var user = User;

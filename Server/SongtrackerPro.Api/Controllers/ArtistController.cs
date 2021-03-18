@@ -19,7 +19,11 @@ namespace SongtrackerPro.Api.Controllers
                                 IListArtistLinksTask listArtistLinksTask,
                                 IGetArtistLinkTask getArtistLinkTask,
                                 IAddArtistLinkTask addArtistLinkTask,
-                                IRemoveArtistLinkTask removeArtistLinkTask
+                                IRemoveArtistLinkTask removeArtistLinkTask,
+                                IListArtistMembersTask listArtistMembersTask,
+                                IGetArtistMemberTask getArtistMemberTask,
+                                IAddArtistMemberTask addArtistMemberTask,
+                                IUpdateArtistMemberTask updateArtistMemberTask
         )
         {
             _listArtistsTask = listArtistsTask;
@@ -35,6 +39,10 @@ namespace SongtrackerPro.Api.Controllers
             _getArtistLinkTask = getArtistLinkTask;
             _addArtistLinkTask = addArtistLinkTask;
             _removeArtistLinkTask = removeArtistLinkTask;
+            _listArtistMembersTask = listArtistMembersTask;
+            _getArtistMemberTask = getArtistMemberTask;
+            _addArtistMemberTask = addArtistMemberTask;
+            _updateArtistMemberTask = updateArtistMemberTask;
         }
         private readonly IListArtistsTask _listArtistsTask;
         private readonly IGetArtistTask _getArtistTask;
@@ -49,6 +57,10 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IGetArtistLinkTask _getArtistLinkTask;
         private readonly IAddArtistLinkTask _addArtistLinkTask;
         private readonly IRemoveArtistLinkTask _removeArtistLinkTask;
+        private readonly IListArtistMembersTask _listArtistMembersTask;
+        private readonly IGetArtistMemberTask _getArtistMemberTask;
+        private readonly IAddArtistMemberTask _addArtistMemberTask;
+        private readonly IUpdateArtistMemberTask _updateArtistMemberTask;
 
         [Route(Routes.Artists)]
         [HttpPost]
@@ -83,6 +95,35 @@ namespace SongtrackerPro.Api.Controllers
         {
             artist.Id = id;
             _updateArtistTask.DoTask(artist);
+        }
+
+        [Route(Routes.ArtistMembers)]
+        [HttpPost]
+        public string AddArtistMember(int artistId, ArtistMember artistMember)
+        {
+            artistMember.ArtistId = artistId;
+            var taskResults = _addArtistMemberTask.DoTask(artistMember);
+
+            return JsonSerialize(taskResults);
+        }
+
+        [Route(Routes.ArtistMembers)]
+        [HttpGet]
+        public string ListArtistMembers(int artistId)
+        {
+            var artist = _getArtistTask.DoTask(artistId).Data;
+            var taskResults = _listArtistMembersTask.DoTask(artist);
+
+            return JsonSerialize(taskResults);
+        }
+
+        [Route(Routes.ArtistMember)]
+        [HttpPut]
+        public void UpdateArtistMember(int artistId, int artistMemberId, ArtistMember artistMember)
+        {
+            artistMember.ArtistId = artistId;
+            artistMember.Id = artistMemberId;
+            _updateArtistMemberTask.DoTask(artistMember);
         }
 
         [Route(Routes.ArtistAccounts)]

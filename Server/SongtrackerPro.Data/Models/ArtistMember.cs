@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SongtrackerPro.Data.Models
 {
@@ -12,11 +13,14 @@ namespace SongtrackerPro.Data.Models
         [Column("id", Order = 1)]
         public int Id { get; set; }
 
+        [JsonIgnore]
         [Required]
         [Column("artist_id", Order = 2)]
         public int ArtistId { get; set; }
+        [JsonIgnore]
         public Artist Artist { get; set; }
 
+        [JsonIgnore]
         [Required]
         [Column("person_id", Order = 3)]
         public int PersonId { get; set; }
