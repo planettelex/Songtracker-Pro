@@ -16,6 +16,8 @@
         public const string Artist = "/artists/{id}";
         public const string Users = "/users";
         public const string User = "/users/{id}";
+        public const string UserAccounts = "/users/{userid}/accounts";
+        public const string UserAccount = "/users/{userid}/accounts/{useraccountid}";
         public const string Login = "/login";
     }
 }

@@ -19,7 +19,7 @@ namespace SongtrackerPro.Tasks.UserTasks
         {
             try
             {
-                var toRemove = _dbContext.Users.SingleOrDefault(p => p.Id == user.Id);
+                var toRemove = _dbContext.Users.SingleOrDefault(u => u.Id == user.Id);
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 

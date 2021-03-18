@@ -97,6 +97,11 @@ namespace SongtrackerPro.Api
             services.AddScoped<IAddUserTask, AddUser>();
             services.AddScoped<IUpdateUserTask, UpdateUser>();
             services.AddScoped<ILoginUserTask, LoginUser>();
+            services.AddScoped<IListUserAccountsTask, ListUserAccounts>();
+            services.AddScoped<IGetUserAccountTask, GetUserAccount>();
+            services.AddScoped<IAddUserAccountTask, AddUserAccount>();
+            services.AddScoped<IUpdateUserAccountTask, UpdateUserAccount>();
+            services.AddScoped<IRemoveUserAccountTask, RemoveUserAccount>();
         }
     }
 }
