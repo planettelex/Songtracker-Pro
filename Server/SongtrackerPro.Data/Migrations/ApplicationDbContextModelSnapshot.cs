@@ -620,6 +620,65 @@ namespace SongtrackerPro.Data.Migrations
                     b.ToTable("user_accounts");
                 });
 
+            modelBuilder.Entity("SongtrackerPro.Data.Models.UserInvitation", b =>
+                {
+                    b.Property<Guid>("Uuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("uuid");
+
+                    b.Property<DateTime?>("AcceptedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("accepted_on");
+
+                    b.Property<int?>("ArtistId")
+                        .HasColumnType("int")
+                        .HasColumnName("artist_id");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int")
+                        .HasColumnName("created_user_id");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("email");
+
+                    b.Property<int>("InvitedByUserId")
+                        .HasColumnType("int")
+                        .HasColumnName("invited_by_user_id");
+
+                    b.Property<int?>("PublisherId")
+                        .HasColumnType("int")
+                        .HasColumnName("publisher_id");
+
+                    b.Property<int?>("RecordLabelId")
+                        .HasColumnType("int")
+                        .HasColumnName("record_label_id");
+
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("sent_on");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnName("type");
+
+                    b.HasKey("Uuid");
+
+                    b.HasIndex("ArtistId");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("InvitedByUserId");
+
+                    b.HasIndex("PublisherId");
+
+                    b.HasIndex("RecordLabelId");
+
+                    b.ToTable("user_invitations");
+                });
+
             modelBuilder.Entity("SongtrackerPro.Data.Models.Address", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.Country", "Country")
@@ -819,6 +878,41 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Platform");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.UserInvitation", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistId");
+
+                    b.HasOne("SongtrackerPro.Data.Models.User", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId");
+
+                    b.HasOne("SongtrackerPro.Data.Models.User", "InvitedByUser")
+                        .WithMany()
+                        .HasForeignKey("InvitedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
+                        .WithMany()
+                        .HasForeignKey("PublisherId");
+
+                    b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
+                        .WithMany()
+                        .HasForeignKey("RecordLabelId");
+
+                    b.Navigation("Artist");
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("InvitedByUser");
+
+                    b.Navigation("Publisher");
+
+                    b.Navigation("RecordLabel");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Artist", b =>

@@ -63,7 +63,7 @@ namespace SongtrackerPro.Api
             services.AddScoped<ISeedPlatformsTask, SeedPlatforms>();
             services.AddScoped<ISeedSystemDataTask, SeedSystemData>();
 
-            services.AddScoped<IGetInstallationInfoTask, GetInstallation>();
+            services.AddScoped<IGetInstallationTask, GetInstallation>();
             services.AddScoped<IListCountriesTask, ListCountries>();
             services.AddScoped<IListServicesTask, ListServices>();
             services.AddScoped<IListPerformingRightsOrganizationsTask, ListPerformingRightsOrganizations>();
@@ -88,6 +88,17 @@ namespace SongtrackerPro.Api
             services.AddScoped<IAddArtistTask, AddArtist>();
             services.AddScoped<IUpdateArtistTask, UpdateArtist>();
 
+            services.AddScoped<IListArtistAccountsTask, ListArtistAccounts>();
+            services.AddScoped<IGetArtistAccountTask, GetArtistAccount>();
+            services.AddScoped<IAddArtistAccountTask, AddArtistAccount>();
+            services.AddScoped<IUpdateArtistAccountTask, UpdateArtistAccount>();
+            services.AddScoped<IRemoveArtistAccountTask, RemoveArtistAccount>();
+
+            services.AddScoped<IListArtistLinksTask, ListArtistLinks>();
+            services.AddScoped<IGetArtistLinkTask, GetArtistLink>();
+            services.AddScoped<IAddArtistLinkTask, AddArtistLink>();
+            services.AddScoped<IRemoveArtistLinkTask, RemoveArtistLink>();
+
             services.AddScoped<IGetPersonTask, GetPerson>();
             services.AddScoped<IAddPersonTask, AddPerson>();
             services.AddScoped<IUpdatePersonTask, UpdatePerson>();
@@ -97,6 +108,7 @@ namespace SongtrackerPro.Api
             services.AddScoped<IAddUserTask, AddUser>();
             services.AddScoped<IUpdateUserTask, UpdateUser>();
             services.AddScoped<ILoginUserTask, LoginUser>();
+
             services.AddScoped<IListUserAccountsTask, ListUserAccounts>();
             services.AddScoped<IGetUserAccountTask, GetUserAccount>();
             services.AddScoped<IAddUserAccountTask, AddUserAccount>();

@@ -40,5 +40,6 @@ namespace SongtrackerPro.Data
         public DbSet<ArtistLink> ArtistLinks { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
+        public DbSet<UserInvitation> UserInvitations { get; set; }
     }
 }

@@ -25,8 +25,8 @@ namespace SongtrackerPro.Tasks.UserTasks
                     .Include(ua => ua.Platform)
                     .ToList();
 
-                foreach (var _ in userAccounts.Select(userAccount => _dbContext.PlatformServices
-                    .Where(ps => ps.PlatformId == userAccount.PlatformId)
+                foreach (var _ in userAccounts.Select(ua => _dbContext.PlatformServices
+                    .Where(ps => ps.PlatformId == ua.PlatformId)
                     .Include(ps => ps.Service)
                     .ToList())) { }
 

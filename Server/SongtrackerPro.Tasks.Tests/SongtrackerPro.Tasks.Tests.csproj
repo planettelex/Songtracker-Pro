@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SongtrackerPro.Tasks\SongtrackerPro.Tasks.csproj" />
+    <ProjectReference Include="..\SongtrackerPro.Utilities.Tests\SongtrackerPro.Utilities.Tests.csproj" />
     <ProjectReference Include="..\SongtrackerPro.Utilities\SongtrackerPro.Utilities.csproj" />
   </ItemGroup>
 

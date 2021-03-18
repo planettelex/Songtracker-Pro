@@ -423,6 +423,56 @@ namespace SongtrackerPro.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "user_invitations",
+                columns: table => new
+                {
+                    uuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    invited_by_user_id = table.Column<int>(type: "int", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    type = table.Column<int>(type: "int", nullable: false),
+                    publisher_id = table.Column<int>(type: "int", nullable: true),
+                    record_label_id = table.Column<int>(type: "int", nullable: true),
+                    artist_id = table.Column<int>(type: "int", nullable: true),
+                    sent_on = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    accepted_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    created_user_id = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_invitations", x => x.uuid);
+                    table.ForeignKey(
+                        name: "FK_user_invitations_artists_artist_id",
+                        column: x => x.artist_id,
+                        principalTable: "artists",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_user_invitations_publishers_publisher_id",
+                        column: x => x.publisher_id,
+                        principalTable: "publishers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_user_invitations_record_labels_record_label_id",
+                        column: x => x.record_label_id,
+                        principalTable: "record_labels",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_user_invitations_users_created_user_id",
+                        column: x => x.created_user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_user_invitations_users_invited_by_user_id",
+                        column: x => x.invited_by_user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_addresses_country_id",
                 table: "addresses",
@@ -519,6 +569,31 @@ namespace SongtrackerPro.Data.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_user_invitations_artist_id",
+                table: "user_invitations",
+                column: "artist_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_invitations_created_user_id",
+                table: "user_invitations",
+                column: "created_user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_invitations_invited_by_user_id",
+                table: "user_invitations",
+                column: "invited_by_user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_invitations_publisher_id",
+                table: "user_invitations",
+                column: "publisher_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_invitations_record_label_id",
+                table: "user_invitations",
+                column: "record_label_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_users_performing_rights_organization_id",
                 table: "users",
                 column: "performing_rights_organization_id");
@@ -563,13 +638,16 @@ namespace SongtrackerPro.Data.Migrations
                 name: "user_accounts");
 
             migrationBuilder.DropTable(
-                name: "artists");
+                name: "user_invitations");
 
             migrationBuilder.DropTable(
                 name: "services");
 
             migrationBuilder.DropTable(
                 name: "platforms");
+
+            migrationBuilder.DropTable(
+                name: "artists");
 
             migrationBuilder.DropTable(
                 name: "users");

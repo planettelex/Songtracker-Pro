@@ -4,11 +4,14 @@ using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
+using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
+using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Tasks.Tests
 {
@@ -241,6 +244,64 @@ namespace SongtrackerPro.Tasks.Tests
                     Publisher = publisher,
                     RecordLabel = recordLabel,
                     LastLogin = DateTime.Now.AddDays(-1),
+                };
+            }
+        }
+
+        public UserInvitation UserInvitation
+        {
+            get
+            {
+                var publishers = new ListPublishers(_dbContext).DoTask(null).Data;
+                Publisher publisher;
+                if (publishers.Any())
+                    publisher = publishers[new Random().Next(0, publishers.Count)];
+                else
+                {
+                    publisher = Publisher;
+                    new AddPublisher(_dbContext).DoTask(publisher);
+                }
+                
+                var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
+                RecordLabel recordLabel;
+                if (recordLabels.Any())
+                    recordLabel = recordLabels[new Random().Next(0, recordLabels.Count)];
+                else
+                {
+                    recordLabel = RecordLabel;
+                    new AddRecordLabel(_dbContext).DoTask(recordLabel);
+                }
+
+                var artists = new ListArtists(_dbContext).DoTask(null).Data;
+                Artist artist;
+                if (artists.Any())
+                    artist = artists[new Random().Next(0, artists.Count)];
+                else
+                {
+                    artist = Artist;
+                    new AddArtist(_dbContext).DoTask(artist);
+                }
+
+                var invitedByUserId = 0;
+                var users = new ListUsers(_dbContext).DoTask(null).Data;
+                if (users.Any())
+                    invitedByUserId = users[new Random().Next(0, artists.Count)].Id;
+                else
+                {
+                    var user = User;
+                    new AddUser(_dbContext, new AddPerson(_dbContext)).DoTask(user);
+                    invitedByUserId = user.Id;
+                }
+
+                return new UserInvitation
+                {
+                    Uuid = Guid.Empty,
+                    InvitedByUserId = invitedByUserId,
+                    Email = Person.Email,
+                    Type = UserType.ArtistMember,
+                    Artist = artist,
+                    Publisher = publisher,
+                    RecordLabel = recordLabel
                 };
             }
         }

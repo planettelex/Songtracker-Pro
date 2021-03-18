@@ -7,9 +7,9 @@ using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.InstallationTasks
 {
-    public interface IGetInstallationInfoTask : ITask<Nothing, Installation> { }
+    public interface IGetInstallationTask : ITask<Nothing, Installation> { }
 
-    public class GetInstallation : IGetInstallationInfoTask
+    public class GetInstallation : IGetInstallationTask
     {
         public GetInstallation(ApplicationDbContext dbContext)
         {
