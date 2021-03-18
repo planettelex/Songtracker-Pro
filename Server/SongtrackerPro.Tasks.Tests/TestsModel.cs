@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SongtrackerPro.Data;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
@@ -70,6 +71,17 @@ namespace SongtrackerPro.Tasks.Tests
                 return $"({areaCode}) {first}-{second}";
             }
         }
+
+        public string SocialSecurityNumber
+        {
+            get
+            {
+                var first = new Random().Next(100, 999);
+                var second = new Random().Next(100, 999);
+                var third = new Random().Next(1000, 9999);
+                return $"{first}-{second}-{third}";
+            }
+        }
         
         public Platform Platform
         {
@@ -127,7 +139,7 @@ namespace SongtrackerPro.Tasks.Tests
                 {
                     Name = nameof(Publisher) + " " + stamp,
                     TaxId = stamp.ToString(),
-                    Email = $"test@publisher{stamp}.com",
+                    Email = $"test@label{stamp}.com",
                     Phone = PhoneNumber,
                     Address = Address
                 };
@@ -186,5 +198,51 @@ namespace SongtrackerPro.Tasks.Tests
         private readonly List<string> _middleNames = new List<string> { null, "William", "Q.", "Jefferson", null };
         private readonly List<string> _lastNames = new List<string> { "Smith", "Adams", "Douglas", "Rogers", "Long" };
         private readonly List<string> _nameSuffices = new List<string> { null, "Jr.", "III", null, null };
+
+        public User User
+        {
+            get
+            {
+                var pros = new ListPerformingRightsOrganizations(_dbContext).DoTask(null).Data;
+                var ascap = pros.SingleOrDefault(pro => pro.Name.ToUpper() == "ASCAP");
+
+                var publishers = new ListPublishers(_dbContext).DoTask(null).Data;
+                Publisher publisher;
+                if (publishers.Any())
+                    publisher = publishers[new Random().Next(0, publishers.Count)];
+                else
+                {
+                    publisher = Publisher;
+                    new AddPublisher(_dbContext).DoTask(publisher);
+                }
+                
+                var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
+                RecordLabel recordLabel;
+                if (recordLabels.Any())
+                    recordLabel = recordLabels[new Random().Next(0, recordLabels.Count)];
+                else
+                {
+                    recordLabel = RecordLabel;
+                    new AddRecordLabel(_dbContext).DoTask(recordLabel);
+                }
+                
+                var stamp = DateTime.Now.Ticks;
+                return new User
+                {
+                    Type = UserType.SystemAdministrator,
+                    ProfileImageUrl = "http://profile-image.png",
+                    AuthenticationId = stamp.ToString(),
+                    AuthenticationToken = "Token_" + stamp,
+                    PerformingRightsOrganization = ascap,
+                    PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString(),
+                    SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString(),
+                    Person = Person,
+                    SocialSecurityNumber = SocialSecurityNumber,
+                    Publisher = publisher,
+                    RecordLabel = recordLabel,
+                    LastLogin = DateTime.Now.AddDays(-1),
+                };
+            }
+        }
     }
 }

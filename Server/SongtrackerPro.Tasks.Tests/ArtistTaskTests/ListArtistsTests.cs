@@ -14,6 +14,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             var testArtist1 = TestModel.Artist;
             var testArtist1Id = addArtist.DoTask(testArtist1);
             Assert.IsTrue(testArtist1Id.Data.HasValue);
+            addArtist = new AddArtist(DbContext);
             var testArtist2 = TestModel.Artist;
             var testArtist2Id = addArtist.DoTask(testArtist2);
             Assert.IsTrue(testArtist2Id.Data.HasValue);

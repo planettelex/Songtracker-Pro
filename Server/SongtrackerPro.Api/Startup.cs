@@ -8,9 +8,11 @@ using SongtrackerPro.Data;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
+using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
+using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Api
 {
@@ -85,6 +87,16 @@ namespace SongtrackerPro.Api
             services.AddScoped<IGetArtistTask, GetArtist>();
             services.AddScoped<IAddArtistTask, AddArtist>();
             services.AddScoped<IUpdateArtistTask, UpdateArtist>();
+
+            services.AddScoped<IGetPersonTask, GetPerson>();
+            services.AddScoped<IAddPersonTask, AddPerson>();
+            services.AddScoped<IUpdatePersonTask, UpdatePerson>();
+
+            services.AddScoped<IListUsersTask, ListUsers>();
+            services.AddScoped<IGetUserTask, GetUser>();
+            services.AddScoped<IAddUserTask, AddUser>();
+            services.AddScoped<IUpdateUserTask, UpdateUser>();
+            services.AddScoped<ILoginUserTask, LoginUser>();
         }
     }
 }

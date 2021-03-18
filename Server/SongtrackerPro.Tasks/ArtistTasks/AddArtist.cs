@@ -21,17 +21,17 @@ namespace SongtrackerPro.Tasks.ArtistTasks
             try
             {
                 var recordLabelId = artist.RecordLabel?.Id ?? artist.RecordLabelId;
-                var recordLabel = _dbContext.RecordLabels.Where(r => r.Id == recordLabelId)
-                    .Include(r => r.Address).ThenInclude(a => a.Country)
-                    .SingleOrDefault();
 
                 artist.RecordLabel = null;
-                artist.RecordLabelId = recordLabel?.Id;
+                artist.RecordLabelId = recordLabelId;
 
                 _dbContext.Artists.Add(artist);
                 _dbContext.SaveChanges();
 
-                artist.RecordLabel = recordLabel;
+                artist.RecordLabel = recordLabelId > 0 ? 
+                    _dbContext.RecordLabels.Where(r => r.Id == recordLabelId)
+                    .Include(r => r.Address).ThenInclude(a => a.Country)
+                    .SingleOrDefault() : null;
 
                 return new TaskResult<int?>(artist.Id);
             }

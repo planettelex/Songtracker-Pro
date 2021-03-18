@@ -28,20 +28,20 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 _dbContext.SaveChanges();
 
                 var proId = publisher.PerformingRightsOrganization?.Id ?? publisher.PerformingRightsOrganizationId;
-                var pro = _dbContext.PerformingRightsOrganizations.Where(p => p.Id == proId)
-                    .Include(p => p.Country)
-                    .SingleOrDefault();
 
                 publisher.Address = null;
                 publisher.AddressId = address.Id;
                 publisher.PerformingRightsOrganization = null;
-                publisher.PerformingRightsOrganizationId = pro?.Id;
+                publisher.PerformingRightsOrganizationId = proId;
                 
                 _dbContext.Publishers.Add(publisher);
                 _dbContext.SaveChanges();
 
                 publisher.Address = address;
-                publisher.PerformingRightsOrganization = pro;
+                publisher.PerformingRightsOrganization = proId > 0 ?
+                    _dbContext.PerformingRightsOrganizations.Where(p => p.Id == proId)
+                    .Include(p => p.Country)
+                    .SingleOrDefault() : null;
 
                 return new TaskResult<int?>(publisher.Id);
             }

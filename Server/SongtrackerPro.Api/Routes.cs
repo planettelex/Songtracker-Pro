@@ -14,5 +14,8 @@
         public const string RecordLabel = "/record-labels/{id}";
         public const string Artists = "/artists";
         public const string Artist = "/artists/{id}";
+        public const string Users = "/users";
+        public const string User = "/users/{id}";
+        public const string Login = "/login";
     }
 }

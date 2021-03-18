@@ -14,6 +14,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             var testRecordLabel1 = TestModel.RecordLabel;
             var testRecordLabel1Id = addRecordLabel.DoTask(testRecordLabel1);
             Assert.IsTrue(testRecordLabel1Id.Data.HasValue);
+            addRecordLabel = new AddRecordLabel(DbContext);
             var testRecordLabel2 = TestModel.RecordLabel;
             var testRecordLabel2Id = addRecordLabel.DoTask(testRecordLabel2);
             Assert.IsTrue(testRecordLabel2Id.Data.HasValue);

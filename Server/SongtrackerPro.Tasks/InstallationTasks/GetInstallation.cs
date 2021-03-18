@@ -21,7 +21,10 @@ namespace SongtrackerPro.Tasks.InstallationTasks
         {
             try
             {
-                var installation = _dbContext.Installation.Single();
+                var installation = _dbContext.Installation.SingleOrDefault();
+                if (installation == null)
+                    return new TaskResult<Installation>(null as Installation);
+
                 var connectionStringBuilder = new SqlConnectionStringBuilder(ApplicationSettings.Database.ConnectionString);
                 installation.DatabaseName = connectionStringBuilder.InitialCatalog;
                 installation.DatabaseConsole = ApplicationSettings.Database.HostingConsole;

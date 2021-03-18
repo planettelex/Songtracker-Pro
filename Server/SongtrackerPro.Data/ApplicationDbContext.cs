@@ -19,6 +19,7 @@ namespace SongtrackerPro.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseSqlServer(_connectionString);
         }
 
