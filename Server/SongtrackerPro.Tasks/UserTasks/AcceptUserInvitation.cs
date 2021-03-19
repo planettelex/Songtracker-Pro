@@ -2,7 +2,10 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
+using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Utilities.Services;
 
@@ -10,19 +13,31 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface IAcceptUserInvitationTask : ITask<UserInvitation, User> { }
 
-    public class AcceptUserInvitation : IAcceptUserInvitationTask
+    public class AcceptUserInvitation : TaskBase, IAcceptUserInvitationTask
     {
         public AcceptUserInvitation(ApplicationDbContext dbContext,
-                                    IEmailService emailService, 
-                                    IAddPersonTask addPersonTask)
+                                    IEmailService emailService,
+                                    IHtmlService htmlService,
+                                    ITokenService tokenService,
+                                    IAddPersonTask addPersonTask,
+                                    IAddArtistMemberTask addArtistMember,
+                                    IAddArtistManagerTask addArtistManager)
         {
             _dbContext = dbContext;
             _emailService = emailService;
+            _htmlService = htmlService;
+            _tokenService = tokenService;
             _addPersonTask = addPersonTask;
+            _addArtistMember = addArtistMember;
+            _addArtistManager = addArtistManager;
         }
         private readonly ApplicationDbContext _dbContext;
         private readonly IEmailService _emailService;
+        private readonly IHtmlService _htmlService;
+        private readonly ITokenService _tokenService;
         private readonly IAddPersonTask _addPersonTask;
+        private readonly IAddArtistMemberTask _addArtistMember;
+        private readonly IAddArtistManagerTask _addArtistManager;
         
         public TaskResult<User> DoTask(UserInvitation userInvitation)
         {
@@ -51,7 +66,36 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 _dbContext.Users.Add(newUser);
                 _dbContext.SaveChanges();
-                //TODO: Add artist member or manager
+
+                if (artistId.HasValue)
+                {
+                    var artist = _dbContext.Artists.Single(a => a.Id == artistId.Value);
+                    switch (userInvitation.Type)
+                    {
+                        case UserType.ArtistMember:
+                        {
+                            var artistMember = new ArtistMember
+                            {
+                                Artist = artist,
+                                Member = newPerson,
+                                StartedOn = DateTime.Today
+                            };
+                            _addArtistMember.DoTask(artistMember);
+                            break;
+                        }
+                        case UserType.ArtistManager:
+                        {
+                            var artistManager = new ArtistManager
+                            {
+                                Artist = artist,
+                                Manager = newPerson,
+                                StartedOn = DateTime.Today
+                            };
+                            _addArtistManager.DoTask(artistManager);
+                            break;
+                        }
+                    }
+                }
 
                 newUser.Person = newPerson;
                 newUser.PerformingRightsOrganization = proId > 0 ?
@@ -67,8 +111,10 @@ namespace SongtrackerPro.Tasks.UserTasks
                         .Include(p => p.Address).ThenInclude(a => a.Country)
                         .SingleOrDefault() : null;
 
-                // TODO: Get title and body from resources and replace tokens.
-                _emailService.SendEmail(newUser.Person.Email, "Title", "Body");
+                var emailTemplate = EmailTemplate($"{userInvitation.Type}Welcome.html");
+                var body = ReplaceTokens(emailTemplate, userInvitation);
+                var subject = _htmlService.GetTitle(emailTemplate);
+                _emailService.SendEmail(newUser.Person.Email, subject, body);
 
                 return new TaskResult<User>(newUser);
             }
@@ -76,6 +122,28 @@ namespace SongtrackerPro.Tasks.UserTasks
             {
                 return new TaskResult<User>(new TaskException(e));
             }
+        }
+
+        private string ReplaceTokens(string template, UserInvitation userInvitation)
+        {
+            var replaced = _tokenService.ReplaceTokens(template, userInvitation.InvitedByUser);
+            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);
+
+            switch (userInvitation.Type)
+            {
+                case UserType.ArtistMember:
+                case UserType.ArtistManager:
+                    replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);
+                    break;
+                case UserType.PublisherAdministrator:
+                    replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Publisher);
+                    break;
+                case UserType.LabelAdministrator:
+                    replaced = _tokenService.ReplaceTokens(replaced, userInvitation.RecordLabel);
+                    break;
+            }
+
+            return replaced;
         }
     }
 }

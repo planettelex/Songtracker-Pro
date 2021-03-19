@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface ISeedPlatformsTask : ITask<Nothing, bool> { }
 
-    public class SeedPlatforms : ISeedPlatformsTask
+    public class SeedPlatforms : TaskBase, ISeedPlatformsTask
     {
         public SeedPlatforms(ApplicationDbContext dbContext, IListServicesTask listServicesTask, IAddPlatformTask addPlatformTask)
         {
@@ -29,17 +29,17 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                     return new TaskResult<bool>(false);
 
                 var services = _listServicesTask.DoTask(nothing);
-                var interactiveStreaming = services.Data.Single(s => s.Name.ToLower() == "interactive streaming");
-                var nonInteractiveStreaming = services.Data.Single(s => s.Name.ToLower() == "non-interactive streaming");
-                var liveStreaming = services.Data.Single(s => s.Name.ToLower() == "live streaming");
-                var videoHosting = services.Data.Single(s => s.Name.ToLower() == "video hosting");
-                var videoClips = services.Data.Single(s => s.Name.ToLower() == "video clips");
-                var socialMedia = services.Data.Single(s => s.Name.ToLower() == "social media");
-                var digitalSales = services.Data.Single(s => s.Name.ToLower() == "digital sales");
-                var physicalSales = services.Data.Single(s => s.Name.ToLower() == "physical sales");
-                var payment = services.Data.Single(s => s.Name.ToLower() == "payment");
-                var musicIdentification = services.Data.Single(s => s.Name.ToLower() == "music identification");
-                var eventManagement = services.Data.Single(s => s.Name.ToLower() == "event management");
+                var interactiveStreaming = services.Data.Single(s => s.Name == SeedData("SERVICE_INTERACTIVE_STREAMING"));
+                var nonInteractiveStreaming = services.Data.Single(s => s.Name == SeedData("SERVICE_NON_INTERACTIVE_STREAMING"));
+                var liveStreaming = services.Data.Single(s => s.Name == SeedData("SERVICE_LIVE_STREAMING"));
+                var videoHosting = services.Data.Single(s => s.Name == SeedData("SERVICE_VIDEO_HOSTING"));
+                var videoClips = services.Data.Single(s => s.Name == SeedData("SERVICE_VIDEO_CLIPS"));
+                var socialMedia = services.Data.Single(s => s.Name == SeedData("SERVICE_SOCIAL_MEDIA"));
+                var digitalSales = services.Data.Single(s => s.Name == SeedData("SERVICE_DIGITAL_SALES"));
+                var physicalSales = services.Data.Single(s => s.Name == SeedData("SERVICE_PHYSICAL_SALES"));
+                var payment = services.Data.Single(s => s.Name == SeedData("SERVICE_PAYMENT"));
+                var musicIdentification = services.Data.Single(s => s.Name == SeedData("SERVICE_MUSIC_IDENTIFICATION"));
+                var eventManagement = services.Data.Single(s => s.Name == SeedData("SERVICE_EVENT_MANAGEMENT"));
 
                 _addPlatformTask.DoTask(new Platform { Name = "Amazon", Website = "https://www.amazon.com", 
                     Services = new List<Service>{ physicalSales }});

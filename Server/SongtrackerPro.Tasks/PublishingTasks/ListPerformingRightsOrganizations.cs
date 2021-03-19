@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 {
     public interface IListPerformingRightsOrganizationsTask : ITask<Nothing, List<PerformingRightsOrganization>> { }
 
-    public class ListPerformingRightsOrganizations : IListPerformingRightsOrganizationsTask
+    public class ListPerformingRightsOrganizations : TaskBase, IListPerformingRightsOrganizationsTask
     {
         public ListPerformingRightsOrganizations(ApplicationDbContext dbContext)
         {

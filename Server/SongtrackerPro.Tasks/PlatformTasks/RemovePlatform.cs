@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface IRemovePlatformTask : ITask<Platform, bool> { }
 
-    public class RemovePlatform : IRemovePlatformTask
+    public class RemovePlatform : TaskBase, IRemovePlatformTask
     {
         public RemovePlatform(ApplicationDbContext dbContext)
         {

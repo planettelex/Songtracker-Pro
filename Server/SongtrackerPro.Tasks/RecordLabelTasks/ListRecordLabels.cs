@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 {
     public interface IListRecordLabelsTask : ITask<Nothing, List<RecordLabel>> { }
 
-    public class ListRecordLabels : IListRecordLabelsTask
+    public class ListRecordLabels : TaskBase, IListRecordLabelsTask
     {
         public ListRecordLabels(ApplicationDbContext dbContext)
         {

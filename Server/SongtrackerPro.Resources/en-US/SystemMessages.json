@@ -1,0 +1,49 @@
+{
+  "Culture": "en-US",
+  "Translations": [
+    {
+      "Key": "ARTIST_NOT_FOUND",
+      "Value": "Artist not found."
+    },
+    {
+      "Key": "ARTIST_ACCOUNT_NOT_FOUND",
+      "Value": "Artist account not found."
+    },
+    {
+      "Key": "ARTIST_MANAGER_NOT_FOUND",
+      "Value": "Artist manager not found."
+    },
+    {
+      "Key": "ARTIST_MEMBER_NOT_FOUND",
+      "Value": "Artist member not found."
+    },
+    {
+      "Key": "PERSON_NOT_FOUND",
+      "Value": "Person not found."
+    },
+    {
+      "Key": "PLATFORM_NOT_FOUND",
+      "Value": "Platform not found."
+    },
+    {
+      "Key": "PUBLISHER_NOT_FOUND",
+      "Value": "Publisher not found."
+    },
+    {
+      "Key": "RECORD_LABEL_NOT_FOUND",
+      "Value": "Publisher not found."
+    },
+    {
+      "Key": "USA_NOT_FOUND",
+      "Value": "United States not found."
+    },
+    {
+      "Key": "USER_NOT_FOUND",
+      "Value": "User not found."
+    },
+    {
+      "Key": "USER_ACCOUNT_NOT_FOUND",
+      "Value": "User account not found."
+    }
+  ]
+}

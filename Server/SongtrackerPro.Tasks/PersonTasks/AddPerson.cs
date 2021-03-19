@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.PersonTasks
 {
     public interface IAddPersonTask : ITask<Person, int?> { }
 
-    public class AddPerson : IAddPersonTask
+    public class AddPerson : TaskBase, IAddPersonTask
     {
         public AddPerson(ApplicationDbContext dbContext)
         {

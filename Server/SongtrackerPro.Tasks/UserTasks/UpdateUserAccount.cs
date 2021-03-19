@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface IUpdateUserAccountTask : ITask<UserAccount, Nothing> { }
 
-    public class UpdateUserAccount : IUpdateUserAccountTask
+    public class UpdateUserAccount : TaskBase, IUpdateUserAccountTask
     {
         public UpdateUserAccount(ApplicationDbContext dbContext)
         {
@@ -22,7 +22,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 var userAccount = _dbContext.UserAccounts.SingleOrDefault(ua => ua.Id == update.Id);
 
                 if (userAccount == null)
-                    throw new TaskException("User account not found.");
+                    throw new TaskException(SystemMessage("USER_ACCOUNT_NOT_FOUND"));
 
                 if (update.IsPreferred)
                 {

@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.InstallationTasks
 {
     public interface IGetInstallationTask : ITask<Nothing, Installation> { }
 
-    public class GetInstallation : IGetInstallationTask
+    public class GetInstallation : TaskBase, IGetInstallationTask
     {
         public GetInstallation(ApplicationDbContext dbContext)
         {

@@ -70,8 +70,8 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddArtistAccount(EmptyDbContext);
-            var result = task.DoTask(new ArtistAccount());
+            var task = new AddArtistMember(EmptyDbContext);
+            var result = task.DoTask(new ArtistMember());
             
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Exception);

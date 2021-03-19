@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 {
     public interface IRemoveRecordLabelTask : ITask<RecordLabel, bool> { }
 
-    public class RemoveRecordLabel : IRemoveRecordLabelTask
+    public class RemoveRecordLabel : TaskBase, IRemoveRecordLabelTask
     {
         public RemoveRecordLabel(ApplicationDbContext dbContext)
         {

@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface IGetUserAccountTask : ITask<int, UserAccount> { }
 
-    public class GetUserAccount : IGetUserAccountTask
+    public class GetUserAccount : TaskBase, IGetUserAccountTask
     {
         public GetUserAccount(ApplicationDbContext dbContext)
         {

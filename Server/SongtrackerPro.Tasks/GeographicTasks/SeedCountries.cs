@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.GeographicTasks
 {
     public interface ISeedCountriesTask : ITask<Nothing, bool> { }
 
-    public class SeedCountries : ISeedCountriesTask
+    public class SeedCountries : TaskBase, ISeedCountriesTask
     {
         public SeedCountries(ApplicationDbContext dbContext)
         {
@@ -23,8 +23,8 @@ namespace SongtrackerPro.Tasks.GeographicTasks
                 if (countries.Any())
                     return new TaskResult<bool>(false);
 
-                _dbContext.Countries.Add(new Country { Name = "United States", IsoCode = "USA" });
-                _dbContext.Countries.Add(new Country { Name = "Canada", IsoCode = "CAN" });
+                _dbContext.Countries.Add(new Country { Name = SeedData("COUNTRY_UNITED_STATES"), IsoCode = "USA" });
+                _dbContext.Countries.Add(new Country { Name = SeedData("COUNTRY_CANADA"), IsoCode = "CAN" });
 
                 _dbContext.SaveChanges();
 

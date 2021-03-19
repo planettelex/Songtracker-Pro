@@ -6,7 +6,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IAddArtistLinkTask : ITask<ArtistLink, int?> { }
 
-    public class AddArtistLink : IAddArtistLinkTask
+    public class AddArtistLink : TaskBase, IAddArtistLinkTask
     {
         public AddArtistLink(ApplicationDbContext dbContext)
         {

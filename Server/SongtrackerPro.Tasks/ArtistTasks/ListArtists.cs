@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IListArtistsTask : ITask<Nothing, List<Artist>> { }
 
-    public class ListArtists : IListArtistsTask
+    public class ListArtists : TaskBase, IListArtistsTask
     {
         public ListArtists(ApplicationDbContext dbContext)
         {

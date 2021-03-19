@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface IListPlatformsTask : ITask<Nothing, List<Platform>> { }
 
-    public class ListPlatforms : IListPlatformsTask
+    public class ListPlatforms : TaskBase, IListPlatformsTask
     {
         public ListPlatforms(ApplicationDbContext dbContext)
         {

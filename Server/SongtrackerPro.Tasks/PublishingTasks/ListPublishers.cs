@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 {
     public interface IListPublishersTask : ITask<Nothing, List<Publisher>> { }
 
-    public class ListPublishers : IListPublishersTask
+    public class ListPublishers : TaskBase, IListPublishersTask
     {
         public ListPublishers(ApplicationDbContext dbContext)
         {

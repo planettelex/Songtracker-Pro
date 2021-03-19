@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IUpdateArtistTask : ITask<Artist, Nothing> { }
 
-    public class UpdateArtist : IUpdateArtistTask
+    public class UpdateArtist : TaskBase, IUpdateArtistTask
     {
         public UpdateArtist(ApplicationDbContext dbContext)
         {
@@ -23,7 +23,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                     .SingleOrDefault(a => a.Id == update.Id);
 
                 if (artist == null)
-                    throw new TaskException("Artist not found.");
+                    throw new TaskException(SystemMessage("ARTIST_NOT_FOUND"));
 
                 artist.Name = update.Name;
                 artist.TaxId = update.TaxId;

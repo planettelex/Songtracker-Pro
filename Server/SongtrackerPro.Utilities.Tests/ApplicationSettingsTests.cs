@@ -31,5 +31,39 @@ namespace SongtrackerPro.Utilities.Tests
             Assert.IsNotNull(ApplicationSettings.Web.OAuthId);
             Assert.IsTrue(ApplicationSettings.Web.OAuthId.Length > 0);
         }
+
+        [TestMethod]
+        public void SmtpTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Mail.Smtp);
+            Assert.IsTrue(ApplicationSettings.Mail.Smtp.Length > 0);
+        }
+
+        [TestMethod]
+        public void PortTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Mail.Port);
+            Assert.IsTrue(ApplicationSettings.Mail.Port > 0);
+        }
+
+        [TestMethod]
+        public void EnableSslTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Mail.EnableSsl);
+        }
+
+        [TestMethod]
+        public void FromTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Mail.From);
+            Assert.IsTrue(ApplicationSettings.Mail.From.Length > 0);
+        }
+
+        [TestMethod]
+        public void PasswordTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Mail.Password);
+            Assert.IsTrue(ApplicationSettings.Mail.Password.Length > 0);
+        }
     }
 }

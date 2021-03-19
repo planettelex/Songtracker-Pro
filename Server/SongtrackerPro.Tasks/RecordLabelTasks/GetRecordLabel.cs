@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 {
     public interface IGetRecordLabelTask : ITask<int, RecordLabel> { }
 
-    public class GetRecordLabel : IGetRecordLabelTask
+    public class GetRecordLabel : TaskBase, IGetRecordLabelTask
     {
         public GetRecordLabel(ApplicationDbContext dbContext)
         {

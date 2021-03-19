@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface IListServicesTask : ITask<Nothing, List<Service>> { }
 
-    public class ListServices : IListServicesTask
+    public class ListServices : TaskBase, IListServicesTask
     {
         public ListServices(ApplicationDbContext dbContext)
         {

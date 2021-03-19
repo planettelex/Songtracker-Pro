@@ -1,0 +1,65 @@
+{
+  "Culture": "en-US",
+  "Translations": [
+    {
+      "Key": "APP_NAME",
+      "Value": "Songtracker Pro"
+    },
+    {
+      "Key": "APP_TAGLINE",
+      "Value": "Royalties Tracking and Management"
+    },
+    {
+      "Key": "COUNTRY_CANADA",
+      "Value": "Canada"
+    },
+    {
+      "Key": "COUNTRY_UNITED_STATES",
+      "Value": "United States"
+    },
+    {
+      "Key": "SERVICE_INTERACTIVE_STREAMING",
+      "Value": "Interactive Streaming"
+    },
+    {
+      "Key": "SERVICE_NON_INTERACTIVE_STREAMING",
+      "Value": "Non-Interactive Streaming"
+    },
+    {
+      "Key": "SERVICE_LIVE_STREAMING",
+      "Value": "Live Streaming"
+    },
+    {
+      "Key": "SERVICE_VIDEO_HOSTING",
+      "Value": "Video Hosting"
+    },
+    {
+      "Key": "SERVICE_VIDEO_CLIPS",
+      "Value": "Video Clips"
+    },
+    {
+      "Key": "SERVICE_SOCIAL_MEDIA",
+      "Value": "Social Media"
+    },
+    {
+      "Key": "SERVICE_DIGITAL_SALES",
+      "Value": "Digital Sales"
+    },
+    {
+      "Key": "SERVICE_PHYSICAL_SALES",
+      "Value": "Physical Sales"
+    },
+    {
+      "Key": "SERVICE_PAYMENT",
+      "Value": "Payment"
+    },
+    {
+      "Key": "SERVICE_MUSIC_IDENTIFICATION",
+      "Value": "Music Identification"
+    },
+    {
+      "Key": "SERVICE_EVENT_MANAGEMENT",
+      "Value": "Event Management"
+    }
+  ]
+}

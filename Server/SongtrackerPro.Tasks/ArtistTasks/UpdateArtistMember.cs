@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IUpdateArtistMemberTask : ITask<ArtistMember, Nothing> { }
 
-    public class UpdateArtistMember : IUpdateArtistMemberTask
+    public class UpdateArtistMember : TaskBase, IUpdateArtistMemberTask
     {
         public UpdateArtistMember(ApplicationDbContext dbContext)
         {
@@ -21,7 +21,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
             {
                 var artistMember = _dbContext.ArtistMembers.SingleOrDefault(am => am.Id == update.Id);
                 if (artistMember == null)
-                    throw new TaskException("Artist member not found.");
+                    throw new TaskException(SystemMessage("ARTIST_MEMBER_NOT_FOUND"));
 
                 var hasEnded = update.EndedOn.HasValue && update.EndedOn.Value <= DateTime.Today;
                 artistMember.StartedOn = update.StartedOn;

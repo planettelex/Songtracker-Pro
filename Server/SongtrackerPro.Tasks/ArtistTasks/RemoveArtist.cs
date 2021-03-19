@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IRemoveArtistTask : ITask<Artist, bool> { }
 
-    public class RemoveArtist : IRemoveArtistTask
+    public class RemoveArtist : TaskBase, IRemoveArtistTask
     {
         public RemoveArtist(ApplicationDbContext dbContext)
         {

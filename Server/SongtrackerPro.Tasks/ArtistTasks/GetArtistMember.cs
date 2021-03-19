@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 
@@ -7,7 +8,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IGetArtistMemberTask : ITask<int, ArtistMember> { }
 
-    public class GetArtistMember : IGetArtistMemberTask
+    public class GetArtistMember : TaskBase, IGetArtistMemberTask
     {
         public GetArtistMember(ApplicationDbContext dbContext)
         {
@@ -19,7 +20,9 @@ namespace SongtrackerPro.Tasks.ArtistTasks
         {
             try
             {
-                var artistMember = _dbContext.ArtistMembers.SingleOrDefault(am => am.Id == artistMemberId);
+                var artistMember = _dbContext.ArtistMembers.Where(am => am.Id == artistMemberId)
+                    .Include(am => am.Member).ThenInclude(m => m.Address).ThenInclude(a => a.Country)
+                    .SingleOrDefault();
 
                 return new TaskResult<ArtistMember>(artistMember);
             }

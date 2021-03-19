@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface ILoginUserTask : ITask<Login, User> { }
 
-    public class LoginUser : ILoginUserTask
+    public class LoginUser : TaskBase, ILoginUserTask
     {
         public LoginUser(ApplicationDbContext dbContext)
         {
@@ -28,7 +28,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                     .SingleOrDefault();
 
                 if (user == null)
-                    throw new TaskException("User not found.");
+                    throw new TaskException(SystemMessage("USER_NOT_FOUND"));
 
                 user.AuthenticationToken = login.AuthenticationToken;
                 user.LastLogin = DateTime.UtcNow;

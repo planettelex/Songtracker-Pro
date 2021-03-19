@@ -21,9 +21,11 @@ namespace SongtrackerPro.Api.Controllers
                                 IAddArtistLinkTask addArtistLinkTask,
                                 IRemoveArtistLinkTask removeArtistLinkTask,
                                 IListArtistMembersTask listArtistMembersTask,
-                                IGetArtistMemberTask getArtistMemberTask,
                                 IAddArtistMemberTask addArtistMemberTask,
-                                IUpdateArtistMemberTask updateArtistMemberTask
+                                IUpdateArtistMemberTask updateArtistMemberTask,
+                                IListArtistManagersTask listArtistManagersTask,
+                                IAddArtistManagerTask addArtistManagerTask,
+                                IUpdateArtistManagerTask updateArtistManagerTask
         )
         {
             _listArtistsTask = listArtistsTask;
@@ -40,9 +42,11 @@ namespace SongtrackerPro.Api.Controllers
             _addArtistLinkTask = addArtistLinkTask;
             _removeArtistLinkTask = removeArtistLinkTask;
             _listArtistMembersTask = listArtistMembersTask;
-            _getArtistMemberTask = getArtistMemberTask;
             _addArtistMemberTask = addArtistMemberTask;
             _updateArtistMemberTask = updateArtistMemberTask;
+            _listArtistManagersTask = listArtistManagersTask;
+            _addArtistManagerTask = addArtistManagerTask;
+            _updateArtistManagerTask = updateArtistManagerTask;
         }
         private readonly IListArtistsTask _listArtistsTask;
         private readonly IGetArtistTask _getArtistTask;
@@ -58,9 +62,11 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddArtistLinkTask _addArtistLinkTask;
         private readonly IRemoveArtistLinkTask _removeArtistLinkTask;
         private readonly IListArtistMembersTask _listArtistMembersTask;
-        private readonly IGetArtistMemberTask _getArtistMemberTask;
         private readonly IAddArtistMemberTask _addArtistMemberTask;
         private readonly IUpdateArtistMemberTask _updateArtistMemberTask;
+        private readonly IListArtistManagersTask _listArtistManagersTask;
+        private readonly IAddArtistManagerTask _addArtistManagerTask;
+        private readonly IUpdateArtistManagerTask _updateArtistManagerTask;
 
         [Route(Routes.Artists)]
         [HttpPost]
@@ -124,6 +130,35 @@ namespace SongtrackerPro.Api.Controllers
             artistMember.ArtistId = artistId;
             artistMember.Id = artistMemberId;
             _updateArtistMemberTask.DoTask(artistMember);
+        }
+
+        [Route(Routes.ArtistManagers)]
+        [HttpPost]
+        public string AddArtistManager(int artistId, ArtistManager artistManager)
+        {
+            artistManager.ArtistId = artistId;
+            var taskResults = _addArtistManagerTask.DoTask(artistManager);
+
+            return JsonSerialize(taskResults);
+        }
+
+        [Route(Routes.ArtistManagers)]
+        [HttpGet]
+        public string ListArtistManagers(int artistId)
+        {
+            var artist = _getArtistTask.DoTask(artistId).Data;
+            var taskResults = _listArtistManagersTask.DoTask(artist);
+
+            return JsonSerialize(taskResults);
+        }
+
+        [Route(Routes.ArtistManager)]
+        [HttpPut]
+        public void UpdateArtistManager(int artistId, int artistManagerId, ArtistManager artistManager)
+        {
+            artistManager.ArtistId = artistId;
+            artistManager.Id = artistManagerId;
+            _updateArtistManagerTask.DoTask(artistManager);
         }
 
         [Route(Routes.ArtistAccounts)]

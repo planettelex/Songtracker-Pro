@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface ISeedServicesTask : ITask<Nothing, bool> { }
 
-    public class SeedServices : ISeedServicesTask
+    public class SeedServices : TaskBase, ISeedServicesTask
     {
         public SeedServices(ApplicationDbContext dbContext)
         {
@@ -23,17 +23,17 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                 if (services.Any())
                     return new TaskResult<bool>(false);
 
-                _dbContext.Services.Add(new Service { Name = "Interactive Streaming" });
-                _dbContext.Services.Add(new Service { Name = "Non-Interactive Streaming" });
-                _dbContext.Services.Add(new Service { Name = "Live Streaming" });
-                _dbContext.Services.Add(new Service { Name = "Video Hosting" });
-                _dbContext.Services.Add(new Service { Name = "Video Clips" });
-                _dbContext.Services.Add(new Service { Name = "Social Media" });
-                _dbContext.Services.Add(new Service { Name = "Digital Sales" });
-                _dbContext.Services.Add(new Service { Name = "Physical Sales" });
-                _dbContext.Services.Add(new Service { Name = "Payment" });
-                _dbContext.Services.Add(new Service { Name = "Music Identification" });
-                _dbContext.Services.Add(new Service { Name = "Event Management" });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_INTERACTIVE_STREAMING") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_NON_INTERACTIVE_STREAMING") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_LIVE_STREAMING") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_VIDEO_HOSTING") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_VIDEO_CLIPS") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_SOCIAL_MEDIA") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_DIGITAL_SALES") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_PHYSICAL_SALES") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_PAYMENT") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_MUSIC_IDENTIFICATION") });
+                _dbContext.Services.Add(new Service { Name = SeedData("SERVICE_EVENT_MANAGEMENT") });
 
                 _dbContext.SaveChanges();
 

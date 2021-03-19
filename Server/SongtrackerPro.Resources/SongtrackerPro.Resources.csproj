@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="en-US\EmailTemplates\ArtistManagerInvitation.html" />
+    <None Remove="en-US\EmailTemplates\ArtistManagerWelcome.html" />
+    <None Remove="en-US\EmailTemplates\ArtistMemberInvitation.html" />
+    <None Remove="en-US\EmailTemplates\ArtistMemberWelcome.html" />
+    <None Remove="en-US\EmailTemplates\LabelAdministratorInvitation.html" />
+    <None Remove="en-US\EmailTemplates\LabelAdministratorWelcome.html" />
+    <None Remove="en-US\EmailTemplates\PublisherAdministratorInvitation.html" />
+    <None Remove="en-US\EmailTemplates\PublisherAdministratorWelcome.html" />
+    <None Remove="en-US\EmailTemplates\SystemAdministratorInvitation.html" />
+    <None Remove="en-US\EmailTemplates\SystemAdministratorWelcome.html" />
+    <None Remove="en-US\SeedData.json" />
+    <None Remove="en-US\SystemMessages.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="en-US\EmailTemplates\ArtistManagerWelcome.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\ArtistMemberWelcome.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\LabelAdministratorWelcome.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorWelcome.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorInvitation.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\SystemAdministratorWelcome.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\SystemAdministratorInvitation.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\LabelAdministratorInvitation.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\ArtistManagerInvitation.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\ArtistMemberInvitation.html" />
+    <EmbeddedResource Include="en-US\SeedData.json" />
+    <EmbeddedResource Include="en-US\SystemMessages.json" />
+  </ItemGroup>
+
+</Project>

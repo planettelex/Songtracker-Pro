@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 {
     public interface IUpdateRecordLabelTask : ITask<RecordLabel, Nothing> { }
 
-    public class UpdateRecordLabel : IUpdateRecordLabelTask
+    public class UpdateRecordLabel : TaskBase, IUpdateRecordLabelTask
     {
         public UpdateRecordLabel(ApplicationDbContext dbContext)
         {
@@ -25,7 +25,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                     .SingleOrDefault();
 
                 if (recordLabel == null)
-                    throw new TaskException("Record label not found.");
+                    throw new TaskException(SystemMessage("RECORD_LABEL_NOT_FOUND"));
 
                 recordLabel.Name = update.Name;
                 recordLabel.TaxId = update.TaxId;

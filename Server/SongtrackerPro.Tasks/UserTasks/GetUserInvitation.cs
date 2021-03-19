@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface IGetUserInvitationTask : ITask<Guid, UserInvitation> { }
 
-    public class GetUserInvitation : IGetUserInvitationTask
+    public class GetUserInvitation : TaskBase, IGetUserInvitationTask
     {
         public GetUserInvitation(ApplicationDbContext dbContext)
         {

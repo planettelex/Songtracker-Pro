@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface IUpdateUserTask : ITask<User, Nothing> { }
 
-    public class UpdateUser : IUpdateUserTask
+    public class UpdateUser : TaskBase, IUpdateUserTask
     {
         public UpdateUser(ApplicationDbContext dbContext, IUpdatePersonTask updatePersonTask)
         {
@@ -25,7 +25,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 var user = _dbContext.Users.SingleOrDefault(u => u.Id == update.Id);
 
                 if (user == null)
-                    throw new TaskException("User not found.");
+                    throw new TaskException(SystemMessage("USER_NOT_FOUND"));
 
                 _updatePersonTask.DoTask(update.Person);
 

@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface IAddPlatformTask : ITask<Platform, int?> { }
 
-    public class AddPlatform : IAddPlatformTask
+    public class AddPlatform : TaskBase, IAddPlatformTask
     {
         public AddPlatform(ApplicationDbContext dbContext)
         {
@@ -28,7 +28,10 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                     platform.PlatformServices = new List<PlatformService>();
                     foreach (var service in platform.Services)
                     {
-                        platform.PlatformServices.Add(new PlatformService { PlatformId = platform.Id, ServiceId = service.Id });
+                        platform.PlatformServices.Add(new PlatformService
+                        {
+                            PlatformId = platform.Id, ServiceId = service.Id
+                        });
                     }
                     _dbContext.SaveChanges();
                 }

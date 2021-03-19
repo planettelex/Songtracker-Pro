@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface IGetPlatformTask : ITask<int, Platform> { }
 
-    public class GetPlatform : IGetPlatformTask
+    public class GetPlatform : TaskBase, IGetPlatformTask
     {
         public GetPlatform(ApplicationDbContext dbContext)
         {

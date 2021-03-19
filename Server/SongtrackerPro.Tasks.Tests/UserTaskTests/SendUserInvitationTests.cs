@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.UserTasks;
+using SongtrackerPro.Utilities.Services;
 using SongtrackerPro.Utilities.Tests.DummyServices;
 
 namespace SongtrackerPro.Tasks.Tests.UserTaskTests
@@ -13,7 +15,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var task = new SendUserInvitation(DbContext, new DummyEmailService(), new GetInstallation(DbContext));
+            var task = new SendUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new GetInstallation(DbContext));
             var testUserInvitation = TestModel.UserInvitation;
             var result = task.DoTask(testUserInvitation);
 
@@ -68,7 +70,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new SendUserInvitation(EmptyDbContext, new DummyEmailService(), new GetInstallation(EmptyDbContext));
+            var task = new SendUserInvitation(EmptyDbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new GetInstallation(EmptyDbContext));
             var result = task.DoTask(new UserInvitation());
             
             Assert.IsFalse(result.Success);

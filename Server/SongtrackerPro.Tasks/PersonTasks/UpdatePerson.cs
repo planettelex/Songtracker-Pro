@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PersonTasks
 {
     public interface IUpdatePersonTask : ITask<Person, Nothing> { }
 
-    public class UpdatePerson : IUpdatePersonTask
+    public class UpdatePerson : TaskBase, IUpdatePersonTask
     {
         public UpdatePerson(ApplicationDbContext dbContext)
         {
@@ -25,7 +25,7 @@ namespace SongtrackerPro.Tasks.PersonTasks
                     .SingleOrDefault();
 
                 if (person == null)
-                    throw new TaskException("Record label not found.");
+                    throw new TaskException(SystemMessage("PERSON_NOT_FOUND"));
 
                 person.FirstName = update.FirstName;
                 person.MiddleName = update.MiddleName;

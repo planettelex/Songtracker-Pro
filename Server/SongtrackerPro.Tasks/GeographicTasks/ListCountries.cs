@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.GeographicTasks
 {
     public interface IListCountriesTask : ITask<Nothing, List<Country>> { }
 
-    public class ListCountries : IListCountriesTask
+    public class ListCountries : TaskBase, IListCountriesTask
     {
         public ListCountries(ApplicationDbContext dbContext)
         {

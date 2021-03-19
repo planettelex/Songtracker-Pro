@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SongtrackerPro.Data;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
@@ -13,6 +14,7 @@ using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 using SongtrackerPro.Tasks.UserTasks;
+using SongtrackerPro.Utilities.Services;
 
 namespace SongtrackerPro.Api
 {
@@ -56,6 +58,10 @@ namespace SongtrackerPro.Api
 
         public void RegisterTasks(IServiceCollection services)
         {
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IHtmlService, HtmlService>();
+            services.AddScoped<ITokenService, TokenService>();
+            
             services.AddScoped<ISeedInstallationTask, SeedInstallation>();
             services.AddScoped<ISeedCountriesTask, SeedCountries>();
             services.AddScoped<ISeedPerformingRightsOrganizationsTask, SeedPerformingRightsOrganizations>();
@@ -89,9 +95,12 @@ namespace SongtrackerPro.Api
             services.AddScoped<IUpdateArtistTask, UpdateArtist>();
 
             services.AddScoped<IListArtistMembersTask, ListArtistMembers>();
-            services.AddScoped<IGetArtistMemberTask, GetArtistMember>();
             services.AddScoped<IAddArtistMemberTask, AddArtistMember>();
             services.AddScoped<IUpdateArtistMemberTask, UpdateArtistMember>();
+
+            services.AddScoped<IListArtistManagersTask, ListArtistManagers>();
+            services.AddScoped<IAddArtistManagerTask, AddArtistManager>();
+            services.AddScoped<IUpdateArtistManagerTask, UpdateArtistManager>();
 
             services.AddScoped<IListArtistAccountsTask, ListArtistAccounts>();
             services.AddScoped<IGetArtistAccountTask, GetArtistAccount>();

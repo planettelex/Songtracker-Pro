@@ -10,7 +10,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 {
     public interface IListUsersTask : ITask<UserType?, List<User>> { }
 
-    public class ListUsers : IListUsersTask
+    public class ListUsers : TaskBase, IListUsersTask
     {
         public ListUsers(ApplicationDbContext dbContext)
         {

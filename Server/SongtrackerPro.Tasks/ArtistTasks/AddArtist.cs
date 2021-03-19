@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IAddArtistTask : ITask<Artist, int?> { }
 
-    public class AddArtist : IAddArtistTask
+    public class AddArtist : TaskBase, IAddArtistTask
     {
         public AddArtist(ApplicationDbContext dbContext)
         {

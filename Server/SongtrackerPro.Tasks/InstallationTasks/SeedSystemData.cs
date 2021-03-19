@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.InstallationTasks
 {
     public interface ISeedSystemDataTask : ITask<Nothing, bool> { }
 
-    public class SeedSystemData : ISeedSystemDataTask
+    public class SeedSystemData : TaskBase, ISeedSystemDataTask
     {
         public SeedSystemData(ISeedInstallationTask seedInstallationTask,
                               ISeedCountriesTask seedCountriesTask,

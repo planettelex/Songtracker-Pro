@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 {
     public interface IUpdatePublisherTask : ITask<Publisher, Nothing> { }
 
-    public class UpdatePublisher : IUpdatePublisherTask
+    public class UpdatePublisher : TaskBase, IUpdatePublisherTask
     {
         public UpdatePublisher(ApplicationDbContext dbContext)
         {
@@ -25,7 +25,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                     .SingleOrDefault();
 
                 if (publisher == null)
-                    throw new TaskException("Publisher not found.");
+                    throw new TaskException(SystemMessage("PUBLISHER_NOT_FOUND"));
 
                 publisher.Name = update.Name;
                 publisher.TaxId = update.TaxId;

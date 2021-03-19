@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 {
     public interface IGetPublisherTask : ITask<int, Publisher> { }
 
-    public class GetPublisher : IGetPublisherTask
+    public class GetPublisher : TaskBase, IGetPublisherTask
     {
         public GetPublisher(ApplicationDbContext dbContext)
         {

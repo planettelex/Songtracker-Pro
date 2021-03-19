@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 {
     public interface IUpdateArtistAccountTask : ITask<ArtistAccount, Nothing> { }
 
-    public class UpdateArtistAccount : IUpdateArtistAccountTask
+    public class UpdateArtistAccount : TaskBase, IUpdateArtistAccountTask
     {
         public UpdateArtistAccount(ApplicationDbContext dbContext)
         {
@@ -22,7 +22,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                 var artistAccount = _dbContext.ArtistAccounts.SingleOrDefault(aa => aa.Id == update.Id);
 
                 if (artistAccount == null)
-                    throw new TaskException("Artist account not found.");
+                    throw new TaskException(SystemMessage("ARTIST_ACCOUNT_NOT_FOUND"));
 
                 if (update.IsPreferred)
                 {

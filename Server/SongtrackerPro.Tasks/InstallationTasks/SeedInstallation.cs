@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.InstallationTasks
 {
     public interface ISeedInstallationTask : ITask<Nothing, bool> { }
 
-    public class SeedInstallation : ISeedInstallationTask
+    public class SeedInstallation : TaskBase, ISeedInstallationTask
     {
         public SeedInstallation(ApplicationDbContext dbContext)
         {
@@ -28,8 +28,8 @@ namespace SongtrackerPro.Tasks.InstallationTasks
                 {
                     Uuid = Guid.NewGuid(),
                     Version = ApplicationSettings.Version,
-                    Name = "Songtracker Pro",
-                    Tagline = "Royalties Tracking and Management"
+                    Name = SeedData("APP_NAME"),
+                    Tagline = SeedData("APP_TAGLINE")
                 };
 
                 _dbContext.Installation.Add(installation);

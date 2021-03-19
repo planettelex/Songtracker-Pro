@@ -7,7 +7,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 {
     public interface IRemovePublisherTask : ITask<Publisher, bool> { }
 
-    public class RemovePublisher : IRemovePublisherTask
+    public class RemovePublisher : TaskBase, IRemovePublisherTask
     {
         public RemovePublisher(ApplicationDbContext dbContext)
         {

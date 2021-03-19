@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
 {
     public interface IUpdatePlatformTask : ITask<Platform, Nothing> { }
 
-    public class UpdatePlatform : IUpdatePlatformTask
+    public class UpdatePlatform : TaskBase, IUpdatePlatformTask
     {
         public UpdatePlatform(ApplicationDbContext dbContext)
         {
@@ -24,7 +24,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                     .Include(p => p.PlatformServices).ThenInclude(ps => ps.Service).SingleOrDefault();
 
                 if (platform == null)
-                    throw new TaskException("Platform not found.");
+                    throw new TaskException(SystemMessage("PLATFORM_NOT_FOUND"));
 
                 platform.Name = update.Name;
                 platform.Website = update.Website;

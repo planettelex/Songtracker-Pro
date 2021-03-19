@@ -8,7 +8,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 {
     public interface ISeedPerformingRightsOrganizationsTask : ITask<Nothing, bool> { }
 
-    public class SeedPerformingRightsOrganizations : ISeedPerformingRightsOrganizationsTask
+    public class SeedPerformingRightsOrganizations : TaskBase, ISeedPerformingRightsOrganizationsTask
     {
         public SeedPerformingRightsOrganizations(ApplicationDbContext dbContext, ISeedCountriesTask seedCountriesTask)
         {
@@ -30,7 +30,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 
                 var usa = _dbContext.Countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "USA");
                 if (usa == null)
-                    throw new NullReferenceException("USA cannot be null");
+                    throw new NullReferenceException(SystemMessage("USA_NOT_FOUND"));
 
                 _dbContext.PerformingRightsOrganizations.Add(new PerformingRightsOrganization { Name = "ASCAP", CountryId = usa.Id });
                 _dbContext.PerformingRightsOrganizations.Add(new PerformingRightsOrganization { Name = "BMI", CountryId = usa.Id });

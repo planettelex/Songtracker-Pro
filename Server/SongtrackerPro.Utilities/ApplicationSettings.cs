@@ -58,6 +58,17 @@ namespace SongtrackerPro.Utilities
                 set => _hostingConsole = value;
             }
             private static string _hostingConsole;
+
+            public static string Culture
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _culture;
+                }
+                set => _culture = value;
+            }
+            private static string _culture;
         }
 
         public static class Web
@@ -96,6 +107,64 @@ namespace SongtrackerPro.Utilities
             private static string _hostingConsole;
         }
 
+        public static class Mail
+        {
+            public static string Smtp
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _smtp;
+                }
+                set => _smtp = value;
+            }
+            private static string _smtp;
+
+            public static int Port
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _port;
+                }
+                set => _port = value;
+            }
+            private static int _port;
+
+            public static bool EnableSsl
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _enableSsl;
+                }
+                set => _enableSsl = value;
+            }
+            private static bool _enableSsl;
+
+            public static string From
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _from;
+                }
+                set => _from = value;
+            }
+            private static string _from;
+
+            public static string Password
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _password;
+                }
+                set => _password = value;
+            }
+            private static string _password;
+        }
+
         public static string Version
         {
             get
@@ -116,11 +185,20 @@ namespace SongtrackerPro.Utilities
 
             Database.ConnectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
             Database.HostingConsole = configuration.GetSection("Database")?.GetSection("HostingConsole")?.Value;
+
             Api.MinifyJson = bool.Parse(configuration.GetSection("Api")?.GetSection("MinifyJson")?.Value ?? bool.TrueString);
+            Api.Culture = configuration.GetSection("Api")?.GetSection("Culture")?.Value;
             Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
+
             Web.OAuthId = configuration.GetSection("Web")?.GetSection("OAuthId")?.Value;
             Web.OAuthConsole = configuration.GetSection("Web")?.GetSection("OAuthConsole")?.Value;
             Web.HostingConsole = configuration.GetSection("Web")?.GetSection("HostingConsole")?.Value;
+
+            Mail.Smtp = configuration.GetSection("Mail")?.GetSection("SMTP")?.Value;
+            Mail.Port = int.Parse(configuration.GetSection("Mail")?.GetSection("Port")?.Value ?? "587");
+            Mail.EnableSsl = bool.Parse(configuration.GetSection("Mail")?.GetSection("EnableSSL")?.Value ?? bool.TrueString);
+            Mail.From = configuration.GetSection("Mail")?.GetSection("From")?.Value;
+            Mail.Password = configuration.GetSection("Mail")?.GetSection("Password")?.Value;
 
             _hasLoaded = true;
         }
