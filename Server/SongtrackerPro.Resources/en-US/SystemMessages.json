@@ -44,6 +44,10 @@
     {
       "Key": "USER_ACCOUNT_NOT_FOUND",
       "Value": "User account not found."
+    },
+    {
+      "Key": "USER_INVITATION_UNASSIGNED",
+      "Value": "User cannot accept invitation for unassigned type."
     }
   ]
 }

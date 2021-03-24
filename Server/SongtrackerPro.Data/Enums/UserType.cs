@@ -2,6 +2,7 @@
 {
     public enum UserType
     {
+        Unassigned,
         SystemAdministrator,
         PublisherAdministrator,
         LabelAdministrator,

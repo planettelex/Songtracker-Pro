@@ -43,17 +43,28 @@ namespace SongtrackerPro.Tasks.UserTasks
         {
             try
             {
+                var invitation = _dbContext.UserInvitations.Where(ui => ui.Uuid == userInvitation.Uuid)
+                    .Include(ui => ui.InvitedByUser)
+                    .Single();
+
+                if (invitation.Type == UserType.Unassigned)
+                    throw new TaskException(SystemMessage("USER_INVITATION_UNASSIGNED"));
+
                 var newUser = userInvitation.CreatedUser;
+                newUser.AuthenticationId = invitation.Email;
+                newUser.Type = invitation.Type;
+
                 var newPerson = newUser.Person;
+                newPerson.Email = invitation.Email;
                 var addPersonResult = _addPersonTask.DoTask(newPerson);
                 if (!addPersonResult.Success)
                     throw addPersonResult.Exception;
 
                 var personId = addPersonResult.Data;
                 var proId = newUser.PerformingRightsOrganization?.Id ?? newUser.PerformingRightsOrganizationId;
-                var publisherId = userInvitation.Publisher?.Id ?? userInvitation.PublisherId;
-                var recordLabelId = userInvitation.RecordLabel?.Id ?? userInvitation.RecordLabelId;
-                var artistId = userInvitation.Artist?.Id ?? userInvitation.ArtistId;
+                var publisherId = invitation.Publisher?.Id ?? invitation.PublisherId;
+                var recordLabelId = invitation.RecordLabel?.Id ?? invitation.RecordLabelId;
+                var artistId = invitation.Artist?.Id ?? invitation.ArtistId;
 
                 newUser.Person = null;
                 newUser.PersonId = personId;
@@ -67,10 +78,15 @@ namespace SongtrackerPro.Tasks.UserTasks
                 _dbContext.Users.Add(newUser);
                 _dbContext.SaveChanges();
 
+                invitation.CreatedUser = null;
+                invitation.CreatedUserId = newUser.Id;
+                invitation.AcceptedOn = DateTime.UtcNow;
+                _dbContext.SaveChanges();
+
                 if (artistId.HasValue)
                 {
                     var artist = _dbContext.Artists.Single(a => a.Id == artistId.Value);
-                    switch (userInvitation.Type)
+                    switch (invitation.Type)
                     {
                         case UserType.ArtistMember:
                         {
@@ -80,7 +96,9 @@ namespace SongtrackerPro.Tasks.UserTasks
                                 Member = newPerson,
                                 StartedOn = DateTime.Today
                             };
-                            _addArtistMember.DoTask(artistMember);
+                            var addArtistMemberResult = _addArtistMember.DoTask(artistMember);
+                            if (!addArtistMemberResult.Success)
+                                throw addArtistMemberResult.Exception;
                             break;
                         }
                         case UserType.ArtistManager:
@@ -91,7 +109,9 @@ namespace SongtrackerPro.Tasks.UserTasks
                                 Manager = newPerson,
                                 StartedOn = DateTime.Today
                             };
-                            _addArtistManager.DoTask(artistManager);
+                            var addArtistManagerResult = _addArtistManager.DoTask(artistManager);
+                            if (!addArtistManagerResult.Success)
+                                throw addArtistManagerResult.Exception;
                             break;
                         }
                     }
@@ -111,8 +131,8 @@ namespace SongtrackerPro.Tasks.UserTasks
                         .Include(p => p.Address).ThenInclude(a => a.Country)
                         .SingleOrDefault() : null;
 
-                var emailTemplate = EmailTemplate($"{userInvitation.Type}Welcome.html");
-                var body = ReplaceTokens(emailTemplate, userInvitation);
+                var emailTemplate = EmailTemplate($"{invitation.Type}Welcome.html");
+                var body = ReplaceTokens(emailTemplate, invitation);
                 var subject = _htmlService.GetTitle(emailTemplate);
                 _emailService.SendEmail(newUser.Person.Email, subject, body);
 

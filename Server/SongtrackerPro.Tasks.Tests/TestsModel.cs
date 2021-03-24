@@ -230,16 +230,19 @@ namespace SongtrackerPro.Tasks.Tests
                 }
                 
                 var stamp = DateTime.Now.Ticks;
+                var person = Person;
+                var email = "test@" + stamp + ".com";
+                person.Email = email;
                 return new User
                 {
                     Type = UserType.SystemAdministrator,
                     ProfileImageUrl = "http://profile-image.png",
-                    AuthenticationId = stamp.ToString(),
+                    AuthenticationId = email,
                     AuthenticationToken = "Token_" + stamp,
                     PerformingRightsOrganization = ascap,
                     PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString(),
                     SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString(),
-                    Person = Person,
+                    Person = person,
                     SocialSecurityNumber = SocialSecurityNumber,
                     Publisher = publisher,
                     RecordLabel = recordLabel,

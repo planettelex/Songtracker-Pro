@@ -40,7 +40,8 @@
             "RECORD_LABEL_NOT_FOUND",
             "USA_NOT_FOUND",
             "USER_NOT_FOUND",
-            "USER_ACCOUNT_NOT_FOUND"
+            "USER_ACCOUNT_NOT_FOUND",
+            "USER_INVITATION_UNASSIGNED"
         };
 
         public static string[] EmailTemplates =
