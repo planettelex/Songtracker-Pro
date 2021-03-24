@@ -88,6 +88,8 @@ namespace SongtrackerPro.Tasks.UserTasks
                 invitation.AcceptedOn = DateTime.UtcNow;
                 _dbContext.SaveChanges();
 
+                invitation.CreatedUser = newUser;
+
                 if (artistId.HasValue)
                 {
                     var artist = _dbContext.Artists.Single(a => a.Id == artistId.Value);
@@ -155,8 +157,8 @@ namespace SongtrackerPro.Tasks.UserTasks
         private string ReplaceTokens(string template, UserInvitation userInvitation, Installation installation)
         {
             var replaced = _tokenService.ReplaceTokens(template, installation);
-            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser);
-            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);
+            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.CreatedUser);
+            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.CreatedUser.Person);
 
             switch (userInvitation.Type)
             {

@@ -94,6 +94,7 @@ namespace SongtrackerPro.Tasks.UserTasks
         private string ReplaceTokens(string template, UserInvitation userInvitation, Installation installation)
         {
             var replaced = _tokenService.ReplaceTokens(template, installation);
+            replaced = _tokenService.ReplaceTokens(replaced, userInvitation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);
 
