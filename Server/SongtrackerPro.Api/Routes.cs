@@ -22,8 +22,10 @@
         public const string ArtistAccount = "/artists/{artistid}/accounts/{artistaccountid}";
         public const string ArtistLinks = "/artists/{artistid}/links";
         public const string ArtistLink = "/artists/{artistid}/links/{artistlinkid}";
+        public const string Invitations = "/invitations";
+        public const string Invitation = "/invitations/{id}";
         public const string Users = "/users";
-        public const string User = "/users/{id}";
+        public const string User = "/users/{uuid}";
         public const string UserAccounts = "/users/{userid}/accounts";
         public const string UserAccount = "/users/{userid}/accounts/{useraccountid}";
         public const string Login = "/login";

@@ -429,6 +429,7 @@ namespace SongtrackerPro.Data.Migrations
                 {
                     uuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     invited_by_user_id = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
                     publisher_id = table.Column<int>(type: "int", nullable: true),

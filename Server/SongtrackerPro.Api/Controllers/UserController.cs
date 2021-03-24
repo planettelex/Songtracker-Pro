@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.UserTasks;
@@ -17,7 +18,10 @@ namespace SongtrackerPro.Api.Controllers
                               IGetUserAccountTask getUserAccountTask,
                               IAddUserAccountTask addUserAccountTask,
                               IUpdateUserAccountTask updateUserAccountTask,
-                              IRemoveUserAccountTask removeUserAccountTask)
+                              IRemoveUserAccountTask removeUserAccountTask,
+                              ISendUserInvitationTask sendUserInvitationTask,
+                              IGetUserInvitationTask getUserInvitationTask,
+                              IAcceptUserInvitationTask acceptUserInvitationTask)
         {
             _listUsersTask = listUsersTask;
             _getUserTask = getUserTask;
@@ -29,6 +33,9 @@ namespace SongtrackerPro.Api.Controllers
             _addUserAccountTask = addUserAccountTask;
             _updateUserAccountTask = updateUserAccountTask;
             _removeUserAccountTask = removeUserAccountTask;
+            _sendUserInvitationTask = sendUserInvitationTask;
+            _getUserInvitationTask = getUserInvitationTask;
+            _acceptUserInvitationTask = acceptUserInvitationTask;
         }
         private readonly IListUsersTask _listUsersTask;
         private readonly IGetUserTask _getUserTask;
@@ -40,6 +47,37 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddUserAccountTask _addUserAccountTask;
         private readonly IUpdateUserAccountTask _updateUserAccountTask;
         private readonly IRemoveUserAccountTask _removeUserAccountTask;
+        private readonly ISendUserInvitationTask _sendUserInvitationTask;
+        private readonly IGetUserInvitationTask _getUserInvitationTask;
+        private readonly IAcceptUserInvitationTask _acceptUserInvitationTask;
+
+        [Route(Routes.Invitations)]
+        [HttpPost]
+        public string InviteUser(UserInvitation userInvitation)
+        {
+            var taskResults = _sendUserInvitationTask.DoTask(userInvitation);
+
+            return JsonSerialize(taskResults);
+        }
+
+        [Route(Routes.Invitation)]
+        [HttpGet]
+        public string GetUserInvitation(Guid uuid)
+        {
+            var taskResults = _getUserInvitationTask.DoTask(uuid);
+
+            return JsonSerialize(taskResults);
+        }
+
+        [Route(Routes.Invitation)]
+        [HttpPost]
+        public string AcceptUserInvitation(Guid uuid, UserInvitation userInvitation)
+        {
+            userInvitation.Uuid = uuid;
+            var taskResults = _acceptUserInvitationTask.DoTask(userInvitation);
+
+            return JsonSerialize(taskResults);
+        }
 
         [Route(Routes.Users)]
         [HttpPost]

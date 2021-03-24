@@ -140,7 +140,7 @@ namespace SongtrackerPro.Tasks.Tests
                 var stamp = DateTime.Now.Ticks;
                 return new RecordLabel
                 {
-                    Name = nameof(Publisher) + " " + stamp,
+                    Name = nameof(RecordLabel) + " " + stamp,
                     TaxId = stamp.ToString(),
                     Email = $"test@label{stamp}.com",
                     Phone = PhoneNumber,

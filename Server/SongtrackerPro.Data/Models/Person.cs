@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SongtrackerPro.Data.Models
 {
@@ -25,6 +26,8 @@ namespace SongtrackerPro.Data.Models
         [Column("name_suffix", Order = 5)]
         [MaxLength(5)]
         public string NameSuffix { get; set; }
+
+        [JsonIgnore] public string FirstAndLastName => $"{FirstName} {LastName}";
 
         [Column("email", Order = 6)]
         public string Email { get; set; }

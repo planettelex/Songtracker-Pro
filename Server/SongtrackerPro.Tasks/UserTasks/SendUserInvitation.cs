@@ -6,6 +6,7 @@ using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.InstallationTasks;
+using SongtrackerPro.Utilities;
 using SongtrackerPro.Utilities.Services;
 
 namespace SongtrackerPro.Tasks.UserTasks
@@ -74,10 +75,13 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (artistId != null)
                     userInvitation.Artist = _dbContext.Artists.SingleOrDefault(p => p.Id == artistId);
 
+                var installation = _getInstallationTask.DoTask(null).Data;
                 var emailTemplate = EmailTemplate($"{userInvitation.Type}Invitation.html");
-                var body = ReplaceTokens(emailTemplate, userInvitation);
-                var subject = _htmlService.GetTitle(emailTemplate);
-                _emailService.SendEmail(userInvitation.Email, subject, body);
+                var body = ReplaceTokens(emailTemplate, userInvitation, installation);
+                var subject = ReplaceTokens(_htmlService.GetTitle(emailTemplate), userInvitation, installation);
+                
+                _emailService.SendEmail(userInvitation.Name, userInvitation.Email, 
+                    installation.Name, ApplicationSettings.Mail.From, subject, body);
 
                 return new TaskResult<Guid>(userInvitation.Uuid);
             }
@@ -87,9 +91,8 @@ namespace SongtrackerPro.Tasks.UserTasks
             }
         }
 
-        private string ReplaceTokens(string template, UserInvitation userInvitation)
+        private string ReplaceTokens(string template, UserInvitation userInvitation, Installation installation)
         {
-            var installation = _getInstallationTask.DoTask(null).Data;
             var replaced = _tokenService.ReplaceTokens(template, installation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);

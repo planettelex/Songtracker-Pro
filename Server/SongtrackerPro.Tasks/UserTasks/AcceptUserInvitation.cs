@@ -6,7 +6,9 @@ using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PersonTasks;
+using SongtrackerPro.Utilities;
 using SongtrackerPro.Utilities.Services;
 
 namespace SongtrackerPro.Tasks.UserTasks
@@ -21,7 +23,8 @@ namespace SongtrackerPro.Tasks.UserTasks
                                     ITokenService tokenService,
                                     IAddPersonTask addPersonTask,
                                     IAddArtistMemberTask addArtistMember,
-                                    IAddArtistManagerTask addArtistManager)
+                                    IAddArtistManagerTask addArtistManager,
+                                    IGetInstallationTask getInstallationTask)
         {
             _dbContext = dbContext;
             _emailService = emailService;
@@ -30,6 +33,7 @@ namespace SongtrackerPro.Tasks.UserTasks
             _addPersonTask = addPersonTask;
             _addArtistMember = addArtistMember;
             _addArtistManager = addArtistManager;
+            _getInstallationTask = getInstallationTask;
         }
         private readonly ApplicationDbContext _dbContext;
         private readonly IEmailService _emailService;
@@ -38,6 +42,7 @@ namespace SongtrackerPro.Tasks.UserTasks
         private readonly IAddPersonTask _addPersonTask;
         private readonly IAddArtistMemberTask _addArtistMember;
         private readonly IAddArtistManagerTask _addArtistManager;
+        private readonly IGetInstallationTask _getInstallationTask;
         
         public TaskResult<User> DoTask(UserInvitation userInvitation)
         {
@@ -131,10 +136,13 @@ namespace SongtrackerPro.Tasks.UserTasks
                         .Include(p => p.Address).ThenInclude(a => a.Country)
                         .SingleOrDefault() : null;
 
+                var installation = _getInstallationTask.DoTask(null).Data;
                 var emailTemplate = EmailTemplate($"{invitation.Type}Welcome.html");
-                var body = ReplaceTokens(emailTemplate, invitation);
-                var subject = _htmlService.GetTitle(emailTemplate);
-                _emailService.SendEmail(newUser.Person.Email, subject, body);
+                var body = ReplaceTokens(emailTemplate, invitation, installation);
+                var subject = ReplaceTokens(_htmlService.GetTitle(emailTemplate), invitation, installation);
+
+                _emailService.SendEmail(newUser.Person.FirstAndLastName, newUser.Person.Email, 
+                    installation.Name, ApplicationSettings.Mail.From, subject, body);
 
                 return new TaskResult<User>(newUser);
             }
@@ -144,9 +152,10 @@ namespace SongtrackerPro.Tasks.UserTasks
             }
         }
 
-        private string ReplaceTokens(string template, UserInvitation userInvitation)
+        private string ReplaceTokens(string template, UserInvitation userInvitation, Installation installation)
         {
-            var replaced = _tokenService.ReplaceTokens(template, userInvitation.InvitedByUser);
+            var replaced = _tokenService.ReplaceTokens(template, installation);
+            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);
 
             switch (userInvitation.Type)

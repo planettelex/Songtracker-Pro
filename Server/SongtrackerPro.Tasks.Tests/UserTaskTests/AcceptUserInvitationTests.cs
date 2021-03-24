@@ -40,7 +40,8 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             userInvitation.CreatedUser.AuthenticationId = userInvitation.CreatedUser.Person.Email = null;
             userInvitation.CreatedUser.Type = UserType.Unassigned;
 
-            var task = new AcceptUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new AddPerson(DbContext), new AddArtistMember(DbContext), new AddArtistManager(DbContext));
+            var task = new AcceptUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), 
+                new AddPerson(DbContext), new AddArtistMember(DbContext), new AddArtistManager(DbContext), new GetInstallation(DbContext));
             var result = task.DoTask(userInvitation);
 
             Assert.IsTrue(result.Success);
@@ -66,7 +67,8 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AcceptUserInvitation(EmptyDbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new AddPerson(EmptyDbContext), new AddArtistMember(EmptyDbContext), new AddArtistManager(EmptyDbContext));
+            var task = new AcceptUserInvitation(EmptyDbContext, new DummyEmailService(), new HtmlService(), new TokenService(), 
+                new AddPerson(EmptyDbContext), new AddArtistMember(EmptyDbContext), new AddArtistManager(EmptyDbContext), new GetInstallation(DbContext));
             var result = task.DoTask(new UserInvitation());
             
             Assert.IsFalse(result.Success);

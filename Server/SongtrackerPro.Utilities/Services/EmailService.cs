@@ -1,36 +1,35 @@
 ﻿using System.Collections.Generic;
-using System.Net;  
-using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace SongtrackerPro.Utilities.Services
 {
     public interface IEmailService
     {
-        public void SendEmail(string to, string subject, string body, List<string> attachmentPaths = null);
+        public void SendEmail(string toName, string toEmail, string fromName, string fromEmail, string subject, string body, List<string> attachmentPaths = null);
     }
 
     public class EmailService : IEmailService
     {
-        public void SendEmail(string to, string subject, string body, List<string> attachmentPaths = null)
+        public void SendEmail(string toName, string toEmail, string fromName, string fromEmail, string subject, string body, List<string> attachmentPaths = null)
         {
-            using var mail = new MailMessage { From = new MailAddress(ApplicationSettings.Mail.From) };
+            var mailMessage = new MimeMessage();
+            mailMessage.From.Add(new MailboxAddress(fromName, fromEmail));
+            mailMessage.To.Add(new MailboxAddress(toName, toEmail));
+            mailMessage.Subject = subject;
 
-            mail.To.Add(to);
-            mail.Subject = subject;
-            mail.Body = body;
-            mail.IsBodyHtml = true;
-
+            var builder = new BodyBuilder { HtmlBody = body };
             if (attachmentPaths != null)
                 foreach (var attachmentPath in attachmentPaths)
-                    mail.Attachments.Add(new Attachment(attachmentPath));
+                    builder.Attachments.Add(attachmentPath);
 
-            using var smtp = new SmtpClient(ApplicationSettings.Mail.Smtp, ApplicationSettings.Mail.Port)
-            {
-                Credentials = new NetworkCredential(ApplicationSettings.Mail.From, ApplicationSettings.Mail.Password),
-                EnableSsl = ApplicationSettings.Mail.EnableSsl
-            };
+            mailMessage.Body = builder.ToMessageBody();
 
-            smtp.Send(mail);
+            using var client = new SmtpClient();
+            client.Connect(ApplicationSettings.Mail.Smtp, ApplicationSettings.Mail.Port, ApplicationSettings.Mail.EnableSsl);
+            client.Authenticate(ApplicationSettings.Mail.From, ApplicationSettings.Mail.Password);
+            client.Send(mailMessage);
+            client.Disconnect(true);
         }
     }
 }

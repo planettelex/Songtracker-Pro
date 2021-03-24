@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210318155359_v_0_03")]
+    [Migration("20210324220238_v_0_03")]
     partial class v_0_03
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -650,6 +650,11 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("invited_by_user_id");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
                     b.Property<int?>("PublisherId")
                         .HasColumnType("int")
                         .HasColumnName("publisher_id");
@@ -745,7 +750,7 @@ namespace SongtrackerPro.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SongtrackerPro.Data.Models.Person", "Member")
+                    b.HasOne("SongtrackerPro.Data.Models.Person", "Manager")
                         .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -753,7 +758,7 @@ namespace SongtrackerPro.Data.Migrations
 
                     b.Navigation("Artist");
 
-                    b.Navigation("Member");
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.ArtistMember", b =>
