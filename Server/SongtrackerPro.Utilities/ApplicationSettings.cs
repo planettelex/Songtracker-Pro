@@ -33,6 +33,17 @@ namespace SongtrackerPro.Utilities
                 set => _hostingConsole = value;
             }
             private static string _hostingConsole;
+
+            public static string EncryptionKey
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _encryptionKey;
+                }
+                set => _encryptionKey = value;
+            }
+            private static string _encryptionKey;
         }
 
         public static class Api
@@ -238,6 +249,7 @@ namespace SongtrackerPro.Utilities
 
             Database.ConnectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
             Database.HostingConsole = configuration.GetSection("Database")?.GetSection("HostingConsole")?.Value;
+            Database.HostingConsole = configuration.GetSection("Database")?.GetSection("EncryptionKey")?.Value;
 
             Api.Domain = configuration.GetSection("Api")?.GetSection("Domain")?.Value;
             Api.IsSecure = bool.Parse(configuration.GetSection("Api")?.GetSection("IsSecure")?.Value ?? bool.FalseString);

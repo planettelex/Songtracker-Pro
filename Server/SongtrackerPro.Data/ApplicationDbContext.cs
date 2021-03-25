@@ -1,6 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
+using SongtrackerPro.Data.Attributes;
+using SongtrackerPro.Data.Encryption;
+using SongtrackerPro.Data.Encryption.Providers;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Data
 {
@@ -19,9 +25,31 @@ namespace SongtrackerPro.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            #if DEBUG
             optionsBuilder.EnableSensitiveDataLogging();
+            #endif
+            
             optionsBuilder.UseSqlServer(_connectionString);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            var encryptionProvider = new AesEncryptionProvider(ApplicationSettings.Database.EncryptionKey);
+            var encryptionConverter = new EncryptionConverter(encryptionProvider);
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType != typeof(string) || IsDiscriminator(property)) 
+                        continue;
+
+                    var attributes = property.PropertyInfo.GetCustomAttributes(typeof(EncryptedAttribute), false);
+                    if (attributes.Any())
+                        property.SetValueConverter(encryptionConverter);
+                }
+            }
+        }
+        private static bool IsDiscriminator(IPropertyBase property) => property.Name == "Discriminator" || property.PropertyInfo == null;
 
         public DbSet<Installation> Installation { get; set; }
         public DbSet<Country> Countries { get; set; }
