@@ -57,5 +57,13 @@ namespace SongtrackerPro.Data.Models
         [Column("created_user_id", Order = 11)]
         public int? CreatedUserId { get; set; }
         public User CreatedUser { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
+        public string AcceptLink { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
+        public string LoginLink { get; set; }
     }
 }

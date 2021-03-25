@@ -23,7 +23,7 @@
         public const string ArtistLinks = "/artists/{artistid}/links";
         public const string ArtistLink = "/artists/{artistid}/links/{artistlinkid}";
         public const string Invitations = "/invitations";
-        public const string Invitation = "/invitations/{id}";
+        public const string Invitation = "/invitations/{uuid}";
         public const string Users = "/users";
         public const string User = "/users/{uuid}";
         public const string UserAccounts = "/users/{userid}/accounts";

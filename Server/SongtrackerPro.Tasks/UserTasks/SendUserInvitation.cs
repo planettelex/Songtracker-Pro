@@ -5,6 +5,7 @@ using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
+using SongtrackerPro.Resources;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Utilities;
 using SongtrackerPro.Utilities.Services;
@@ -75,6 +76,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (artistId != null)
                     userInvitation.Artist = _dbContext.Artists.SingleOrDefault(p => p.Id == artistId);
 
+                userInvitation.AcceptLink = ApplicationSettings.Web.Root + string.Format(WebRoutes.Join, userInvitation.Uuid);
                 var installation = _getInstallationTask.DoTask(null).Data;
                 var emailTemplate = EmailTemplate($"{userInvitation.Type}Invitation.html");
                 var body = ReplaceTokens(emailTemplate, userInvitation, installation);

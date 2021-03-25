@@ -5,6 +5,7 @@ using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
+using SongtrackerPro.Resources;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PersonTasks;
@@ -138,6 +139,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                         .Include(p => p.Address).ThenInclude(a => a.Country)
                         .SingleOrDefault() : null;
 
+                userInvitation.LoginLink = ApplicationSettings.Web.Root + WebRoutes.Login;
                 var installation = _getInstallationTask.DoTask(null).Data;
                 var emailTemplate = EmailTemplate($"{invitation.Type}Welcome.html");
                 var body = ReplaceTokens(emailTemplate, invitation, installation);
@@ -157,6 +159,7 @@ namespace SongtrackerPro.Tasks.UserTasks
         private string ReplaceTokens(string template, UserInvitation userInvitation, Installation installation)
         {
             var replaced = _tokenService.ReplaceTokens(template, installation);
+            replaced = _tokenService.ReplaceTokens(replaced, userInvitation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.CreatedUser);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.CreatedUser.Person);
 

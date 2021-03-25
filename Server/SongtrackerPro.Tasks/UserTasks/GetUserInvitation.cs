@@ -21,9 +21,11 @@ namespace SongtrackerPro.Tasks.UserTasks
             try
             {
                 var userInvitation = _dbContext.UserInvitations.Where(ui => ui.Uuid == userInvitationId)
+                    .Include(u => u.InvitedByUser).ThenInclude(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(u => u.CreatedUser).ThenInclude(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.RecordLabel).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
-                    .Include(p => p.Artist)
+                    .Include(u => u.Artist)
                     .SingleOrDefault();
 
                 return new TaskResult<UserInvitation>(userInvitation);

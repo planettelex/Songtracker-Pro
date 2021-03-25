@@ -37,6 +37,28 @@ namespace SongtrackerPro.Utilities
 
         public static class Api
         {
+            public static string Domain
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _domain;
+                }
+                set => _domain = value;
+            }
+            private static string _domain;
+
+            public static bool IsSecure
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _isSecure;
+                }
+                set => _isSecure = value;
+            }
+            private static bool _isSecure;
+
             public static bool MinifyJson
             {
                 get
@@ -73,6 +95,37 @@ namespace SongtrackerPro.Utilities
 
         public static class Web
         {
+            public static string Root
+            {
+                get
+                {
+                    var protocol = IsSecure ? "https://" : "http://";
+                    return $"{protocol}{Domain}/";
+                }
+            }
+
+            public static string Domain
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _domain;
+                }
+                set => _domain = value;
+            }
+            private static string _domain;
+
+            public static bool IsSecure
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _isSecure;
+                }
+                set => _isSecure = value;
+            }
+            private static bool _isSecure;
+
             public static string OAuthId
             {
                 get
@@ -186,10 +239,14 @@ namespace SongtrackerPro.Utilities
             Database.ConnectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
             Database.HostingConsole = configuration.GetSection("Database")?.GetSection("HostingConsole")?.Value;
 
+            Api.Domain = configuration.GetSection("Api")?.GetSection("Domain")?.Value;
+            Api.IsSecure = bool.Parse(configuration.GetSection("Api")?.GetSection("IsSecure")?.Value ?? bool.FalseString);
             Api.MinifyJson = bool.Parse(configuration.GetSection("Api")?.GetSection("MinifyJson")?.Value ?? bool.TrueString);
             Api.Culture = configuration.GetSection("Api")?.GetSection("Culture")?.Value;
             Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
 
+            Web.Domain = configuration.GetSection("Web")?.GetSection("Domain")?.Value;
+            Web.IsSecure = bool.Parse(configuration.GetSection("Web")?.GetSection("IsSecure")?.Value ?? bool.FalseString);
             Web.OAuthId = configuration.GetSection("Web")?.GetSection("OAuthId")?.Value;
             Web.OAuthConsole = configuration.GetSection("Web")?.GetSection("OAuthConsole")?.Value;
             Web.HostingConsole = configuration.GetSection("Web")?.GetSection("HostingConsole")?.Value;
