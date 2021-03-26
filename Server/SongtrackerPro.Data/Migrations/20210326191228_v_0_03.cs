@@ -163,7 +163,7 @@ namespace SongtrackerPro.Data.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    tax_id = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    tax_id = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     address_id = table.Column<int>(type: "int", nullable: true)
@@ -186,7 +186,7 @@ namespace SongtrackerPro.Data.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    tax_id = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    tax_id = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     address_id = table.Column<int>(type: "int", nullable: true),
@@ -217,7 +217,7 @@ namespace SongtrackerPro.Data.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    tax_id = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    tax_id = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     has_service_mark = table.Column<bool>(type: "bit", nullable: false),
                     website_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     press_kit_url = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -5,7 +5,5 @@
         string Encrypt(string toEncrypt);
 
         string Decrypt(string toDecrypt);
-
-        string GenerateKey(int size);
     }
 }

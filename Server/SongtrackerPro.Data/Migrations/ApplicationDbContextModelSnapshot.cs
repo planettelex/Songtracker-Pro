@@ -85,8 +85,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("record_label_id");
 
                     b.Property<string>("TaxId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
 
                     b.Property<string>("WebsiteUrl")
@@ -445,8 +444,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("phone");
 
                     b.Property<string>("TaxId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
 
                     b.HasKey("Id");
@@ -486,8 +484,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("phone");
 
                     b.Property<string>("TaxId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
 
                     b.HasKey("Id");

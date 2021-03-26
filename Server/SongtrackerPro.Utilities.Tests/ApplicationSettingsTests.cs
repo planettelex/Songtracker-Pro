@@ -20,50 +20,64 @@ namespace SongtrackerPro.Utilities.Tests
         }
 
         [TestMethod]
-        public void MinifyJsonTest()
+        public void ApiMinifyJsonTest()
         {
             Assert.AreEqual(ApplicationSettings.Api.MinifyJson, ApplicationSettings.Api.MinifyJson);
         }
 
         [TestMethod]
-        public void OAuthIdTest()
+        public void WebDomainTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Web.Domain);
+            Assert.IsTrue(ApplicationSettings.Web.Domain.Length > 0);
+        }
+
+        [TestMethod]
+        public void WebOAuthIdTest()
         {
             Assert.IsNotNull(ApplicationSettings.Web.OAuthId);
             Assert.IsTrue(ApplicationSettings.Web.OAuthId.Length > 0);
         }
 
         [TestMethod]
-        public void SmtpTest()
+        public void SmtpServerTest()
         {
             Assert.IsNotNull(ApplicationSettings.Mail.Smtp);
             Assert.IsTrue(ApplicationSettings.Mail.Smtp.Length > 0);
         }
 
         [TestMethod]
-        public void PortTest()
+        public void SmtpPortTest()
         {
             Assert.IsNotNull(ApplicationSettings.Mail.Port);
             Assert.IsTrue(ApplicationSettings.Mail.Port > 0);
         }
 
         [TestMethod]
-        public void EnableSslTest()
+        public void SmtpEnableSslTest()
         {
             Assert.IsNotNull(ApplicationSettings.Mail.EnableSsl);
         }
 
         [TestMethod]
-        public void FromTest()
+        public void SmtpFromTest()
         {
             Assert.IsNotNull(ApplicationSettings.Mail.From);
             Assert.IsTrue(ApplicationSettings.Mail.From.Length > 0);
         }
 
         [TestMethod]
-        public void PasswordTest()
+        public void SmtpPasswordTest()
         {
             Assert.IsNotNull(ApplicationSettings.Mail.Password);
             Assert.IsTrue(ApplicationSettings.Mail.Password.Length > 0);
+        }
+
+        [TestMethod]
+        public void DataEncryptionKeyTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Database.EncryptionKey);
+            Assert.IsTrue(ApplicationSettings.Database.EncryptionKey.Length > 0);
         }
     }
 }

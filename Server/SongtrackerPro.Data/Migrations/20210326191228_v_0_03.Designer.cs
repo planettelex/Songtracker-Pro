@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210324220238_v_0_03")]
+    [Migration("20210326191228_v_0_03")]
     partial class v_0_03
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,8 +87,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("record_label_id");
 
                     b.Property<string>("TaxId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
 
                     b.Property<string>("WebsiteUrl")
@@ -447,8 +446,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("phone");
 
                     b.Property<string>("TaxId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
 
                     b.HasKey("Id");
@@ -488,8 +486,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("phone");
 
                     b.Property<string>("TaxId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
 
                     b.HasKey("Id");

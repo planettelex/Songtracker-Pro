@@ -18,6 +18,12 @@ namespace SongtrackerPro.Data.Encryption.Providers
 
         public string Encrypt(string toEncrypt)
         {
+            if (toEncrypt == null)
+                return null;
+
+            if (toEncrypt == string.Empty)
+                return string.Empty;
+
             using var cryptoServiceProvider = CreateCryptographyProvider();
             cryptoServiceProvider.GenerateIV();
             var initializationVector = cryptoServiceProvider.IV;
@@ -37,6 +43,12 @@ namespace SongtrackerPro.Data.Encryption.Providers
 
         public string Decrypt(string toDecrypt)
         {
+            if (toDecrypt == null)
+                return null;
+
+            if (toDecrypt == string.Empty)
+                return string.Empty;
+
             var input = Convert.FromBase64String(toDecrypt);
             using var memoryStream = new MemoryStream(input);
             var initializationVector = new byte[InitializationVectorSize];
@@ -51,7 +63,7 @@ namespace SongtrackerPro.Data.Encryption.Providers
             return decrypted;
         }
 
-        public string GenerateKey(int keySize)
+        public static string GenerateKey(int keySize = 256)
         {
             using var cryptoServiceProvider = new AesCryptoServiceProvider
             {

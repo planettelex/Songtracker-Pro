@@ -158,12 +158,12 @@ namespace SongtrackerPro.Tasks.Tests
 
                 if (labels != null && labels.Any())
                 {
-                    var labelIndex = new Random().Next(0, labels.Count);
+                    var labelIndex = new Random().Next(0, labels.Count - 1);
                     label = labels[labelIndex];
                 }
 
                 var stamp = DateTime.Now.Ticks;
-                var fiftyFifty = new Random().Next(0, 2) == 0;
+                var fiftyFifty = new Random().Next(0, 1) == 0;
                 return new Artist
                 {
                     Name = nameof(Artist) + " " + stamp,
@@ -180,10 +180,10 @@ namespace SongtrackerPro.Tasks.Tests
         {
             get
             {
-                var firstNameIndex = new Random().Next(0, _firstNames.Count);
-                var middleNameIndex = new Random().Next(0, _middleNames.Count);
-                var lastNameIndex = new Random().Next(0, _lastNames.Count);
-                var nameSuffixIndex = new Random().Next(0, _nameSuffices.Count);
+                var firstNameIndex = new Random().Next(0, _firstNames.Count - 1);
+                var middleNameIndex = new Random().Next(0, _middleNames.Count - 1);
+                var lastNameIndex = new Random().Next(0, _lastNames.Count - 1);
+                var nameSuffixIndex = new Random().Next(0, _nameSuffices.Count - 1);
                 var stamp = DateTime.Now.Ticks;
                 return new Person
                 {
@@ -212,7 +212,7 @@ namespace SongtrackerPro.Tasks.Tests
                 var publishers = new ListPublishers(_dbContext).DoTask(null).Data;
                 Publisher publisher;
                 if (publishers.Any())
-                    publisher = publishers[new Random().Next(0, publishers.Count)];
+                    publisher = publishers[new Random().Next(0, publishers.Count - 1)];
                 else
                 {
                     publisher = Publisher;
@@ -222,7 +222,7 @@ namespace SongtrackerPro.Tasks.Tests
                 var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
                 RecordLabel recordLabel;
                 if (recordLabels.Any())
-                    recordLabel = recordLabels[new Random().Next(0, recordLabels.Count)];
+                    recordLabel = recordLabels[new Random().Next(0, recordLabels.Count - 1)];
                 else
                 {
                     recordLabel = RecordLabel;
@@ -258,7 +258,7 @@ namespace SongtrackerPro.Tasks.Tests
                 var publishers = new ListPublishers(_dbContext).DoTask(null).Data;
                 Publisher publisher;
                 if (publishers.Any())
-                    publisher = publishers[new Random().Next(0, publishers.Count)];
+                    publisher = publishers[new Random().Next(0, publishers.Count - 1)];
                 else
                 {
                     publisher = Publisher;
@@ -268,7 +268,7 @@ namespace SongtrackerPro.Tasks.Tests
                 var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
                 RecordLabel recordLabel;
                 if (recordLabels.Any())
-                    recordLabel = recordLabels[new Random().Next(0, recordLabels.Count)];
+                    recordLabel = recordLabels[new Random().Next(0, recordLabels.Count - 1)];
                 else
                 {
                     recordLabel = RecordLabel;
@@ -278,7 +278,7 @@ namespace SongtrackerPro.Tasks.Tests
                 var artists = new ListArtists(_dbContext).DoTask(null).Data;
                 Artist artist;
                 if (artists.Any())
-                    artist = artists[new Random().Next(0, artists.Count)];
+                    artist = artists[new Random().Next(0, artists.Count - 1)];
                 else
                 {
                     artist = Artist;
@@ -289,7 +289,7 @@ namespace SongtrackerPro.Tasks.Tests
 
                 int invitedByUserId;
                 if (users.Any())
-                    invitedByUserId = users[new Random().Next(0, users.Count)].Id;
+                    invitedByUserId = users[new Random().Next(0, users.Count - 1)].Id;
                 else
                 {
                     var user = User;
@@ -301,6 +301,7 @@ namespace SongtrackerPro.Tasks.Tests
                 {
                     Uuid = Guid.Empty,
                     InvitedByUserId = invitedByUserId,
+                    Name = Person.FirstAndLastName,
                     Email = Person.Email,
                     Type = UserType.ArtistMember,
                     Artist = artist,

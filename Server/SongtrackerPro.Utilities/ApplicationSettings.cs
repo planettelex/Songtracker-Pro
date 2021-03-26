@@ -249,7 +249,7 @@ namespace SongtrackerPro.Utilities
 
             Database.ConnectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
             Database.HostingConsole = configuration.GetSection("Database")?.GetSection("HostingConsole")?.Value;
-            Database.HostingConsole = configuration.GetSection("Database")?.GetSection("EncryptionKey")?.Value;
+            Database.EncryptionKey = configuration.GetSection("Database")?.GetSection("EncryptionKey")?.Value;
 
             Api.Domain = configuration.GetSection("Api")?.GetSection("Domain")?.Value;
             Api.IsSecure = bool.Parse(configuration.GetSection("Api")?.GetSection("IsSecure")?.Value ?? bool.FalseString);

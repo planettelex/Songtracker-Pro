@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using SongtrackerPro.Data.Attributes;
 using SongtrackerPro.Data.Enums;
 
 namespace SongtrackerPro.Data.Models
@@ -25,6 +26,7 @@ namespace SongtrackerPro.Data.Models
         [Column("authentication_id", Order = 4)]
         public string AuthenticationId { get; set; }
 
+        [Encrypted]
         [Required]
         [Column("authentication_token", Order = 5)]
         public string AuthenticationToken { get; set; }
@@ -37,6 +39,7 @@ namespace SongtrackerPro.Data.Models
         public int? PersonId { get; set; }
         public Person Person { get; set; }
 
+        [Encrypted]
         [Column("social_security_number", Order = 8)]
         public string SocialSecurityNumber { get; set; }
 
@@ -55,9 +58,11 @@ namespace SongtrackerPro.Data.Models
         public int? PerformingRightsOrganizationId { get; set; }
         public PerformingRightsOrganization PerformingRightsOrganization { get; set; }
 
+        [Encrypted]
         [Column("performing_rights_organization_member_number", Order = 12)]
         public string PerformingRightsOrganizationMemberNumber { get; set; }
 
+        [Encrypted]
         [Column("sound_exchange_account_number", Order = 13)]
         public string SoundExchangeAccountNumber { get; set; }
     }
