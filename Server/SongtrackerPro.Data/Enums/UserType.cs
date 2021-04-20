@@ -6,7 +6,6 @@
         SystemAdministrator,
         PublisherAdministrator,
         LabelAdministrator,
-        ArtistManager,
-        ArtistMember
+        SystemUser
     }
 }
