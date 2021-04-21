@@ -31,30 +31,33 @@ namespace SongtrackerPro.Data.Models
         [Column("type", Order = 5)]
         public UserType Type { get; set; }
 
+        [Column("roles", Order = 6)]
+        public SystemUserRoles Roles { get; set; }
+
         [JsonIgnore]
-        [Column("publisher_id", Order = 6)]
+        [Column("publisher_id", Order = 7)]
         public int? PublisherId { get; set; }
         public Publisher Publisher { get; set; }
 
         [JsonIgnore]
-        [Column("record_label_id", Order = 7)]
+        [Column("record_label_id", Order = 8)]
         public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
         [JsonIgnore]
-        [Column("artist_id", Order = 8)]
+        [Column("artist_id", Order = 9)]
         public int? ArtistId { get; set; }
         public Artist Artist { get; set; }
 
         [Required]
-        [Column("sent_on", Order = 9)]
+        [Column("sent_on", Order = 10)]
         public DateTime SentOn { get; set; }
 
-        [Column("accepted_on", Order = 10)]
+        [Column("accepted_on", Order = 11)]
         public DateTime? AcceptedOn { get; set; }
 
         [JsonIgnore]
-        [Column("created_user_id", Order = 11)]
+        [Column("created_user_id", Order = 12)]
         public int? CreatedUserId { get; set; }
         public User CreatedUser { get; set; }
 

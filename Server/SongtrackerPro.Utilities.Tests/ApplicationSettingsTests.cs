@@ -26,6 +26,20 @@ namespace SongtrackerPro.Utilities.Tests
         }
 
         [TestMethod]
+        public void ApiCultureTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Api.Culture);
+            Assert.IsTrue(ApplicationSettings.Api.Culture.Length > 0);
+        }
+
+        [TestMethod]
+        public void ApiCurrencyTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Api.Currency);
+            Assert.IsTrue(ApplicationSettings.Api.Currency.Length > 0);
+        }
+
+        [TestMethod]
         public void WebDomainTest()
         {
             Assert.IsNotNull(ApplicationSettings.Web.Domain);

@@ -558,6 +558,10 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
 
+                    b.Property<int>("Roles")
+                        .HasColumnType("int")
+                        .HasColumnName("roles");
+
                     b.Property<string>("SocialSecurityNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("social_security_number");
@@ -657,6 +661,10 @@ namespace SongtrackerPro.Data.Migrations
                     b.Property<int?>("RecordLabelId")
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
+
+                    b.Property<int>("Roles")
+                        .HasColumnType("int")
+                        .HasColumnName("roles");
 
                     b.Property<DateTime>("SentOn")
                         .HasColumnType("datetime2")

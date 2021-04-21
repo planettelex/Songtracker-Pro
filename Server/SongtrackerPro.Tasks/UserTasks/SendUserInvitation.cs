@@ -77,8 +77,9 @@ namespace SongtrackerPro.Tasks.UserTasks
                     userInvitation.Artist = _dbContext.Artists.SingleOrDefault(p => p.Id == artistId);
 
                 userInvitation.AcceptLink = ApplicationSettings.Web.Root + string.Format(WebRoutes.Join, userInvitation.Uuid);
-                var installation = _getInstallationTask.DoTask(null).Data;
+                
                 var emailTemplate = EmailTemplate($"{userInvitation.Type}Invitation.html");
+                var installation = _getInstallationTask.DoTask(null).Data;
                 var body = ReplaceTokens(emailTemplate, userInvitation, installation);
                 var subject = ReplaceTokens(_htmlService.GetTitle(emailTemplate), userInvitation, installation);
                 
@@ -102,9 +103,9 @@ namespace SongtrackerPro.Tasks.UserTasks
 
             switch (userInvitation.Type)
             {
-                case UserType.ArtistMember:
-                case UserType.ArtistManager:
-                    replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);
+                case UserType.SystemUser:
+                    if (userInvitation.Roles.HasFlag(SystemUserRoles.ArtistMember) || userInvitation.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                        replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);
                     break;
                 case UserType.PublisherAdministrator:
                     replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Publisher);

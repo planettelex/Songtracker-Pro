@@ -15,21 +15,21 @@
     <None Remove="en-US\EmailTemplates\PublisherAdministratorWelcome.html" />
     <None Remove="en-US\EmailTemplates\SystemAdministratorInvitation.html" />
     <None Remove="en-US\EmailTemplates\SystemAdministratorWelcome.html" />
+    <None Remove="en-US\EmailTemplates\SystemUserInvitation.html" />
+    <None Remove="en-US\EmailTemplates\SystemUserWelcome.html" />
     <None Remove="en-US\SeedData.json" />
     <None Remove="en-US\SystemMessages.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="en-US\EmailTemplates\ArtistManagerWelcome.html" />
-    <EmbeddedResource Include="en-US\EmailTemplates\ArtistMemberWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\LabelAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorInvitation.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\SystemAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\SystemAdministratorInvitation.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\LabelAdministratorInvitation.html" />
-    <EmbeddedResource Include="en-US\EmailTemplates\ArtistManagerInvitation.html" />
-    <EmbeddedResource Include="en-US\EmailTemplates\ArtistMemberInvitation.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\SystemUserInvitation.html" />
+    <EmbeddedResource Include="en-US\EmailTemplates\SystemUserWelcome.html" />
     <EmbeddedResource Include="en-US\SeedData.json" />
     <EmbeddedResource Include="en-US\SystemMessages.json" />
   </ItemGroup>

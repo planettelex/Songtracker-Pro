@@ -94,34 +94,29 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (artistId.HasValue)
                 {
                     var artist = _dbContext.Artists.Single(a => a.Id == artistId.Value);
-                    switch (invitation.Type)
+                    if (invitation.Roles.HasFlag(SystemUserRoles.ArtistMember))
                     {
-                        case UserType.ArtistMember:
+                        var artistMember = new ArtistMember
                         {
-                            var artistMember = new ArtistMember
-                            {
-                                Artist = artist,
-                                Member = newPerson,
-                                StartedOn = DateTime.Today
-                            };
-                            var addArtistMemberResult = _addArtistMember.DoTask(artistMember);
-                            if (!addArtistMemberResult.Success)
-                                throw addArtistMemberResult.Exception;
-                            break;
-                        }
-                        case UserType.ArtistManager:
+                            Artist = artist,
+                            Member = newPerson,
+                            StartedOn = DateTime.Today
+                        };
+                        var addArtistMemberResult = _addArtistMember.DoTask(artistMember);
+                        if (!addArtistMemberResult.Success)
+                            throw addArtistMemberResult.Exception;
+                    }
+                    else if (invitation.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    {
+                        var artistManager = new ArtistManager
                         {
-                            var artistManager = new ArtistManager
-                            {
-                                Artist = artist,
-                                Manager = newPerson,
-                                StartedOn = DateTime.Today
-                            };
-                            var addArtistManagerResult = _addArtistManager.DoTask(artistManager);
-                            if (!addArtistManagerResult.Success)
-                                throw addArtistManagerResult.Exception;
-                            break;
-                        }
+                            Artist = artist,
+                            Manager = newPerson,
+                            StartedOn = DateTime.Today
+                        };
+                        var addArtistManagerResult = _addArtistManager.DoTask(artistManager);
+                        if (!addArtistManagerResult.Success)
+                            throw addArtistManagerResult.Exception;
                     }
                 }
 
@@ -165,8 +160,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 
             switch (userInvitation.Type)
             {
-                case UserType.ArtistMember:
-                case UserType.ArtistManager:
+                case UserType.SystemUser:
                     replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);
                     break;
                 case UserType.PublisherAdministrator:

@@ -14,17 +14,20 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         {
             var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
             var testArtistUser1 = TestModel.User;
-            testArtistUser1.Type = UserType.ArtistMember;
+            testArtistUser1.Type = UserType.SystemUser;
+            testArtistUser1.Roles = SystemUserRoles.ArtistMember;
             var testArtistUser1Id = addUserTask.DoTask(testArtistUser1);
             Assert.IsTrue(testArtistUser1Id.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
             var testArtistUser2 = TestModel.User;
-            testArtistUser2.Type = UserType.ArtistMember;
+            testArtistUser2.Type = UserType.SystemUser;
+            testArtistUser1.Roles = SystemUserRoles.ArtistMember | SystemUserRoles.VisualArtist;
             var testArtistUser2Id = addUserTask.DoTask(testArtistUser2);
             Assert.IsTrue(testArtistUser2Id.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
             var testManagerUser = TestModel.User;
-            testManagerUser.Type = UserType.ArtistManager;
+            testManagerUser.Roles = SystemUserRoles.ArtistManager;
+            testManagerUser.Type = UserType.SystemUser;
             var testManagerUserId = addUserTask.DoTask(testManagerUser);
             Assert.IsTrue(testManagerUserId.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
@@ -129,7 +132,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(testLabelUser.PerformingRightsOrganizationId, user3.PerformingRightsOrganizationId);
             Assert.AreEqual(testLabelUser.RecordLabelId, user3.RecordLabelId);
 
-            result = task.DoTask(UserType.ArtistMember);
+            result = task.DoTask(UserType.SystemUser);
             
             Assert.IsTrue(result.Success);
             Assert.IsNull(result.Exception);

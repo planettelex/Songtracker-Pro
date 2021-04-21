@@ -32,6 +32,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(testUserInvitation.Type, userInvitation.Type);
             Assert.AreEqual(testUserInvitation.Email, userInvitation.Email);
             Assert.IsNotNull(userInvitation.SentOn);
+
             if (userInvitation.Publisher != null)
             {
                 Assert.AreEqual(testUserInvitation.Publisher.Name, userInvitation.Publisher.Name);

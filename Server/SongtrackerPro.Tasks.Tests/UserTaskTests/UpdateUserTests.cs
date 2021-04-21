@@ -33,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var testUser = TestModel.User;
-            testUser.Type = UserType.ArtistMember;
+            testUser.Type = UserType.SystemUser;
             var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
             var addUserResult = addUserTask.DoTask(testUser);
 

@@ -102,6 +102,17 @@ namespace SongtrackerPro.Utilities
                 set => _culture = value;
             }
             private static string _culture;
+
+            public static string Currency
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _currency;
+                }
+                set => _currency = value;
+            }
+            private static string _currency;
         }
 
         public static class Web
@@ -255,6 +266,7 @@ namespace SongtrackerPro.Utilities
             Api.IsSecure = bool.Parse(configuration.GetSection("Api")?.GetSection("IsSecure")?.Value ?? bool.FalseString);
             Api.MinifyJson = bool.Parse(configuration.GetSection("Api")?.GetSection("MinifyJson")?.Value ?? bool.TrueString);
             Api.Culture = configuration.GetSection("Api")?.GetSection("Culture")?.Value;
+            Api.Currency = configuration.GetSection("Api")?.GetSection("Currency")?.Value;
             Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
 
             Web.Domain = configuration.GetSection("Web")?.GetSection("Domain")?.Value;

@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210326191228_v_0_03")]
+    [Migration("20210420235405_v_0_03")]
     partial class v_0_03
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -560,6 +560,10 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
 
+                    b.Property<int>("Roles")
+                        .HasColumnType("int")
+                        .HasColumnName("roles");
+
                     b.Property<string>("SocialSecurityNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("social_security_number");
@@ -659,6 +663,10 @@ namespace SongtrackerPro.Data.Migrations
                     b.Property<int?>("RecordLabelId")
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
+
+                    b.Property<int>("Roles")
+                        .HasColumnType("int")
+                        .HasColumnName("roles");
 
                     b.Property<DateTime>("SentOn")
                         .HasColumnType("datetime2")

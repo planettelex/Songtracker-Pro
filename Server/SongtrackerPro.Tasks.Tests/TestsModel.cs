@@ -303,7 +303,8 @@ namespace SongtrackerPro.Tasks.Tests
                     InvitedByUserId = invitedByUserId,
                     Name = Person.FirstAndLastName,
                     Email = Person.Email,
-                    Type = UserType.ArtistMember,
+                    Type = UserType.SystemUser,
+                    Roles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember,
                     Artist = artist,
                     Publisher = publisher,
                     RecordLabel = recordLabel

@@ -241,6 +241,7 @@ namespace SongtrackerPro.Data.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     type = table.Column<int>(type: "int", nullable: false),
+                    roles = table.Column<int>(type: "int", nullable: false),
                     profile_image_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     authentication_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     authentication_token = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -432,6 +433,7 @@ namespace SongtrackerPro.Data.Migrations
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
+                    roles = table.Column<int>(type: "int", nullable: false),
                     publisher_id = table.Column<int>(type: "int", nullable: true),
                     record_label_id = table.Column<int>(type: "int", nullable: true),
                     artist_id = table.Column<int>(type: "int", nullable: true),
