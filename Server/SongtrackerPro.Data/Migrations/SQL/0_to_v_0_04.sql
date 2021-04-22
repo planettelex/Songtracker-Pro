@@ -134,7 +134,7 @@ CREATE TABLE [users] (
     [roles] int NOT NULL,
     [profile_image_url] nvarchar(max) NULL,
     [authentication_id] nvarchar(max) NOT NULL,
-    [authentication_token] nvarchar(max) NOT NULL,
+    [authentication_token] nvarchar(max) NULL,
     [last_login] datetime2 NULL,
     [person_id] int NULL,
     [social_security_number] nvarchar(max) NULL,
@@ -319,7 +319,7 @@ CREATE INDEX [IX_users_record_label_id] ON [users] ([record_label_id]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20210420235405_v_0_03', N'5.0.3');
+VALUES (N'20210422203630_v_0_04', N'5.0.3');
 GO
 
 COMMIT;

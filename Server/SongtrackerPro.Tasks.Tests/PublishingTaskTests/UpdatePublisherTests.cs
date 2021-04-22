@@ -14,15 +14,15 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
             publisher.Name = "Update " + stamp;
             publisher.TaxId = stamp.ToString();
             publisher.Email = $"test@update{stamp}.com";
-            publisher.Phone = TestModel.PhoneNumber;
-            publisher.Address = TestModel.Address;
+            publisher.Phone = TestsModel.PhoneNumber;
+            publisher.Address = TestsModel.Address;
             publisher.PerformingRightsOrganizationPublisherNumber = new Random().Next(100000, 999999).ToString();
         }
 
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testPublisher = TestModel.Publisher;
+            var testPublisher = TestsModel.Publisher;
             var addPublisherTask = new AddPublisher(DbContext);
             var addPublisherResult = addPublisherTask.DoTask(testPublisher);
 

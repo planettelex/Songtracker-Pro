@@ -46,16 +46,14 @@
 
         public static string[] EmailTemplates =
         {
-            "ArtistMemberInvitation.html",
-            "ArtistManagerInvitation.html",
             "LabelAdministratorInvitation.html",
-            "PublisherAdministratorInvitation.html",
-            "SystemAdministratorInvitation.html",
-            "ArtistMemberWelcome.html",
-            "ArtistManagerWelcome.html",
             "LabelAdministratorWelcome.html",
+            "PublisherAdministratorInvitation.html",
             "PublisherAdministratorWelcome.html",
-            "SystemAdministratorWelcome.html"
+            "SystemAdministratorInvitation.html",
+            "SystemAdministratorWelcome.html",
+            "SystemUserInvitation.html",
+            "SystemUserWelcome.html"
         };
     }
 }

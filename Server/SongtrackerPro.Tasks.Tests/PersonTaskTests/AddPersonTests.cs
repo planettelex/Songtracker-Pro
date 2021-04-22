@@ -11,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
         public void TaskSuccessTest()
         {
             var task = new AddPerson(DbContext);
-            var testPerson = TestModel.Person;
+            var testPerson = TestsModel.Person;
             var result = task.DoTask(testPerson);
 
             Assert.IsTrue(result.Success);

@@ -11,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         public void TaskSuccessTest()
         {
             var task = new AddPlatform(DbContext);
-            var testPlatform = TestModel.Platform;
+            var testPlatform = TestsModel.Platform;
             var result = task.DoTask(testPlatform);
             
             Assert.IsTrue(result.Success);

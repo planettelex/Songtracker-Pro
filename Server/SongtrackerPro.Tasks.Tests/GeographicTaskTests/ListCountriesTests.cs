@@ -10,9 +10,6 @@ namespace SongtrackerPro.Tasks.Tests.GeographicTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var seedCountries = new SeedCountries(DbContext);
-            seedCountries.DoTask(null);
-            
             var task = new ListCountries(DbContext);
             var result = task.DoTask(null);
             

@@ -12,7 +12,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testArtist = TestModel.Artist;
+            var testArtist = TestsModel.Artist;
             var addArtistTask = new AddArtist(DbContext);
             var addArtistResult = addArtistTask.DoTask(testArtist);
 
@@ -24,17 +24,18 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsTrue(artistId > 0);
 
             var addPersonTask = new AddPerson(DbContext);
-            var testPerson = TestModel.Person;
+            var testPerson = TestsModel.Person;
             var addPersonResult = addPersonTask.DoTask(testPerson);
 
             Assert.IsTrue(addPersonResult.Success);
             Assert.IsNull(addPersonResult.Exception);
             Assert.IsNotNull(addPersonResult.Data);
 
+            var memberPerson = testPerson;
             var artistMember = new ArtistMember
             {
                 Artist = testArtist,
-                Member = testPerson,
+                Member = memberPerson,
                 StartedOn = DateTime.Now.AddMonths(-8)
             };
 
@@ -84,6 +85,12 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
 
             Assert.IsTrue(removeArtistResult.Success);
             Assert.IsNull(removeArtistResult.Exception);
+
+            var removePersonTask = new RemovePerson(DbContext);
+            var removePersonResult = removePersonTask.DoTask(memberPerson);
+
+            Assert.IsTrue(removePersonResult.Success);
+            Assert.IsNull(removePersonResult.Exception);
         }
 
         [TestMethod]

@@ -11,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
         public void TaskSuccessTest()
         {
             var task = new AddRecordLabel(DbContext);
-            var testRecordLabel = TestModel.RecordLabel;
+            var testRecordLabel = TestsModel.RecordLabel;
             var result = task.DoTask(testRecordLabel);
 
             Assert.IsTrue(result.Success);

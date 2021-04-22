@@ -14,14 +14,14 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             recordLabel.Name = "Update " + stamp;
             recordLabel.TaxId = stamp.ToString();
             recordLabel.Email = $"test@update{stamp}.com";
-            recordLabel.Phone = TestModel.PhoneNumber;
-            recordLabel.Address = TestModel.Address;
+            recordLabel.Phone = TestsModel.PhoneNumber;
+            recordLabel.Address = TestsModel.Address;
         }
 
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testRecordLabel = TestModel.RecordLabel;
+            var testRecordLabel = TestsModel.RecordLabel;
             var addRecordLabelTask = new AddRecordLabel(DbContext);
             var addRecordLabelResult = addRecordLabelTask.DoTask(testRecordLabel);
 

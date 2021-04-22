@@ -10,8 +10,8 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210420235405_v_0_03")]
-    partial class v_0_03
+    [Migration("20210422203630_v_0_04")]
+    partial class v_0_04
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -528,7 +528,6 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("authentication_id");
 
                     b.Property<string>("AuthenticationToken")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("authentication_token");
 

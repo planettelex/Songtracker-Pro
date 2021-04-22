@@ -21,5 +21,7 @@ namespace SongtrackerPro.Api
                 JsonSerializer.Serialize(taskResults.Data, SerializerOptions) : 
                 JsonSerializer.Serialize(new ServerError(taskResults.Exception), SerializerOptions);
         }
+
+        protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
     }
 }

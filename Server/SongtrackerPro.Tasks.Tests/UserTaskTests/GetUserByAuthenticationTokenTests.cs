@@ -5,7 +5,7 @@ using SongtrackerPro.Tasks.UserTasks;
 namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 {
     [TestClass]
-    public class GetUserTests : TestsBase
+    public class GetUserByAuthenticationTokenTests : TestsBase
     {
         [TestMethod]
         public void TaskSuccessTest()
@@ -15,16 +15,32 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var testUserId = addUserTask.DoTask(testUser);
             Assert.IsTrue(testUserId.Data.HasValue);
 
-            var task = new GetUser(DbContext);
-            var result = task.DoTask(testUserId.Data.Value);
+            var getUserTask = new GetUser(DbContext);
+            var result = getUserTask.DoTask(testUserId.Data.Value);
 
             Assert.IsTrue(result.Success);
             Assert.IsNull(result.Exception);
 
             var user = result.Data;
             Assert.IsNotNull(user);
+
+            var authenticationToken = TestsModel.AuthenticationToken;
+            user.AuthenticationToken = authenticationToken;
+
+            var updateUserAuthenticationTask = new UpdateUserAuthentication(DbContext);
+            updateUserAuthenticationTask.DoTask(user);
+
+            var task = new GetUserByAuthenticationToken(DbContext);
+            result = task.DoTask(authenticationToken);
+
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Exception);
+
+            user = result.Data;
+            Assert.IsNotNull(user);
+
             Assert.AreEqual(testUser.AuthenticationId, user.AuthenticationId);
-            Assert.AreEqual(testUser.AuthenticationToken, user.AuthenticationToken);
+            Assert.AreEqual(authenticationToken, user.AuthenticationToken);
             Assert.AreEqual(testUser.Type, user.Type);
             Assert.AreEqual(testUser.ProfileImageUrl, user.ProfileImageUrl);
             Assert.AreEqual(testUser.LastLogin, user.LastLogin);

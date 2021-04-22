@@ -13,7 +13,8 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testUser = TestModel.User;
+            var startTime = DateTime.UtcNow;
+            var testUser = TestsModel.User;
             testUser.Type = UserType.LabelAdministrator;
             var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
             var addUserResult = addUserTask.DoTask(testUser);
@@ -25,7 +26,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var login = new Login
             {
                 AuthenticationId = testUser.AuthenticationId,
-                AuthenticationToken = DateTime.Now.Ticks.ToString()
+                AuthenticationToken = TestsModel.AuthenticationToken
             };
             var result = task.DoTask(login);
 
@@ -41,13 +42,22 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                 Assert.IsNotNull(user);
                 Assert.AreEqual(login.AuthenticationId, user.AuthenticationId);
                 Assert.AreEqual(login.AuthenticationToken, user.AuthenticationToken);
-                Assert.IsTrue(testUser.LastLogin < user.LastLogin);
+                Assert.IsTrue(startTime < user.LastLogin);
+                Assert.IsTrue(DateTime.UtcNow > user.LastLogin);
             }
+
+            var person = testUser.Person;
             var removeUserTask = new RemoveUser(DbContext);
             var removeUserResult = removeUserTask.DoTask(testUser);
 
             Assert.IsTrue(removeUserResult.Success);
             Assert.IsNull(removeUserResult.Exception);
+
+            var removePersonTask = new RemovePerson(DbContext);
+            var removePersonResult = removePersonTask.DoTask(person);
+
+            Assert.IsTrue(removePersonResult.Success);
+            Assert.IsNull(removePersonResult.Exception);
         }
 
         [TestMethod]

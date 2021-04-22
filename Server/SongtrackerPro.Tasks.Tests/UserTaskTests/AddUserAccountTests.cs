@@ -16,7 +16,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testUser = TestModel.User;
+            var testUser = TestsModel.User;
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);
@@ -64,7 +64,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(userAccount.IsPreferred, getUserAccountResult.Data.IsPreferred);
             Assert.AreEqual(userAccount.Username, getUserAccountResult.Data.Username);
 
-            var removePerson = testUser.Person;
+            var person = testUser.Person;
             var removeUserTask = new RemoveUser(DbContext);
             var removeUserResult = removeUserTask.DoTask(testUser);
 
@@ -72,7 +72,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.IsNull(removeUserResult.Exception);
 
             var removePersonTask = new RemovePerson(DbContext);
-            var removePersonResult = removePersonTask.DoTask(removePerson);
+            var removePersonResult = removePersonTask.DoTask(person);
 
             Assert.IsTrue(removePersonResult.Success);
             Assert.IsNull(removePersonResult.Exception);

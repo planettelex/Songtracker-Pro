@@ -11,11 +11,11 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         public void TaskSuccessTest()
         {
             var addArtist = new AddArtist(DbContext);
-            var testArtist1 = TestModel.Artist;
+            var testArtist1 = TestsModel.Artist;
             var testArtist1Id = addArtist.DoTask(testArtist1);
             Assert.IsTrue(testArtist1Id.Data.HasValue);
             addArtist = new AddArtist(DbContext);
-            var testArtist2 = TestModel.Artist;
+            var testArtist2 = TestsModel.Artist;
             var testArtist2Id = addArtist.DoTask(testArtist2);
             Assert.IsTrue(testArtist2Id.Data.HasValue);
             

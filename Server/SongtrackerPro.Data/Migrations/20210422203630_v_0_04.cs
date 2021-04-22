@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SongtrackerPro.Data.Migrations
 {
-    public partial class v_0_03 : Migration
+    public partial class v_0_04 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -244,7 +244,7 @@ namespace SongtrackerPro.Data.Migrations
                     roles = table.Column<int>(type: "int", nullable: false),
                     profile_image_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     authentication_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    authentication_token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    authentication_token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     last_login = table.Column<DateTime>(type: "datetime2", nullable: true),
                     person_id = table.Column<int>(type: "int", nullable: true),
                     social_security_number = table.Column<string>(type: "nvarchar(max)", nullable: true),

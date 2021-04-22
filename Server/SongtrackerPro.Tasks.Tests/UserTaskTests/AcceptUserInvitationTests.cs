@@ -19,7 +19,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var sendUserInvitationTask = new SendUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new GetInstallation(DbContext));
-            var testUserInvitation = TestModel.UserInvitation;
+            var testUserInvitation = TestsModel.UserInvitation;
             var sendUserInvitationResult = sendUserInvitationTask.DoTask(testUserInvitation);
             
             Assert.IsTrue(sendUserInvitationResult.Success);
@@ -36,7 +36,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(testUserInvitation.Email, userInvitation.Email);
             Assert.IsNotNull(userInvitation.SentOn);
 
-            userInvitation.CreatedUser = TestModel.User;
+            userInvitation.CreatedUser = TestsModel.User;
             userInvitation.CreatedUser.AuthenticationId = userInvitation.CreatedUser.Person.Email = null;
             userInvitation.CreatedUser.Type = UserType.Unassigned;
 

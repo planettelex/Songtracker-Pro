@@ -29,8 +29,6 @@ namespace SongtrackerPro.Data.Models
         [Column("authentication_id", Order = 5)]
         public string AuthenticationId { get; set; }
 
-        [Encrypted]
-        [Required]
         [Column("authentication_token", Order = 6)]
         public string AuthenticationToken { get; set; }
 

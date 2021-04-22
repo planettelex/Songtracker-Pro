@@ -13,35 +13,35 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testArtistUser1 = TestModel.User;
+            var testArtistUser1 = TestsModel.User;
             testArtistUser1.Type = UserType.SystemUser;
             testArtistUser1.Roles = SystemUserRoles.ArtistMember;
             var testArtistUser1Id = addUserTask.DoTask(testArtistUser1);
             Assert.IsTrue(testArtistUser1Id.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testArtistUser2 = TestModel.User;
+            var testArtistUser2 = TestsModel.User;
             testArtistUser2.Type = UserType.SystemUser;
             testArtistUser1.Roles = SystemUserRoles.ArtistMember | SystemUserRoles.VisualArtist;
             var testArtistUser2Id = addUserTask.DoTask(testArtistUser2);
             Assert.IsTrue(testArtistUser2Id.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testManagerUser = TestModel.User;
+            var testManagerUser = TestsModel.User;
             testManagerUser.Roles = SystemUserRoles.ArtistManager;
             testManagerUser.Type = UserType.SystemUser;
             var testManagerUserId = addUserTask.DoTask(testManagerUser);
             Assert.IsTrue(testManagerUserId.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testLabelUser = TestModel.User;
+            var testLabelUser = TestsModel.User;
             testLabelUser.Type = UserType.LabelAdministrator;
             var testLabelUserId = addUserTask.DoTask(testLabelUser);
             Assert.IsTrue(testLabelUserId.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testPublisherUser = TestModel.User;
+            var testPublisherUser = TestsModel.User;
             testPublisherUser.Type = UserType.PublisherAdministrator;
             var testPublisherUserId = addUserTask.DoTask(testPublisherUser);
             Assert.IsTrue(testPublisherUserId.Data.HasValue);
             addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
-            var testAdminUser = TestModel.User;
+            var testAdminUser = TestsModel.User;
             var testAdminUserId = addUserTask.DoTask(testAdminUser);
             Assert.IsTrue(testAdminUserId.Data.HasValue);
             
@@ -192,6 +192,13 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(testArtistUser2.PerformingRightsOrganizationId, user2.PerformingRightsOrganizationId);
             Assert.AreEqual(testArtistUser2.PublisherId, user2.PublisherId);
 
+            var person1 = testArtistUser1.Person;
+            var person2 = testArtistUser2.Person;
+            var person3 = testManagerUser.Person;
+            var person4 = testLabelUser.Person;
+            var person5 = testPublisherUser.Person;
+            var person6 = testAdminUser.Person;
+
             var removeUserTask = new RemoveUser(DbContext);
             var removeResult1 = removeUserTask.DoTask(testArtistUser1);
             var removeResult2 = removeUserTask.DoTask(testArtistUser2);
@@ -217,6 +224,32 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 
             Assert.IsTrue(removeResult6.Success);
             Assert.IsNull(removeResult6.Exception);
+
+            var removePersonTask = new RemovePerson(DbContext);
+            var removePersonResult1 = removePersonTask.DoTask(person1);
+            var removePersonResult2 = removePersonTask.DoTask(person2);
+            var removePersonResult3 = removePersonTask.DoTask(person3);
+            var removePersonResult4 = removePersonTask.DoTask(person4);
+            var removePersonResult5 = removePersonTask.DoTask(person5);
+            var removePersonResult6 = removePersonTask.DoTask(person6);
+
+            Assert.IsTrue(removePersonResult1.Success);
+            Assert.IsNull(removePersonResult1.Exception);
+
+            Assert.IsTrue(removePersonResult2.Success);
+            Assert.IsNull(removePersonResult2.Exception);
+
+            Assert.IsTrue(removePersonResult3.Success);
+            Assert.IsNull(removePersonResult3.Exception);
+
+            Assert.IsTrue(removePersonResult4.Success);
+            Assert.IsNull(removePersonResult4.Exception);
+
+            Assert.IsTrue(removePersonResult5.Success);
+            Assert.IsNull(removePersonResult5.Exception);
+
+            Assert.IsTrue(removePersonResult6.Success);
+            Assert.IsNull(removePersonResult6.Exception);
         }
 
         [TestMethod]

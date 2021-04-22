@@ -16,7 +16,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var task = new SendUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new GetInstallation(DbContext));
-            var testUserInvitation = TestModel.UserInvitation;
+            var testUserInvitation = TestsModel.UserInvitation;
             var result = task.DoTask(testUserInvitation);
 
             Assert.IsTrue(result.Success);

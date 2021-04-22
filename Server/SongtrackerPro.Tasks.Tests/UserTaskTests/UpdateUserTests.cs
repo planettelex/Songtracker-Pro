@@ -13,18 +13,18 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void UpdateUserModel(User user)
         {
             var stamp = DateTime.Now.Ticks;
-            var newAddress = TestModel.Address;
+            var newAddress = TestsModel.Address;
             user.Person.FirstName = "Jack";
             user.Person.MiddleName = "M.";
             user.Person.LastName = "Hoff";
             user.Person.NameSuffix = ";)";
-            user.Person.Phone = TestModel.PhoneNumber;
+            user.Person.Phone = TestsModel.PhoneNumber;
             user.Person.Email = $"test@update{stamp}.com";
             user.Person.Address.Street = newAddress.Street;
             user.Person.Address.City = newAddress.City;
             user.Person.Address.Region = newAddress.Region;
             user.Person.Address.PostalCode = newAddress.PostalCode;
-            user.SocialSecurityNumber = TestModel.SocialSecurityNumber;
+            user.SocialSecurityNumber = TestsModel.SocialSecurityNumber;
             user.PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString();
             user.SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString();
         }
@@ -32,7 +32,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testUser = TestModel.User;
+            var testUser = TestsModel.User;
             testUser.Type = UserType.SystemUser;
             var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
             var addUserResult = addUserTask.DoTask(testUser);
@@ -76,11 +76,18 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(toUpdate.Person.Address.Country.Name, user.Person.Address.Country.Name);
             Assert.AreEqual(toUpdate.Person.Address.Country.IsoCode, user.Person.Address.Country.IsoCode);
 
+            var person = user.Person;
             var removeUserTask = new RemoveUser(DbContext);
             var removeUserResult = removeUserTask.DoTask(user);
 
             Assert.IsTrue(removeUserResult.Success);
             Assert.IsNull(removeUserResult.Exception);
+
+            var removePersonTask = new RemovePerson(DbContext);
+            var removePersonResult = removePersonTask.DoTask(person);
+
+            Assert.IsTrue(removePersonResult.Success);
+            Assert.IsNull(removePersonResult.Exception);
         }
 
         [TestMethod]

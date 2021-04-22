@@ -526,7 +526,6 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("authentication_id");
 
                     b.Property<string>("AuthenticationToken")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("authentication_token");
 

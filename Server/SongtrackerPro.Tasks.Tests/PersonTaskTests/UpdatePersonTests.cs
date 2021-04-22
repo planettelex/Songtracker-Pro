@@ -9,19 +9,19 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
     {
         public void UpdatePersonModel(Person person)
         {
-            var personUpdates = TestModel.Person;
+            var personUpdates = TestsModel.Person;
             person.FirstName = personUpdates.FirstName;
             person.MiddleName = personUpdates.MiddleName;
             person.LastName = personUpdates.LastName;
             person.NameSuffix = personUpdates.NameSuffix;
-            person.Phone = TestModel.PhoneNumber;
-            person.Address = TestModel.Address;
+            person.Phone = TestsModel.PhoneNumber;
+            person.Address = TestsModel.Address;
         }
 
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testPerson = TestModel.Person;
+            var testPerson = TestsModel.Person;
             var addPersonTask = new AddPerson(DbContext);
             var addPersonResult = addPersonTask.DoTask(testPerson);
 

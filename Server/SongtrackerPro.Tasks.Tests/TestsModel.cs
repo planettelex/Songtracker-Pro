@@ -85,7 +85,23 @@ namespace SongtrackerPro.Tasks.Tests
                 return $"{first}-{second}-{third}";
             }
         }
-        
+
+        public string AuthenticationToken
+        {
+            get
+            {
+                // ReSharper disable StringLiteralTypo
+                const string authenticationTokenCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var tokenChars = new char[15];
+                var random = new Random();
+
+                for (var i = 0; i < tokenChars.Length; i++)
+                    tokenChars[i] = authenticationTokenCharacters[random.Next(authenticationTokenCharacters.Length)];
+                
+                return new string(tokenChars);
+            }
+        }
+
         public Platform Platform
         {
             get
@@ -238,15 +254,14 @@ namespace SongtrackerPro.Tasks.Tests
                     Type = UserType.SystemAdministrator,
                     ProfileImageUrl = "http://profile-image.png",
                     AuthenticationId = email,
-                    AuthenticationToken = "Token_" + stamp,
+                    AuthenticationToken = null,
                     PerformingRightsOrganization = ascap,
                     PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString(),
                     SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString(),
                     Person = person,
                     SocialSecurityNumber = SocialSecurityNumber,
                     Publisher = publisher,
-                    RecordLabel = recordLabel,
-                    LastLogin = DateTime.Now.AddDays(-1),
+                    RecordLabel = recordLabel
                 };
             }
         }

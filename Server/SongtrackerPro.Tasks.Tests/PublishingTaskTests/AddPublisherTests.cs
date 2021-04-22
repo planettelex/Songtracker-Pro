@@ -11,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
         public void TaskSuccessTest()
         {
             var task = new AddPublisher(DbContext);
-            var testPublisher = TestModel.Publisher;
+            var testPublisher = TestsModel.Publisher;
             var result = task.DoTask(testPublisher);
 
             Assert.IsTrue(result.Success);

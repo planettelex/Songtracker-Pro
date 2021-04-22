@@ -7,13 +7,13 @@ namespace SongtrackerPro.Tasks.Tests
     {
         protected TestsBase()
         {
-            TestModel = new TestsModel(DbContext);
+            TestsModel = new TestsModel(DbContext);
         }
 
         public ApplicationDbContext DbContext => new ApplicationDbContext(ApplicationSettings.Database.ConnectionString);
 
         public ApplicationDbContext EmptyDbContext => new ApplicationDbContext(string.Empty);
 
-        public TestsModel TestModel { get; set; }
+        public TestsModel TestsModel { get; set; }
     }
 }

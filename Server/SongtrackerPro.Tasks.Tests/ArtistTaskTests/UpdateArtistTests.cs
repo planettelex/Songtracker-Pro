@@ -33,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var testArtist = TestModel.Artist;
+            var testArtist = TestsModel.Artist;
             var addArtistTask = new AddArtist(DbContext);
             var addArtistResult = addArtistTask.DoTask(testArtist);
 

@@ -10,7 +10,7 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
         public void TaskSuccessTest()
         {
             var addPublisherTask = new AddPublisher(DbContext);
-            var testPublisher = TestModel.Publisher;
+            var testPublisher = TestsModel.Publisher;
             var testPublisherId = addPublisherTask.DoTask(testPublisher);
             Assert.IsTrue(testPublisherId.Data.HasValue);
 
