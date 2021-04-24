@@ -26,6 +26,13 @@ namespace SongtrackerPro.Utilities.Tests
         }
 
         [TestMethod]
+        public void ApiDocumentationTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Api.Documentation);
+            Assert.IsTrue(ApplicationSettings.Api.Documentation.Length > 0);
+        }
+
+        [TestMethod]
         public void ApiCultureTest()
         {
             Assert.IsNotNull(ApplicationSettings.Api.Culture);

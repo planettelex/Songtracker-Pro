@@ -18,6 +18,10 @@
       "Value": "Artist member not found."
     },
     {
+      "Key": "INSTALLATION_NOT_FOUND",
+      "Value": "Installation not found."
+    },
+    {
       "Key": "PERSON_NOT_FOUND",
       "Value": "Person not found."
     },

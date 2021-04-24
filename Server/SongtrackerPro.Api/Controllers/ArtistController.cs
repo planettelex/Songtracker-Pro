@@ -1,13 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SongtrackerPro.Api.Attributes;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.ArtistTasks;
+using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Api.Controllers
 {
     [ApiController]
     public class ArtistController : ApiControllerBase
     {
-        public ArtistController(IListArtistsTask listArtistsTask,
+        public ArtistController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+                                IListArtistsTask listArtistsTask,
                                 IGetArtistTask getArtistTask,
                                 IAddArtistTask addArtistTask,
                                 IUpdateArtistTask updateArtistTask,
@@ -25,8 +32,8 @@ namespace SongtrackerPro.Api.Controllers
                                 IUpdateArtistMemberTask updateArtistMemberTask,
                                 IListArtistManagersTask listArtistManagersTask,
                                 IAddArtistManagerTask addArtistManagerTask,
-                                IUpdateArtistManagerTask updateArtistManagerTask
-        )
+                                IUpdateArtistManagerTask updateArtistManagerTask) : 
+        base(getUserByAuthenticationTokenTask)
         {
             _listArtistsTask = listArtistsTask;
             _getArtistTask = getArtistTask;
@@ -70,168 +77,607 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Artists)]
         [HttpPost]
-        public string AddArtist(Artist artist)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator)]
+        public IActionResult AddArtist(Artist artist)
         {
+            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                return Unauthorized();
+
+            if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabelId != artist.RecordLabelId)
+                return Unauthorized();
+
             var taskResults = _addArtistTask.DoTask(artist);
 
-            return JsonSerialize(taskResults);
+            if (taskResults.Success)
+                return Ok(JsonSerialize(taskResults));
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [Route(Routes.Artists)]
         [HttpGet]
-        public string ListArtists()
+        [UserTypesAllowed(UserType.Unassigned)]
+        public IActionResult ListArtists()
         {
-            var taskResults = _listArtistsTask.DoTask(null);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                var taskResults = _listArtistsTask.DoTask(null);
+
+                if (!taskResults.Success) 
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+
+                var artists = taskResults.Data;
+                foreach (var artist in artists)
+                    RedactArtistData(artist);
+            
+                return Ok(JsonSerialize(artists));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.Artist)]
         [HttpGet]
-        public string GetArtist(int id)
+        [UserTypesAllowed(UserType.Unassigned)]
+        public IActionResult GetArtist(int id)
         {
-            var taskResults = _getArtistTask.DoTask(id);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                var taskResults = _getArtistTask.DoTask(id);
+
+                if (!taskResults.Success) 
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+
+                var artist = taskResults.Data;
+                RedactArtistData(artist);
+
+                return Ok(JsonSerialize(artist));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.Artist)]
         [HttpPut]
-        public void UpdateArtist(int id, Artist artist)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult UpdateArtist(int id, Artist artist)
         {
-            artist.Id = id;
-            _updateArtistTask.DoTask(artist);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                if (!UserIsAuthorizedForArtist(id))
+                    return Unauthorized();
+
+                artist.Id = id;
+                var taskResults = _updateArtistTask.DoTask(artist);
+
+                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistMembers)]
         [HttpPost]
-        public string AddArtistMember(int artistId, ArtistMember artistMember)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult AddArtistMember(int artistId, ArtistMember artistMember)
         {
-            artistMember.ArtistId = artistId;
-            var taskResults = _addArtistMemberTask.DoTask(artistMember);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistMember.ArtistId = artistId;
+                var taskResults = _addArtistMemberTask.DoTask(artistMember);
+
+                if (taskResults.Success)
+                    return Ok(JsonSerialize(taskResults));
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistMembers)]
         [HttpGet]
-        public string ListArtistMembers(int artistId)
+        [UserTypesAllowed(UserType.Unassigned)]
+        public IActionResult ListArtistMembers(int artistId)
         {
-            var artist = _getArtistTask.DoTask(artistId).Data;
-            var taskResults = _listArtistMembersTask.DoTask(artist);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                var artist = _getArtistTask.DoTask(artistId).Data;
+                var taskResults = _listArtistMembersTask.DoTask(artist);
+
+                if (!taskResults.Success)
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+
+                var artistMembers = taskResults.Data;
+                foreach (var artistMember in artistMembers)
+                    RedactPersonData(artistMember.Member, artist);
+
+                return Ok(JsonSerialize(artistMembers));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistMember)]
         [HttpPut]
-        public void UpdateArtistMember(int artistId, int artistMemberId, ArtistMember artistMember)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult UpdateArtistMember(int artistId, int artistMemberId, ArtistMember artistMember)
         {
-            artistMember.ArtistId = artistId;
-            artistMember.Id = artistMemberId;
-            _updateArtistMemberTask.DoTask(artistMember);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistMember.ArtistId = artistId;
+                artistMember.Id = artistMemberId;
+                var taskResults = _updateArtistMemberTask.DoTask(artistMember);
+
+                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistManagers)]
         [HttpPost]
-        public string AddArtistManager(int artistId, ArtistManager artistManager)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult AddArtistManager(int artistId, ArtistManager artistManager)
         {
-            artistManager.ArtistId = artistId;
-            var taskResults = _addArtistManagerTask.DoTask(artistManager);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistManager.ArtistId = artistId;
+                var taskResults = _addArtistManagerTask.DoTask(artistManager);
+
+                if (taskResults.Success)
+                    return Ok(JsonSerialize(taskResults));
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistManagers)]
         [HttpGet]
-        public string ListArtistManagers(int artistId)
+        [UserTypesAllowed(UserType.Unassigned)]
+        public IActionResult ListArtistManagers(int artistId)
         {
-            var artist = _getArtistTask.DoTask(artistId).Data;
-            var taskResults = _listArtistManagersTask.DoTask(artist);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                var artist = _getArtistTask.DoTask(artistId).Data;
+                var taskResults = _listArtistManagersTask.DoTask(artist);
+
+                if (!taskResults.Success)
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+
+                var artistManagers = taskResults.Data;
+                foreach (var artistManager in artistManagers)
+                    RedactPersonData(artistManager.Manager, artist);
+
+                return Ok(JsonSerialize(artistManagers));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistManager)]
         [HttpPut]
-        public void UpdateArtistManager(int artistId, int artistManagerId, ArtistManager artistManager)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult UpdateArtistManager(int artistId, int artistManagerId, ArtistManager artistManager)
         {
-            artistManager.ArtistId = artistId;
-            artistManager.Id = artistManagerId;
-            _updateArtistManagerTask.DoTask(artistManager);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistManager.ArtistId = artistId;
+                artistManager.Id = artistManagerId;
+                var taskResults = _updateArtistManagerTask.DoTask(artistManager);
+
+                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistAccounts)]
         [HttpPost]
-        public string AddArtistAccount(int artistId, ArtistAccount artistAccount)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult AddArtistAccount(int artistId, ArtistAccount artistAccount)
         {
-            artistAccount.ArtistId = artistId;
-            var taskResults = _addArtistAccountTask.DoTask(artistAccount);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistAccount.ArtistId = artistId;
+                var taskResults = _addArtistAccountTask.DoTask(artistAccount);
+
+                if (taskResults.Success)
+                    return Ok(JsonSerialize(taskResults));
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistAccounts)]
         [HttpGet]
-        public string ListArtistAccounts(int artistId)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult ListArtistAccounts(int artistId)
         {
-            var artist = _getArtistTask.DoTask(artistId).Data;
-            var taskResults = _listArtistAccountsTask.DoTask(artist);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                var artist = _getArtistTask.DoTask(artistId).Data;
+                var taskResults = _listArtistAccountsTask.DoTask(artist);
+
+                if (taskResults.Success)
+                    return Ok(JsonSerialize(taskResults));
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistAccount)]
         [HttpPut]
-        public void UpdateArtistAccount(int artistId, int artistAccountId, ArtistAccount artistAccount)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult UpdateArtistAccount(int artistId, int artistAccountId, ArtistAccount artistAccount)
         {
-            artistAccount.ArtistId = artistId;
-            artistAccount.Id = artistAccountId;
-            _updateArtistAccountTask.DoTask(artistAccount);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistAccount.ArtistId = artistId;
+                artistAccount.Id = artistAccountId;
+                var taskResults = _updateArtistAccountTask.DoTask(artistAccount);
+
+                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistAccount)]
         [HttpDelete]
-        public void RemoveArtistAccount(int artistId, int artistAccountId)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult RemoveArtistAccount(int artistId, int artistAccountId)
         {
-            var toRemove = _getArtistAccountTask.DoTask(artistAccountId).Data;
-            if (toRemove == null)
-                return;
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            if (toRemove.ArtistId == artistId)
-                _removeArtistAccountTask.DoTask(toRemove);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                var toRemove = _getArtistAccountTask.DoTask(artistAccountId).Data;
+                if (toRemove == null)
+                    return Ok(JsonSerialize(false));
+
+                if (toRemove.ArtistId == artistId)
+                {
+                    var taskResults = _removeArtistAccountTask.DoTask(toRemove);
+                    if (taskResults.Success)
+                        return Ok(JsonSerialize(true));
+                }
+                
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
         }
 
         [Route(Routes.ArtistLinks)]
         [HttpPost]
-        public string AddArtistLink(int artistId, ArtistLink artistLink)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult AddArtistLink(int artistId, ArtistLink artistLink)
         {
-            artistLink.ArtistId = artistId;
-            var taskResults = _addArtistLinkTask.DoTask(artistLink);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                artistLink.ArtistId = artistId;
+                var taskResults = _addArtistLinkTask.DoTask(artistLink);
+
+                if (taskResults.Success)
+                    return Ok(JsonSerialize(taskResults));
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistLinks)]
         [HttpGet]
-        public string ListArtistLinks(int artistId)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult ListArtistLinks(int artistId)
         {
-            var artist = _getArtistTask.DoTask(artistId).Data;
-            var taskResults = _listArtistLinksTask.DoTask(artist);
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            return JsonSerialize(taskResults);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                var artist = _getArtistTask.DoTask(artistId).Data;
+                var taskResults = _listArtistLinksTask.DoTask(artist);
+
+                if (taskResults.Success)
+                    return Ok(JsonSerialize(taskResults));
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [Route(Routes.ArtistLink)]
         [HttpDelete]
-        public void RemoveArtistLink(int artistId, int artistLinkId)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult RemoveArtistLink(int artistId, int artistLinkId)
         {
-            var toRemove = _getArtistLinkTask.DoTask(artistLinkId).Data;
-            if (toRemove == null)
-                return;
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            if (toRemove.ArtistId == artistId)
-                _removeArtistLinkTask.DoTask(toRemove);
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                var toRemove = _getArtistLinkTask.DoTask(artistLinkId).Data;
+                if (toRemove == null)
+                    return Ok(JsonSerialize(false));
+
+                if (toRemove.ArtistId == artistId)
+                {
+                    var taskResults = _removeArtistLinkTask.DoTask(toRemove);
+                    if (taskResults.Success)
+                        return Ok(JsonSerialize(true));
+                }
+                
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
+        }
+
+        private bool UserIsAuthorizedForArtist(int artistId)
+        {
+            switch (AuthenticatedUser.Type)
+            {
+                case UserType.SystemAdministrator:
+                    return true;
+                case UserType.PublisherAdministrator:
+                case UserType.Unassigned:
+                    return false;
+            }
+
+            var artistResult = _getArtistTask.DoTask(artistId);
+            if (!artistResult.Success)
+                throw artistResult.Exception;
+
+            var artist = artistResult.Data;
+
+            if (AuthenticatedUser.Type == UserType.LabelAdministrator && artist.RecordLabelId == AuthenticatedUser.RecordLabelId)
+                return true;
+            
+            if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+            {
+                var artistMemberResults = _listArtistMembersTask.DoTask(artist);
+
+                if (!artistMemberResults.Success) 
+                    throw artistMemberResults.Exception;
+
+                if (artistMemberResults.Data.Any(am => am.PersonId == AuthenticatedUser.PersonId))
+                    return true;
+            }
+
+            if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+            {
+                var artistManagerResults = _listArtistManagersTask.DoTask(artist);
+
+                if (!artistManagerResults.Success) 
+                    throw artistManagerResults.Exception;
+
+                if (artistManagerResults.Data.Any(am => am.PersonId == AuthenticatedUser.PersonId))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void RedactArtistData(Artist artist)
+        {
+            switch (AuthenticatedUser.Type)
+            {
+                case UserType.SystemUser:
+                    if (!AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember) ||
+                        !AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    {
+                        artist.TaxId = null;
+                        break;
+                    }
+                    
+                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+                    {
+                        var artistMemberResults = _listArtistMembersTask.DoTask(artist);
+
+                        if (!artistMemberResults.Success) 
+                            throw artistMemberResults.Exception;
+
+                        if (artistMemberResults.Data.All(am => am.PersonId != AuthenticatedUser.PersonId))
+                            artist.TaxId = null;
+                    }
+
+                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    {
+                        var artistManagerResults = _listArtistManagersTask.DoTask(artist);
+
+                        if (!artistManagerResults.Success) 
+                            throw artistManagerResults.Exception;
+
+                        if (artistManagerResults.Data.All(am => am.PersonId != AuthenticatedUser.PersonId))
+                            artist.TaxId = null;
+                    }
+                    break;
+                case UserType.Unassigned:
+                case UserType.PublisherAdministrator:
+                case UserType.LabelAdministrator when artist.RecordLabelId != AuthenticatedUser.RecordLabelId:
+                    artist.TaxId = null;
+                    break;
+            }
+        }
+
+        private void RedactPersonData(Person person, Artist artist)
+        {
+            if (AuthenticatedUser.PersonId == person.Id)
+                return;
+            
+            switch (AuthenticatedUser.Type)
+            {
+                case UserType.SystemUser:
+                    if (!AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember) ||
+                        !AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    {
+                        RemoveSensitivePersonData(person);
+                        break;
+                    }
+
+                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+                    {
+                        var artistMemberResults = _listArtistMembersTask.DoTask(artist);
+
+                        if (!artistMemberResults.Success) 
+                            throw artistMemberResults.Exception;
+
+                        if (artistMemberResults.Data.All(am => am.PersonId != person.Id))
+                            RemoveSensitivePersonData(person);
+                    }
+
+                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    {
+                        var artistManagerResults = _listArtistManagersTask.DoTask(artist);
+
+                        if (!artistManagerResults.Success) 
+                            throw artistManagerResults.Exception;
+
+                        if (artistManagerResults.Data.All(am => am.PersonId != person.Id))
+                            RemoveSensitivePersonData(person);
+                    }
+                    break;
+                case UserType.Unassigned:
+                    RemoveSensitivePersonData(person);
+                    break;
+            }
+        }
+
+        private static void RemoveSensitivePersonData(Person person)
+        {
+            person.Email = null;
+            person.Phone = null;
+            person.Address = null;
+            person.AddressId = null;
         }
     }
 }

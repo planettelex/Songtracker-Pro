@@ -34,6 +34,7 @@
             "ARTIST_ACCOUNT_NOT_FOUND",
             "ARTIST_MANAGER_NOT_FOUND",
             "ARTIST_MEMBER_NOT_FOUND",
+            "INSTALLATION_NOT_FOUND",
             "PERSON_NOT_FOUND",
             "PLATFORM_NOT_FOUND",
             "PUBLISHER_NOT_FOUND",

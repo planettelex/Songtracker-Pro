@@ -1,12 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SongtrackerPro.Api.Attributes;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Tasks.GeographicTasks;
+using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Api.Controllers
 {
     [ApiController]
     public class GeographicController : ApiControllerBase
     {
-        public GeographicController(IListCountriesTask listCountriesTask)
+        public GeographicController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+                                    IListCountriesTask listCountriesTask) : 
+        base(getUserByAuthenticationTokenTask)
         {
             _listCountriesTask = listCountriesTask;
         }
@@ -14,11 +21,18 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Countries)]
         [HttpGet]
-        public string ListCountries()
+        [UserTypesAllowed(UserType.Unassigned)]
+        public IActionResult ListCountries()
         {
+            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                return Unauthorized();
+
             var taskResults = _listCountriesTask.DoTask(null);
 
-            return JsonSerialize(taskResults);
+            if (taskResults.Success)
+                return Ok(JsonSerialize(taskResults));
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

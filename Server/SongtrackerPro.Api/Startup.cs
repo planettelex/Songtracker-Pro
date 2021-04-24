@@ -123,6 +123,7 @@ namespace SongtrackerPro.Api
 
             services.AddScoped<IListUsersTask, ListUsers>();
             services.AddScoped<IGetUserTask, GetUser>();
+            services.AddScoped<IGetUserByAuthenticationTokenTask, GetUserByAuthenticationToken>();
             services.AddScoped<IAddUserTask, AddUser>();
             services.AddScoped<IUpdateUserTask, UpdateUser>();
             services.AddScoped<ILoginUserTask, LoginUser>();

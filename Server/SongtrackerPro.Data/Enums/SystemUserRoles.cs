@@ -10,6 +10,7 @@ namespace SongtrackerPro.Data.Enums
         ArtistMember = 2,
         ArtistManager = 4,
         Producer = 8,
-        VisualArtist = 16
+        VisualArtist = 16,
+        All = Songwriter | ArtistMember | ArtistManager | Producer | VisualArtist
     }
 }

@@ -1,17 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SongtrackerPro.Api.Attributes;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Tasks.RecordLabelTasks;
+using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Api.Controllers
 {
     [ApiController]
     public class RecordLabelController : ApiControllerBase
     {
-        public RecordLabelController(IListRecordLabelsTask listRecordLabelsTask,
+        public RecordLabelController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+                                     IListRecordLabelsTask listRecordLabelsTask,
                                      IGetRecordLabelTask getRecordLabelTask,
                                      IAddRecordLabelTask addRecordLabelTask,
-                                     IUpdateRecordLabelTask updateRecordLabelTask
-        )
+                                     IUpdateRecordLabelTask updateRecordLabelTask) :
+        base(getUserByAuthenticationTokenTask)
         {
             _listRecordLabelsTask = listRecordLabelsTask;
             _getRecordLabelTask = getRecordLabelTask;
@@ -25,37 +31,78 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.RecordLabels)]
         [HttpPost]
-        public string AddRecordLabel(RecordLabel recordLabel)
+        [UserTypesAllowed(UserType.SystemAdministrator)]
+        public IActionResult AddRecordLabel(RecordLabel recordLabel)
         {
+            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                return Unauthorized();
+
             var taskResults = _addRecordLabelTask.DoTask(recordLabel);
 
-            return JsonSerialize(taskResults);
+            if (taskResults.Success)
+                return Ok(JsonSerialize(taskResults));
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [Route(Routes.RecordLabels)]
         [HttpGet]
-        public string ListRecordLabels()
+        [UserTypesAllowed(UserType.SystemAdministrator)]
+        public IActionResult ListRecordLabels()
         {
+            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                return Unauthorized();
+
             var taskResults = _listRecordLabelsTask.DoTask(null);
 
-            return JsonSerialize(taskResults);
+            if (taskResults.Success)
+                return Ok(JsonSerialize(taskResults));
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [Route(Routes.RecordLabel)]
         [HttpGet]
-        public string GetRecordLabel(int id)
+        [UserTypesAllowed(UserType.Unassigned)]
+        [SystemUserRolesAllowed(SystemUserRoles.All)]
+        public IActionResult GetRecordLabel(int id)
         {
+            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                return Unauthorized();
+
             var taskResults = _getRecordLabelTask.DoTask(id);
 
-            return JsonSerialize(taskResults);
+            if (taskResults.Success)
+            {
+                var userIsLabelAdmin = AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id == id;
+                var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsLabelAdmin;
+                if (!allowedToSeeSensitiveData)
+                    taskResults.Data.TaxId = null;
+
+                return Ok(JsonSerialize(taskResults));
+            }
+            
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [Route(Routes.RecordLabel)]
         [HttpPut]
-        public void UpdateRecordLabel(int id, RecordLabel recordLabel)
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator)]
+        public IActionResult UpdateRecordLabel(int id, RecordLabel recordLabel)
         {
+            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                return Unauthorized();
+
+            if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id != id)
+                return Unauthorized();
+
             recordLabel.Id = id;
-            _updateRecordLabelTask.DoTask(recordLabel);
+            var taskResults =_updateRecordLabelTask.DoTask(recordLabel);
+
+            if (taskResults.Success)
+                return Ok();
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

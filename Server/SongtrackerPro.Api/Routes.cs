@@ -3,6 +3,8 @@
     public static class Routes
     {
         public const string Root = "/";
+        public const string System = "/system";
+        public const string SystemSeed = "/system/seed";
         public const string Countries = "/countries";
         public const string Services = "/services";
         public const string PerformingRightsOrganizations = "/performing-rights-organizations";
@@ -25,7 +27,7 @@
         public const string Invitations = "/invitations";
         public const string Invitation = "/invitations/{uuid}";
         public const string Users = "/users";
-        public const string User = "/users/{uuid}";
+        public const string User = "/users/{id}";
         public const string UserAccounts = "/users/{userid}/accounts";
         public const string UserAccount = "/users/{userid}/accounts/{useraccountid}";
         public const string Login = "/login";

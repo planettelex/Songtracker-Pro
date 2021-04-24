@@ -92,6 +92,17 @@ namespace SongtrackerPro.Utilities
             }
             private static string _hostingConsole;
 
+            public static string Documentation
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _documentation;
+                }
+                set => _documentation = value;
+            }
+            private static string _documentation;
+
             public static string Culture
             {
                 get
@@ -268,6 +279,7 @@ namespace SongtrackerPro.Utilities
             Api.Culture = configuration.GetSection("Api")?.GetSection("Culture")?.Value;
             Api.Currency = configuration.GetSection("Api")?.GetSection("Currency")?.Value;
             Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
+            Api.Documentation = configuration.GetSection("Api")?.GetSection("Documentation")?.Value;
 
             Web.Domain = configuration.GetSection("Web")?.GetSection("Domain")?.Value;
             Web.IsSecure = bool.Parse(configuration.GetSection("Web")?.GetSection("IsSecure")?.Value ?? bool.FalseString);
