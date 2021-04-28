@@ -482,16 +482,12 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.ArtistLinks)]
         [HttpGet]
-        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
-        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult ListArtistLinks(int artistId)
         {
             try
             {
                 if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                    return Unauthorized();
-
-                if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
 
                 var artist = _getArtistTask.DoTask(artistId).Data;
