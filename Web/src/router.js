@@ -31,6 +31,11 @@ const router = new Router({
           path: "starterpage",
           component: () => import("@/views/StarterPage"),
         },
+        {
+          name: "UserEarnings",
+          path: "my-earnings",
+          component: () => import("@/views/system-user/Earnings"),
+        }
       ],
     },
 

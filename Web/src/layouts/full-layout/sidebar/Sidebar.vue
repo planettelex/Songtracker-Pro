@@ -34,7 +34,10 @@
 
 <script>
 import { mapState } from "vuex";
-import SidebarItems from "./SidebarItems";
+import SidebarMenu from "./SidebarMenu";
+import userType from "../../../usertype";
+
+var sidebarMenu = SidebarMenu(userType.SystemUser);
 export default {
   name: "Sidebar",
   props: {
@@ -44,7 +47,7 @@ export default {
     }
   },
   data: () => ({
-    items: SidebarItems
+    items: sidebarMenu
   }),
   computed: {
     ...mapState(["SidebarColor", "SidebarBg"]),
