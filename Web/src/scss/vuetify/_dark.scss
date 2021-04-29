@@ -1,0 +1,60 @@
+.v-application {
+  &.theme--dark {
+    background: $dark-theme-layout;
+    .border-left {
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .border-right {
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .border-top {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .border {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    // Custom setting layout color
+    .v-card,
+    .v-footer,
+    .v-data-table {
+      background-color: $dark-theme-card;
+    }
+
+    .v-list {
+      background: $dark-theme-card;
+    }
+
+    .todo-cards .v-card {
+      background: #255c63;
+    }
+
+    .progress-cards .v-card {
+      background: #1e374e;
+    }
+
+    // input color
+    .v-text-field > .v-input__control > .v-input__slot:before,
+    .v-text-field:not(.v-input--has-state):hover
+      > .v-input__control
+      > .v-input__slot:before {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    // recent comment widget
+    .comment-widgets .comment-row:hover,
+    .comment-widgets .comment-row.active {
+      background: $dark-theme-hover;
+    }
+    .blue-grey.lighten-5 {
+      background-color: $dark-theme-layout !important;
+    }
+  }
+}
