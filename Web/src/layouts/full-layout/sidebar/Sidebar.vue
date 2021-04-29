@@ -12,19 +12,6 @@
     id="main-sidebar"
     v-bar
   >
-    <!---USer Area -->
-    <v-list-item two-line class="profile-bg">
-      <v-list-item-avatar>
-        <img src="https://randomuser.me/api/portraits/men/81.jpg" />
-      </v-list-item-avatar>
-
-      <v-list-item-content >
-        <v-list-item-title>Dohnathan Deo</v-list-item-title>
-        <v-list-item-subtitle class="caption">Webdesigner</v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-    <v-divider></v-divider>
-    <!---USer Area -->
 
     <v-list expand nav class="mt-1">
       <template v-for="(item, i) in items">
@@ -42,30 +29,6 @@
       <!---Sidebar Items -->
     </v-list>
     <v-divider></v-divider>
-    <!--- Progress -->
-    <v-list-item two-line>
-      <v-list-item-content class>
-        <v-list-item-title class="d-flex mb-3 align-center">
-          <span class="body-2 text-truncate">monthly profit</span>
-          <div class="ml-auto">
-            <h6 class="mb-0 info--text">80%</h6>
-          </div>
-        </v-list-item-title>
-        <v-progress-linear rounded value="80"></v-progress-linear>
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item two-line>
-      <v-list-item-content class>
-        <v-list-item-title class="d-flex mb-3 align-center">
-          <span class="body-2 text-truncate">Sales of the year</span>
-          <div class="ml-auto">
-            <h6 class="mb-0 success--text">54%</h6>
-          </div>
-        </v-list-item-title>
-        <v-progress-linear color="success" rounded value="54"></v-progress-linear>
-      </v-list-item-content>
-    </v-list-item>
-    <!--- Progress -->
   </v-navigation-drawer>
 </template>
 

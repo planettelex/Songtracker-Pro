@@ -1,8 +1,7 @@
 export default [
-    { header: "Personal" },
     {
         icon: 'mdi-file',
-        title: 'Starte Page',
+        title: 'Starter Page',
         to: '/starterpage',
-    },
+    }
 ]
