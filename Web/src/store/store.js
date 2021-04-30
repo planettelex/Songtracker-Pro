@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UserType from "../user-type";
+import UserType from "../enums/user-type";
 Vue.use(Vuex)
 
 export default new Vuex.Store({

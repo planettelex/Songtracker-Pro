@@ -1,7 +1,7 @@
-import UserType from "../../../user-type";
-function getSidebarMenu(type)
+import UserType from "../../../enums/user-type";
+function getSidebarMenu(userType)
 {
-    switch(type) {
+    switch(userType) {
         case UserType.SystemAdministrator:
             return [
                 {
