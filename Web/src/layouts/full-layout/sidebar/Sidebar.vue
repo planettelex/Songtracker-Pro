@@ -34,7 +34,7 @@
 <script>
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
-import UserType from "../../../enums/user-type";
+import UserType from "../../../enums/UserType";
 var sidebarMenu = SidebarMenu(UserType.SystemAdministrator);
 
 export default {
