@@ -63,24 +63,9 @@ const router = new Router({
       component: () => import("@/layouts/blank-layout/Blanklayout"),
       children: [
         {
-          name: "BoxedLogin",
-          path: "boxedlogin",
+          name: "Login",
+          path: "login",
           component: () => import("@/views/authentication/BoxedLogin"),
-        },
-        {
-          name: "FullLogin",
-          path: "fulllogin",
-          component: () => import("@/views/authentication/FullLogin"),
-        },
-        {
-          name: "BoxedRegister",
-          path: "boxedregister",
-          component: () => import("@/views/authentication/BoxedRegister"),
-        },
-        {
-          name: "FullRegister",
-          path: "fullregister",
-          component: () => import("@/views/authentication/FullRegister"),
         },
         {
           name: "Error",
