@@ -3,21 +3,31 @@ function getSidebarMenu(type)
 {
     switch(type) {
         case userType.SystemAdministrator:
-          // code block
-          break;
-        case userType.LabelAdministrator:
-          // code block
-          break;
-        case userType.PublisherAdministrator:
-          // code block
-          break;
-        case userType.SystemUser:
             return [
                 {
                     icon: 'mdi-file',
-                    title: 'Start Page',
-                    to: '/starterpage',
+                    title: 'System Information',
+                    to: '/system-information',
                 },
+            ];
+        case userType.LabelAdministrator:
+            return [
+                {
+                    icon: 'mdi-file',
+                    title: 'Earnings',
+                    to: '/label-earnings',
+                },
+            ];
+        case userType.PublisherAdministrator:
+            return [
+                {
+                    icon: 'mdi-file',
+                    title: 'Earnings',
+                    to: '/publisher-earnings',
+                },
+            ];
+        case userType.SystemUser:
+            return [
                 {
                     icon: 'mdi-file',
                     title: 'Earnings',

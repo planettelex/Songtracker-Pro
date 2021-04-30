@@ -1,15 +1,15 @@
 <template>
   <v-container fluid class="down-top-padding pt-0">
-    <h2>My Earnings</h2>
+    <h2>System Information</h2>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: "UserEarnings",
+  name: "SystemInformation",
   data: () => ({
     page: {
-      title: "My Earnings",
+      title: "System Information",
     },
   }),
 };

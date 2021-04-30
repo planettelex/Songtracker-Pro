@@ -31,6 +31,25 @@ const router = new Router({
           path: "starterpage",
           component: () => import("@/views/StarterPage"),
         },
+        // System Administrator
+        {
+          name: "SystemInformation",
+          path: "system-information",
+          component: () => import("@/views/system-administrator/SystemInformation"),
+        },
+        // Label Administrator
+        {
+          name: "LabelEarnings",
+          path: "label-earnings",
+          component: () => import("@/views/label-administrator/Earnings"),
+        },
+        // Publisher Administrator
+        {
+          name: "PublisherEarnings",
+          path: "publisher-earnings",
+          component: () => import("@/views/publisher-administrator/Earnings"),
+        },
+        // System User
         {
           name: "UserEarnings",
           path: "my-earnings",
@@ -40,7 +59,7 @@ const router = new Router({
     },
 
     {
-      path: "/authentication",
+      path: "/",
       component: () => import("@/layouts/blank-layout/Blanklayout"),
       children: [
         {

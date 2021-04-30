@@ -10,8 +10,7 @@
     :expand-on-hover="expandOnHover"
     app
     id="main-sidebar"
-    v-bar
-  >
+    v-bar>
 
     <v-list expand nav class="mt-1">
       <template v-for="(item, i) in items">
@@ -36,8 +35,8 @@
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
 import userType from "../../../usertype";
+var sidebarMenu = SidebarMenu(userType.SystemAdministrator);
 
-var sidebarMenu = SidebarMenu(userType.SystemUser);
 export default {
   name: "Sidebar",
   props: {
@@ -65,10 +64,10 @@ export default {
       this.$emit("update:expandOnHover", !val);
     }
   },
-
   methods: {}
 };
 </script>
+
 <style lang="scss">
 #main-sidebar{
   box-shadow:1px 0 20px rgba(0,0,0,.08);
@@ -110,7 +109,5 @@ export default {
       opacity:1;
     }
   }
-  
-
 }
 </style>
