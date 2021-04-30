@@ -2,9 +2,7 @@
   <v-app-bar
     app
     clipped-left
-    clipped-right
-    :color="navbarColor"
-  >
+    clipped-right>
     <!---Logo part -->
     <v-toolbar-title
       class="align-center d-flex logo-section"
@@ -22,7 +20,7 @@
       <v-app-bar-nav-icon
         @click="
           $vuetify.breakpoint.smAndDown
-            ? setSidebarDrawer(!Sidebar_drawer)
+            ? setSidebarDrawer(!SidebarDrawer)
             : $emit('input', !value)
         "
       />
@@ -94,7 +92,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(["navbarColor", "Sidebar_drawer"]),
+    ...mapState(["SidebarDrawer"]),
   },
 
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-model="Sidebar_drawer"
+    v-model="SidebarDrawer"
     :dark="SidebarColor !== 'white'"
     :color="SidebarColor"
     mobile-breakpoint="960"
@@ -34,8 +34,8 @@
 <script>
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
-import userType from "../../../usertype";
-var sidebarMenu = SidebarMenu(userType.SystemAdministrator);
+import UserType from "../../../user-type";
+var sidebarMenu = SidebarMenu(UserType.SystemAdministrator);
 
 export default {
   name: "Sidebar",
@@ -49,10 +49,10 @@ export default {
     items: sidebarMenu
   }),
   computed: {
-    ...mapState(["SidebarColor", "SidebarBg"]),
-    Sidebar_drawer: {
+    ...mapState(["SidebarColor"]),
+    SidebarDrawer: {
       get() {
-        return this.$store.state.Sidebar_drawer;
+        return this.$store.state.SidebarDrawer;
       },
       set(val) {
         this.$store.commit("SET_SIDEBAR_DRAWER", val);

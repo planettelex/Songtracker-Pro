@@ -1,8 +1,8 @@
-import userType from "../../../usertype";
+import UserType from "../../../user-type";
 function getSidebarMenu(type)
 {
     switch(type) {
-        case userType.SystemAdministrator:
+        case UserType.SystemAdministrator:
             return [
                 {
                     icon: 'mdi-file',
@@ -10,7 +10,7 @@ function getSidebarMenu(type)
                     to: '/system-information',
                 },
             ];
-        case userType.LabelAdministrator:
+        case UserType.LabelAdministrator:
             return [
                 {
                     icon: 'mdi-file',
@@ -18,7 +18,7 @@ function getSidebarMenu(type)
                     to: '/label-earnings',
                 },
             ];
-        case userType.PublisherAdministrator:
+        case UserType.PublisherAdministrator:
             return [
                 {
                     icon: 'mdi-file',
@@ -26,7 +26,7 @@ function getSidebarMenu(type)
                     to: '/publisher-earnings',
                 },
             ];
-        case userType.SystemUser:
+        case UserType.SystemUser:
             return [
                 {
                     icon: 'mdi-file',
