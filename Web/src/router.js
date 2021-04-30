@@ -23,14 +23,9 @@ const router = new Router({
   routes: [
     {
       path: "/",
-      redirect: "starterpage",
+      redirect: "login",
       component: () => import("@/layouts/full-layout/Layout"),
       children: [
-        {
-          name: "StarterPage",
-          path: "starterpage",
-          component: () => import("@/views/StarterPage"),
-        },
         // System Administrator
         {
           name: "SystemInformation",
@@ -65,12 +60,12 @@ const router = new Router({
         {
           name: "Login",
           path: "login",
-          component: () => import("@/views/authentication/BoxedLogin"),
+          component: () => import("@/views/authentication/Login"),
         },
         {
-          name: "Error",
-          path: "error",
-          component: () => import("@/views/authentication/Error"),
+          name: "404",
+          path: "404",
+          component: () => import("@/views/authentication/FourOhFour"),
         },
       ],
     },

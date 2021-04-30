@@ -3,10 +3,7 @@
     <div class="py-12">
       <div class="text-center">
         <h1 class="error-title error--text">404</h1>
-        <h3 class="text-uppercase error-subtitle">PAGE NOT FOUND !</h3>
-        <p class="text-muted mt-4 mb-4">
-          YOU SEEM TO BE TRYING TO FIND HIS WAY HOME
-        </p>
+        <h3 class="text-uppercase error-subtitle">PAGE NOT FOUND</h3>
         <v-btn color="info" href="./starterpage">Go to Home</v-btn>
       </div>
     </div>
