@@ -61,11 +61,13 @@ const router = new Router({
           name: "Login",
           path: "login",
           component: () => import("@/views/authentication/Login"),
+          meta: { unauthenticatedOk: true }
         },
         {
           name: "404",
           path: "*",
           component: () => import("@/views/authentication/FourOhFour"),
+          meta: { unauthenticatedOk: true }
         },
       ],
     },
@@ -81,6 +83,17 @@ router.beforeResolve((to, from, next) => {
     NProgress.start(800);
   }
   next();
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.unauthenticatedOk) {
+    console.log("No Auth Check");
+    next();
+  }
+  else {
+    console.log("Auth Check");
+    next();
+  }
 });
 
 router.afterEach(() => {

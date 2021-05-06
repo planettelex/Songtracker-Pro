@@ -6,6 +6,7 @@ import store from "./store/store";
 import Vuebar from "vuebar";
 import "./plugins/base";
 import VueSkycons from "vue-skycons";
+
 Vue.use(VueSkycons, {
   color: "#1e88e5",
 });
