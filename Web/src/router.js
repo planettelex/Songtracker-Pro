@@ -64,7 +64,7 @@ const router = new Router({
         },
         {
           name: "404",
-          path: "404",
+          path: "*",
           component: () => import("@/views/authentication/FourOhFour"),
         },
       ],
