@@ -53,7 +53,7 @@
         <v-list-item
           v-for="(item, i) in userprofile"
           :key="i"
-          
+          router :to="item.route"
           @click="href"
           color="primary"
         >
@@ -83,11 +83,11 @@ export default {
     showSearch: false,
     fav: true,
     userprofile: [
-      { title: "My Profile"},
-      { title: "Logout"},
+      { title: "My Profile", route: "/profile" },
+      { title: "Logout", route: "/login?logout=true"},
     ],
-    href() {
-      return undefined;
+    href: () =>  {
+      return "undefined";
     },
   }),
 

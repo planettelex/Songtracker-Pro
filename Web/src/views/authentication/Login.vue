@@ -37,6 +37,15 @@ export default {
       set(val) {
         this.$store.commit("SET_USER_AUTHENTICATED", val);
       }
+    },
+    ...mapState(["User"]),
+    User: {
+      get() {
+        return this.$store.state.User;
+      },
+      set(val) {
+        this.$store.commit("SET_USER", val);
+      }
     }
   },
   methods: {
@@ -53,15 +62,32 @@ export default {
         console.error(error);
         return null;
       }
+    },
+    async logout() {
+      try {
+        await this.$gAuth.signOut();
+        this.UserAuthenticated = false;
+        this.User = null;
+        this.$router.push("/");
+      } catch (error) {
+        // TODO: On fail do something.
+        console.error(error);
+        return null;
+      }
     }
   },
   mounted() {
     let that = this;
-    let checkGauthLoad = setInterval(function() {
+    let authLoaded = setInterval(function() {
       that.authInitialized = that.$gAuth.isInit;
       that.UserAuthenticated = that.$gAuth.isAuthorized;
-      if (that.authInitialized) clearInterval(checkGauthLoad);
-    }, 1000);
+      if (that.authInitialized) {
+        clearInterval(authLoaded);
+        if (that.$route.query.logout) {
+          that.logout();
+        }
+      }
+    }, 500);
   }
 };
 </script>
