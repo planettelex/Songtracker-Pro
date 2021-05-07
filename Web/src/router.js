@@ -62,19 +62,89 @@ const router = new Router({
         {
           name: "LabelEarnings",
           path: "label-earnings",
-          component: () => import("@/views/label-administrator/Earnings"),
+          component: () => import("@/views/label-administrator/LabelEarnings"),
+        },
+        {
+          name: "LabelDocuments",
+          path: "label-documents",
+          component: () => import("@/views/label-administrator/LabelDocuments"),
+        },
+        {
+          name: "LabelReleases",
+          path: "label-releases",
+          component: () => import("@/views/label-administrator/LabelReleases"),
+        },
+        {
+          name: "LabelArtists",
+          path: "label-artists",
+          component: () => import("@/views/label-administrator/LabelArtists"),
+        },
+        {
+          name: "LabelUsers",
+          path: "label-users",
+          component: () => import("@/views/label-administrator/LabelUsers"),
+        },
+        {
+          name: "LabelInformation",
+          path: "label-information",
+          component: () => import("@/views/label-administrator/LabelInformation"),
         },
         // Publisher Administrator
         {
           name: "PublisherEarnings",
           path: "publisher-earnings",
-          component: () => import("@/views/publisher-administrator/Earnings"),
+          component: () => import("@/views/publisher-administrator/PublisherEarnings"),
+        },
+        {
+          name: "PublisherDocuments",
+          path: "publisher-documents",
+          component: () => import("@/views/publisher-administrator/PublisherDocuments"),
+        },
+        {
+          name: "PublisherCompositions",
+          path: "publisher-compositions",
+          component: () => import("@/views/publisher-administrator/PublisherCompositions"),
+        },
+        {
+          name: "PublisherUsers",
+          path: "publisher-users",
+          component: () => import("@/views/publisher-administrator/PublisherUsers"),
+        },
+        {
+          name: "PublisherInformation",
+          path: "publisher-information",
+          component: () => import("@/views/publisher-administrator/PublisherInformation"),
         },
         // System User
         {
+          name: "UserProfile",
+          path: "my-profile",
+          component: () => import("@/views/system-user/UserProfile"),
+        },
+        {
           name: "UserEarnings",
           path: "my-earnings",
-          component: () => import("@/views/system-user/Earnings"),
+          component: () => import("@/views/system-user/UserEarnings"),
+        },
+        {
+          name: "UserDocuments",
+          path: "my-documents",
+          component: () => import("@/views/system-user/UserDocuments"),
+        },
+        {
+          name: "UserCompositions",
+          path: "my-compositions",
+          component: () => import("@/views/system-user/UserCompositions"),
+        },
+        {
+          name: "UserRecordings",
+          path: "my-recordings",
+          component: () => import("@/views/system-user/UserRecordings"),
+        },
+        {
+          name: "UserReleases",
+          path: "my-releases",
+          component: () => import("@/views/system-user/UserReleases"),
         }
       ],
     },

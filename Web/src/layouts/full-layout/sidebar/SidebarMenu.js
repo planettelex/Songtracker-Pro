@@ -33,7 +33,7 @@ function getSidebarMenu(userType)
                     icon: 'mdi-file',
                     title: 'Users',
                     to: '/users',
-                },
+                }
             ];
         case UserType.LabelAdministrator:
             return [
@@ -42,6 +42,31 @@ function getSidebarMenu(userType)
                     title: 'Earnings',
                     to: '/label-earnings',
                 },
+                {
+                    icon: 'mdi-file',
+                    title: 'Documents',
+                    to: '/label-documents',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Releases',
+                    to: '/label-releases',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Artists',
+                    to: '/label-artists',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Users',
+                    to: '/label-users',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Information',
+                    to: '/label-information',
+                }
             ];
         case UserType.PublisherAdministrator:
             return [
@@ -50,6 +75,26 @@ function getSidebarMenu(userType)
                     title: 'Earnings',
                     to: '/publisher-earnings',
                 },
+                {
+                    icon: 'mdi-file',
+                    title: 'Documents',
+                    to: '/publisher-documents',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Compositions',
+                    to: '/publisher-compositions',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Users',
+                    to: '/publisher-users',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Information',
+                    to: '/publisher-information',
+                },
             ];
         case UserType.SystemUser:
             return [
@@ -57,6 +102,26 @@ function getSidebarMenu(userType)
                     icon: 'mdi-file',
                     title: 'Earnings',
                     to: '/my-earnings',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Documents',
+                    to: '/my-documents',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Compositions',
+                    to: '/my-compositions',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Recordings',
+                    to: '/my-recordings',
+                },
+                {
+                    icon: 'mdi-file',
+                    title: 'Releases',
+                    to: '/my-releases',
                 },
             ];
         default:

@@ -14,41 +14,48 @@
 
     <v-list expand nav class="mt-1">
       <template v-for="(item, i) in items">
-        <!---If Sidebar Caption -->
+
+        <!--- Sidebar Caption -->
         <v-row v-if="item.header" :key="item.header" align="center">
           <v-col cols="12">
             <v-subheader v-if="item.header" class="d-block text-truncate">{{ item.header }}</v-subheader>
           </v-col>
         </v-row>
-        <!---If Sidebar Caption -->
+        <!--- /Sidebar Caption -->
+
         <BaseItemGroup v-else-if="item.children" class="icon-size" :key="`group-${i}`" :item="item"></BaseItemGroup>
 
         <BaseItem v-else :key="`item-${i}`" :item="item"/>
+
       </template>
-      <!---Sidebar Items -->
     </v-list>
     <v-divider></v-divider>
   </v-navigation-drawer>
 </template>
 
 <script>
+
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
 import UserType from "../../../enums/UserType";
+
 // TODO: Determine the correct user type from state.
 var sidebarMenu = SidebarMenu(UserType.SystemAdministrator);
 
 export default {
   name: "Sidebar",
+
   props: {
     expandOnHover: {
       type: Boolean,
       default: false
     }
   },
+
   data: () => ({
     items: sidebarMenu
   }),
+
   computed: {
     ...mapState(["SidebarColor"]),
     SidebarDrawer: {
@@ -60,11 +67,13 @@ export default {
       }
     }
   },
+
   watch: {
     "$vuetify.breakpoint.smAndDown"(val) {
       this.$emit("update:expandOnHover", !val);
     }
   },
+
   methods: {}
 };
 </script>

@@ -29,7 +29,7 @@
     <v-spacer />
     <!--- Right Side -->
 
-    <!--- User -->
+    <!--- User Menu -->
     <v-menu
       bottom
       left
@@ -56,7 +56,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <!--- /User -->
+    <!--- /User Menu -->
   </v-app-bar>
 </template>
 
@@ -64,19 +64,20 @@
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "Header",
+
   components: {},
+
   props: {
     value: {
       type: Boolean,
       default: false,
     },
   },
+
   data: () => ({
     showLogo: true,
-    showSearch: false,
-    fav: true,
     userprofile: [
-      { title: "My Profile", route: "/profile" },
+      { title: "My Profile", route: "/my-profile" },
       { title: "Logout", route: "/login?logout=true"},
     ]
   }),
