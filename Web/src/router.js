@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import goTo from "vuetify/es5/services/goto";
+import store from "./store/store";
 
 Vue.use(Router);
 
@@ -87,12 +88,13 @@ router.beforeResolve((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   if (to.meta.unauthenticatedOk) {
-    console.log("No Auth Check");
+    next();
+  }
+  else if (store.state.UserAuthenticated) {
     next();
   }
   else {
-    console.log("Auth Check");
-    next();
+    next("/login");
   }
 });
 

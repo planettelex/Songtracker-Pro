@@ -8,7 +8,8 @@ export default new Vuex.Store({
         Login: null,
         SidebarDrawer: null,
         SidebarColor: '#1d2228',
-        User: null
+        User: null,
+        UserAuthenticated: false
     },
     mutations: {
         SET_LOGIN(state, payload) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
         },
         SET_USER(state, payload) {
             state.User = payload
+        },
+        SET_USER_AUTHENTICATED(state, payload) {
+            state.UserAuthenticated = payload
         }
     },
     actions: {
