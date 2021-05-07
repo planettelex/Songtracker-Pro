@@ -3,7 +3,8 @@
     app
     clipped-left
     clipped-right>
-    <!---Logo part -->
+
+    <!--- Logo -->
     <v-toolbar-title
       class="align-center d-flex logo-section"
       :class="`${showLogo ? 'logo-width' : ''}`"
@@ -13,31 +14,28 @@
         <h1>Songtracker Pro</h1>
       </div>
     </v-toolbar-title>
-    <!---Logo part -->
+    <!--- /Logo -->
 
-    <!---/Toggle sidebar part -->
+    <!--- Toggle Sidebar -->
     <div @click="showhideLogo">
       <v-app-bar-nav-icon
-        @click="
-          $vuetify.breakpoint.smAndDown
+        @click="$vuetify.breakpoint.smAndDown
             ? setSidebarDrawer(!SidebarDrawer)
-            : $emit('input', !value)
-        "
+            : $emit('input', !value)"
       />
     </div>
-    <!---/Toggle sidebar part -->
+    <!--- /Toggle Sidebar -->
 
     <v-spacer />
-    <!---right part -->
+    <!--- Right Side -->
 
-    <!---User -->
+    <!--- User -->
     <v-menu
       bottom
       left
       offset-y
       origin="top right"
-      transition="scale-transition"
-    >
+      transition="scale-transition">
       <template v-slot:activator="{ on }">
         <v-btn dark icon v-on="on" class="mr-1">
           <v-avatar size="40">
@@ -49,29 +47,24 @@
         </v-btn>
       </template>
       <v-list>
-        <!---User info -->
         <v-list-item
           v-for="(item, i) in userprofile"
           :key="i"
           router :to="item.route"
-          @click="href"
-          color="primary"
-        >
+          color="primary">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
-    <!---User -->
+    <!--- /User -->
   </v-app-bar>
 </template>
+
 <script>
-// Utilities
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "Header",
-
   components: {},
-
   props: {
     value: {
       type: Boolean,
@@ -85,10 +78,7 @@ export default {
     userprofile: [
       { title: "My Profile", route: "/profile" },
       { title: "Logout", route: "/login?logout=true"},
-    ],
-    href: () =>  {
-      return "undefined";
-    },
+    ]
   }),
 
   computed: {
