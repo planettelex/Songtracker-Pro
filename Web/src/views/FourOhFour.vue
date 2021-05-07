@@ -4,7 +4,6 @@
       <div class="text-center">
         <h1 class="error-title error--text">404</h1>
         <h3 class="text-uppercase error-subtitle">PAGE NOT FOUND</h3>
-        <v-btn color="info" href="./starterpage">Go to Home</v-btn>
       </div>
     </div>
   </div>
@@ -24,7 +23,7 @@ export default {
   position: fixed;
   background-position: top center;
   background-repeat: no-repeat;
-  background: url("../../assets/images/background/error-bg.jpg");
+  background: url("../assets/images/background/error-bg.jpg");
 }
 .error-title {
   font-size: 210px;

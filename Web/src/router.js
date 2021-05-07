@@ -156,13 +156,13 @@ const router = new Router({
         {
           name: "Login",
           path: "login",
-          component: () => import("@/views/authentication/Login"),
+          component: () => import("@/views/Login"),
           meta: { unauthenticatedOk: true }
         },
         {
           name: "404",
           path: "*",
-          component: () => import("@/views/authentication/FourOhFour"),
+          component: () => import("@/views/FourOhFour"),
           meta: { unauthenticatedOk: true }
         },
       ],
