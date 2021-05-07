@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /Server/SongtrackerPro.Api/appsettings.Development.json
 /Server/SongtrackerPro.Api/appsettings.json
+/Web/src/appConfig.js
