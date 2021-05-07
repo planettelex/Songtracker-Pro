@@ -31,7 +31,32 @@ const router = new Router({
         {
           name: "SystemInformation",
           path: "system-information",
-          component: () => import("@/views/system-administrator/SystemInformation"),
+          component: () => import("@/views/system-administrator/SystemInformation")
+        },
+        {
+          name: "PublishingCompanies",
+          path: "publishing-companies",
+          component: () => import("@/views/system-administrator/PublishingCompanies"),
+        },
+        {
+          name: "RecordLabels",
+          path: "record-labels",
+          component: () => import("@/views/system-administrator/RecordLabels"),
+        },
+        {
+          name: "Platforms",
+          path: "platforms",
+          component: () => import("@/views/system-administrator/Platforms"),
+        },
+        {
+          name: "Artists",
+          path: "artists",
+          component: () => import("@/views/system-administrator/Artists"),
+        },
+        {
+          name: "Users",
+          path: "users",
+          component: () => import("@/views/system-administrator/Users"),
         },
         // Label Administrator
         {

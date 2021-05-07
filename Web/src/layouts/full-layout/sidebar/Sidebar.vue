@@ -35,6 +35,7 @@
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
 import UserType from "../../../enums/UserType";
+// TODO: Determine the correct user type from state.
 var sidebarMenu = SidebarMenu(UserType.SystemAdministrator);
 
 export default {
