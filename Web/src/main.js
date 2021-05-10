@@ -1,5 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
+import axios from 'axios';
+import { Model } from 'vue-api-query';
 import vuetify from "./plugins/vuetify";
 import router from "./router";
 import store from "./store/store";
@@ -8,6 +10,8 @@ import Vuebar from "vuebar";
 import "./plugins/base";
 import VueSkycons from "vue-skycons";
 import GAuth from 'vue-google-oauth2';
+
+Model.$http = axios;
 
 const authConfig = {
   clientId: appConfig.oauthClientId,

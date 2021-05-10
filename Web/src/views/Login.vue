@@ -56,6 +56,13 @@ export default {
       try {
         const googleUser = await this.$gAuth.signIn();
         console.log('user', googleUser);
+        let profile = googleUser.getBasicProfile();
+        let authResponse = googleUser.getAuthResponse();
+        
+        let authenticationToken = authResponse.access_token;
+        let authenticationId = profile.getEmail();
+        console.log(authenticationToken);
+        console.log(authenticationId);
         this.UserAuthenticated = this.$gAuth.isAuthorized;
         if (this.UserAuthenticated) {
           // TODO: Make API call, determine user type, and then route user accordingly.
