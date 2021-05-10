@@ -21,9 +21,6 @@ export default {
   height: 100%;
   width: 100%;
   position: fixed;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background: url("../assets/images/background/error-bg.jpg");
 }
 .error-title {
   font-size: 210px;
