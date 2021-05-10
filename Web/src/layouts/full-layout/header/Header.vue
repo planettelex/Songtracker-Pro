@@ -40,8 +40,8 @@
         <v-btn dark icon v-on="on" class="mr-1">
           <v-avatar size="40">
             <img
-              src="https://lh3.googleusercontent.com/ogw/ADGmqu81eK4R06XM-KvWjwIzLbuZ3rewUV50NUFnLB_juA=s192-c-mo"
-              alt="Robert Dixon"
+              :src="ProfileImage"
+              alt="Profile Image"
             />
           </v-avatar>
         </v-btn>
@@ -83,7 +83,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(["SidebarDrawer"]),
+    ...mapState(["SidebarDrawer", "ProfileImage"]),
   },
 
   methods: {

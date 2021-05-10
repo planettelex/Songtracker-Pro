@@ -185,7 +185,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.unauthenticatedOk) {
     next();
   }
-  else if (store.state.UserAuthenticated) {
+  else if (store.state.Login !== null) {
     next();
   }
   else {

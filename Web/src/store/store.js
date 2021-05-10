@@ -8,14 +8,17 @@ export default new Vuex.Store({
     plugins: [createPersistedState()],
 
     state: {
+        Login: null,
         ProfileImage: null,
         SidebarDrawer: null,
         SidebarColor: '#1d2228',
-        User: null,
-        UserAuthenticated: false
+        User: null
     },
 
     mutations: {
+        SET_LOGIN(state, payload) {
+            state.Login = payload;
+        },
         SET_PROFILE_IMAGE(state, payload) {
             state.ProfileImage = payload;
         },
@@ -27,9 +30,6 @@ export default new Vuex.Store({
         },
         SET_USER(state, payload) {
             state.User = payload;
-        },
-        SET_USER_AUTHENTICATED(state, payload) {
-            state.UserAuthenticated = payload;
         }
     },
 

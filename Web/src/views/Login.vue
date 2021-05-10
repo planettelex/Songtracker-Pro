@@ -8,8 +8,8 @@
             <v-col lg="5">
               <div class="pa-7 pa-sm-12">
                 <h3>Login</h3>
-                <button @click="login" v-if="!UserAuthenticated" :disabled="!authInitialized">Login</button>
-                <button @click="logout(false)" v-if="UserAuthenticated" :disabled="!authInitialized">Logout</button>
+                <button @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
+                <button @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
               </div>
             </v-col>
             
@@ -27,17 +27,27 @@ export default {
   name: "Login",
 
   data: () => ({
-    authInitialized: false
+    authInitialized: false,
+    userAuthenticated: false
   }),
 
   computed: {
-    ...mapState(["UserAuthenticated"]),
-    UserAuthenticated: {
+    ...mapState(["ProfileImage"]),
+    ProfileImage: {
       get() {
-        return this.$store.state.UserAuthenticated;
+        return this.$store.state.ProfileImage;
       },
       set(val) {
-        this.$store.commit("SET_USER_AUTHENTICATED", val);
+        this.$store.commit("SET_PROFILE_IMAGE", val);
+      }
+    },
+    ...mapState(["Login"]),
+    Login: {
+      get() {
+        return this.$store.state.Login;
+      },
+      set(val) {
+        this.$store.commit("SET_LOGIN", val);
       }
     },
     ...mapState(["User"]),
@@ -55,16 +65,15 @@ export default {
     async login() {
       try {
         const googleUser = await this.$gAuth.signIn();
-        console.log('user', googleUser);
-        let profile = googleUser.getBasicProfile();
-        let authResponse = googleUser.getAuthResponse();
-        
-        let authenticationToken = authResponse.access_token;
-        let authenticationId = profile.getEmail();
-        console.log(authenticationToken);
-        console.log(authenticationId);
-        this.UserAuthenticated = this.$gAuth.isAuthorized;
-        if (this.UserAuthenticated) {
+        if (this.$gAuth.isAuthorized) {
+          let profile = googleUser.getBasicProfile();
+          let authResponse = googleUser.getAuthResponse();
+          let login = {
+            authenticationToken: authResponse.access_token,
+            authenticationId: profile.getEmail()
+          }
+          this.ProfileImage = profile.getImageUrl();
+          this.Login = login;
           // TODO: Make API call, determine user type, and then route user accordingly.
           // For now we are hard-coding the user as a system administrator.
           this.$router.push("/system-information");
@@ -78,8 +87,9 @@ export default {
     async logout(redirect) {
       try {
         await this.$gAuth.signOut();
-        this.UserAuthenticated = false;
+        this.Login = null;
         this.User = null;
+        this.userAuthenticated = false;
         if (redirect)
           this.$router.push("/");
       } catch (error) {
@@ -93,7 +103,7 @@ export default {
     let that = this;
     let authLoaded = setInterval(function() {
       that.authInitialized = that.$gAuth.isInit;
-      that.UserAuthenticated = that.$gAuth.isAuthorized;
+      that.userAuthenticated = that.$gAuth.isAuthorized;
       if (that.authInitialized) {
         clearInterval(authLoaded);
         if (that.$route.query.logout) {
