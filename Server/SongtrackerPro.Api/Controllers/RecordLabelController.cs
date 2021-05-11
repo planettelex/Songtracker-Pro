@@ -12,12 +12,12 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class RecordLabelController : ApiControllerBase
     {
-        public RecordLabelController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public RecordLabelController(IGetLoginTask getLoginTask,
                                      IListRecordLabelsTask listRecordLabelsTask,
                                      IGetRecordLabelTask getRecordLabelTask,
                                      IAddRecordLabelTask addRecordLabelTask,
                                      IUpdateRecordLabelTask updateRecordLabelTask) :
-        base(getUserByAuthenticationTokenTask)
+        base(getLoginTask)
         {
             _listRecordLabelsTask = listRecordLabelsTask;
             _getRecordLabelTask = getRecordLabelTask;

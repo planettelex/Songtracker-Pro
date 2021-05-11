@@ -23,19 +23,20 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                 _dbContext.Platforms.Add(platform);
                 _dbContext.SaveChanges();
 
-                if (platform.Services != null && platform.Services.Any())
+                if (platform.Services == null || !platform.Services.Any()) 
+                    return new TaskResult<int?>(platform.Id);
+
+                platform.PlatformServices = new List<PlatformService>();
+                foreach (var service in platform.Services)
                 {
-                    platform.PlatformServices = new List<PlatformService>();
-                    foreach (var service in platform.Services)
+                    platform.PlatformServices.Add(new PlatformService
                     {
-                        platform.PlatformServices.Add(new PlatformService
-                        {
-                            PlatformId = platform.Id, ServiceId = service.Id
-                        });
-                    }
-                    _dbContext.SaveChanges();
+                        PlatformId = platform.Id, 
+                        ServiceId = service.Id
+                    });
                 }
-                
+                _dbContext.SaveChanges();
+
                 return new TaskResult<int?>(platform.Id);
             }
             catch (Exception e)

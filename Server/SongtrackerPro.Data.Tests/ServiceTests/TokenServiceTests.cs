@@ -1,4 +1,3 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -16,7 +15,6 @@ namespace SongtrackerPro.Data.Tests.ServiceTests
             var user = new User
             {
                 Id = 55,
-                LastLogin = DateTime.Now.AddHours(-3),
                 Person = new Person
                 {
                     FirstName = "Sam",
@@ -37,12 +35,6 @@ namespace SongtrackerPro.Data.Tests.ServiceTests
             Assert.IsTrue(user.Roles.HasFlag(SystemUserRoles.Songwriter));
             Assert.IsTrue(user.Roles.HasFlag(SystemUserRoles.ArtistMember));
             Assert.IsFalse(user.Roles.HasFlag(SystemUserRoles.ArtistManager));
-
-            textWithTokens = "{User.LastLogin}";
-            textWithTokens = tokenService.ReplaceTokens(textWithTokens, user);
-
-            Assert.IsTrue(textWithTokens.Length > 0);
-            Assert.AreNotEqual("{User.LastLogin}",textWithTokens);
         }
     }
 }

@@ -34,16 +34,71 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.IsNull(result.Exception);
             Assert.IsNotNull(result.Data);
 
-            var getUserTask = new GetUser(DbContext);
             if (result.Data != null)
             {
-                var user = getUserTask.DoTask(result.Data.Id)?.Data;
+                var user = result.Data.User;
 
                 Assert.IsNotNull(user);
+                Assert.AreEqual(login.AuthenticationToken, result.Data.AuthenticationToken);
                 Assert.AreEqual(login.AuthenticationId, user.AuthenticationId);
-                Assert.AreEqual(login.AuthenticationToken, user.AuthenticationToken);
-                Assert.IsTrue(startTime < user.LastLogin);
-                Assert.IsTrue(DateTime.UtcNow > user.LastLogin);
+                Assert.IsTrue(login.LoginAt > startTime);
+                Assert.IsTrue(login.LoginAt < DateTime.UtcNow);
+
+                Assert.AreEqual(testUser.Type, user.Type);
+                Assert.AreEqual(testUser.Roles, user.Roles);
+                
+                Assert.IsNotNull(user.Person);
+                Assert.AreEqual(testUser.Person.FirstAndLastName, user.Person.FirstAndLastName);
+                Assert.AreEqual(testUser.Person.MiddleName, user.Person.MiddleName);
+                Assert.AreEqual(testUser.Person.NameSuffix, user.Person.NameSuffix);
+                Assert.AreEqual(testUser.Person.Email, user.Person.Email);
+                Assert.AreEqual(testUser.Person.Phone, user.Person.Phone);
+                Assert.IsNotNull(user.Person.Address);
+                Assert.AreEqual(testUser.Person.Address.Street, user.Person.Address.Street);
+                Assert.AreEqual(testUser.Person.Address.City, user.Person.Address.City);
+                Assert.AreEqual(testUser.Person.Address.Region, user.Person.Address.Region);
+                Assert.AreEqual(testUser.Person.Address.PostalCode, user.Person.Address.PostalCode);
+                Assert.AreEqual(testUser.Person.Address.Street, user.Person.Address.Street);
+                Assert.IsNotNull(user.Person.Address.Country);
+                Assert.AreEqual(testUser.Person.Address.Country.Name, user.Person.Address.Country.Name);
+                Assert.AreEqual(testUser.Person.Address.Country.IsoCode, user.Person.Address.Country.IsoCode);
+            }
+
+            var getLoginTask = new GetLogin(DbContext);
+            var getLoginResult = getLoginTask.DoTask(login.AuthenticationToken);
+
+            Assert.IsTrue(getLoginResult.Success);
+            Assert.IsNull(getLoginResult.Exception);
+            Assert.IsNotNull(getLoginResult.Data);
+
+            if (getLoginResult.Data != null)
+            {
+                var user = getLoginResult.Data.User;
+
+                Assert.IsNotNull(user);
+                Assert.AreEqual(login.AuthenticationToken, getLoginResult.Data.AuthenticationToken);
+                Assert.AreEqual(login.AuthenticationId, user.AuthenticationId);
+                Assert.IsTrue(login.LoginAt > startTime);
+                Assert.IsTrue(login.LoginAt < DateTime.UtcNow);
+
+                Assert.AreEqual(testUser.Type, user.Type);
+                Assert.AreEqual(testUser.Roles, user.Roles);
+                
+                Assert.IsNotNull(user.Person);
+                Assert.AreEqual(testUser.Person.FirstAndLastName, user.Person.FirstAndLastName);
+                Assert.AreEqual(testUser.Person.MiddleName, user.Person.MiddleName);
+                Assert.AreEqual(testUser.Person.NameSuffix, user.Person.NameSuffix);
+                Assert.AreEqual(testUser.Person.Email, user.Person.Email);
+                Assert.AreEqual(testUser.Person.Phone, user.Person.Phone);
+                Assert.IsNotNull(user.Person.Address);
+                Assert.AreEqual(testUser.Person.Address.Street, user.Person.Address.Street);
+                Assert.AreEqual(testUser.Person.Address.City, user.Person.Address.City);
+                Assert.AreEqual(testUser.Person.Address.Region, user.Person.Address.Region);
+                Assert.AreEqual(testUser.Person.Address.PostalCode, user.Person.Address.PostalCode);
+                Assert.AreEqual(testUser.Person.Address.Street, user.Person.Address.Street);
+                Assert.IsNotNull(user.Person.Address.Country);
+                Assert.AreEqual(testUser.Person.Address.Country.Name, user.Person.Address.Country.Name);
+                Assert.AreEqual(testUser.Person.Address.Country.IsoCode, user.Person.Address.Country.IsoCode);
             }
 
             var person = testUser.Person;

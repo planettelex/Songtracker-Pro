@@ -31,5 +31,6 @@
         public const string UserAccounts = "/users/{userid}/accounts";
         public const string UserAccount = "/users/{userid}/accounts/{useraccountid}";
         public const string Login = "/login";
+        public const string Logout = "/logout";
     }
 }

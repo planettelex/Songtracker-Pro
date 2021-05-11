@@ -6,7 +6,7 @@ using SongtrackerPro.Data.Models;
 
 namespace SongtrackerPro.Tasks.UserTasks
 {
-    public interface ILoginUserTask : ITask<Login, User> { }
+    public interface ILoginUserTask : ITask<Login, Login> { }
 
     public class LoginUser : TaskBase, ILoginUserTask
     {
@@ -16,35 +16,35 @@ namespace SongtrackerPro.Tasks.UserTasks
         }
         private readonly ApplicationDbContext _dbContext;
 
-        public TaskResult<User> DoTask(Login login)
+        public TaskResult<Login> DoTask(Login login)
         {
             try
             {
                 var user = _dbContext.Users.Where(u => u.AuthenticationId == login.AuthenticationId)
                     .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .Include(u => u.RecordLabel).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
-                    .Include(p => p.PerformingRightsOrganization).ThenInclude(a => a.Country)
+                    .Include(u => u.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .SingleOrDefault();
 
                 if (user == null)
                     throw new TaskException(SystemMessage("USER_NOT_FOUND"));
 
-                user.AuthenticationToken = login.AuthenticationToken;
-                user.LastLogin = DateTime.UtcNow;
+                login.User = null;
+                login.UserId = user.Id;
+                login.LoginAt = DateTime.UtcNow;
+
+                _dbContext.Logins.Add(login);
                 _dbContext.SaveChanges();
 
-                if (user.Publisher != null)
-                    user.Publisher.PerformingRightsOrganization = _dbContext.PerformingRightsOrganizations
-                        .Where(p => p.Id == user.Publisher.PerformingRightsOrganizationId)
-                        .Include(p => p.Country)
-                        .SingleOrDefault();
+                login.User = user;
 
-                return new TaskResult<User>(user);
+                return new TaskResult<Login>(login);
             }
             catch (Exception e)
             {
-                return new TaskResult<User>(new TaskException(e));
+                return new TaskResult<Login>(new TaskException(e));
             }
         }
     }

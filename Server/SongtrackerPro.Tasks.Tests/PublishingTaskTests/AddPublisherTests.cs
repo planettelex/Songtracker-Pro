@@ -30,15 +30,15 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
             Assert.AreEqual(testPublisher.TaxId, publisher.TaxId);
             Assert.AreEqual(testPublisher.Email, publisher.Email);
             Assert.AreEqual(testPublisher.Phone, publisher.Phone);
-            Assert.IsNotNull(testPublisher.Address);
+            Assert.IsNotNull(publisher.Address);
             Assert.AreEqual(testPublisher.Address.Street, publisher.Address.Street);
             Assert.AreEqual(testPublisher.Address.City, publisher.Address.City);
             Assert.AreEqual(testPublisher.Address.Region, publisher.Address.Region);
             Assert.AreEqual(testPublisher.Address.PostalCode, publisher.Address.PostalCode);
-            Assert.IsNotNull(testPublisher.Address.Country);
+            Assert.IsNotNull(publisher.Address.Country);
             Assert.AreEqual(testPublisher.Address.Country.Name, publisher.Address.Country.Name);
             Assert.AreEqual(testPublisher.Address.Country.IsoCode, publisher.Address.Country.IsoCode);
-            Assert.IsNotNull(testPublisher.PerformingRightsOrganization);
+            Assert.IsNotNull(publisher.PerformingRightsOrganization);
             Assert.AreEqual(testPublisher.PerformingRightsOrganization.Name, publisher.PerformingRightsOrganization.Name);
 
             var removePublisherTask = new RemovePublisher(DbContext);

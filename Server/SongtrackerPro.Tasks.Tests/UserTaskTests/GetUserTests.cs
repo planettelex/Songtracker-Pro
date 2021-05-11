@@ -24,10 +24,6 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var user = result.Data;
             Assert.IsNotNull(user);
             Assert.AreEqual(testUser.AuthenticationId, user.AuthenticationId);
-            Assert.AreEqual(testUser.AuthenticationToken, user.AuthenticationToken);
-            Assert.AreEqual(testUser.Type, user.Type);
-            Assert.AreEqual(testUser.ProfileImageUrl, user.ProfileImageUrl);
-            Assert.AreEqual(testUser.LastLogin, user.LastLogin);
             Assert.AreEqual(testUser.SocialSecurityNumber, user.SocialSecurityNumber);
             Assert.AreEqual(testUser.SoundExchangeAccountNumber, user.SoundExchangeAccountNumber);
             Assert.IsNotNull(testUser.Person);

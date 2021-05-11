@@ -12,13 +12,13 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class PlatformController : ApiControllerBase
     {
-        public PlatformController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public PlatformController(IGetLoginTask getLoginTask,
                                   IListServicesTask listServicesTask, 
                                   IListPlatformsTask listPlatformsTask,
                                   IGetPlatformTask getPlatformTask,
                                   IAddPlatformTask addPlatformTask,
                                   IUpdatePlatformTask updatePlatformTask) :
-        base(getUserByAuthenticationTokenTask)
+        base(getLoginTask)
         {
             _listServicesTask = listServicesTask;
             _listPlatformsTask = listPlatformsTask;

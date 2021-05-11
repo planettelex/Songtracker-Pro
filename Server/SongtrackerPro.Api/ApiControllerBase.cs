@@ -16,11 +16,11 @@ namespace SongtrackerPro.Api
 {
     public class ApiControllerBase : ControllerBase
     {
-        public ApiControllerBase(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask)
+        public ApiControllerBase(IGetLoginTask getLoginTask)
         {
-            _getUserByAuthenticationTokenTask = getUserByAuthenticationTokenTask;
+            _getLoginTask = getLoginTask;
         }
-        private readonly IGetUserByAuthenticationTokenTask _getUserByAuthenticationTokenTask;
+        private readonly IGetLoginTask _getLoginTask;
 
         protected JsonSerializerOptions SerializerOptions =>
             new JsonSerializerOptions
@@ -43,28 +43,36 @@ namespace SongtrackerPro.Api
 
         protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
 
-        protected User AuthenticatedUser
+        protected Login Login
         {
             get
             {
-                if (_authenticatedUser != null) 
-                    return _authenticatedUser;
+                if (_login != null) 
+                    return _login;
 
-                var results = _getUserByAuthenticationTokenTask.DoTask(AuthenticationToken);
-                if (results.Success)
-                    _authenticatedUser = results.Data;
+                var results = _getLoginTask.DoTask(AuthenticationToken);
+                if (results.Success && results.Data.LogoutAt != null)
+                    _login = results.Data;
 
-                return _authenticatedUser;
+                return _login;
             }
         }
-        private User _authenticatedUser;
+        private Login _login;
+
+        protected User AuthenticatedUser => Login?.User;
 
         protected bool UserIsAuthorized(MethodBase callingMethod)
         {
             if (AuthenticationToken == null)
                 return false;
 
+            if (Login == null)
+                return false;
+
             if (AuthenticatedUser == null)
+                return false;
+
+            if (Login.LogoutAt != null)
                 return false;
 
             var userTypesAllowedAttributes = (UserTypesAllowedAttribute[]) callingMethod.GetCustomAttributes(typeof(UserTypesAllowedAttribute), true);

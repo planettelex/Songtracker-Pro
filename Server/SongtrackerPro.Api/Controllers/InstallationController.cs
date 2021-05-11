@@ -13,10 +13,10 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class InstallationController : ApiControllerBase
     {
-        public InstallationController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public InstallationController(IGetLoginTask getLoginTask,
                                       IGetInstallationTask getInstallationTask,
                                       ISeedSystemDataTask seedSystemDataTask) : 
-        base(getUserByAuthenticationTokenTask)
+        base(getLoginTask)
         {
             _seedSystemDataTask = seedSystemDataTask;
             _getInstallationTask = getInstallationTask;

@@ -12,13 +12,13 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class PublishingController : ApiControllerBase
     {
-        public PublishingController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public PublishingController(IGetLoginTask getLoginTask,
                                     IListPerformingRightsOrganizationsTask listPerformingRightsOrganizationsTask, 
                                     IListPublishersTask listPublishersTask,
                                     IGetPublisherTask getPublisherTask,
                                     IAddPublisherTask addPublisherTask,
                                     IUpdatePublisherTask updatePublisherTask) :
-        base (getUserByAuthenticationTokenTask)
+        base (getLoginTask)
         {
             _listPerformingRightsOrganizationsTask = listPerformingRightsOrganizationsTask;
             _listPublishersTask = listPublishersTask;

@@ -58,9 +58,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var user1 = users.SingleOrDefault(u => u.Id == testArtistUser1Id.Data.Value);
             Assert.IsNotNull(user1);
             Assert.AreEqual(testArtistUser1.Type, user1.Type);
-            Assert.AreEqual(testArtistUser1.ProfileImageUrl, user1.ProfileImageUrl);
             Assert.AreEqual(testArtistUser1.AuthenticationId, user1.AuthenticationId);
-            Assert.AreEqual(testArtistUser1.AuthenticationToken, user1.AuthenticationToken);
             Assert.AreEqual(testArtistUser1.SocialSecurityNumber, user1.SocialSecurityNumber);
             Assert.AreEqual(testArtistUser1.SoundExchangeAccountNumber, user1.SoundExchangeAccountNumber);
             Assert.IsNotNull(user1.Person);
@@ -83,9 +81,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var user2 = users.SingleOrDefault(u => u.Id == testPublisherUserId.Data);
             Assert.IsNotNull(user2);
             Assert.AreEqual(testPublisherUser.Type, user2.Type);
-            Assert.AreEqual(testPublisherUser.ProfileImageUrl, user2.ProfileImageUrl);
             Assert.AreEqual(testPublisherUser.AuthenticationId, user2.AuthenticationId);
-            Assert.AreEqual(testPublisherUser.AuthenticationToken, user2.AuthenticationToken);
             Assert.AreEqual(testPublisherUser.SocialSecurityNumber, user2.SocialSecurityNumber);
             Assert.AreEqual(testPublisherUser.SoundExchangeAccountNumber, user2.SoundExchangeAccountNumber);
             Assert.IsNotNull(user2.Person);
@@ -109,9 +105,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var user3 = users.SingleOrDefault(u => u.Id == testLabelUserId.Data);
             Assert.IsNotNull(user3);
             Assert.AreEqual(testLabelUser.Type, user3.Type);
-            Assert.AreEqual(testLabelUser.ProfileImageUrl, user3.ProfileImageUrl);
             Assert.AreEqual(testLabelUser.AuthenticationId, user3.AuthenticationId);
-            Assert.AreEqual(testLabelUser.AuthenticationToken, user3.AuthenticationToken);
             Assert.AreEqual(testLabelUser.SocialSecurityNumber, user3.SocialSecurityNumber);
             Assert.AreEqual(testLabelUser.SoundExchangeAccountNumber, user3.SoundExchangeAccountNumber);
             Assert.IsNotNull(user3.Person);
@@ -144,9 +138,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             user1 = users.SingleOrDefault(u => u.Id == testArtistUser1Id.Data.Value);
             Assert.IsNotNull(user1);
             Assert.AreEqual(testArtistUser1.Type, user1.Type);
-            Assert.AreEqual(testArtistUser1.ProfileImageUrl, user1.ProfileImageUrl);
             Assert.AreEqual(testArtistUser1.AuthenticationId, user1.AuthenticationId);
-            Assert.AreEqual(testArtistUser1.AuthenticationToken, user1.AuthenticationToken);
             Assert.AreEqual(testArtistUser1.SocialSecurityNumber, user1.SocialSecurityNumber);
             Assert.AreEqual(testArtistUser1.SoundExchangeAccountNumber, user1.SoundExchangeAccountNumber);
             Assert.IsNotNull(user1.Person);
@@ -169,9 +161,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             user2 = users.SingleOrDefault(u => u.Id == testArtistUser2Id.Data.Value);
             Assert.IsNotNull(user2);
             Assert.AreEqual(testArtistUser2.Type, user2.Type);
-            Assert.AreEqual(testArtistUser2.ProfileImageUrl, user2.ProfileImageUrl);
             Assert.AreEqual(testArtistUser2.AuthenticationId, user2.AuthenticationId);
-            Assert.AreEqual(testArtistUser2.AuthenticationToken, user2.AuthenticationToken);
             Assert.AreEqual(testArtistUser2.SocialSecurityNumber, user2.SocialSecurityNumber);
             Assert.AreEqual(testArtistUser2.SoundExchangeAccountNumber, user2.SoundExchangeAccountNumber);
             Assert.IsNotNull(user2.Person);

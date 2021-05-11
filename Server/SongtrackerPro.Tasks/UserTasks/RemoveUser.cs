@@ -23,6 +23,10 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 
+                var allUserLogins = _dbContext.Logins.Where(l => l.UserId == toRemove.Id).ToList();
+                _dbContext.Logins.RemoveRange(allUserLogins);
+                _dbContext.SaveChanges();
+
                 toRemove.Person = null;
                 toRemove.PersonId = null;
                 toRemove.PerformingRightsOrganization = null;

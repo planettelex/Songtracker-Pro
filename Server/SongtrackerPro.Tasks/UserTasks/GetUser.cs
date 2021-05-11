@@ -23,15 +23,10 @@ namespace SongtrackerPro.Tasks.UserTasks
                 var user = _dbContext.Users.Where(u => u.Id == userId)
                     .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .Include(u => u.RecordLabel).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
-                    .Include(p => p.PerformingRightsOrganization).ThenInclude(a => a.Country)
+                    .Include(u => u.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .SingleOrDefault();
-
-                if (user?.Publisher != null)
-                    user.Publisher.PerformingRightsOrganization = _dbContext.PerformingRightsOrganizations
-                        .Where(p => p.Id == user.Publisher.PerformingRightsOrganizationId)
-                        .Include(p => p.Country)
-                        .SingleOrDefault();
 
                 return new TaskResult<User>(user);
             }

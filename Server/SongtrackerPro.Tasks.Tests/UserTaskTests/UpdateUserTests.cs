@@ -53,7 +53,6 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var user = getUserTask.DoTask(toUpdate.Id)?.Data;
 
             Assert.IsNotNull(user);
-            Assert.AreEqual(toUpdate.ProfileImageUrl, user.ProfileImageUrl);
             Assert.AreEqual(toUpdate.SocialSecurityNumber, user.SocialSecurityNumber);
             Assert.AreEqual(toUpdate.PerformingRightsOrganizationId, user.PerformingRightsOrganizationId);
             Assert.AreEqual(toUpdate.PerformingRightsOrganizationMemberNumber, user.PerformingRightsOrganizationMemberNumber);

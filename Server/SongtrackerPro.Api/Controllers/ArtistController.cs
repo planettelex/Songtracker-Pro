@@ -13,7 +13,7 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class ArtistController : ApiControllerBase
     {
-        public ArtistController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public ArtistController(IGetLoginTask getLoginTask,
                                 IListArtistsTask listArtistsTask,
                                 IGetArtistTask getArtistTask,
                                 IAddArtistTask addArtistTask,
@@ -33,7 +33,7 @@ namespace SongtrackerPro.Api.Controllers
                                 IListArtistManagersTask listArtistManagersTask,
                                 IAddArtistManagerTask addArtistManagerTask,
                                 IUpdateArtistManagerTask updateArtistManagerTask) : 
-        base(getUserByAuthenticationTokenTask)
+        base(getLoginTask)
         {
             _listArtistsTask = listArtistsTask;
             _getArtistTask = getArtistTask;

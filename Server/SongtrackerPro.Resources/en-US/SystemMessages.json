@@ -22,6 +22,10 @@
       "Value": "Installation not found."
     },
     {
+      "Key": "LOGIN_NOT_FOUND",
+      "Value": "Login not found."
+    },
+    {
       "Key": "PERSON_NOT_FOUND",
       "Value": "Person not found."
     },

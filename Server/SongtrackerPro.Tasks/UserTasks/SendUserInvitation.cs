@@ -49,11 +49,11 @@ namespace SongtrackerPro.Tasks.UserTasks
                 userInvitation.InvitedByUser = null;
                 userInvitation.InvitedByUserId = invitedByUserId;
                 userInvitation.Publisher = null;
-                userInvitation.PublisherId = publisherId;
+                userInvitation.PublisherId = publisherId > 0 ? publisherId : null;
                 userInvitation.RecordLabel = null;
-                userInvitation.RecordLabelId = recordLabelId;
+                userInvitation.RecordLabelId = recordLabelId > 0 ? recordLabelId : null;
                 userInvitation.Artist = null;
-                userInvitation.ArtistId = artistId;
+                userInvitation.ArtistId = artistId > 0 ? artistId : null;
 
                 _dbContext.UserInvitations.Add(userInvitation);
                 _dbContext.SaveChanges();

@@ -12,12 +12,13 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class UserController : ApiControllerBase
     {
-        public UserController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public UserController(IGetLoginTask getLoginTask,
                               IListUsersTask listUsersTask,
                               IGetUserTask getUserTask,
                               IAddUserTask addUserTask,
                               IUpdateUserTask updateUserTask,
                               ILoginUserTask loginUserTask,
+                              ILogoutUserTask logoutUserTask,
                               IListUserAccountsTask listUserAccountsTask,
                               IGetUserAccountTask getUserAccountTask,
                               IAddUserAccountTask addUserAccountTask,
@@ -26,13 +27,14 @@ namespace SongtrackerPro.Api.Controllers
                               ISendUserInvitationTask sendUserInvitationTask,
                               IGetUserInvitationTask getUserInvitationTask,
                               IAcceptUserInvitationTask acceptUserInvitationTask) :
-        base(getUserByAuthenticationTokenTask)
+        base(getLoginTask)
         {
             _listUsersTask = listUsersTask;
             _getUserTask = getUserTask;
             _addUserTask = addUserTask;
             _updateUserTask = updateUserTask;
             _loginUserTask = loginUserTask;
+            _logoutUserTask = logoutUserTask;
             _listUserAccountsTask = listUserAccountsTask;
             _getUserAccountTask = getUserAccountTask;
             _addUserAccountTask = addUserAccountTask;
@@ -47,6 +49,7 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddUserTask _addUserTask;
         private readonly IUpdateUserTask _updateUserTask;
         private readonly ILoginUserTask _loginUserTask;
+        private readonly ILogoutUserTask _logoutUserTask;
         private readonly IListUserAccountsTask _listUserAccountsTask;
         private readonly IGetUserAccountTask _getUserAccountTask;
         private readonly IAddUserAccountTask _addUserAccountTask;
@@ -109,6 +112,18 @@ namespace SongtrackerPro.Api.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        [Route(Routes.Logout)]
+        [HttpPost]
+        public IActionResult LogoutUser()
+        {
+            if (AuthenticatedUser == null)
+                return NoContent();
+
+            var taskResults = _logoutUserTask.DoTask(AuthenticatedUser);
+
+            return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
         [Route(Routes.Users)]
         [HttpPost]
         [UserTypesAllowed(UserType.SystemAdministrator)]
@@ -138,9 +153,6 @@ namespace SongtrackerPro.Api.Controllers
             if (!taskResults.Success) 
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
-            foreach (var user in taskResults.Data)
-                user.AuthenticationToken = null;
-
             return Ok(JsonSerialize(taskResults));
         }
 
@@ -160,7 +172,6 @@ namespace SongtrackerPro.Api.Controllers
             if (!taskResults.Success) 
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
-            taskResults.Data.AuthenticationToken = null;
             return Ok(JsonSerialize(taskResults));
         }
 

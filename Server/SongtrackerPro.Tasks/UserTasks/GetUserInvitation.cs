@@ -24,6 +24,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                     .Include(u => u.InvitedByUser).ThenInclude(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.CreatedUser).ThenInclude(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .Include(u => u.RecordLabel).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Artist)
                     .SingleOrDefault();

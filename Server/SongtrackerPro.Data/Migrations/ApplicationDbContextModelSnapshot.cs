@@ -290,6 +290,38 @@ namespace SongtrackerPro.Data.Migrations
                     b.ToTable("installation");
                 });
 
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Login", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthenticationToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("authentication_token");
+
+                    b.Property<DateTime>("LoginAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("login_at");
+
+                    b.Property<DateTime?>("LogoutAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("logout_at");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("logins");
+                });
+
             modelBuilder.Entity("SongtrackerPro.Data.Models.PerformingRightsOrganization", b =>
                 {
                     b.Property<int>("Id")
@@ -525,14 +557,6 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("authentication_id");
 
-                    b.Property<string>("AuthenticationToken")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("authentication_token");
-
-                    b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("last_login");
-
                     b.Property<int?>("PerformingRightsOrganizationId")
                         .HasColumnType("int")
                         .HasColumnName("performing_rights_organization_id");
@@ -544,10 +568,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.Property<int?>("PersonId")
                         .HasColumnType("int")
                         .HasColumnName("person_id");
-
-                    b.Property<string>("ProfileImageUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("profile_image_url");
 
                     b.Property<int?>("PublisherId")
                         .HasColumnType("int")
@@ -780,6 +800,15 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Artist");
 
                     b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Login", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.PerformingRightsOrganization", b =>

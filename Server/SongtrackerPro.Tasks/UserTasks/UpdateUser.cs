@@ -29,13 +29,13 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 _updatePersonTask.DoTask(update.Person);
 
-                user.ProfileImageUrl = update.ProfileImageUrl;
                 user.SocialSecurityNumber = update.SocialSecurityNumber;
                 user.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id ?? update.PerformingRightsOrganizationId;
                 user.PerformingRightsOrganizationMemberNumber = update.PerformingRightsOrganizationMemberNumber;
                 user.SoundExchangeAccountNumber = update.SoundExchangeAccountNumber;
                 user.PublisherId = update.Publisher?.Id ?? update.PublisherId;
                 user.RecordLabelId = update.RecordLabel?.Id ?? update.RecordLabelId;
+
                 _dbContext.SaveChanges();
 
                 return new TaskResult<Nothing>(null as Nothing);

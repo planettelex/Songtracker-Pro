@@ -11,9 +11,9 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class GeographicController : ApiControllerBase
     {
-        public GeographicController(IGetUserByAuthenticationTokenTask getUserByAuthenticationTokenTask,
+        public GeographicController(IGetLoginTask getLoginTask,
                                     IListCountriesTask listCountriesTask) : 
-        base(getUserByAuthenticationTokenTask)
+        base(getLoginTask)
         {
             _listCountriesTask = listCountriesTask;
         }

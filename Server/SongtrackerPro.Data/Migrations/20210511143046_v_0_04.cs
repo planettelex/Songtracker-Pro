@@ -240,12 +240,9 @@ namespace SongtrackerPro.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    authentication_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
                     roles = table.Column<int>(type: "int", nullable: false),
-                    profile_image_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    authentication_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    authentication_token = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    last_login = table.Column<DateTime>(type: "datetime2", nullable: true),
                     person_id = table.Column<int>(type: "int", nullable: true),
                     social_security_number = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     publisher_id = table.Column<int>(type: "int", nullable: true),
@@ -397,6 +394,28 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "logins",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<int>(type: "int", nullable: true),
+                    authentication_token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    login_at = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    logout_at = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_logins", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_logins_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user_accounts",
                 columns: table => new
                 {
@@ -527,6 +546,11 @@ namespace SongtrackerPro.Data.Migrations
                 column: "record_label_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_logins_user_id",
+                table: "logins",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_people_address_id",
                 table: "people",
                 column: "address_id");
@@ -633,6 +657,9 @@ namespace SongtrackerPro.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "installation");
+
+            migrationBuilder.DropTable(
+                name: "logins");
 
             migrationBuilder.DropTable(
                 name: "platform_services");

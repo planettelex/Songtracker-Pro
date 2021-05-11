@@ -143,6 +143,7 @@ namespace SongtrackerPro.Tasks.Tests
                     Email = $"test@publisher{stamp}.com",
                     Phone = PhoneNumber,
                     Address = Address,
+                    PerformingRightsOrganizationId = ascap?.Id,
                     PerformingRightsOrganization = ascap,
                     PerformingRightsOrganizationPublisherNumber = new Random().Next(100000, 999999).ToString()
                 };
@@ -252,9 +253,7 @@ namespace SongtrackerPro.Tasks.Tests
                 return new User
                 {
                     Type = UserType.SystemAdministrator,
-                    ProfileImageUrl = "http://profile-image.png",
                     AuthenticationId = email,
-                    AuthenticationToken = null,
                     PerformingRightsOrganization = ascap,
                     PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString(),
                     SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString(),

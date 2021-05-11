@@ -130,12 +130,9 @@ GO
 
 CREATE TABLE [users] (
     [id] int NOT NULL IDENTITY,
+    [authentication_id] nvarchar(max) NOT NULL,
     [type] int NOT NULL,
     [roles] int NOT NULL,
-    [profile_image_url] nvarchar(max) NULL,
-    [authentication_id] nvarchar(max) NOT NULL,
-    [authentication_token] nvarchar(max) NULL,
-    [last_login] datetime2 NULL,
     [person_id] int NULL,
     [social_security_number] nvarchar(max) NULL,
     [publisher_id] int NULL,
@@ -197,6 +194,17 @@ CREATE TABLE [artist_members] (
     CONSTRAINT [PK_artist_members] PRIMARY KEY ([id]),
     CONSTRAINT [FK_artist_members_artists_artist_id] FOREIGN KEY ([artist_id]) REFERENCES [artists] ([id]) ON DELETE CASCADE,
     CONSTRAINT [FK_artist_members_people_person_id] FOREIGN KEY ([person_id]) REFERENCES [people] ([id]) ON DELETE CASCADE
+);
+GO
+
+CREATE TABLE [logins] (
+    [id] int NOT NULL IDENTITY,
+    [user_id] int NULL,
+    [authentication_token] nvarchar(max) NOT NULL,
+    [login_at] datetime2 NOT NULL,
+    [logout_at] datetime2 NULL,
+    CONSTRAINT [PK_logins] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_logins_users_user_id] FOREIGN KEY ([user_id]) REFERENCES [users] ([id]) ON DELETE NO ACTION
 );
 GO
 
@@ -264,6 +272,9 @@ GO
 CREATE INDEX [IX_artists_record_label_id] ON [artists] ([record_label_id]);
 GO
 
+CREATE INDEX [IX_logins_user_id] ON [logins] ([user_id]);
+GO
+
 CREATE INDEX [IX_people_address_id] ON [people] ([address_id]);
 GO
 
@@ -319,7 +330,7 @@ CREATE INDEX [IX_users_record_label_id] ON [users] ([record_label_id]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20210422203630_v_0_04', N'5.0.3');
+VALUES (N'20210511143046_v_0_04', N'5.0.3');
 GO
 
 COMMIT;
