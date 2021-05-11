@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
@@ -13,6 +13,8 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class ArtistController : ApiControllerBase
     {
+        #region Constructor
+
         public ArtistController(IGetLoginTask getLoginTask,
                                 IListArtistsTask listArtistsTask,
                                 IGetArtistTask getArtistTask,
@@ -75,23 +77,31 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddArtistManagerTask _addArtistManagerTask;
         private readonly IUpdateArtistManagerTask _updateArtistManagerTask;
 
+        #endregion
+
         [Route(Routes.Artists)]
         [HttpPost]
         [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator)]
         public IActionResult AddArtist(Artist artist)
         {
-            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                return Unauthorized();
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabelId != artist.RecordLabelId)
-                return Unauthorized();
+                if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabelId != artist.RecordLabelId)
+                    return Unauthorized();
 
-            var taskResults = _addArtistTask.DoTask(artist);
+                var taskResults = _addArtistTask.DoTask(artist);
 
-            if (taskResults.Success)
-                return Ok(JsonSerialize(taskResults));
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
         }
 
         [Route(Routes.Artists)]
@@ -107,17 +117,17 @@ namespace SongtrackerPro.Api.Controllers
                 var taskResults = _listArtistsTask.DoTask(null);
 
                 if (!taskResults.Success) 
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    return Error(taskResults.Exception);
 
                 var artists = taskResults.Data;
                 foreach (var artist in artists)
                     RedactArtistData(artist);
             
-                return Ok(JsonSerialize(artists));
+                return Json(artists);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -133,17 +143,17 @@ namespace SongtrackerPro.Api.Controllers
 
                 var taskResults = _getArtistTask.DoTask(id);
 
-                if (!taskResults.Success) 
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                if (!taskResults.Success)
+                    return Error(taskResults.Exception);
 
                 var artist = taskResults.Data;
                 RedactArtistData(artist);
 
-                return Ok(JsonSerialize(artist));
+                return Json(artist);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -164,11 +174,13 @@ namespace SongtrackerPro.Api.Controllers
                 artist.Id = id;
                 var taskResults = _updateArtistTask.DoTask(artist);
 
-                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Ok() : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -189,14 +201,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistMember.ArtistId = artistId;
                 var taskResults = _addArtistMemberTask.DoTask(artistMember);
 
-                if (taskResults.Success)
-                    return Ok(JsonSerialize(taskResults));
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -214,17 +225,17 @@ namespace SongtrackerPro.Api.Controllers
                 var taskResults = _listArtistMembersTask.DoTask(artist);
 
                 if (!taskResults.Success)
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    return Error(taskResults.Exception);
 
                 var artistMembers = taskResults.Data;
                 foreach (var artistMember in artistMembers)
                     RedactPersonData(artistMember.Member, artist);
 
-                return Ok(JsonSerialize(artistMembers));
+                return Json(artistMembers);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -246,11 +257,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistMember.Id = artistMemberId;
                 var taskResults = _updateArtistMemberTask.DoTask(artistMember);
 
-                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Ok() : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -271,14 +284,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistManager.ArtistId = artistId;
                 var taskResults = _addArtistManagerTask.DoTask(artistManager);
 
-                if (taskResults.Success)
-                    return Ok(JsonSerialize(taskResults));
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -296,17 +308,17 @@ namespace SongtrackerPro.Api.Controllers
                 var taskResults = _listArtistManagersTask.DoTask(artist);
 
                 if (!taskResults.Success)
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    return Error(taskResults.Exception);
 
                 var artistManagers = taskResults.Data;
                 foreach (var artistManager in artistManagers)
                     RedactPersonData(artistManager.Manager, artist);
 
-                return Ok(JsonSerialize(artistManagers));
+                return Json(artistManagers);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -328,11 +340,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistManager.Id = artistManagerId;
                 var taskResults = _updateArtistManagerTask.DoTask(artistManager);
 
-                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Ok() : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -353,14 +367,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistAccount.ArtistId = artistId;
                 var taskResults = _addArtistAccountTask.DoTask(artistAccount);
 
-                if (taskResults.Success)
-                    return Ok(JsonSerialize(taskResults));
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -381,14 +394,13 @@ namespace SongtrackerPro.Api.Controllers
                 var artist = _getArtistTask.DoTask(artistId).Data;
                 var taskResults = _listArtistAccountsTask.DoTask(artist);
 
-                if (taskResults.Success)
-                    return Ok(JsonSerialize(taskResults));
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -410,11 +422,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistAccount.Id = artistAccountId;
                 var taskResults = _updateArtistAccountTask.DoTask(artistAccount);
 
-                return taskResults.Success ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Ok() : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -432,24 +446,27 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
 
-                var toRemove = _getArtistAccountTask.DoTask(artistAccountId).Data;
-                if (toRemove == null)
-                    return Ok(JsonSerialize(false));
+                var getArtistAccountResult = _getArtistAccountTask.DoTask(artistAccountId);
+                if (!getArtistAccountResult.Success)
+                    return Error(getArtistAccountResult.Exception);
 
-                if (toRemove.ArtistId == artistId)
-                {
-                    var taskResults = _removeArtistAccountTask.DoTask(toRemove);
-                    if (taskResults.Success)
-                        return Ok(JsonSerialize(true));
-                }
+                var toRemove = getArtistAccountResult.Data;
+                if (toRemove == null)
+                    return Json(false);
+
+                if (toRemove.ArtistId != artistId) 
+                    return BadRequest();
+
+                var taskResults = _removeArtistAccountTask.DoTask(toRemove);
                 
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(true) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
-            
         }
 
         [Route(Routes.ArtistLinks)]
@@ -469,14 +486,13 @@ namespace SongtrackerPro.Api.Controllers
                 artistLink.ArtistId = artistId;
                 var taskResults = _addArtistLinkTask.DoTask(artistLink);
 
-                if (taskResults.Success)
-                    return Ok(JsonSerialize(taskResults));
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -493,14 +509,13 @@ namespace SongtrackerPro.Api.Controllers
                 var artist = _getArtistTask.DoTask(artistId).Data;
                 var taskResults = _listArtistLinksTask.DoTask(artist);
 
-                if (taskResults.Success)
-                    return Ok(JsonSerialize(taskResults));
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
         }
 
@@ -518,25 +533,31 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
 
-                var toRemove = _getArtistLinkTask.DoTask(artistLinkId).Data;
-                if (toRemove == null)
-                    return Ok(JsonSerialize(false));
+                var getArtistLinkResult = _getArtistLinkTask.DoTask(artistLinkId);
+                if (!getArtistLinkResult.Success)
+                    return Error(getArtistLinkResult.Exception);
 
-                if (toRemove.ArtistId == artistId)
-                {
-                    var taskResults = _removeArtistLinkTask.DoTask(toRemove);
-                    if (taskResults.Success)
-                        return Ok(JsonSerialize(true));
-                }
-                
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                var toRemove = getArtistLinkResult.Data;
+                if (toRemove == null)
+                    return Json(false);
+
+                if (toRemove.ArtistId != artistId) 
+                    return BadRequest();
+
+
+                var taskResults = _removeArtistLinkTask.DoTask(toRemove);
+
+                return taskResults.Success ? 
+                    Json(true) : 
+                    Error(taskResults.Exception);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return Error(e);
             }
-            
         }
+
+        #region Private
 
         private bool UserIsAuthorizedForArtist(int artistId)
         {
@@ -675,5 +696,7 @@ namespace SongtrackerPro.Api.Controllers
             person.Address = null;
             person.AddressId = null;
         }
+
+        #endregion
     }
 }

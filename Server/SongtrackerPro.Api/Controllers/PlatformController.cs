@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
@@ -12,13 +12,15 @@ namespace SongtrackerPro.Api.Controllers
     [ApiController]
     public class PlatformController : ApiControllerBase
     {
+        #region Constructor
+
         public PlatformController(IGetLoginTask getLoginTask,
-                                  IListServicesTask listServicesTask, 
-                                  IListPlatformsTask listPlatformsTask,
-                                  IGetPlatformTask getPlatformTask,
-                                  IAddPlatformTask addPlatformTask,
-                                  IUpdatePlatformTask updatePlatformTask) :
-        base(getLoginTask)
+            IListServicesTask listServicesTask, 
+            IListPlatformsTask listPlatformsTask,
+            IGetPlatformTask getPlatformTask,
+            IAddPlatformTask addPlatformTask,
+            IUpdatePlatformTask updatePlatformTask) :
+            base(getLoginTask)
         {
             _listServicesTask = listServicesTask;
             _listPlatformsTask = listPlatformsTask;
@@ -33,20 +35,28 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddPlatformTask _addPlatformTask;
         private readonly IUpdatePlatformTask _updatePlatformTask;
 
+        #endregion
+        
         [Route(Routes.Services)]
         [HttpGet]
         [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult ListServices()
         {
-            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                return Unauthorized();
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            var taskResults = _listServicesTask.DoTask(null);
+                var taskResults = _listServicesTask.DoTask(null);
 
-            if (taskResults.Success)
-                return Ok(JsonSerialize(taskResults));
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
         }
 
         [Route(Routes.Platforms)]
@@ -54,15 +64,21 @@ namespace SongtrackerPro.Api.Controllers
         [UserTypesAllowed(UserType.SystemAdministrator)]
         public IActionResult AddPlatform(Platform platform)
         {
-            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                return Unauthorized();
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            var taskResults = _addPlatformTask.DoTask(platform);
+                var taskResults = _addPlatformTask.DoTask(platform);
 
-            if (taskResults.Success)
-                return Ok(JsonSerialize(taskResults));
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
         }
 
         [Route(Routes.Platforms)]
@@ -70,15 +86,21 @@ namespace SongtrackerPro.Api.Controllers
         [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult ListPlatforms()
         {
-            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                return Unauthorized();
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            var taskResults = _listPlatformsTask.DoTask(null);
+                var taskResults = _listPlatformsTask.DoTask(null);
 
-            if (taskResults.Success)
-                return Ok(JsonSerialize(taskResults));
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
         }
 
         [Route(Routes.Platform)]
@@ -86,15 +108,21 @@ namespace SongtrackerPro.Api.Controllers
         [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult GetPlatform(int id)
         {
-            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                return Unauthorized();
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            var taskResults = _getPlatformTask.DoTask(id);
+                var taskResults = _getPlatformTask.DoTask(id);
 
-            if (taskResults.Success)
-                return Ok(JsonSerialize(taskResults));
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
         }
 
         [Route(Routes.Platform)]
@@ -102,16 +130,22 @@ namespace SongtrackerPro.Api.Controllers
         [UserTypesAllowed(UserType.SystemAdministrator)]
         public IActionResult UpdatePlatform(int id, Platform platform)
         {
-            if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
-                return Unauthorized();
+            try
+            {
+                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
 
-            platform.Id = id;
-            var taskResults = _updatePlatformTask.DoTask(platform);
+                platform.Id = id;
+                var taskResults = _updatePlatformTask.DoTask(platform);
 
-            if (taskResults.Success)
-                return Ok();
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+                return taskResults.Success ? 
+                    Ok() : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
         }
     }
 }

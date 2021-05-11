@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Api.ViewModels;
@@ -41,6 +42,22 @@ namespace SongtrackerPro.Api
             return JsonSerializer.Serialize(toSerialize, SerializerOptions);
         }
 
+        protected IActionResult Json<T>(TaskResult<T> taskResults)
+        {
+            return Content(JsonSerialize(taskResults), "application/json");
+        }
+
+        protected IActionResult Json<T>(T toSerialize)
+        {
+            return Content(JsonSerialize(toSerialize), "application/json");
+        }
+
+        protected IActionResult Error(Exception exception)
+        {
+            // Add exception logging here.
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
         protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
 
         protected Login Login
@@ -51,7 +68,7 @@ namespace SongtrackerPro.Api
                     return _login;
 
                 var results = _getLoginTask.DoTask(AuthenticationToken);
-                if (results.Success && results.Data.LogoutAt != null)
+                if (results.Success && results.Data.LogoutAt == null)
                     _login = results.Data;
 
                 return _login;
