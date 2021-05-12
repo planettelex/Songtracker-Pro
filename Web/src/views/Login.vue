@@ -66,6 +66,7 @@ export default {
       try {
         const googleUser = await this.$gAuth.signIn();
         if (this.$gAuth.isAuthorized) {
+          this.isAuthorized = true;
           let profile = googleUser.getBasicProfile();
           let authResponse = googleUser.getAuthResponse();
           let login = {
@@ -73,9 +74,10 @@ export default {
             authenticationToken: authResponse.access_token,
             tokenExpiration: new Date(authResponse.expires_at).toISOString()
           }
-          console.log(login);
           this.ProfileImage = profile.getImageUrl();
           this.Login = login;
+
+          console.log(login);
           // TODO: Make API call, determine user type, and then route user accordingly.
           // For now we are hard-coding the user as a system administrator.
           this.$router.push("/system-information");
@@ -101,6 +103,7 @@ export default {
       }
     }
   },
+
   mounted() {
     let that = this;
     let authLoaded = setInterval(function() {

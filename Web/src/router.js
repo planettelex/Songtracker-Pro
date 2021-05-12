@@ -186,7 +186,10 @@ router.beforeEach((to, from, next) => {
     next();
   }
   else if (store.state.Login !== null) {
-    next();
+    let now = new Date(Date.now());
+    let tokenExpiration = new Date(store.state.Login.tokenExpiration);
+    if (tokenExpiration < now) next("/login");
+    else next();
   }
   else {
     next("/login");

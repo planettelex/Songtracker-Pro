@@ -14,6 +14,7 @@ using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 using SongtrackerPro.Tasks.UserTasks;
+using SongtrackerPro.Utilities;
 using SongtrackerPro.Utilities.Services;
 
 namespace SongtrackerPro.Api
@@ -35,9 +36,19 @@ namespace SongtrackerPro.Api
 
             RegisterTasks(services);
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => { builder.WithOrigins(ApplicationSettings.Web.Domain)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+
             services.AddControllers();
         }
-
+        //private const string RequestsAllowedFrom = "RequestsAllowedFrom";
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -47,6 +58,8 @@ namespace SongtrackerPro.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
