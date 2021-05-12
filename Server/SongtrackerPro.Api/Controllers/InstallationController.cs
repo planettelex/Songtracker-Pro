@@ -59,7 +59,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _getInstallationTask.DoTask(null);
@@ -81,7 +81,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _seedSystemDataTask.DoTask(null);

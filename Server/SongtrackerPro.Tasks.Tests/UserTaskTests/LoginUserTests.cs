@@ -26,7 +26,8 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var login = new Login
             {
                 AuthenticationId = testUser.AuthenticationId,
-                AuthenticationToken = TestsModel.AuthenticationToken
+                AuthenticationToken = TestsModel.AuthenticationToken,
+                TokenExpiration = DateTime.UtcNow.AddHours(1)
             };
             var result = task.DoTask(login);
 

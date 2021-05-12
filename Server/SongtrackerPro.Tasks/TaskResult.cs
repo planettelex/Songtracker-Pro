@@ -2,9 +2,14 @@
 {
     public class TaskResult<T>
     {
+        public TaskResult(bool success)
+        {
+            Success = success;
+        }
+
         public TaskResult(T data)
         {
-            Success = true;
+            Success = data != null;
             Data = data;
         }
 
@@ -18,6 +23,10 @@
 
         public T Data { get; }
 
+        public bool HasNoData => Data == null; 
+
         public TaskException Exception { get; }
+
+        public bool HasException => Exception != null;
     }
 }

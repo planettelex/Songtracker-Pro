@@ -401,6 +401,7 @@ namespace SongtrackerPro.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     user_id = table.Column<int>(type: "int", nullable: true),
                     authentication_token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    token_expiration = table.Column<DateTime>(type: "datetime2", nullable: false),
                     login_at = table.Column<DateTime>(type: "datetime2", nullable: false),
                     logout_at = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

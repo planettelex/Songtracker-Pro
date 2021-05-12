@@ -27,7 +27,8 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(5)]
         public string NameSuffix { get; set; }
 
-        [JsonIgnore] public string FirstAndLastName => $"{FirstName} {LastName}";
+        [JsonIgnore] 
+        public string FirstAndLastName => $"{FirstName} {LastName}";
 
         [Column("email", Order = 6)]
         public string Email { get; set; }
@@ -36,6 +37,7 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(20)]
         public string Phone { get; set; }
 
+        [JsonIgnore]
         [Column("address_id", Order = 8)]
         public int? AddressId { get; set; }
         public Address Address { get; set; }

@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210511143046_v_0_04")]
+    [Migration("20210511230552_v_0_04")]
     partial class v_0_04
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -312,6 +312,10 @@ namespace SongtrackerPro.Data.Migrations
                     b.Property<DateTime?>("LogoutAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("logout_at");
+
+                    b.Property<DateTime>("TokenExpiration")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("token_expiration");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int")

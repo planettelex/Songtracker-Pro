@@ -30,11 +30,17 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                 artist.HasServiceMark = update.HasServiceMark;
                 artist.WebsiteUrl = update.WebsiteUrl;
                 artist.PressKitUrl = update.PressKitUrl;
-                artist.RecordLabel = null;
-                artist.RecordLabelId = update.RecordLabel?.Id ?? update.RecordLabelId;
+
+                artist.RecordLabelId = update.RecordLabel?.Id;
+                if (artist.RecordLabelId.HasValue)
+                {
+                    var recordLabel = _dbContext.RecordLabels.SingleOrDefault(l => l.Id == artist.RecordLabelId);
+                    artist.RecordLabel = recordLabel ?? throw new TaskException(SystemMessage("RECORD_LABEL_NOT_FOUND"));
+                }
+
                 _dbContext.SaveChanges();
 
-                return new TaskResult<Nothing>(null as Nothing);
+                return new TaskResult<Nothing>(true);
             }
             catch (Exception e)
             {

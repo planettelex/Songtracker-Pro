@@ -37,7 +37,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 userAccount.Username = update.Username;
                 _dbContext.SaveChanges();
 
-                return new TaskResult<Nothing>(null as Nothing);
+                return new TaskResult<Nothing>(true);
             }
             catch (Exception e)
             {

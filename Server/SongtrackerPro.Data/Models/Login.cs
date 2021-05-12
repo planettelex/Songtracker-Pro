@@ -25,10 +25,14 @@ namespace SongtrackerPro.Data.Models
         public string AuthenticationToken { get; set; }
 
         [Required]
-        [Column("login_at", Order = 4)]
+        [Column("token_expiration", Order = 4)]
+        public DateTime TokenExpiration { get; set; }
+
+        [Required]
+        [Column("login_at", Order = 5)]
         public DateTime LoginAt { get; set; }
 
-        [Column("logout_at", Order = 5)]
+        [Column("logout_at", Order = 6)]
         public DateTime? LogoutAt { get; set; }
 
         public User User { get; set; }

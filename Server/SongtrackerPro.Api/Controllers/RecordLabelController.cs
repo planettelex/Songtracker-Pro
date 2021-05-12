@@ -40,7 +40,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _addRecordLabelTask.DoTask(recordLabel);
@@ -62,7 +62,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _listRecordLabelsTask.DoTask(null);
@@ -85,13 +85,16 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _getRecordLabelTask.DoTask(id);
 
-                if (!taskResults.Success) 
+                if (taskResults.HasException)
                     return Error(taskResults.Exception);
+
+                if (taskResults.HasNoData)
+                    return NotFound();
 
                 var userIsLabelAdmin = AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id == id;
                 var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsLabelAdmin;
@@ -113,11 +116,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id != id)
                     return Unauthorized();
+
+                var invalidRecordLabelPathResult = InvalidRecordLabelPathResult(id);
+                if (invalidRecordLabelPathResult != null)
+                    return invalidRecordLabelPathResult;
 
                 recordLabel.Id = id;
                 var taskResults =_updateRecordLabelTask.DoTask(recordLabel);
@@ -131,5 +138,22 @@ namespace SongtrackerPro.Api.Controllers
                 return Error(e);
             }
         }
+
+        #region Private
+
+        private IActionResult InvalidRecordLabelPathResult(int recordLabelId)
+        {
+            var getRecordLabelResult = _getRecordLabelTask.DoTask(recordLabelId);
+
+            if (getRecordLabelResult.HasException)
+                return Error(getRecordLabelResult.Exception);
+
+            if (getRecordLabelResult.HasNoData)
+                return NotFound();
+
+            return null;
+        }
+
+        #endregion
     }
 }

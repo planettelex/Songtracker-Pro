@@ -311,6 +311,10 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("logout_at");
 
+                    b.Property<DateTime>("TokenExpiration")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("token_expiration");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int")
                         .HasColumnName("user_id");

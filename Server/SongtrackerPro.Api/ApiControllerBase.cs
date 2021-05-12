@@ -15,13 +15,17 @@ using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Api
 {
-    public class ApiControllerBase : ControllerBase
+    public abstract class ApiControllerBase : ControllerBase
     {
-        public ApiControllerBase(IGetLoginTask getLoginTask)
+        protected ApiControllerBase(IGetLoginTask getLoginTask)
         {
             _getLoginTask = getLoginTask;
         }
         private readonly IGetLoginTask _getLoginTask;
+
+        protected const string JsonContentType = "application/json";
+
+        protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
 
         protected JsonSerializerOptions SerializerOptions =>
             new JsonSerializerOptions
@@ -44,21 +48,24 @@ namespace SongtrackerPro.Api
 
         protected IActionResult Json<T>(TaskResult<T> taskResults)
         {
-            return Content(JsonSerialize(taskResults), "application/json");
+            return Content(JsonSerialize(taskResults), JsonContentType);
         }
 
         protected IActionResult Json<T>(T toSerialize)
         {
-            return Content(JsonSerialize(toSerialize), "application/json");
+            return Content(JsonSerialize(toSerialize), JsonContentType);
         }
 
         protected IActionResult Error(Exception exception)
         {
-            // Add exception logging here.
+            //TODO: Add exception logging here.
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
-        protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
+        protected string SystemMessage(string key)
+        {
+            return GetResource.SystemMessage(ApplicationSettings.Api.Culture, key);
+        }
 
         protected Login Login
         {
@@ -78,7 +85,12 @@ namespace SongtrackerPro.Api
 
         protected User AuthenticatedUser => Login?.User;
 
-        protected bool UserIsAuthorized(MethodBase callingMethod)
+        protected bool UserIsAuthenticatedAndAuthorized(MethodBase callingMethod)
+        {
+            return UserIsAuthenticated() && UserIsAuthorized(callingMethod);
+        }
+
+        protected bool UserIsAuthenticated()
         {
             if (AuthenticationToken == null)
                 return false;
@@ -86,12 +98,20 @@ namespace SongtrackerPro.Api
             if (Login == null)
                 return false;
 
-            if (AuthenticatedUser == null)
-                return false;
-
             if (Login.LogoutAt != null)
                 return false;
 
+            if (Login.TokenExpiration < DateTime.UtcNow)
+                return false;
+
+            if (AuthenticatedUser == null)
+                return false;
+
+            return true;
+        }
+
+        private bool UserIsAuthorized(ICustomAttributeProvider callingMethod)
+        {
             var userTypesAllowedAttributes = (UserTypesAllowedAttribute[]) callingMethod.GetCustomAttributes(typeof(UserTypesAllowedAttribute), true);
             if (!userTypesAllowedAttributes.Any())
                 return false;
@@ -119,11 +139,6 @@ namespace SongtrackerPro.Api
             var userRolesAllowed = userRolesAllowedAttribute.SystemUserRoles;
             
             return Enum.GetValues(typeof(SystemUserRoles)).Cast<SystemUserRoles>().Any(roleFlag => userRolesAllowed.HasFlag(roleFlag));
-        }
-
-        protected string SystemMessage(string key)
-        {
-            return GetResource.SystemMessage(ApplicationSettings.Api.Culture, key);
         }
     }
 }

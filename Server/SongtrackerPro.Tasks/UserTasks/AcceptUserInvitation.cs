@@ -59,6 +59,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 var newUser = userInvitation.CreatedUser;
                 newUser.AuthenticationId = invitation.Email;
                 newUser.Type = invitation.Type;
+                newUser.Roles = invitation.Roles;
 
                 var newPerson = newUser.Person;
                 newPerson.Email = invitation.Email;

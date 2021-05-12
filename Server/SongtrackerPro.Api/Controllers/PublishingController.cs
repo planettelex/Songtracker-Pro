@@ -43,7 +43,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _listPerformingRightsOrganizationsTask.DoTask(null);
@@ -65,7 +65,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _addPublisherTask.DoTask(publisher);
@@ -87,7 +87,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _listPublishersTask.DoTask(null);
@@ -109,13 +109,16 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _getPublisherTask.DoTask(id);
 
-                if (!taskResults.Success)
+                if (taskResults.HasException)
                     return Error(taskResults.Exception);
+
+                if (taskResults.HasNoData)
+                    return NotFound();
 
                 var userIsPublisherAdmin = AuthenticatedUser.Type == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id;
                 var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsPublisherAdmin;
@@ -137,11 +140,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (AuthenticatedUser.Type == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id)
                     return Unauthorized();
+
+                var invalidPublisherPathResult = InvalidPublisherPathResult(id);
+                if (invalidPublisherPathResult != null)
+                    return invalidPublisherPathResult;
 
                 publisher.Id = id;
                 var taskResults = _updatePublisherTask.DoTask(publisher);
@@ -155,5 +162,22 @@ namespace SongtrackerPro.Api.Controllers
                 return Error(e);
             }
         }
+
+        #region Private
+
+        private IActionResult InvalidPublisherPathResult(int publisherId)
+        {
+            var getPublisherResult = _getPublisherTask.DoTask(publisherId);
+
+            if (getPublisherResult.HasException)
+                return Error(getPublisherResult.Exception);
+
+            if (getPublisherResult.HasNoData)
+                return NotFound();
+
+            return null;
+        }
+
+        #endregion
     }
 }

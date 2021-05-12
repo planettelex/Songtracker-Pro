@@ -37,11 +37,17 @@ namespace SongtrackerPro.Tasks.PersonTasks
                 person.Address.City = update.Address.City;
                 person.Address.Region = update.Address.Region;
                 person.Address.PostalCode = update.Address.PostalCode;
-                person.Address.Country = null;
-                person.Address.CountryId = update.Address.Country.Id;
+
+                person.Address.CountryId = update.Address.Country?.Id;
+                if (person.Address.CountryId.HasValue)
+                {
+                    var country = _dbContext.Countries.SingleOrDefault(c => c.Id == person.Address.CountryId);
+                    person.Address.Country = country ?? throw new TaskException(SystemMessage("COUNTRY_NOT_FOUND"));
+                }
+
                 _dbContext.SaveChanges();
 
-                return new TaskResult<Nothing>(null as Nothing);
+                return new TaskResult<Nothing>(true);
             }
             catch (Exception e)
             {

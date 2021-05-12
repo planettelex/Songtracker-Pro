@@ -44,7 +44,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _listServicesTask.DoTask(null);
@@ -66,7 +66,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _addPlatformTask.DoTask(platform);
@@ -88,7 +88,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _listPlatformsTask.DoTask(null);
@@ -110,14 +110,18 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _getPlatformTask.DoTask(id);
 
-                return taskResults.Success ? 
-                    Json(taskResults) : 
-                    Error(taskResults.Exception);
+                if (taskResults.HasException)
+                    return Error(taskResults.Exception);
+
+                if (taskResults.HasNoData)
+                    return NotFound();
+
+                return Json(taskResults);
             }
             catch (Exception e)
             {
@@ -132,8 +136,12 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
+
+                var invalidPlatformPathResult = InvalidPlatformPathResult(id);
+                if (invalidPlatformPathResult != null)
+                    return invalidPlatformPathResult;
 
                 platform.Id = id;
                 var taskResults = _updatePlatformTask.DoTask(platform);
@@ -147,5 +155,22 @@ namespace SongtrackerPro.Api.Controllers
                 return Error(e);
             }
         }
+
+        #region Private
+
+        private IActionResult InvalidPlatformPathResult(int platformId)
+        {
+            var getPlatformResult = _getPlatformTask.DoTask(platformId);
+
+            if (getPlatformResult.HasException)
+                return Error(getPlatformResult.Exception);
+
+            if (getPlatformResult.HasNoData)
+                return NotFound();
+
+            return null;
+        }
+
+        #endregion
     }
 }

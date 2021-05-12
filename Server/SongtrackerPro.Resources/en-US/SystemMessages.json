@@ -18,12 +18,12 @@
       "Value": "Artist member not found."
     },
     {
-      "Key": "INSTALLATION_NOT_FOUND",
-      "Value": "Installation not found."
+      "Key": "COUNTRY_NOT_FOUND",
+      "Value": "Country not found."
     },
     {
-      "Key": "LOGIN_NOT_FOUND",
-      "Value": "Login not found."
+      "Key": "INSTALLATION_NOT_FOUND",
+      "Value": "Installation not found."
     },
     {
       "Key": "PERSON_NOT_FOUND",
@@ -32,6 +32,10 @@
     {
       "Key": "PLATFORM_NOT_FOUND",
       "Value": "Platform not found."
+    },
+    {
+      "Key": "PRO_NOT_FOUND",
+      "Value": "Performing rights organization not found."
     },
     {
       "Key": "PUBLISHER_NOT_FOUND",

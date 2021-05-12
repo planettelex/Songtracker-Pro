@@ -25,9 +25,6 @@ namespace SongtrackerPro.Tasks.UserTasks
                 .Include(l => l.User).ThenInclude(u => u.PerformingRightsOrganization).ThenInclude(a => a.Country)
                 .SingleOrDefault();
 
-            if (login == null)
-                throw new TaskException(SystemMessage("LOGIN_NOT_FOUND"));
-
             return new TaskResult<Login>(login);
         }
     }

@@ -201,6 +201,7 @@ CREATE TABLE [logins] (
     [id] int NOT NULL IDENTITY,
     [user_id] int NULL,
     [authentication_token] nvarchar(max) NOT NULL,
+    [token_expiration] datetime2 NOT NULL,
     [login_at] datetime2 NOT NULL,
     [logout_at] datetime2 NULL,
     CONSTRAINT [PK_logins] PRIMARY KEY ([id]),
@@ -330,7 +331,7 @@ CREATE INDEX [IX_users_record_label_id] ON [users] ([record_label_id]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20210511143046_v_0_04', N'5.0.3');
+VALUES (N'20210511230552_v_0_04', N'5.0.3');
 GO
 
 COMMIT;

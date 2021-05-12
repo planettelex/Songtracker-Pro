@@ -30,9 +30,11 @@ namespace SongtrackerPro.Api.Controllers
                                 IAddArtistLinkTask addArtistLinkTask,
                                 IRemoveArtistLinkTask removeArtistLinkTask,
                                 IListArtistMembersTask listArtistMembersTask,
+                                IGetArtistMemberTask getArtistMemberTask,
                                 IAddArtistMemberTask addArtistMemberTask,
                                 IUpdateArtistMemberTask updateArtistMemberTask,
                                 IListArtistManagersTask listArtistManagersTask,
+                                IGetArtistManagerTask getArtistManagerTask,
                                 IAddArtistManagerTask addArtistManagerTask,
                                 IUpdateArtistManagerTask updateArtistManagerTask) : 
         base(getLoginTask)
@@ -51,9 +53,11 @@ namespace SongtrackerPro.Api.Controllers
             _addArtistLinkTask = addArtistLinkTask;
             _removeArtistLinkTask = removeArtistLinkTask;
             _listArtistMembersTask = listArtistMembersTask;
+            _getArtistMemberTask = getArtistMemberTask;
             _addArtistMemberTask = addArtistMemberTask;
             _updateArtistMemberTask = updateArtistMemberTask;
             _listArtistManagersTask = listArtistManagersTask;
+            _getArtistManagerTask = getArtistManagerTask;
             _addArtistManagerTask = addArtistManagerTask;
             _updateArtistManagerTask = updateArtistManagerTask;
         }
@@ -71,9 +75,11 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddArtistLinkTask _addArtistLinkTask;
         private readonly IRemoveArtistLinkTask _removeArtistLinkTask;
         private readonly IListArtistMembersTask _listArtistMembersTask;
+        private readonly IGetArtistMemberTask _getArtistMemberTask;
         private readonly IAddArtistMemberTask _addArtistMemberTask;
         private readonly IUpdateArtistMemberTask _updateArtistMemberTask;
         private readonly IListArtistManagersTask _listArtistManagersTask;
+        private readonly IGetArtistManagerTask _getArtistManagerTask;
         private readonly IAddArtistManagerTask _addArtistManagerTask;
         private readonly IUpdateArtistManagerTask _updateArtistManagerTask;
 
@@ -86,7 +92,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabelId != artist.RecordLabelId)
@@ -111,7 +117,7 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _listArtistsTask.DoTask(null);
@@ -138,14 +144,17 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 var taskResults = _getArtistTask.DoTask(id);
 
-                if (!taskResults.Success)
+                if (taskResults.HasException)
                     return Error(taskResults.Exception);
 
+                if (taskResults.HasNoData)
+                    return NotFound();
+                
                 var artist = taskResults.Data;
                 RedactArtistData(artist);
 
@@ -165,11 +174,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(id))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(id);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
 
                 artist.Id = id;
                 var taskResults = _updateArtistTask.DoTask(artist);
@@ -192,11 +205,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
 
                 artistMember.ArtistId = artistId;
                 var taskResults = _addArtistMemberTask.DoTask(artistMember);
@@ -218,10 +235,18 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                var artist = _getArtistTask.DoTask(artistId).Data;
+                var getArtistResults = _getArtistTask.DoTask(artistId);
+
+                if (getArtistResults.HasException)
+                    return Error(getArtistResults.Exception);
+
+                if (getArtistResults.HasNoData)
+                    return NotFound();
+
+                var artist = getArtistResults.Data;
                 var taskResults = _listArtistMembersTask.DoTask(artist);
 
                 if (!taskResults.Success)
@@ -247,11 +272,26 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
+
+                var getArtistMemberResult = _getArtistMemberTask.DoTask(artistMemberId);
+
+                if (getArtistMemberResult.HasException)
+                    return Error(getArtistMemberResult.Exception);
+
+                if (getArtistMemberResult.HasNoData)
+                    return NotFound();
+
+                if (getArtistMemberResult.Data.ArtistId != artistId)
+                    return BadRequest();
 
                 artistMember.ArtistId = artistId;
                 artistMember.Id = artistMemberId;
@@ -275,11 +315,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
 
                 artistManager.ArtistId = artistId;
                 var taskResults = _addArtistManagerTask.DoTask(artistManager);
@@ -301,10 +345,18 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                var artist = _getArtistTask.DoTask(artistId).Data;
+                var getArtistResults = _getArtistTask.DoTask(artistId);
+
+                if (getArtistResults.HasException)
+                    return Error(getArtistResults.Exception);
+
+                if (getArtistResults.HasNoData)
+                    return NotFound();
+
+                var artist = getArtistResults.Data;
                 var taskResults = _listArtistManagersTask.DoTask(artist);
 
                 if (!taskResults.Success)
@@ -330,11 +382,26 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
+
+                var getArtistManagerResult = _getArtistManagerTask.DoTask(artistManagerId);
+
+                if (getArtistManagerResult.HasException)
+                    return Error(getArtistManagerResult.Exception);
+
+                if (getArtistManagerResult.HasNoData)
+                    return NotFound();
+
+                if (getArtistManagerResult.Data.ArtistId != artistId)
+                    return BadRequest();
 
                 artistManager.ArtistId = artistId;
                 artistManager.Id = artistManagerId;
@@ -358,11 +425,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
 
                 artistAccount.ArtistId = artistId;
                 var taskResults = _addArtistAccountTask.DoTask(artistAccount);
@@ -385,13 +456,21 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
 
-                var artist = _getArtistTask.DoTask(artistId).Data;
+                var getArtistResults = _getArtistTask.DoTask(artistId);
+
+                if (getArtistResults.HasException)
+                    return Error(getArtistResults.Exception);
+
+                if (getArtistResults.HasNoData)
+                    return NotFound();
+
+                var artist = getArtistResults.Data;
                 var taskResults = _listArtistAccountsTask.DoTask(artist);
 
                 return taskResults.Success ? 
@@ -412,11 +491,26 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
+
+                var getArtistAccountResult = _getArtistAccountTask.DoTask(artistAccountId);
+
+                if (getArtistAccountResult.HasException)
+                    return Error(getArtistAccountResult.Exception);
+
+                if (getArtistAccountResult.HasNoData)
+                    return NotFound();
+
+                if (getArtistAccountResult.Data.ArtistId != artistId)
+                    return BadRequest();
 
                 artistAccount.ArtistId = artistId;
                 artistAccount.Id = artistAccountId;
@@ -440,22 +534,30 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
 
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
+
                 var getArtistAccountResult = _getArtistAccountTask.DoTask(artistAccountId);
-                if (!getArtistAccountResult.Success)
+
+                if (getArtistAccountResult.HasException)
                     return Error(getArtistAccountResult.Exception);
+
+                if (getArtistAccountResult.HasNoData)
+                    return NotFound();
+
+                if (getArtistAccountResult.Data.ArtistId != artistId)
+                    return BadRequest();
 
                 var toRemove = getArtistAccountResult.Data;
                 if (toRemove == null)
                     return Json(false);
-
-                if (toRemove.ArtistId != artistId) 
-                    return BadRequest();
 
                 var taskResults = _removeArtistAccountTask.DoTask(toRemove);
                 
@@ -477,11 +579,15 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
 
                 artistLink.ArtistId = artistId;
                 var taskResults = _addArtistLinkTask.DoTask(artistLink);
@@ -503,10 +609,18 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                var artist = _getArtistTask.DoTask(artistId).Data;
+                var getArtistResults = _getArtistTask.DoTask(artistId);
+
+                if (getArtistResults.HasException)
+                    return Error(getArtistResults.Exception);
+
+                if (getArtistResults.HasNoData)
+                    return NotFound();
+
+                var artist = getArtistResults.Data;
                 var taskResults = _listArtistLinksTask.DoTask(artist);
 
                 return taskResults.Success ? 
@@ -527,23 +641,30 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
-                if (!UserIsAuthorized(MethodBase.GetCurrentMethod()))
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
                 if (!UserIsAuthorizedForArtist(artistId))
                     return Unauthorized();
 
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
+
                 var getArtistLinkResult = _getArtistLinkTask.DoTask(artistLinkId);
-                if (!getArtistLinkResult.Success)
+
+                if (getArtistLinkResult.HasException)
                     return Error(getArtistLinkResult.Exception);
+
+                if (getArtistLinkResult.HasNoData)
+                    return NotFound();
+
+                if (getArtistLinkResult.Data.ArtistId != artistId)
+                    return BadRequest();
 
                 var toRemove = getArtistLinkResult.Data;
                 if (toRemove == null)
                     return Json(false);
-
-                if (toRemove.ArtistId != artistId) 
-                    return BadRequest();
-
 
                 var taskResults = _removeArtistLinkTask.DoTask(toRemove);
 
@@ -558,6 +679,19 @@ namespace SongtrackerPro.Api.Controllers
         }
 
         #region Private
+
+        private IActionResult InvalidArtistPathResult(int artistId)
+        {
+            var getArtistResult = _getArtistTask.DoTask(artistId);
+
+            if (getArtistResult.HasException)
+                return Error(getArtistResult.Exception);
+
+            if (getArtistResult.HasNoData)
+                return NotFound();
+
+            return null;
+        }
 
         private bool UserIsAuthorizedForArtist(int artistId)
         {

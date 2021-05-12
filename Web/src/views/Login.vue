@@ -69,9 +69,11 @@ export default {
           let profile = googleUser.getBasicProfile();
           let authResponse = googleUser.getAuthResponse();
           let login = {
+            authenticationId: profile.getEmail(),
             authenticationToken: authResponse.access_token,
-            authenticationId: profile.getEmail()
+            tokenExpiration: new Date(authResponse.expires_at).toISOString()
           }
+          console.log(login);
           this.ProfileImage = profile.getImageUrl();
           this.Login = login;
           // TODO: Make API call, determine user type, and then route user accordingly.

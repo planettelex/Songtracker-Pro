@@ -35,14 +35,25 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 publisher.Address.City = update.Address.City;
                 publisher.Address.Region = update.Address.Region;
                 publisher.Address.PostalCode = update.Address.PostalCode;
-                publisher.Address.Country = null;
-                publisher.Address.CountryId = update.Address.Country.Id;
-                publisher.PerformingRightsOrganization = null;
-                publisher.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id ?? update.PerformingRightsOrganizationId;
+
+                publisher.Address.CountryId = update.Address.Country?.Id;
+                if (publisher.Address.CountryId.HasValue)
+                {
+                    var country = _dbContext.Countries.SingleOrDefault(c => c.Id == publisher.Address.CountryId);
+                    publisher.Address.Country = country ?? throw new TaskException(SystemMessage("COUNTRY_NOT_FOUND"));
+                }
+
+                publisher.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id;
+                if (publisher.PerformingRightsOrganizationId.HasValue)
+                {
+                    var pro = _dbContext.PerformingRightsOrganizations.SingleOrDefault(r => r.Id == publisher.PerformingRightsOrganizationId);
+                    publisher.PerformingRightsOrganization = pro ?? throw new TaskException(SystemMessage("PRO_NOT_FOUND"));
+                }
                 publisher.PerformingRightsOrganizationPublisherNumber = update.PerformingRightsOrganizationPublisherNumber;
+
                 _dbContext.SaveChanges();
 
-                return new TaskResult<Nothing>(null as Nothing);
+                return new TaskResult<Nothing>(true);
             }
             catch (Exception e)
             {

@@ -35,11 +35,17 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                 recordLabel.Address.City = update.Address.City;
                 recordLabel.Address.Region = update.Address.Region;
                 recordLabel.Address.PostalCode = update.Address.PostalCode;
-                recordLabel.Address.Country = null;
-                recordLabel.Address.CountryId = update.Address.Country.Id;
+
+                recordLabel.Address.CountryId = update.Address.Country?.Id;
+                if (recordLabel.Address.CountryId.HasValue)
+                {
+                    var country = _dbContext.Countries.SingleOrDefault(c => c.Id == recordLabel.Address.CountryId);
+                    recordLabel.Address.Country = country ?? throw new TaskException(SystemMessage("COUNTRY_NOT_FOUND"));
+                }
+                
                 _dbContext.SaveChanges();
 
-                return new TaskResult<Nothing>(null as Nothing);
+                return new TaskResult<Nothing>(true);
             }
             catch (Exception e)
             {

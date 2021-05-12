@@ -95,10 +95,12 @@ namespace SongtrackerPro.Api
             services.AddScoped<IUpdateArtistTask, UpdateArtist>();
 
             services.AddScoped<IListArtistMembersTask, ListArtistMembers>();
+            services.AddScoped<IGetArtistMemberTask, GetArtistMember>();
             services.AddScoped<IAddArtistMemberTask, AddArtistMember>();
             services.AddScoped<IUpdateArtistMemberTask, UpdateArtistMember>();
 
             services.AddScoped<IListArtistManagersTask, ListArtistManagers>();
+            services.AddScoped<IGetArtistManagerTask, GetArtistManager>();
             services.AddScoped<IAddArtistManagerTask, AddArtistManager>();
             services.AddScoped<IUpdateArtistManagerTask, UpdateArtistManager>();
 
