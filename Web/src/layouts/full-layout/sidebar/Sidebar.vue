@@ -37,10 +37,6 @@
 
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
-import UserType from "../../../enums/UserType";
-
-// TODO: Determine the correct user type from state.
-var sidebarMenu = SidebarMenu(UserType.SystemAdministrator);
 
 export default {
   name: "Sidebar",
@@ -53,11 +49,11 @@ export default {
   },
 
   data: () => ({
-    items: sidebarMenu
+    items: null
   }),
 
   computed: {
-    ...mapState(["SidebarColor"]),
+    ...mapState(["SidebarColor", "User"]),
     SidebarDrawer: {
       get() {
         return this.$store.state.SidebarDrawer;
@@ -74,7 +70,11 @@ export default {
     }
   },
 
-  methods: {}
+  methods: { },
+
+  mounted() {
+    this.items = SidebarMenu(this.User.type);
+  }
 };
 </script>
 

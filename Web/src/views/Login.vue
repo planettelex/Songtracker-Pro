@@ -115,7 +115,8 @@ export default {
 
     async logout(redirect) {
       try {
-        if (!this.$gAuth.isAuthorized || this.Login == null)
+        let isLoggedOut = this.Login === null;
+        if (isLoggedOut)
         {
           this.userAuthenticated = false;
           return;
@@ -131,6 +132,12 @@ export default {
           that.userAuthenticated = false;
           if (redirect)
             that.$router.push("/");
+        })
+        .catch(error => { 
+          that.Login = null;
+          that.User = null;
+          that.userAuthenticated = false;
+          that.handleError(error);
         });
       } 
       catch (error) {
@@ -144,11 +151,14 @@ export default {
       let that = this;
       let authLoaded = setInterval(function() {
         that.authInitialized = that.$gAuth.isInit;
-        that.userAuthenticated = that.$gAuth.isAuthorized;
         if (that.authInitialized) {
           clearInterval(authLoaded);
-          if (that.$route.query.logout) {
+          let isLoggedIn = that.Login !== null;
+          if (that.$route.query.logout && isLoggedIn) {
             that.logout(true);
+          }
+          else {
+            that.userAuthenticated = isLoggedIn;
           }
         }
       }, 500);
