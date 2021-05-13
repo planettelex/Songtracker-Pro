@@ -5,32 +5,32 @@ function getSidebarMenu(userType)
         case UserType.SystemAdministrator:
             return [
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-information',
                     title: 'System Information',
                     to: '/system-information',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-book-open-variant',
                     title: 'Publishing Companies',
                     to: '/publishing-companies',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-label-multiple',
                     title: 'Record Labels',
                     to: '/record-labels',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-cloud',
                     title: 'Platforms',
                     to: '/platforms',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-music',
                     title: 'Artists',
                     to: '/artists',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-account-multiple',
                     title: 'Users',
                     to: '/users',
                 }
@@ -38,32 +38,32 @@ function getSidebarMenu(userType)
         case UserType.LabelAdministrator:
             return [
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-bank',
                     title: 'Earnings',
                     to: '/label-earnings',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-folder',
                     title: 'Documents',
                     to: '/label-documents',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-album',
                     title: 'Releases',
                     to: '/label-releases',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-music',
                     title: 'Artists',
                     to: '/label-artists',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-account-multiple',
                     title: 'Users',
                     to: '/label-users',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-information-variant',
                     title: 'Information',
                     to: '/label-information',
                 }
@@ -71,27 +71,27 @@ function getSidebarMenu(userType)
         case UserType.PublisherAdministrator:
             return [
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-bank',
                     title: 'Earnings',
                     to: '/publisher-earnings',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-folder',
                     title: 'Documents',
                     to: '/publisher-documents',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-music-box-multiple',
                     title: 'Compositions',
                     to: '/publisher-compositions',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-account-multiple',
                     title: 'Users',
                     to: '/publisher-users',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-information-variant',
                     title: 'Information',
                     to: '/publisher-information',
                 },
@@ -99,27 +99,27 @@ function getSidebarMenu(userType)
         case UserType.SystemUser:
             return [
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-bank',
                     title: 'Earnings',
                     to: '/my-earnings',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-folder',
                     title: 'Documents',
                     to: '/my-documents',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-music-box-multiple',
                     title: 'Compositions',
                     to: '/my-compositions',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-microphone',
                     title: 'Recordings',
                     to: '/my-recordings',
                 },
                 {
-                    icon: 'mdi-file',
+                    icon: 'mdi-album',
                     title: 'Releases',
                     to: '/my-releases',
                 },
