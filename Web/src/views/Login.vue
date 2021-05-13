@@ -21,6 +21,9 @@
 </template>
 
 <script>
+import Login from '../models/Login';
+import apiRequest from '../apiRequest';
+import Logout from '../models/Logout';
 import { mapState } from "vuex";
 
 export default {
@@ -62,6 +65,10 @@ export default {
   },
 
   methods: {
+    handleError(error) {
+      console.error(error);
+      //TODO: Error UI Feedback.
+    },
     async login() {
       try {
         const googleUser = await this.$gAuth.signIn();
@@ -77,45 +84,63 @@ export default {
           this.ProfileImage = profile.getImageUrl();
           this.Login = login;
 
-          console.log(login);
-          // TODO: Make API call, determine user type, and then route user accordingly.
-          // For now we are hard-coding the user as a system administrator.
-          this.$router.push("/system-information");
+          const loginModel = new Login(login);
+          loginModel.save()
+          .then(response => { 
+            this.User = response.User;
+            this.$router.push("/system-information");
+          })
+          .catch(error => this.handleError(error));          
         }
-      } catch (error) {
-        // TODO: On fail do something.
-        console.error(error);
-        return null;
+      } 
+      catch (error) {
+        this.handleError(error);
       }
     },
+
     async logout(redirect) {
       try {
+        if (!this.$gAuth.isAuthorized || this.Login == null)
+        {
+          this.userAuthenticated = false;
+          return;
+        }
         await this.$gAuth.signOut();
-        this.Login = null;
-        this.User = null;
-        this.userAuthenticated = false;
-        if (redirect)
-          this.$router.push("/");
-      } catch (error) {
-        // TODO: On fail do something.
-        console.error(error);
-        return null;
+        const logoutModel = new Logout();
+        apiRequest.headers.AuthenticationToken = this.Login.authenticationToken;
+        let that = this;
+        logoutModel.config(apiRequest).save()
+        .then(function() {
+          that.Login = null;
+          that.User = null;
+          that.userAuthenticated = false;
+          if (redirect)
+            that.$router.push("/");
+        });
+      } 
+      catch (error) {
+        this.handleError(error);
       }
     }
   },
 
   mounted() {
-    let that = this;
-    let authLoaded = setInterval(function() {
-      that.authInitialized = that.$gAuth.isInit;
-      that.userAuthenticated = that.$gAuth.isAuthorized;
-      if (that.authInitialized) {
-        clearInterval(authLoaded);
-        if (that.$route.query.logout) {
-          that.logout(true);
+    try {
+      let that = this;
+      let authLoaded = setInterval(function() {
+        that.authInitialized = that.$gAuth.isInit;
+        that.userAuthenticated = that.$gAuth.isAuthorized;
+        if (that.authInitialized) {
+          clearInterval(authLoaded);
+          if (that.$route.query.logout) {
+            that.logout(true);
+          }
         }
-      }
-    }, 500);
+      }, 500);
+    } 
+    catch (error) {
+        this.handleError(error);
+    }
   }
 };
 </script>
