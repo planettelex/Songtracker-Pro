@@ -23,7 +23,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login"]),
+    ...mapState(["Login", "User"])
   },
 
   async mounted() {

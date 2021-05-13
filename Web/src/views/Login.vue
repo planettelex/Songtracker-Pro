@@ -21,9 +21,10 @@
 </template>
 
 <script>
-import Login from '../models/Login';
 import apiRequest from '../apiRequest';
+import Login from '../models/Login';
 import Logout from '../models/Logout';
+import UserType from '../enums/UserType';
 import { mapState } from "vuex";
 
 export default {
@@ -87,8 +88,22 @@ export default {
           const loginModel = new Login(login);
           loginModel.save()
           .then(response => { 
-            this.User = response.User;
-            this.$router.push("/system-information");
+            let user = response.user;
+            this.User = user;
+            switch (user.type) {
+              case UserType.SystemAdministrator:
+                this.$router.push("/system-information");
+                break;
+              case UserType.PublisherAdministrator:
+                this.$router.push("/publisher-earnings");
+                break;
+              case UserType.LabelAdministrator:
+                this.$router.push("/label-earnings");
+                break;
+              case UserType.SystemUser:
+                this.$router.push("/my-earnings");
+                break;
+            }
           })
           .catch(error => this.handleError(error));          
         }
