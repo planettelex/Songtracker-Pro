@@ -46,13 +46,18 @@
           </v-avatar>
         </v-btn>
       </template>
-      <v-list>
+      <v-list class="v-user-menu">
         <v-list-item
           v-for="(item, i) in userprofile"
           :key="i"
           router :to="item.route"
           color="primary">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-icon v-if="item.icon">
+            <v-icon v-text="item.icon" />
+          </v-list-item-icon>
+          <v-list-item-content v-if="item.title">
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -78,8 +83,8 @@ export default {
   data: () => ({
     showLogo: true,
     userprofile: [
-      { title: "My Profile", route: "/my-profile" },
-      { title: "Logout", route: "/login?logout=true"},
+      { title: "My Profile", route: "/my-profile", icon: 'mdi-account' },
+      { title: "Logout", route: "/login?logout=true", icon: 'mdi-logout' },
     ]
   }),
 
@@ -99,6 +104,9 @@ export default {
 </script>
 
 <style lang="scss">
+.v-application--is-ltr .v-user-menu .v-list-item__icon:first-child {
+  margin-right: 10px;
+}
 .v-application .theme--dark.white .theme--dark.v-btn.v-btn--icon {
   color: $font-color !important;
 }
