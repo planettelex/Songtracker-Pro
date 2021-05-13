@@ -19,7 +19,7 @@ export default {
     page: {
       title: "System Information",
     },
-    systemInformation: { type: Object, default: () => ({}) }
+    systemInformation: {}
   }),
 
   computed: {

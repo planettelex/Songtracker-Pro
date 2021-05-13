@@ -38,30 +38,18 @@ export default {
   computed: {
     ...mapState(["ProfileImage"]),
     ProfileImage: {
-      get() {
-        return this.$store.state.ProfileImage;
-      },
-      set(val) {
-        this.$store.commit("SET_PROFILE_IMAGE", val);
-      }
+      get() { return this.$store.state.ProfileImage; },
+      set(val) { this.$store.commit("SET_PROFILE_IMAGE", val); }
     },
     ...mapState(["Login"]),
     Login: {
-      get() {
-        return this.$store.state.Login;
-      },
-      set(val) {
-        this.$store.commit("SET_LOGIN", val);
-      }
+      get() { return this.$store.state.Login; },
+      set(val) { this.$store.commit("SET_LOGIN", val); }
     },
     ...mapState(["User"]),
-    User: {
-      get() {
-        return this.$store.state.User;
-      },
-      set(val) {
-        this.$store.commit("SET_USER", val);
-      }
+    User: { 
+      get() { return this.$store.state.User; },
+      set(val) { this.$store.commit("SET_USER", val); }
     }
   },
 
@@ -70,6 +58,7 @@ export default {
       console.error(error);
       //TODO: Error UI Feedback.
     },
+    
     async login() {
       try {
         const googleUser = await this.$gAuth.signIn();
@@ -116,8 +105,7 @@ export default {
     async logout(redirect) {
       try {
         let isLoggedOut = this.Login === null;
-        if (isLoggedOut)
-        {
+        if (isLoggedOut) {
           this.userAuthenticated = false;
           return;
         }
@@ -126,7 +114,7 @@ export default {
         apiRequest.headers.AuthenticationToken = this.Login.authenticationToken;
         let that = this;
         logoutModel.config(apiRequest).save()
-        .then(function() {
+        .then(() => {
           that.Login = null;
           that.User = null;
           that.userAuthenticated = false;
