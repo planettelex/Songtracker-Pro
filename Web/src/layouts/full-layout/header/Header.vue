@@ -21,8 +21,7 @@
       <v-app-bar-nav-icon
         @click="$vuetify.breakpoint.smAndDown
             ? setSidebarDrawer(!SidebarDrawer)
-            : $emit('input', !value)"
-      />
+            : $emit('input', !value)"/>
     </div>
     <!--- /Toggle Sidebar -->
 
@@ -39,16 +38,12 @@
       <template v-slot:activator="{ on }">
         <v-btn dark icon v-on="on" class="mr-1">
           <v-avatar size="40">
-            <img
-              :src="ProfileImage"
-              alt="Profile Image"
-            />
+            <img :src="ProfileImage" alt="Profile Image"/>
           </v-avatar>
         </v-btn>
       </template>
       <v-list class="v-user-menu">
-        <v-list-item
-          v-for="(item, i) in userprofile"
+        <v-list-item v-for="(item, i) in userprofile"
           :key="i"
           router :to="item.route"
           color="primary">
@@ -56,7 +51,7 @@
             <v-icon v-text="item.icon" />
           </v-list-item-icon>
           <v-list-item-content v-if="item.title">
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title v-text="item.title"/>
           </v-list-item-content>
         </v-list-item>
       </v-list>
