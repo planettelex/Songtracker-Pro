@@ -27,21 +27,46 @@ namespace SongtrackerPro.Data.Models
         public string Tagline { get; set; }
 
         [NotMapped]
+        public string Culture { get; set; }
+
+        [NotMapped]
+        public string Currency { get; set; }
+
+        [NotMapped]
+        public string Domain { get; set; }
+
+        [NotMapped]
+        public string HostingConsole { get; set; }
+
+        [NotMapped]
+        public string ApiDomain { get; set; }
+
+        [NotMapped]
+        public string ApiHostingConsole { get; set; }
+
+        [NotMapped]
         public string OAuthId { get; set; }
 
         [NotMapped]
         public string OAuthConsole { get; set; }
 
         [NotMapped]
-        public string HostingConsole { get; set; }
+        public string DatabaseServer { get; set; }
 
         [NotMapped]
-        public string ApiHostingConsole { get; set; }
+        public string DatabaseName { get; set; }
 
         [NotMapped]
         public string DatabaseConsole { get; set; }
 
         [NotMapped]
-        public string DatabaseName { get; set; }
+        public string EmailServer { get; set; }
+
+        [NotMapped]
+        public string EmailAccount { get; set; }
+
+        [NotMapped]
+        public string EmailConsole { get; set; }
+
     }
 }

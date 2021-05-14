@@ -10,6 +10,28 @@ namespace SongtrackerPro.Utilities
         private const string AppSettingsJson = "appsettings.json";
         private static bool _hasLoaded;
 
+        public static string Culture
+        {
+            get
+            {
+                if (!_hasLoaded) LoadSettings();
+                return _culture;
+            }
+            set => _culture = value;
+        }
+        private static string _culture;
+
+        public static string Currency
+        {
+            get
+            {
+                if (!_hasLoaded) LoadSettings();
+                return _currency;
+            }
+            set => _currency = value;
+        }
+        private static string _currency;
+
         public static class Database
         {
             public static string ConnectionString
@@ -102,28 +124,6 @@ namespace SongtrackerPro.Utilities
                 set => _documentation = value;
             }
             private static string _documentation;
-
-            public static string Culture
-            {
-                get
-                {
-                    if (!_hasLoaded) LoadSettings();
-                    return _culture;
-                }
-                set => _culture = value;
-            }
-            private static string _culture;
-
-            public static string Currency
-            {
-                get
-                {
-                    if (!_hasLoaded) LoadSettings();
-                    return _currency;
-                }
-                set => _currency = value;
-            }
-            private static string _currency;
         }
 
         public static class Web
@@ -249,6 +249,17 @@ namespace SongtrackerPro.Utilities
                 set => _password = value;
             }
             private static string _password;
+
+            public static string WebConsole
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _webConsole;
+                }
+                set => _webConsole = value;
+            }
+            private static string _webConsole;
         }
 
         public static string Version
@@ -269,6 +280,9 @@ namespace SongtrackerPro.Utilities
 
             var configuration = configurationBuilder.Build();
 
+            Culture = configuration.GetSection("Culture")?.Value;
+            Currency = configuration.GetSection("Currency")?.Value;
+
             Database.ConnectionString = configuration.GetSection("ConnectionStrings").GetSection("ApplicationDatabase").Value;
             Database.HostingConsole = configuration.GetSection("Database")?.GetSection("HostingConsole")?.Value;
             Database.EncryptionKey = configuration.GetSection("Database")?.GetSection("EncryptionKey")?.Value;
@@ -276,8 +290,6 @@ namespace SongtrackerPro.Utilities
             Api.Domain = configuration.GetSection("Api")?.GetSection("Domain")?.Value;
             Api.IsSecure = bool.Parse(configuration.GetSection("Api")?.GetSection("IsSecure")?.Value ?? bool.FalseString);
             Api.MinifyJson = bool.Parse(configuration.GetSection("Api")?.GetSection("MinifyJson")?.Value ?? bool.TrueString);
-            Api.Culture = configuration.GetSection("Api")?.GetSection("Culture")?.Value;
-            Api.Currency = configuration.GetSection("Api")?.GetSection("Currency")?.Value;
             Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
             Api.Documentation = configuration.GetSection("Api")?.GetSection("Documentation")?.Value;
 
@@ -292,6 +304,7 @@ namespace SongtrackerPro.Utilities
             Mail.EnableSsl = bool.Parse(configuration.GetSection("Mail")?.GetSection("EnableSSL")?.Value ?? bool.TrueString);
             Mail.From = configuration.GetSection("Mail")?.GetSection("From")?.Value;
             Mail.Password = configuration.GetSection("Mail")?.GetSection("Password")?.Value;
+            Mail.WebConsole = configuration.GetSection("Mail")?.GetSection("WebConsole")?.Value;
 
             _hasLoaded = true;
         }

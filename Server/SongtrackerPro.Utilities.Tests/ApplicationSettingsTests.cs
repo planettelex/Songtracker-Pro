@@ -11,12 +11,32 @@ namespace SongtrackerPro.Utilities.Tests
             Assert.IsNotNull(ApplicationSettings.Version);
             Assert.IsTrue(ApplicationSettings.Version.Length > 0);
         }
+
+        [TestMethod]
+        public void CultureTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Culture);
+            Assert.IsTrue(ApplicationSettings.Culture.Length > 0);
+        }
+
+        [TestMethod]
+        public void CurrencyTest()
+        {
+            Assert.IsNotNull(ApplicationSettings.Currency);
+            Assert.IsTrue(ApplicationSettings.Currency.Length > 0);
+        }
         
         [TestMethod]
         public void ConnectionStringTest()
         {
             Assert.IsNotNull(ApplicationSettings.Database.ConnectionString);
             Assert.IsTrue(ApplicationSettings.Database.ConnectionString.Length > 0);
+        }
+
+        [TestMethod]
+        public void ApiIsSecureTest()
+        {
+            Assert.AreEqual(ApplicationSettings.Api.IsSecure, ApplicationSettings.Api.IsSecure);
         }
 
         [TestMethod]
@@ -33,24 +53,16 @@ namespace SongtrackerPro.Utilities.Tests
         }
 
         [TestMethod]
-        public void ApiCultureTest()
-        {
-            Assert.IsNotNull(ApplicationSettings.Api.Culture);
-            Assert.IsTrue(ApplicationSettings.Api.Culture.Length > 0);
-        }
-
-        [TestMethod]
-        public void ApiCurrencyTest()
-        {
-            Assert.IsNotNull(ApplicationSettings.Api.Currency);
-            Assert.IsTrue(ApplicationSettings.Api.Currency.Length > 0);
-        }
-
-        [TestMethod]
         public void WebDomainTest()
         {
             Assert.IsNotNull(ApplicationSettings.Web.Domain);
             Assert.IsTrue(ApplicationSettings.Web.Domain.Length > 0);
+        }
+
+        [TestMethod]
+        public void WebIsSecureTest()
+        {
+            Assert.AreEqual(ApplicationSettings.Web.IsSecure, ApplicationSettings.Web.IsSecure);
         }
 
         [TestMethod]
