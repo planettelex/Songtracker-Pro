@@ -67,6 +67,11 @@ namespace SongtrackerPro.Api
             return GetResource.SystemMessage(ApplicationSettings.Culture, key);
         }
 
+        protected string SeedData(string key)
+        {
+            return GetResource.SeedData(ApplicationSettings.Culture, key);
+        }
+
         protected Login Login
         {
             get

@@ -11,7 +11,7 @@
     >
       <div class="logo-icon">
         <img src="../../../assets/images/logo.svg" class="mt-2" /> 
-        <h1>Songtracker Pro</h1>
+        <h1>{{ appName }}</h1>
       </div>
     </v-toolbar-title>
     <!--- /Logo -->
@@ -67,6 +67,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import AppInfo from '../../../models/AppInfo';
 
 export default {
   name: "Header",
@@ -81,6 +82,7 @@ export default {
   },
 
   data: () => ({
+    appName: "",
     showLogo: true,
     userprofile: [
       { title: "My Profile", route: "/my-profile", icon: 'mdi-account' },
@@ -96,10 +98,16 @@ export default {
     ...mapMutations({
       setSidebarDrawer: "SET_SIDEBAR_DRAWER",
     }),
+
     showhideLogo: function() {
       this.showLogo = !this.showLogo;
     },
   },
+
+  async mounted() {
+    const appInfo = await AppInfo.first();
+    this.appName = appInfo.name;
+  }
 };
 </script>
 

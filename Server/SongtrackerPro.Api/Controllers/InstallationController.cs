@@ -42,7 +42,11 @@ namespace SongtrackerPro.Api.Controllers
                 var taskResults = _getInstallationTask.DoTask(null);
                 apiInfo.Name = taskResults.Success ? 
                     taskResults.Data.Name : 
-                    SystemMessage("INSTALLATION_NOT_FOUND");
+                    SeedData("APP_NAME");
+
+                apiInfo.Tagline = taskResults.Success ? 
+                    taskResults.Data.Tagline : 
+                    SeedData("APP_TAGLINE");
 
                 return Json(apiInfo);
             }

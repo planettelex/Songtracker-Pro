@@ -5,11 +5,15 @@
         <v-card class="elevation-4">
           <v-row>
 
-            <v-col lg="5">
-              <div class="pa-7 pa-sm-12">
-                <h3>Login</h3>
-                <button @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
-                <button @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
+            <v-col lg="10">
+              <div class="pa-4 pa-sm-4">
+                <h3>{{ this.appInfo.name }}</h3>
+                <span style="display:none;">v {{ this.appInfo.version }}</span>
+                <em>{{ this.appInfo.tagline }}</em>
+                <div class="login-button">
+                  <button @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
+                  <button @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
+                </div>
               </div>
             </v-col>
             
@@ -22,6 +26,7 @@
 
 <script>
 import apiRequest from '../apiRequest';
+import AppInfo from '../models/AppInfo';
 import Login from '../models/Login';
 import Logout from '../models/Logout';
 import UserType from '../enums/UserType';
@@ -31,6 +36,7 @@ export default {
   name: "Login",
 
   data: () => ({
+    appInfo: {},
     authInitialized: false,
     userAuthenticated: false
   }),
@@ -73,7 +79,6 @@ export default {
           }
           this.ProfileImage = profile.getImageUrl();
           this.Login = login;
-
           const loginModel = new Login(login);
           loginModel.save()
           .then(response => { 
@@ -134,8 +139,9 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     try {
+      this.appInfo = await AppInfo.first();
       let that = this;
       let authLoaded = setInterval(function() {
         that.authInitialized = that.$gAuth.isInit;
@@ -157,3 +163,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .login-button {
+    margin-top: 10px;
+  }
+</style>
