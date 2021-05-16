@@ -173,6 +173,11 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
+  .theme--light.v-card {
+    background-color: transparent;
+    background-image: url('../assets/images/white-transparent.png');
+    background-repeat: repeat;
+  }
   .login-card {
     padding-top: 20px;
     margin-top: -30vh;
