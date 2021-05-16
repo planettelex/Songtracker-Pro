@@ -1,22 +1,20 @@
 <template>
   <v-container id="login" class="fill-height justify-center" tag="section">
     <v-row justify="center">
-      <v-col lg="6" sm="4" xl="8">
+      <v-col sm="11" md="7" lg="6" xl="4" >
         <v-card class="login-card elevation-4">
           <v-row>
-            <v-col lg="3">
-              <div class="pa-8 pa-sm-8 login-logo-icon">
-                <img src="../assets/images/logo.svg"/> 
-              </div>
+            <v-col class="d-flex justify-center pa-10" cols="2" offset="1">
+                <img class="login-logo-icon" src="../assets/images/logo.svg"/> 
             </v-col>
-            <v-col lg="9">
-              <div class="pa-sm-4">
+            <v-col cols="8">
+              <div class="pa-5">
                 <h2>{{ this.appInfo.name }}</h2>
                 <span style="display:none;">v {{ this.appInfo.version }}</span>
                 <em>{{ this.appInfo.tagline }}</em>
                 <div class="login-button">
-                  <button @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
-                  <button @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
+                  <button class="v-button" @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
+                  <button class="v-cancel-button" @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
                 </div>
               </div>
             </v-col>
@@ -124,6 +122,7 @@ export default {
         logoutModel.config(apiRequest).save()
         .then(() => {
           that.Login = null;
+          that.ProfileImage = null;
           that.User = null;
           that.userAuthenticated = false;
           if (redirect)
@@ -131,6 +130,7 @@ export default {
         })
         .catch(error => { 
           that.Login = null;
+          that.ProfileImage = null;
           that.User = null;
           that.userAuthenticated = false;
           that.handleError(error);
@@ -179,28 +179,13 @@ export default {
     background-repeat: repeat;
   }
   .login-card {
-    padding-top: 20px;
+    padding-top: 10px;
     margin-top: -30vh;
   }
   .login-button {
     margin-top: 10px;
   }
-  .login-button button {
-    display: inline-block;
-    padding: 0.7em 1.7em;
-    margin: 0 0.3em 0.3em 0;
-    border-radius: 0.2em;
-    box-sizing: border-box;
-    text-decoration: none;
-    color: $light-primary;
-    background-color: $primary;
-    box-shadow: inset 0 -0.6em 1em -0.35em rgba(0,0,0,0.17),inset 0 0.6em 2em -0.3em rgba(255,255,255,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
-    text-align: center;
-  }
-  .login-button button:active {
-    box-shadow: inset 0 0.6em 2em -0.3em rgba(0,0,0,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
-  }
-  .login-logo-icon img {
+  .login-logo-icon {
     width: 90px;
     height: 90px;
   }
