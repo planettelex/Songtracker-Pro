@@ -1,14 +1,19 @@
 <template>
   <v-container id="login" class="fill-height justify-center" tag="section">
+    <v-row v-if="error" justify="center">
+      <v-col sm="10" md="7" lg="6" xl="4">
+        <v-alert type="error">{{ error }}</v-alert>
+      </v-col>
+    </v-row>
     <v-row justify="center">
       <v-col sm="10" md="7" lg="6" xl="4" >
         <v-card class="login-card elevation-4">
           <v-row>
-            <v-col class="d-flex justify-center pa-10" cols="2" offset="1">
+            <v-col class="d-flex justify-center" cols="1" offset="2">
                 <img class="login-logo-icon" src="../assets/images/logo.svg"/> 
             </v-col>
             <v-col cols="8">
-              <div class="pa-5">
+              <div class="login-box">
                 <h2 class="app-name">{{ this.AppInfo.name }}</h2>
                 <span style="display:none;">v {{ this.AppInfo.version }}</span>
                 <em>{{ this.AppInfo.tagline }}</em>
@@ -38,7 +43,8 @@ export default {
 
   data: () => ({
     authInitialized: false,
-    userAuthenticated: false
+    userAuthenticated: false,
+    error: null
   }),
 
   computed: {
@@ -66,8 +72,7 @@ export default {
 
   methods: {
     handleError(error) {
-      console.error(error);
-      //TODO: Error UI Feedback.
+      this.error = error;
     },
     
     async login() {
@@ -187,14 +192,17 @@ export default {
     background-repeat: repeat;
   }
   .login-card {
-    padding-top: 10px;
+    padding-top: 45px;
     margin-top: -30vh;
+  }
+  .login-logo-icon {
+    height: 70%;
+    margin-left: -20px;
+  }
+  .login-box {
+    padding: 0 0 0 40px;
   }
   .login-button {
     margin-top: 10px;
-  }
-  .login-logo-icon {
-    width: 90px;
-    height: 90px;
   }
 </style>
