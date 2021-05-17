@@ -9,9 +9,9 @@
             </v-col>
             <v-col cols="8">
               <div class="pa-5">
-                <h2 class="app-name">{{ this.appInfo.name }}</h2>
-                <span style="display:none;">v {{ this.appInfo.version }}</span>
-                <em>{{ this.appInfo.tagline }}</em>
+                <h2 class="app-name">{{ this.AppInfo.name }}</h2>
+                <span style="display:none;">v {{ this.AppInfo.version }}</span>
+                <em>{{ this.AppInfo.tagline }}</em>
                 <div class="login-button">
                   <button class="v-button" @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
                   <button class="v-cancel-button" @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
@@ -37,7 +37,6 @@ export default {
   name: "Login",
 
   data: () => ({
-    appInfo: {},
     authInitialized: false,
     userAuthenticated: false
   }),
@@ -57,6 +56,11 @@ export default {
     User: { 
       get() { return this.$store.state.User; },
       set(val) { this.$store.commit("SET_USER", val); }
+    },
+    ...mapState(["AppInfo"]),
+    AppInfo: {
+      get() { return this.$store.state.AppInfo; },
+      set(val) { this.$store.commit("SET_APP_INFO", val); }
     }
   },
 
@@ -144,7 +148,8 @@ export default {
 
   async mounted() {
     try {
-      this.appInfo = await AppInfo.first();
+      this.AppInfo = await AppInfo.first();
+      document.title = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
       let that = this;
       let authLoaded = setInterval(function() {
         that.authInitialized = that.$gAuth.isInit;

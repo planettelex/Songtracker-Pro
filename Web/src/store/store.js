@@ -8,6 +8,7 @@ export default new Vuex.Store({
     plugins: [createPersistedState()],
 
     state: {
+        AppInfo: null,
         Login: null,
         ProfileImage: null,
         SidebarDrawer: null,
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     },
 
     mutations: {
+        SET_APP_INFO(state, payload) {
+            state.AppInfo = payload;
+        },
         SET_LOGIN(state, payload) {
             state.Login = payload;
         },
