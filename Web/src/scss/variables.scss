@@ -1,26 +1,27 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700");
+
 // Globals
 $body-font-family: "Montserrat", sans-serif !default;
 $border-radius-root: 5px;
 $font-size-root: 14px;
 $btn-icon-size: 20px;
 
-// Custom variables
-
-$primary: #398bf7;
+// Custom Variables
+$primary: #2a65a9;
 $info: #1e88e5;
 $success: #06d79c;
 $accent: #ef5350;
-$default: #563dea;
+$default: #181818;
 
 $page-background: #f4f6f9;
-$font-color: #455a64;
+$font-color: #403f40;
 $subtitle-color: #a1aab2;
-$box-shadow:0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+$box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
 $info: #1e88e5;
 $gray-500: #a1aab2;
 $border-color: rgba(0, 0, 0, 0.1);
 $light: #eeeeee;
+$dark: #111111;
 
 $light-primary: #e6ecfc;
 $light-warning: #fff8ec;

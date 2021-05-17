@@ -11,7 +11,7 @@
     >
       <div class="logo-icon">
         <img src="../../../assets/images/logo.svg" class="mt-2" /> 
-        <h1>{{ appName }}</h1>
+        <h1 class="app-name">{{ appName }}</h1>
       </div>
     </v-toolbar-title>
     <!--- /Logo -->
@@ -107,6 +107,9 @@ export default {
 </script>
 
 <style lang="scss">
+.app-name {
+    color: $default;
+  }
 .v-application--is-ltr .v-user-menu .v-list-item__icon:first-child {
   margin-right: 10px;
 }
@@ -127,7 +130,7 @@ export default {
 .logo-icon h1 {
   float: left;
   font-size: 30px;
-  margin: -2px 5px 0 10px;
+  margin: -3px 5px 0 15px;
 }
 .logo-icon img {
   float: left;

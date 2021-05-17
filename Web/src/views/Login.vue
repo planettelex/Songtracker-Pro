@@ -1,7 +1,7 @@
 <template>
   <v-container id="login" class="fill-height justify-center" tag="section">
     <v-row justify="center">
-      <v-col sm="11" md="7" lg="6" xl="4" >
+      <v-col sm="10" md="7" lg="6" xl="4" >
         <v-card class="login-card elevation-4">
           <v-row>
             <v-col class="d-flex justify-center pa-10" cols="2" offset="1">
@@ -9,7 +9,7 @@
             </v-col>
             <v-col cols="8">
               <div class="pa-5">
-                <h2>{{ this.appInfo.name }}</h2>
+                <h2 class="app-name">{{ this.appInfo.name }}</h2>
                 <span style="display:none;">v {{ this.appInfo.version }}</span>
                 <em>{{ this.appInfo.tagline }}</em>
                 <div class="login-button">
@@ -168,6 +168,9 @@ export default {
 </script>
 
 <style lang="scss">
+  .app-name {
+    color: $default;
+  }
   .theme--light.v-application {
     background-image: url('../assets/images/concert.jpg');
     background-repeat: no-repeat;
