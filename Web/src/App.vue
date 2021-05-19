@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import UserType from "./enums/UserType";
 import { mapState } from "vuex";
 
 export default {
@@ -15,14 +16,22 @@ export default {
     
   },
   computed: {
-    ...mapState(["AppInfo"])
+    ...mapState(["AppInfo", "User"])
   },
   watch: {
     $route: {
       immediate: true,
       handler(to) {
-        let appTitle = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
-        if (to.meta.title)
+        let appTitle = this.AppInfo.entityName ? this.AppInfo.entityName : this.AppInfo.name;
+        if (this.User && (this.User.type == UserType.SystemAdministrator || this.User.type == UserType.SystemUser)) {
+          appTitle += ' - ' + this.AppInfo.tagline;
+        }
+        
+        if (to.meta.titleKey) {
+          let pageTitle = this.$t(to.meta.titleKey);
+          appTitle = pageTitle + " | " + appTitle;
+        }
+        else if (to.meta.title)
           appTitle = to.meta.title + " | " + appTitle;
 
         document.title = appTitle;

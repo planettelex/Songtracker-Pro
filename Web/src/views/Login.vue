@@ -6,7 +6,7 @@
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-col sm="10" md="7" lg="6" xl="4" >
+      <v-col sm="10" md="7" lg="6" xl="4">
         <v-card class="login-card elevation-4">
           <v-row>
             <v-col class="d-flex justify-center" cols="1" offset="2">
@@ -18,8 +18,8 @@
                 <span style="display:none;">v {{ this.AppInfo.version }}</span>
                 <em>{{ this.AppInfo.tagline }}</em>
                 <div class="login-button">
-                  <button class="v-button" @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">Login</button>
-                  <button class="v-cancel-button" @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">Logout</button>
+                  <button class="v-button" @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">{{ $t("Login") }}</button>
+                  <button class="v-cancel-button" @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">{{ $t("Logout") }}</button>
                 </div>
               </div>
             </v-col>
@@ -99,9 +99,11 @@ export default {
                 this.$router.push("/system-information");
                 break;
               case UserType.PublisherAdministrator:
+                this.AppInfo.entityName = this.User.publisher.name;
                 this.$router.push("/publisher-earnings");
                 break;
               case UserType.LabelAdministrator:
+                this.AppInfo.entityName = this.User.recordLabel.name;
                 this.$router.push("/label-earnings");
                 break;
               case UserType.SystemUser:
@@ -130,6 +132,7 @@ export default {
         let that = this;
         logoutModel.config(apiRequest).save()
         .then(() => {
+          that.AppInfo.entityName = null;
           that.Login = null;
           that.ProfileImage = null;
           that.User = null;
@@ -138,6 +141,7 @@ export default {
             that.$router.push("/");
         })
         .catch(error => { 
+          that.AppInfo.entityName = null;
           that.Login = null;
           that.ProfileImage = null;
           that.User = null;
@@ -153,7 +157,9 @@ export default {
 
   async mounted() {
     try {
-      this.AppInfo = await AppInfo.first();
+      if (!this.AppInfo) {
+        this.AppInfo = await AppInfo.first();
+      }
       document.title = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
       let that = this;
       let authLoaded = setInterval(function() {

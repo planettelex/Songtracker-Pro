@@ -1,5 +1,7 @@
 let appConfig = {
-    oauthClientId: ""
+    oauthClientId: "",
+    apiUrl: "https://localhost:",
+    locale: "en"
 };
 
 export default appConfig;

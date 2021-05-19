@@ -7,8 +7,7 @@
     <!--- Logo -->
     <v-toolbar-title
       class="align-center d-flex logo-section"
-      :class="`${showLogo ? 'logo-width' : ''}`"
-    >
+      :class="`${showLogo ? 'logo-width' : ''}`">
       <div class="logo-icon">
         <img src="../../../assets/images/logo.svg" class="mt-2" /> 
         <h1 class="app-name">{{ appName }}</h1>
@@ -38,12 +37,12 @@
       <template v-slot:activator="{ on }">
         <v-btn dark icon v-on="on" class="mr-1">
           <v-avatar size="40">
-            <img :src="ProfileImage" alt="Profile Image"/>
+            <img :src="ProfileImage" :alt="profileImageAlt" />
           </v-avatar>
         </v-btn>
       </template>
       <v-list class="v-user-menu">
-        <v-list-item v-for="(item, i) in userprofile"
+        <v-list-item v-for="(item, i) in userMenu"
           :key="i"
           router :to="item.route"
           color="primary">
@@ -62,7 +61,6 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import AppInfo from '../../../models/AppInfo';
 
 export default {
   name: "Header",
@@ -78,15 +76,16 @@ export default {
 
   data: () => ({
     appName: "",
+    profileImageAlt: "",
     showLogo: true,
-    userprofile: [
-      { title: "My Profile", route: "/my-profile", icon: 'mdi-account' },
-      { title: "Logout", route: "/login?logout=true", icon: 'mdi-logout' },
+    userMenu: [
+      { titleKey: "MyProfile", route: "/my-profile", icon: 'mdi-account' },
+      { titleKey: "Logout", route: "/login?logout=true", icon: 'mdi-logout' },
     ]
   }),
 
   computed: {
-    ...mapState(["SidebarDrawer", "ProfileImage"]),
+    ...mapState(["SidebarDrawer", "ProfileImage", "AppInfo"]),
   },
 
   methods: {
@@ -100,8 +99,11 @@ export default {
   },
 
   async mounted() {
-    const appInfo = await AppInfo.first();
-    this.appName = appInfo.name;
+    this.appName = this.AppInfo.entityName ? this.AppInfo.entityName : this.AppInfo.name;
+    this.userMenu.forEach(menuItem => {
+      menuItem.title = this.$t(menuItem.titleKey);
+    });
+    this.profileImageAlt = this.$t('ProfileImage');
   }
 };
 </script>

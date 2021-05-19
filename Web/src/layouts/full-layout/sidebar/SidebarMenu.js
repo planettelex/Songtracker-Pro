@@ -6,32 +6,32 @@ function getSidebarMenu(userType)
             return [
                 {
                     icon: 'mdi-information',
-                    title: 'System Information',
+                    titleKey: 'SystemInformation',
                     to: '/system-information',
                 },
                 {
                     icon: 'mdi-book-open-variant',
-                    title: 'Publishing Companies',
+                    titleKey: 'PublishingCompanies',
                     to: '/publishing-companies',
                 },
                 {
                     icon: 'mdi-label-multiple',
-                    title: 'Record Labels',
+                    titleKey: 'RecordLabels',
                     to: '/record-labels',
                 },
                 {
                     icon: 'mdi-cloud',
-                    title: 'Platforms',
+                    titleKey: 'Platforms',
                     to: '/platforms',
                 },
                 {
                     icon: 'mdi-music',
-                    title: 'Artists',
+                    titleKey: 'Artists',
                     to: '/artists',
                 },
                 {
                     icon: 'mdi-account-multiple',
-                    title: 'Users',
+                    titleKey: 'Users',
                     to: '/users',
                 }
             ];
@@ -39,32 +39,37 @@ function getSidebarMenu(userType)
             return [
                 {
                     icon: 'mdi-bank',
-                    title: 'Earnings',
+                    titleKey: 'Earnings',
                     to: '/label-earnings',
                 },
                 {
                     icon: 'mdi-folder',
-                    title: 'Documents',
+                    titleKey: 'Documents',
                     to: '/label-documents',
                 },
                 {
+                    icon: 'mdi-microphone',
+                    titleKey: 'Recordings',
+                    to: '/label-recordings',
+                },
+                {
                     icon: 'mdi-album',
-                    title: 'Releases',
+                    titleKey: 'Releases',
                     to: '/label-releases',
                 },
                 {
                     icon: 'mdi-music',
-                    title: 'Artists',
+                    titleKey: 'Artists',
                     to: '/label-artists',
                 },
                 {
                     icon: 'mdi-account-multiple',
-                    title: 'Users',
+                    titleKey: 'Users',
                     to: '/label-users',
                 },
                 {
                     icon: 'mdi-information-variant',
-                    title: 'Information',
+                    titleKey: 'Information',
                     to: '/label-information',
                 }
             ];
@@ -72,27 +77,27 @@ function getSidebarMenu(userType)
             return [
                 {
                     icon: 'mdi-bank',
-                    title: 'Earnings',
+                    titleKey: 'Earnings',
                     to: '/publisher-earnings',
                 },
                 {
                     icon: 'mdi-folder',
-                    title: 'Documents',
+                    titleKey: 'Documents',
                     to: '/publisher-documents',
                 },
                 {
                     icon: 'mdi-music-box-multiple',
-                    title: 'Compositions',
+                    titleKey: 'Compositions',
                     to: '/publisher-compositions',
                 },
                 {
                     icon: 'mdi-account-multiple',
-                    title: 'Users',
+                    titleKey: 'Users',
                     to: '/publisher-users',
                 },
                 {
                     icon: 'mdi-information-variant',
-                    title: 'Information',
+                    titleKey: 'Information',
                     to: '/publisher-information',
                 },
             ];
@@ -100,27 +105,27 @@ function getSidebarMenu(userType)
             return [
                 {
                     icon: 'mdi-bank',
-                    title: 'Earnings',
+                    titleKey: 'Earnings',
                     to: '/my-earnings',
                 },
                 {
                     icon: 'mdi-folder',
-                    title: 'Documents',
+                    titleKey: 'Documents',
                     to: '/my-documents',
                 },
                 {
                     icon: 'mdi-music-box-multiple',
-                    title: 'Compositions',
+                    titleKey: 'Compositions',
                     to: '/my-compositions',
                 },
                 {
                     icon: 'mdi-microphone',
-                    title: 'Recordings',
+                    titleKey: 'Recordings',
                     to: '/my-recordings',
                 },
                 {
                     icon: 'mdi-album',
-                    title: 'Releases',
+                    titleKey: 'Releases',
                     to: '/my-releases',
                 },
             ];

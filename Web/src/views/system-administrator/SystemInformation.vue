@@ -1,9 +1,6 @@
 <template>
   <v-container fluid class="down-top-padding pt-0">
-    <h2>System Information</h2>
-    <br/>
-    <h3>{{ systemInformation.name }}</h3>
-    <h4>{{ systemInformation.tagline }}</h4>
+    <h2>{{ $t('SystemInformation') }}</h2>
     <br/>
     <p>
       <strong>Domain:</strong>&nbsp;<label>{{ systemInformation.domain }}</label><br/>
@@ -35,9 +32,6 @@ export default {
   name: "SystemInformation",
   
   data: () => ({
-    page: {
-      title: "System Information",
-    },
     systemInformation: {}
   }),
 

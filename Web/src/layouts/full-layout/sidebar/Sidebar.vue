@@ -74,6 +74,11 @@ export default {
 
   mounted() {
     this.items = SidebarMenu(this.User.type);
+    this.items.forEach(item => {
+      let titleKey = item.titleKey;
+      if (titleKey)
+        item.title = this.$t(titleKey);
+    });
   }
 };
 </script>

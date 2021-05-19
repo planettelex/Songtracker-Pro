@@ -32,142 +32,148 @@ const router = new Router({
           name: "SystemInformation",
           path: "system-information",
           component: () => import("@/views/system-administrator/SystemInformation"),
-          meta: { title: "System Information" }
+          meta: { titleKey: "SystemInformation" }
         },
         {
           name: "PublishingCompanies",
           path: "publishing-companies",
           component: () => import("@/views/system-administrator/PublishingCompanies"),
-          meta: { title: "Publishing Companies" }
+          meta: { titleKey: "PublishingCompanies" }
         },
         {
           name: "RecordLabels",
           path: "record-labels",
           component: () => import("@/views/system-administrator/RecordLabels"),
-          meta: { title: "Record Labels" }
+          meta: { titleKey: "RecordLabels" }
         },
         {
           name: "Platforms",
           path: "platforms",
           component: () => import("@/views/system-administrator/Platforms"),
-          meta: { title: "Platforms" }
+          meta: { titleKey: "Platforms" }
         },
         {
           name: "Artists",
           path: "artists",
           component: () => import("@/views/system-administrator/Artists"),
-          meta: { title: "Artists" }
+          meta: { titleKey: "Artists" }
         },
         {
           name: "Users",
           path: "users",
           component: () => import("@/views/system-administrator/Users"),
-          meta: { title: "Users" }
+          meta: { titleKey: "Users" }
         },
         // Label Administrator
         {
           name: "LabelEarnings",
           path: "label-earnings",
           component: () => import("@/views/label-administrator/LabelEarnings"),
-          meta: { title: "Label Earnings" }
+          meta: { titleKey: "Earnings" }
         },
         {
           name: "LabelDocuments",
           path: "label-documents",
           component: () => import("@/views/label-administrator/LabelDocuments"),
-          meta: { title: "Label Documents" }
+          meta: { titleKey: "Documents" }
+        },
+        {
+          name: "LabelRecordings",
+          path: "label-recordings",
+          component: () => import("@/views/label-administrator/LabelRecordings"),
+          meta: { titleKey: "Releases" }
         },
         {
           name: "LabelReleases",
           path: "label-releases",
           component: () => import("@/views/label-administrator/LabelReleases"),
-          meta: { title: "Label Releases" }
+          meta: { titleKey: "Recordings" }
         },
         {
           name: "LabelArtists",
           path: "label-artists",
           component: () => import("@/views/label-administrator/LabelArtists"),
-          meta: { title: "Label Artists" }
+          meta: { titleKey: "Artists" }
         },
         {
           name: "LabelUsers",
           path: "label-users",
           component: () => import("@/views/label-administrator/LabelUsers"),
-          meta: { title: "Label Users" }
+          meta: { titleKey: "Users" }
         },
         {
           name: "LabelInformation",
           path: "label-information",
           component: () => import("@/views/label-administrator/LabelInformation"),
-          meta: { title: "Label Information" }
+          meta: { titleKey: "Information" }
         },
         // Publisher Administrator
         {
           name: "PublisherEarnings",
           path: "publisher-earnings",
           component: () => import("@/views/publisher-administrator/PublisherEarnings"),
-          meta: { title: "Publisher Earnings" }
+          meta: { titleKey: "Earnings" }
         },
         {
           name: "PublisherDocuments",
           path: "publisher-documents",
           component: () => import("@/views/publisher-administrator/PublisherDocuments"),
-          meta: { title: "Publisher Documents" }
+          meta: { titleKey: "Documents" }
         },
         {
           name: "PublisherCompositions",
           path: "publisher-compositions",
           component: () => import("@/views/publisher-administrator/PublisherCompositions"),
-          meta: { title: "Publisher Compositions" }
+          meta: { titleKey: "Compositions" }
         },
         {
           name: "PublisherUsers",
           path: "publisher-users",
           component: () => import("@/views/publisher-administrator/PublisherUsers"),
-          meta: { title: "Publisher Users" }
+          meta: { titleKey: "Users" }
         },
         {
           name: "PublisherInformation",
           path: "publisher-information",
           component: () => import("@/views/publisher-administrator/PublisherInformation"),
-          meta: { title: "Publisher Information" }
+          meta: { titleKey: "Information" }
         },
         // System User
         {
           name: "UserProfile",
           path: "my-profile",
           component: () => import("@/views/system-user/UserProfile"),
-          meta: { title: "My Profile" }
+          meta: { titleKey: "MyProfile" }
         },
         {
           name: "UserEarnings",
           path: "my-earnings",
           component: () => import("@/views/system-user/UserEarnings"),
-          meta: { title: "My Earnings" }
+          meta: { titleKey: "MyEarnings" }
         },
         {
           name: "UserDocuments",
           path: "my-documents",
           component: () => import("@/views/system-user/UserDocuments"),
-          meta: { title: "My Documents" }
+          meta: { titleKey: "MyDocuments" }
         },
         {
           name: "UserCompositions",
           path: "my-compositions",
           component: () => import("@/views/system-user/UserCompositions"),
-          meta: { title: "My Compositions" }
+          meta: { titleKey: "MyCompositions" }
         },
         {
           name: "UserRecordings",
           path: "my-recordings",
           component: () => import("@/views/system-user/UserRecordings"),
-          meta: { title: "My Recordings" }
+          meta: { titleKey: "MyRecordings" }
         },
         {
           name: "UserReleases",
           path: "my-releases",
           component: () => import("@/views/system-user/UserReleases"),
-          meta: { title: "My Releases" }
+          meta: { titleKey: "MyReleases" }
         }
       ],
     },
@@ -180,7 +186,7 @@ const router = new Router({
           name: "Login",
           path: "login",
           component: () => import("@/views/Login"),
-          meta: { unauthenticatedOk: true, title: "Login" }
+          meta: { unauthenticatedOk: true, titleKey: "Login" }
         },
         {
           name: "404",
