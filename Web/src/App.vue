@@ -23,10 +23,13 @@ export default {
       immediate: true,
       handler(to) {
         let appTitle = this.AppInfo.entityName ? this.AppInfo.entityName : this.AppInfo.name;
-        if (this.User && (this.User.type == UserType.SystemAdministrator || this.User.type == UserType.SystemUser)) {
+        let userType = UserType.Unsassigned;
+        if (this.User && this.User.type)
+          userType = this.User.type;
+
+        if (userType == UserType.SystemAdministrator || userType == UserType.SystemUser) {
           appTitle += ' - ' + this.AppInfo.tagline;
         }
-        
         if (to.meta.titleKey) {
           let pageTitle = this.$t(to.meta.titleKey);
           appTitle = pageTitle + " | " + appTitle;

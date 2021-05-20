@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import goTo from "vuetify/es5/services/goto";
 import store from "./store/store";
+import UserType from "./enums/UserType"
 
 Vue.use(Router);
 
@@ -32,149 +33,156 @@ const router = new Router({
           name: "SystemInformation",
           path: "system-information",
           component: () => import("@/views/system-administrator/SystemInformation"),
-          meta: { titleKey: "SystemInformation" }
+          meta: { titleKey: "SystemInformation", userType: UserType.SystemAdministrator }
         },
         {
           name: "PublishingCompanies",
           path: "publishing-companies",
           component: () => import("@/views/system-administrator/PublishingCompanies"),
-          meta: { titleKey: "PublishingCompanies" }
+          meta: { titleKey: "PublishingCompanies", userType: UserType.SystemAdministrator }
         },
         {
           name: "RecordLabels",
           path: "record-labels",
           component: () => import("@/views/system-administrator/RecordLabels"),
-          meta: { titleKey: "RecordLabels" }
+          meta: { titleKey: "RecordLabels", userType: UserType.SystemAdministrator }
         },
         {
           name: "Platforms",
           path: "platforms",
           component: () => import("@/views/system-administrator/Platforms"),
-          meta: { titleKey: "Platforms" }
+          meta: { titleKey: "Platforms", userType: UserType.SystemAdministrator }
         },
         {
           name: "Artists",
           path: "artists",
           component: () => import("@/views/system-administrator/Artists"),
-          meta: { titleKey: "Artists" }
+          meta: { titleKey: "Artists", userType: UserType.SystemAdministrator }
         },
         {
           name: "Users",
           path: "users",
           component: () => import("@/views/system-administrator/Users"),
-          meta: { titleKey: "Users" }
+          meta: { titleKey: "Users", userType: UserType.SystemAdministrator }
         },
         // Label Administrator
         {
           name: "LabelEarnings",
           path: "label-earnings",
           component: () => import("@/views/label-administrator/LabelEarnings"),
-          meta: { titleKey: "Earnings" }
+          meta: { titleKey: "Earnings", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelDocuments",
           path: "label-documents",
           component: () => import("@/views/label-administrator/LabelDocuments"),
-          meta: { titleKey: "Documents" }
+          meta: { titleKey: "Documents", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelRecordings",
           path: "label-recordings",
           component: () => import("@/views/label-administrator/LabelRecordings"),
-          meta: { titleKey: "Releases" }
+          meta: { titleKey: "Releases", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelReleases",
           path: "label-releases",
           component: () => import("@/views/label-administrator/LabelReleases"),
-          meta: { titleKey: "Recordings" }
+          meta: { titleKey: "Recordings", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelArtists",
           path: "label-artists",
           component: () => import("@/views/label-administrator/LabelArtists"),
-          meta: { titleKey: "Artists" }
+          meta: { titleKey: "Artists", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelUsers",
           path: "label-users",
           component: () => import("@/views/label-administrator/LabelUsers"),
-          meta: { titleKey: "Users" }
+          meta: { titleKey: "Users", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelInformation",
           path: "label-information",
           component: () => import("@/views/label-administrator/LabelInformation"),
-          meta: { titleKey: "Information" }
+          meta: { titleKey: "Information", userType: UserType.LabelAdministrator }
         },
         // Publisher Administrator
         {
           name: "PublisherEarnings",
           path: "publisher-earnings",
           component: () => import("@/views/publisher-administrator/PublisherEarnings"),
-          meta: { titleKey: "Earnings" }
+          meta: { titleKey: "Earnings", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherDocuments",
           path: "publisher-documents",
           component: () => import("@/views/publisher-administrator/PublisherDocuments"),
-          meta: { titleKey: "Documents" }
+          meta: { titleKey: "Documents", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherCompositions",
           path: "publisher-compositions",
           component: () => import("@/views/publisher-administrator/PublisherCompositions"),
-          meta: { titleKey: "Compositions" }
+          meta: { titleKey: "Compositions", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherUsers",
           path: "publisher-users",
           component: () => import("@/views/publisher-administrator/PublisherUsers"),
-          meta: { titleKey: "Users" }
+          meta: { titleKey: "Users", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherInformation",
           path: "publisher-information",
           component: () => import("@/views/publisher-administrator/PublisherInformation"),
-          meta: { titleKey: "Information" }
+          meta: { titleKey: "Information", userType: UserType.PublisherAdministrator }
         },
         // System User
         {
           name: "UserProfile",
           path: "my-profile",
           component: () => import("@/views/system-user/UserProfile"),
-          meta: { titleKey: "MyProfile" }
+          meta: { titleKey: "MyProfile", userType: UserType.Unsassigned }
         },
         {
           name: "UserEarnings",
           path: "my-earnings",
           component: () => import("@/views/system-user/UserEarnings"),
-          meta: { titleKey: "MyEarnings" }
+          meta: { titleKey: "MyEarnings", userType: UserType.SystemUser }
         },
         {
           name: "UserDocuments",
           path: "my-documents",
           component: () => import("@/views/system-user/UserDocuments"),
-          meta: { titleKey: "MyDocuments" }
+          meta: { titleKey: "MyDocuments", userType: UserType.SystemUser }
         },
         {
           name: "UserCompositions",
           path: "my-compositions",
           component: () => import("@/views/system-user/UserCompositions"),
-          meta: { titleKey: "MyCompositions" }
+          meta: { titleKey: "MyCompositions", userType: UserType.SystemUser }
         },
         {
           name: "UserRecordings",
           path: "my-recordings",
           component: () => import("@/views/system-user/UserRecordings"),
-          meta: { titleKey: "MyRecordings" }
+          meta: { titleKey: "MyRecordings", userType: UserType.SystemUser }
         },
         {
           name: "UserReleases",
           path: "my-releases",
           component: () => import("@/views/system-user/UserReleases"),
-          meta: { titleKey: "MyReleases" }
-        }
+          meta: { titleKey: "MyReleases", userType: UserType.SystemUser }
+        },
+        // Error
+        {
+          name: "403",
+          path: "403",
+          component: () => import("@/views/FourOhThree"),
+          meta: { unauthenticatedOk: true, title: "403", userType: UserType.Unsassigned  }
+        },
       ],
     },
 
@@ -186,13 +194,13 @@ const router = new Router({
           name: "Login",
           path: "login",
           component: () => import("@/views/Login"),
-          meta: { unauthenticatedOk: true, titleKey: "Login" }
+          meta: { unauthenticatedOk: true, titleKey: "Login", userType: UserType.Unsassigned }
         },
         {
           name: "404",
           path: "*",
           component: () => import("@/views/FourOhFour"),
-          meta: { unauthenticatedOk: true, title: "404"  }
+          meta: { unauthenticatedOk: true, title: "404", userType: UserType.Unsassigned  }
         },
       ],
     },
@@ -217,8 +225,14 @@ router.beforeEach((to, from, next) => {
   else if (store.state.Login !== null) {
     let now = new Date(Date.now());
     let tokenExpiration = new Date(store.state.Login.tokenExpiration);
-    if (tokenExpiration < now) next("/login");
-    else next();
+    let userType = store.state.User ? store.state.User.type : UserType.Unsassigned;
+    if (tokenExpiration < now) 
+      next("/login");
+    else if (to.meta.userType != UserType.Unsassigned && to.meta.userType != userType)
+      next("/403");
+    else {
+      next();
+    }
   }
   else {
     next("/login");

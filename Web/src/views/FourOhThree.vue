@@ -1,17 +1,16 @@
 <template>
-  <div class="error-box blue-grey lighten-5">
+<v-container fluid class="down-top-padding pt-0">
+  <div class="error-box">
     <div class="py-12">
       <div class="text-center">
-        <div class="logo-icon">
-          <img src="../assets/images/logo.svg" /> 
-          <h1 class="app-name">{{ appName }}</h1>
-        </div>
-        <h2 class="error-title error--text">404</h2>
+        <h2 class="error-title error--text">403</h2>
         <br />
-        <h3 class="text-uppercase error-subtitle">{{ $t('PageNotFound') }}</h3>
+        <h3 class="text-uppercase error-subtitle">{{ $t('Forbidden') }}</h3>
       </div>
     </div>
   </div>
+  </v-container>
+  
 </template>
 
 <script>
@@ -19,7 +18,7 @@ import { mapState } from "vuex";
 import AppInfo from '../models/AppInfo';
 
 export default {
-  name: "FourOhFour",
+  name: "FourOhThree",
 
   data: () => ({
     appName: ""
@@ -44,7 +43,6 @@ export default {
 .error-box {
   height: 100%;
   width: 100%;
-  position: fixed;
 }
 .error-title {
   clear: both;
@@ -52,12 +50,6 @@ export default {
   font-weight: 800;
   text-shadow: 4px 4px 0 #fff, 6px 6px 0 #343a40;
   line-height: 180px;
-}
-.logo-icon {
-  width: 50%;
-  margin: 0 auto;
-  img { float: left; width: 16%; }
-  .app-name { font-size: 60px; padding-top: 10px; }
 }
 
 @media (max-width: 991px) {

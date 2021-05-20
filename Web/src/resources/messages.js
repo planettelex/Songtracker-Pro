@@ -4,6 +4,7 @@ const messages = {
         Compositions: 'Compositions',
         Documents: 'Documents',
         Earnings: 'Earnings',
+        Forbidden: 'Forbidden',
         Information: 'Information',
         Login: 'Login',
         Logout: 'Logout',
