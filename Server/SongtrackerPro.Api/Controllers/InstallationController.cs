@@ -90,9 +90,9 @@ namespace SongtrackerPro.Api.Controllers
 
                 var taskResults = _seedSystemDataTask.DoTask(null);
 
-                return taskResults.Success ? 
-                    Json(taskResults) : 
-                    Error(taskResults.Exception);
+                return taskResults.HasException ? 
+                    Error(taskResults.Exception) :
+                    Json(taskResults.Success);
             }
             catch (Exception e)
             {

@@ -20,6 +20,7 @@
       <strong>Web Hosting Console:</strong>&nbsp;<label>{{ systemInformation.hostingConsole }}</label><br/>
       <strong>Email Console:</strong>&nbsp;<label>{{ systemInformation.emailConsole }}</label><br/>
     </p>
+    <hello-world />
   </v-container>
 </template>
 
@@ -27,8 +28,10 @@
 import SystemInformation from '../../models/SystemInformation';
 import { mapState } from "vuex";
 import apiRequest from '../../apiRequest';
+import HelloWorld from '../../components/HelloWorld.vue';
 
 export default {
+  components: { HelloWorld },
   name: "SystemInformation",
   
   data: () => ({
