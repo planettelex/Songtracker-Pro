@@ -10,8 +10,8 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210511230552_v_0_04")]
-    partial class v_0_04
+    [Migration("20210524165932_v_0_05")]
+    partial class v_0_05
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

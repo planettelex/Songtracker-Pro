@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SongtrackerPro.Data.Migrations
 {
-    public partial class v_0_04 : Migration
+    public partial class v_0_05 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

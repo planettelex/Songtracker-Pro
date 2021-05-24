@@ -331,7 +331,7 @@ CREATE INDEX [IX_users_record_label_id] ON [users] ([record_label_id]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20210511230552_v_0_04', N'5.0.3');
+VALUES (N'20210524165932_v_0_05', N'5.0.3');
 GO
 
 COMMIT;
