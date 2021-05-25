@@ -9,8 +9,7 @@
     mini-variant-width="70"
     :expand-on-hover="expandOnHover"
     app
-    id="main-sidebar"
-    v-bar>
+    id="main-sidebar">
 
     <v-list expand nav class="mt-1">
       <template v-for="(item, i) in items">
@@ -29,12 +28,10 @@
 
       </template>
     </v-list>
-    <v-divider></v-divider>
   </v-navigation-drawer>
 </template>
 
 <script>
-
 import { mapState } from "vuex";
 import SidebarMenu from "./SidebarMenu";
 
@@ -55,12 +52,8 @@ export default {
   computed: {
     ...mapState(["SidebarColor", "User"]),
     SidebarDrawer: {
-      get() {
-        return this.$store.state.SidebarDrawer;
-      },
-      set(val) {
-        this.$store.commit("SET_SIDEBAR_DRAWER", val);
-      }
+      get() { return this.$store.state.SidebarDrawer; },
+      set(val) { this.$store.commit("SET_SIDEBAR_DRAWER", val); }
     }
   },
 
@@ -84,44 +77,44 @@ export default {
 </script>
 
 <style lang="scss">
-#main-sidebar{
-  box-shadow:1px 0 20px rgba(0,0,0,.08);
-  -webkit-box-shadow:1px 0 20px rgba(0,0,0,.08);
-  .v-navigation-drawer__border{
+#main-sidebar {
+  box-shadow: 1px 0 20px rgba(0,0,0,.08);
+  -webkit-box-shadow: 1px 0 20px rgba(0,0,0,.08);
+  padding-top: 10px;
+  .v-navigation-drawer__border {
     display: none;
   }
   .v-list {
     padding: 8px 15px;
   }
-  .v-list-item{
+  .v-list-item {
       min-height:35px;
       &__icon--text,
-      &__icon:first-child{
+      &__icon:first-child {
         justify-content: center;
         text-align: center;
         width: 20px;
       }
-      
   }
-  .v-list-item__icon i{
-        width:20px;
-      }
-  .icon-size .v-list-group__items i{
-    width:16px;
-    font-size:16px;
+  .v-list-item__icon i {
+    width: 20px;
+  }
+  .icon-size .v-list-group__items i {
+    width: 16px;
+    font-size: 16px;
   }
   .profile-bg{
-      &.theme--dark.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){
-      opacity:1;
+      &.theme--dark.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+      opacity: 1;
     }
-    .v-avatar{
-      padding:15px 0;
+    .v-avatar {
+      padding: 15px 0;
     }
   }
-  .theme--dark.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){
-    opacity:0.5;
-    &:hover{
-      opacity:1;
+  .theme--dark.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
     }
   }
 }

@@ -227,7 +227,7 @@ router.beforeEach((to, from, next) => {
     let tokenExpiration = new Date(store.state.Login.tokenExpiration);
     let userType = store.state.User ? store.state.User.type : UserType.Unsassigned;
     if (tokenExpiration < now) 
-      next("/login");
+      next("/login?logout=true");
     else if (to.meta.userType != UserType.Unsassigned && to.meta.userType != userType)
       next("/403");
     else {

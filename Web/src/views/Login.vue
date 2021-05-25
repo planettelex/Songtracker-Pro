@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import apiRequest from '../apiRequest';
-import AppInfo from '../models/AppInfo';
-import Login from '../models/Login';
-import Logout from '../models/Logout';
+import ApiRequest from '../models/local/ApiRequest';
+import AppInfoRequest from '../models/api/AppInfo';
+import Login from '../models/api/Login';
+import Logout from '../models/api/Logout';
 import UserType from '../enums/UserType';
 import { mapState } from "vuex";
 
@@ -128,7 +128,7 @@ export default {
         }
         await this.$gAuth.signOut();
         const logoutModel = new Logout();
-        apiRequest.headers.AuthenticationToken = this.Login.authenticationToken;
+        let apiRequest = new ApiRequest(this.Login.authenticationToken);
         let that = this;
         logoutModel.config(apiRequest).save()
         .then(() => {
@@ -157,9 +157,7 @@ export default {
 
   async mounted() {
     try {
-      if (!this.AppInfo) {
-        this.AppInfo = await AppInfo.first();
-      }
+      this.AppInfo = await AppInfoRequest.first();
       document.title = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
       let that = this;
       let authLoaded = setInterval(function() {

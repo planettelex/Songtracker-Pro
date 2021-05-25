@@ -1,41 +1,50 @@
 <template>
   <v-container fluid class="down-top-padding pt-0">
-    <h2>{{ $t('SystemInformation') }}</h2>
-    <br/>
-    <p>
-      <strong>Domain:</strong>&nbsp;<label>{{ systemInformation.domain }}</label><br/>
-      <strong>Version:</strong>&nbsp;<label>{{ systemInformation.version }}</label><br/>
-      <strong>ID:</strong>&nbsp;<label>{{ systemInformation.uuid }}</label><br/>
-      <strong>Culture:</strong>&nbsp;<label>{{ systemInformation.culture }}</label><br/>
-      <strong>Currency:</strong>&nbsp;<label>{{ systemInformation.currency }}</label><br/>
-      <strong>Database Server:</strong>&nbsp;<label>{{ systemInformation.databaseServer }}</label><br/>
-      <strong>Database Name:</strong>&nbsp;<label>{{ systemInformation.databaseName }}</label><br/>
-      <strong>API Domain:</strong>&nbsp;<label>{{ systemInformation.apiDomain }}</label><br/>
-      <strong>Email Server:</strong>&nbsp;<label>{{ systemInformation.emailServer }}</label><br/>
-      <strong>Email Account:</strong>&nbsp;<label>{{ systemInformation.emailAccount }}</label><br/>
-      <strong>oAuth Client ID:</strong>&nbsp;<label>{{ systemInformation.oAuthId }}</label><br/>
-      <strong>oAuth Console:</strong>&nbsp;<label>{{ systemInformation.oAuthConsole }}</label><br/>
-      <strong>Database Console:</strong>&nbsp;<label>{{ systemInformation.databaseConsole }}</label><br/>
-      <strong>API Hosting Console:</strong>&nbsp;<label>{{ systemInformation.apiHostingConsole }}</label><br/>
-      <strong>Web Hosting Console:</strong>&nbsp;<label>{{ systemInformation.hostingConsole }}</label><br/>
-      <strong>Email Console:</strong>&nbsp;<label>{{ systemInformation.emailConsole }}</label><br/>
-    </p>
-    <hello-world />
+    <v-row>
+      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+        <info-box title="Installation" v-bind:info="installationInfo" linkName="Console" 
+        :linkUrl="systemInformation.hostingConsole" headerBackgroundColor="#b2e6d5" />
+      </v-col>
+      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+        <info-box title="API" v-bind:info="apiInfo" linkName="Console" 
+        :linkUrl="systemInformation.apiHostingConsole" headerBackgroundColor="#99e6ff" />
+      </v-col>
+      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+        <info-box title="OAuth" v-bind:info="oauthInfo" linkName="Console" 
+        :linkUrl="systemInformation.oAuthConsole" headerBackgroundColor="#dfddb9" />
+      </v-col>
+      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+        <info-box title="Database" v-bind:info="databaseInfo" linkName="Console" 
+        :linkUrl="systemInformation.databaseConsole" headerBackgroundColor="#ffbeb3" />
+      </v-col>
+      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+        <info-box title="Email" v-bind:info="emailInfo" linkName="Console" 
+        :linkUrl="systemInformation.emailConsole" headerBackgroundColor="#ebc7eb" />
+      </v-col>
+    </v-row>
+    
   </v-container>
 </template>
 
 <script>
-import SystemInformation from '../../models/SystemInformation';
+import SystemInformation from '../../models/api/SystemInformation';
+import ApiRequest from '../../models/local/ApiRequest';
+import NameValuePair from '../../models/local/NameValuePair';
+import InfoBox from '../../components/InfoBox.vue';
 import { mapState } from "vuex";
-import apiRequest from '../../apiRequest';
-import HelloWorld from '../../components/HelloWorld.vue';
 
 export default {
-  components: { HelloWorld },
+  components: { InfoBox },
+
   name: "SystemInformation",
   
   data: () => ({
-    systemInformation: {}
+    systemInformation: {},
+    installationInfo: [],
+    apiInfo: [],
+    oauthInfo: [],
+    databaseInfo: [],
+    emailInfo: []
   }),
 
   computed: {
@@ -43,8 +52,33 @@ export default {
   },
 
   async mounted() {
-    apiRequest.headers.AuthenticationToken = this.Login.authenticationToken;
+    let apiRequest = new ApiRequest(this.Login.authenticationToken);
     this.systemInformation = await SystemInformation.config(apiRequest).first();
+    
+    this.installationInfo = new Array(3);
+    this.installationInfo[0] = new NameValuePair('Domain', this.systemInformation.domain);
+    this.installationInfo[1] = new NameValuePair('ID', this.systemInformation.uuid);
+    this.installationInfo[2] = new NameValuePair('Version', this.systemInformation.version);
+    
+    this.apiInfo = new Array(3);
+    this.apiInfo[0] = new NameValuePair('Domain', this.systemInformation.apiDomain);
+    this.apiInfo[1] = new NameValuePair('Culture', this.systemInformation.culture);
+    this.apiInfo[2] = new NameValuePair('Currency', this.systemInformation.currency);
+
+    this.oauthInfo = new Array(1);
+    this.oauthInfo[0] = new NameValuePair('Client ID', this.systemInformation.oAuthId);
+
+    this.databaseInfo = new Array(2);
+    this.databaseInfo[0] = new NameValuePair('Server', this.systemInformation.databaseServer);
+    this.databaseInfo[1] = new NameValuePair('Name', this.systemInformation.databaseName);
+
+    this.emailInfo = new Array(2);
+    this.emailInfo[0] = new NameValuePair('Server', this.systemInformation.emailServer);
+    this.emailInfo[1] = new NameValuePair('Account', this.systemInformation.emailAccount);
   }
 };
 </script>
+
+<style lang="scss">
+
+</style>

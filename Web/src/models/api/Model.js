@@ -1,5 +1,5 @@
 import { Model as BaseModel } from 'vue-api-query';
-import appConfig from "../appConfig";
+import appConfig from "../../appConfig";
 
 export default class Model extends BaseModel {
     baseURL() {

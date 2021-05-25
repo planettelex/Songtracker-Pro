@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from "vuex";
-import AppInfo from '../models/AppInfo';
+import AppInfo from '../models/api/AppInfo';
 
 export default {
   name: "FourOhFour",
