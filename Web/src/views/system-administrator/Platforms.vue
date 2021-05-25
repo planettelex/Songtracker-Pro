@@ -9,11 +9,11 @@
 
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title><h2>{{ $tc('Platform', 2) }}</h2></v-toolbar-title>
+          <v-toolbar-title class="mt-2"><h2>{{ $tc('Platform', 2) }}</h2></v-toolbar-title>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="675px">
             <template v-slot:activator="{ attrs }">
-              <v-btn class="v-button" v-bind="attrs" @click="editPlatform(null)">{{ $t('New') }} {{ $tc('Platform', 1) }}</v-btn>
+              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editPlatform(null)">{{ $t('New') }} {{ $tc('Platform', 1) }}</v-btn>
             </template>
             <v-card>
               <v-card-title class="modal-title pt-2">
@@ -39,10 +39,10 @@
                   </v-row>
                 </v-container>
               </v-card-text>
-              <v-card-actions>
+              <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
-                <v-btn class="v-cancel-button" @click="close">{{ $t('Cancel') }}</v-btn>
-                <v-btn class="v-button mr-3" @click="save">{{ $t('Save') }}</v-btn>
+                <v-btn class="v-cancel-button rounded" @click="close">{{ $t('Cancel') }}</v-btn>
+                <v-btn class="v-button mr-4 rounded" @click="save">{{ $t('Save') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>

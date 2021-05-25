@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="down-top-padding pt-0 v-data-table theme--light">
+  <v-container fluid class="down-top-padding pt-0">
     <v-row>
       <v-col cols="12"><h2>{{ $t('SystemInformation') }}</h2></v-col>
     </v-row>

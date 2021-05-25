@@ -69,11 +69,17 @@ h6 {
     }
   }
 }
-
+.theme--light.v-data-table {
+  border: 1px solid $gray-500;
+}
 .theme--light {
   .headline,
   .v-card .title {
     color: rgba(0, 0, 0, 0.8);
+  }
+  .v-toolbar {
+    border-top-left-radius: $border-radius-root;
+    border-top-right-radius: $border-radius-root;
   }
 }
 
@@ -110,7 +116,7 @@ h6 {
 }
 
 .rounded {
-  border-radius: 4px;
+  border-radius: $border-radius-root;
 }
 
 .rounded-circle {
@@ -128,7 +134,7 @@ a {
 .v-application a.link {
   color: #455a64;
   &:hover {
-    color: #009efb;
+    color: $info;
   }
 }
 
