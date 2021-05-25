@@ -10,13 +10,13 @@
 }
 .v-button {
     @include app-button();
-    color: $light-primary;
-    background-color: $primary;
+    color: $light-primary !important;
+    background-color: $primary !important;
 }
 .v-cancel-button {
     @include app-button();
-    color: $light-primary;
-    background-color: $gray-500;
+    color: $light-primary !important;
+    background-color: $gray-500 !important;
 }
 .v-button:active, .v-cancel-button:active {
     box-shadow: inset 0 0.6em 2em -0.3em rgba(0,0,0,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);

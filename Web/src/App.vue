@@ -31,7 +31,7 @@ export default {
           appTitle += ' - ' + this.AppInfo.tagline;
         }
         if (to.meta.titleKey) {
-          let pageTitle = this.$t(to.meta.titleKey);
+          let pageTitle = this.$tc(to.meta.titleKey, 2);
           appTitle = pageTitle + " | " + appTitle;
         }
         else if (to.meta.title)

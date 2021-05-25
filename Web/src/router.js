@@ -51,7 +51,7 @@ const router = new Router({
           name: "Platforms",
           path: "platforms",
           component: () => import("@/views/system-administrator/Platforms"),
-          meta: { titleKey: "Platforms", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "Platform", userType: UserType.SystemAdministrator }
         },
         {
           name: "Artists",

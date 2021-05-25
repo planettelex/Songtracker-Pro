@@ -20,6 +20,13 @@ namespace SongtrackerPro.Tasks.UserTasks
         {
             try
             {
+                var existingLogin = _dbContext.Logins.Where(l => l.AuthenticationToken == login.AuthenticationToken)
+                    .Include(l => l.User)
+                    .SingleOrDefault();
+
+                if (existingLogin != null)
+                    return new TaskResult<Login>(existingLogin);
+                
                 var user = _dbContext.Users.Where(u => u.AuthenticationId == login.AuthenticationId)
                     .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)

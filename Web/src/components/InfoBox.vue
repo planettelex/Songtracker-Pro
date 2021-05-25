@@ -79,8 +79,8 @@
     border-color: $subtitle-color;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-top-left-radius: $border-radius-root;
-    border-top-right-radius: $border-radius-root;
+    border-top-left-radius: $border-radius-root !important;
+    border-top-right-radius: $border-radius-root !important;
   }
   .info-box-header h5 {
       float: left;

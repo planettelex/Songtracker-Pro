@@ -1,0 +1,44 @@
+.theme--light.v-card {
+    background-color: $page-background;
+    border: 1px solid $font-color;
+}
+.v-sheet.v-card {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.v-application--is-ltr {
+    .v-data-footer__select .v-select {
+        margin-left: 15px;
+    }
+    .v-data-footer__pagination {
+        margin: 0 15px 0 15px;
+    }
+    .v-data-footer__icons-after .v-btn:first-child {
+        margin-left: 0;
+        margin-right: 15px;
+    }
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > th, .v-data-table > .v-data-table__wrapper > table > thead > tr > th, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
+    font-size: 1em;
+}
+.modal-title {
+    color: $light;
+    background-color: $primary;
+    border-top-left-radius: $border-radius-root;
+    border-top-right-radius: $border-radius-root;
+    border-bottom: 1px solid $default;
+}
+.app-form {
+    .checkbox {
+        float: left;
+        .v-label {
+            font-size: 1rem;
+        }
+    }
+}
+.v-data-footer {
+    font-size: 1rem;
+}
+.v-data-footer__select .v-select__selections .v-select__selection--comma {
+    font-size: 0.95rem;
+}

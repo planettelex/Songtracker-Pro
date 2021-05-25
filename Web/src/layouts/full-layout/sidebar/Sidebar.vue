@@ -70,7 +70,7 @@ export default {
     this.items.forEach(item => {
       let titleKey = item.titleKey;
       if (titleKey)
-        item.title = this.$t(titleKey);
+        item.title = this.$tc(titleKey, 2);
     });
   }
 };

@@ -21,7 +21,7 @@ function getSidebarMenu(userType)
                 },
                 {
                     icon: 'mdi-cloud',
-                    titleKey: 'Platforms',
+                    titleKey: 'Platform',
                     to: '/platforms',
                 },
                 {

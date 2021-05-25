@@ -32,9 +32,9 @@
 
 <script>
 import ApiRequest from '../models/local/ApiRequest';
-import AppInfoRequest from '../models/api/AppInfo';
-import Login from '../models/api/Login';
-import Logout from '../models/api/Logout';
+import AppInfoData from '../models/api/AppInfo';
+import LoginData from '../models/api/Login';
+import LogoutData from '../models/api/Logout';
 import UserType from '../enums/UserType';
 import { mapState } from "vuex";
 
@@ -82,15 +82,15 @@ export default {
           this.isAuthorized = true;
           let profile = googleUser.getBasicProfile();
           let authResponse = googleUser.getAuthResponse();
-          let login = {
+          let loginModel = {
             authenticationId: profile.getEmail(),
             authenticationToken: authResponse.access_token,
             tokenExpiration: new Date(authResponse.expires_at).toISOString()
           }
           this.ProfileImage = profile.getImageUrl();
-          this.Login = login;
-          const loginModel = new Login(login);
-          loginModel.save()
+          this.Login = loginModel;
+          const loginData = new LoginData(loginModel);
+          loginData.save()
           .then(response => { 
             let user = response.user;
             this.User = user;
@@ -127,10 +127,10 @@ export default {
           return;
         }
         await this.$gAuth.signOut();
-        const logoutModel = new Logout();
+        const logoutData = new LogoutData();
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         let that = this;
-        logoutModel.config(apiRequest).save()
+        logoutData.config(apiRequest).save()
         .then(() => {
           that.AppInfo.entityName = null;
           that.Login = null;
@@ -157,7 +157,7 @@ export default {
 
   async mounted() {
     try {
-      this.AppInfo = await AppInfoRequest.first();
+      this.AppInfo = await AppInfoData.first();
       document.title = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
       let that = this;
       let authLoaded = setInterval(function() {
@@ -190,7 +190,7 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .theme--light.v-card {
+  #login .theme--light.v-card {
     background-color: transparent;
     background-image: url('../assets/images/white-transparent.png');
     background-repeat: repeat;
