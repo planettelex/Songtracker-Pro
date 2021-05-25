@@ -1,23 +1,29 @@
 <template>
-  <v-container fluid class="down-top-padding pt-0">
+  <v-container fluid class="down-top-padding pt-0 v-data-table theme--light">
     <v-row>
-      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+      <v-col cols="12"><h2>{{ $t('SystemInformation') }}</h2></v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12"><br/></v-col>
+    </v-row>
+    <v-row>
+      <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('Installation')" v-bind:info="installationInfo" :linkName="$t('Console')" 
         :linkUrl="systemInformation.hostingConsole" headerBackgroundColor="#b2e6d5" />
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+      <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('API')" v-bind:info="apiInfo" :linkName="$t('Console')"
         :linkUrl="systemInformation.apiHostingConsole" headerBackgroundColor="#99e6ff" />
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+      <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box title="OAuth" v-bind:info="oauthInfo" :linkName="$t('Console')"
         :linkUrl="systemInformation.oAuthConsole" headerBackgroundColor="#dfddb9" />
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+      <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('Database')" v-bind:info="databaseInfo" :linkName="$t('Console')" 
         :linkUrl="systemInformation.databaseConsole" headerBackgroundColor="#ffbeb3" />
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="4" xl="3">
+      <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('Email')" v-bind:info="emailInfo" :linkName="$t('Console')" 
         :linkUrl="systemInformation.emailConsole" headerBackgroundColor="#ebc7eb" />
       </v-col>

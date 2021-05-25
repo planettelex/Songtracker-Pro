@@ -39,13 +39,13 @@ const router = new Router({
           name: "PublishingCompanies",
           path: "publishing-companies",
           component: () => import("@/views/system-administrator/PublishingCompanies"),
-          meta: { titleKey: "PublishingCompanies", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "PublishingCompany", userType: UserType.SystemAdministrator }
         },
         {
           name: "RecordLabels",
           path: "record-labels",
           component: () => import("@/views/system-administrator/RecordLabels"),
-          meta: { titleKey: "RecordLabels", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "RecordLabel", userType: UserType.SystemAdministrator }
         },
         {
           name: "Platforms",
@@ -57,13 +57,13 @@ const router = new Router({
           name: "Artists",
           path: "artists",
           component: () => import("@/views/system-administrator/Artists"),
-          meta: { titleKey: "Artists", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "Artist", userType: UserType.SystemAdministrator }
         },
         {
           name: "Users",
           path: "users",
           component: () => import("@/views/system-administrator/Users"),
-          meta: { titleKey: "Users", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "User", userType: UserType.SystemAdministrator }
         },
         // Label Administrator
         {
@@ -76,31 +76,31 @@ const router = new Router({
           name: "LabelDocuments",
           path: "label-documents",
           component: () => import("@/views/label-administrator/LabelDocuments"),
-          meta: { titleKey: "Documents", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Document", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelRecordings",
           path: "label-recordings",
           component: () => import("@/views/label-administrator/LabelRecordings"),
-          meta: { titleKey: "Releases", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Recording", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelReleases",
           path: "label-releases",
           component: () => import("@/views/label-administrator/LabelReleases"),
-          meta: { titleKey: "Recordings", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Release", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelArtists",
           path: "label-artists",
           component: () => import("@/views/label-administrator/LabelArtists"),
-          meta: { titleKey: "Artists", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Artist", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelUsers",
           path: "label-users",
           component: () => import("@/views/label-administrator/LabelUsers"),
-          meta: { titleKey: "Users", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "User", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelInformation",
@@ -119,19 +119,19 @@ const router = new Router({
           name: "PublisherDocuments",
           path: "publisher-documents",
           component: () => import("@/views/publisher-administrator/PublisherDocuments"),
-          meta: { titleKey: "Documents", userType: UserType.PublisherAdministrator }
+          meta: { titleKey: "Document", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherCompositions",
           path: "publisher-compositions",
           component: () => import("@/views/publisher-administrator/PublisherCompositions"),
-          meta: { titleKey: "Compositions", userType: UserType.PublisherAdministrator }
+          meta: { titleKey: "Composition", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherUsers",
           path: "publisher-users",
           component: () => import("@/views/publisher-administrator/PublisherUsers"),
-          meta: { titleKey: "Users", userType: UserType.PublisherAdministrator }
+          meta: { titleKey: "User", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherInformation",

@@ -11,12 +11,12 @@ function getSidebarMenu(userType)
                 },
                 {
                     icon: 'mdi-book-open-variant',
-                    titleKey: 'PublishingCompanies',
+                    titleKey: 'PublishingCompany',
                     to: '/publishing-companies',
                 },
                 {
                     icon: 'mdi-label-multiple',
-                    titleKey: 'RecordLabels',
+                    titleKey: 'RecordLabel',
                     to: '/record-labels',
                 },
                 {
@@ -26,12 +26,12 @@ function getSidebarMenu(userType)
                 },
                 {
                     icon: 'mdi-music',
-                    titleKey: 'Artists',
+                    titleKey: 'Artist',
                     to: '/artists',
                 },
                 {
                     icon: 'mdi-account-multiple',
-                    titleKey: 'Users',
+                    titleKey: 'User',
                     to: '/users',
                 }
             ];
@@ -44,27 +44,27 @@ function getSidebarMenu(userType)
                 },
                 {
                     icon: 'mdi-folder',
-                    titleKey: 'Documents',
+                    titleKey: 'Document',
                     to: '/label-documents',
                 },
                 {
                     icon: 'mdi-microphone',
-                    titleKey: 'Recordings',
+                    titleKey: 'Recording',
                     to: '/label-recordings',
                 },
                 {
                     icon: 'mdi-album',
-                    titleKey: 'Releases',
+                    titleKey: 'Release',
                     to: '/label-releases',
                 },
                 {
                     icon: 'mdi-music',
-                    titleKey: 'Artists',
+                    titleKey: 'Artist',
                     to: '/label-artists',
                 },
                 {
                     icon: 'mdi-account-multiple',
-                    titleKey: 'Users',
+                    titleKey: 'User',
                     to: '/label-users',
                 },
                 {
@@ -82,17 +82,17 @@ function getSidebarMenu(userType)
                 },
                 {
                     icon: 'mdi-folder',
-                    titleKey: 'Documents',
+                    titleKey: 'Document',
                     to: '/publisher-documents',
                 },
                 {
                     icon: 'mdi-music-box-multiple',
-                    titleKey: 'Compositions',
+                    titleKey: 'Composition',
                     to: '/publisher-compositions',
                 },
                 {
                     icon: 'mdi-account-multiple',
-                    titleKey: 'Users',
+                    titleKey: 'User',
                     to: '/publisher-users',
                 },
                 {
@@ -110,22 +110,22 @@ function getSidebarMenu(userType)
                 },
                 {
                     icon: 'mdi-folder',
-                    titleKey: 'Documents',
+                    titleKey: 'Document',
                     to: '/my-documents',
                 },
                 {
                     icon: 'mdi-music-box-multiple',
-                    titleKey: 'Compositions',
+                    titleKey: 'Composition',
                     to: '/my-compositions',
                 },
                 {
                     icon: 'mdi-microphone',
-                    titleKey: 'Recordings',
+                    titleKey: 'Recording',
                     to: '/my-recordings',
                 },
                 {
                     icon: 'mdi-album',
-                    titleKey: 'Releases',
+                    titleKey: 'Release',
                     to: '/my-releases',
                 },
             ];

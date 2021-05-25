@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="down-top-padding pt-0">
-    <h2>{{ $t('PublishingCompanies') }}</h2>
+    <h2>{{ $tc('PublishingCompany', 2) }}</h2>
   </v-container>
 </template>
 

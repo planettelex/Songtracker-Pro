@@ -49,7 +49,6 @@
     border-width: 1px;
     border-radius: $border-radius-root;
     padding: 0;
-    
     table {
         clear: both;
         border-spacing: 0;
