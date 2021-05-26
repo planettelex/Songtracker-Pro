@@ -20,14 +20,24 @@ namespace SongtrackerPro.Tasks.ArtistTasks
         {
             try
             {
+                var address = artist.Address;
+                var countryId = address.Country?.Id ?? address.CountryId;
+                var country = _dbContext.Countries.SingleOrDefault(c => c.Id == countryId);
+                address.Country = country;
+                _dbContext.Addresses.Add(address);
+                _dbContext.SaveChanges();
+
                 var recordLabelId = artist.RecordLabel?.Id ?? artist.RecordLabelId;
 
+                artist.Address = null;
+                artist.AddressId = address.Id;
                 artist.RecordLabel = null;
                 artist.RecordLabelId = recordLabelId;
 
                 _dbContext.Artists.Add(artist);
                 _dbContext.SaveChanges();
 
+                artist.Address = address;
                 artist.RecordLabel = recordLabelId > 0 ? 
                     _dbContext.RecordLabels.Where(r => r.Id == recordLabelId)
                     .Include(r => r.Address).ThenInclude(a => a.Country)

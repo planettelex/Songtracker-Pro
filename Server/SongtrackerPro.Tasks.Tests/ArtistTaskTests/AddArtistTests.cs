@@ -28,6 +28,15 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(artist);
             Assert.AreEqual(testArtist.Name, artist.Name);
             Assert.AreEqual(testArtist.TaxId, artist.TaxId);
+            Assert.AreEqual(testArtist.Email, artist.Email);
+            Assert.IsNotNull(artist.Address);
+            Assert.AreEqual(testArtist.Address.Street, artist.Address.Street);
+            Assert.AreEqual(testArtist.Address.City, artist.Address.City);
+            Assert.AreEqual(testArtist.Address.Region, artist.Address.Region);
+            Assert.AreEqual(testArtist.Address.PostalCode, artist.Address.PostalCode);
+            Assert.IsNotNull(artist.Address.Country);
+            Assert.AreEqual(testArtist.Address.Country.Name, artist.Address.Country.Name);
+            Assert.AreEqual(testArtist.Address.Country.IsoCode, artist.Address.Country.IsoCode);
             Assert.AreEqual(testArtist.HasServiceMark, artist.HasServiceMark);
             Assert.AreEqual(testArtist.WebsiteUrl, artist.WebsiteUrl);
             Assert.AreEqual(testArtist.PressKitUrl, artist.PressKitUrl);

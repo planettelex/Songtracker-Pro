@@ -15,6 +15,8 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             var stamp = DateTime.Now.Ticks;
             artist.Name = "Update " + stamp;
             artist.TaxId = stamp.ToString();
+            artist.Email = $"test@update{stamp}.com";
+            artist.Address = TestsModel.Address;
             artist.HasServiceMark = new Random().Next(0, 2) == 0;
             artist.WebsiteUrl = "http://website-update.com";
             artist.PressKitUrl = "http://epk-update.com";
@@ -55,6 +57,12 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(artist);
             Assert.AreEqual(toUpdate.Name, artist.Name);
             Assert.AreEqual(toUpdate.TaxId, artist.TaxId);
+            Assert.AreEqual(toUpdate.Email, artist.Email);
+            Assert.AreEqual(toUpdate.Address.Street, artist.Address.Street);
+            Assert.AreEqual(toUpdate.Address.City, artist.Address.City);
+            Assert.AreEqual(toUpdate.Address.Region, artist.Address.Region);
+            Assert.AreEqual(toUpdate.Address.PostalCode, artist.Address.PostalCode);
+            Assert.AreEqual(toUpdate.Address.Country.Name, artist.Address.Country.Name);
             Assert.AreEqual(toUpdate.HasServiceMark, artist.HasServiceMark);
             Assert.AreEqual(toUpdate.WebsiteUrl, artist.WebsiteUrl);
             Assert.AreEqual(toUpdate.PressKitUrl, artist.PressKitUrl);

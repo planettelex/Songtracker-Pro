@@ -35,11 +35,6 @@ namespace SongtrackerPro.Tasks.Tests
 
             var seedPlatforms = new SeedPlatforms(_dbContext, new ListServices(_dbContext), new AddPlatform(_dbContext));
             seedPlatforms.DoTask(null);
-
-            #if DEBUG
-            var seedSuperuser = new SeedSuperuser(_dbContext, new AddUser(_dbContext, new AddPerson(_dbContext)));
-            seedSuperuser.DoTask(null);
-            #endif
         }
         private readonly ApplicationDbContext _dbContext;
 
@@ -190,10 +185,12 @@ namespace SongtrackerPro.Tasks.Tests
                 {
                     Name = nameof(Artist) + " " + stamp,
                     TaxId = stamp.ToString(),
+                    Email = $"test@artist{stamp}.com",
+                    Address = Address,
+                    RecordLabel = label,
                     HasServiceMark = fiftyFifty,
                     WebsiteUrl = "http://www.artist.com",
-                    PressKitUrl = "http://www.presskit.com",
-                    RecordLabel = label
+                    PressKitUrl = "http://www.presskit.com"
                 };
             }
         }

@@ -84,7 +84,7 @@ import { mapState } from "vuex";
 import appConfig from '../../appConfig';
 
 export default {
-  name: "PublishingCompanies",
+  name: "RecordLabels",
 
   data: () => ({
     dialog: false,

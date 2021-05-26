@@ -2,7 +2,9 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.UserTasks
 {
@@ -36,7 +38,16 @@ namespace SongtrackerPro.Tasks.UserTasks
                     .SingleOrDefault();
 
                 if (user == null)
-                    throw new TaskException(SystemMessage("USER_NOT_FOUND"));
+                {
+                    if (login.AuthenticationId == ApplicationSettings.Mail.From)
+                    {
+                        user = new User { AuthenticationId = login.AuthenticationId, Type = UserType.SystemAdministrator };
+                        _dbContext.Users.Add(user);
+                        _dbContext.SaveChanges();
+                    }
+                    else
+                        throw new TaskException(SystemMessage("USER_NOT_FOUND"));
+                }
 
                 login.User = null;
                 login.UserId = user.Id;

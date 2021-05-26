@@ -67,6 +67,14 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int")
+                        .HasColumnName("address_id");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("email");
+
                     b.Property<bool>("HasServiceMark")
                         .HasColumnType("bit")
                         .HasColumnName("has_service_mark");
@@ -93,6 +101,8 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("website_url");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("RecordLabelId");
 
@@ -723,9 +733,15 @@ namespace SongtrackerPro.Data.Migrations
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Artist", b =>
                 {
+                    b.HasOne("SongtrackerPro.Data.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
                         .WithMany()
                         .HasForeignKey("RecordLabelId");
+
+                    b.Navigation("Address");
 
                     b.Navigation("RecordLabel");
                 });

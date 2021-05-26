@@ -27,9 +27,35 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 
                 artist.Name = update.Name;
                 artist.TaxId = update.TaxId;
+                artist.Email = update.Email;
                 artist.HasServiceMark = update.HasServiceMark;
                 artist.WebsiteUrl = update.WebsiteUrl;
                 artist.PressKitUrl = update.PressKitUrl;
+
+                if (update.Address != null)
+                {
+                    if (artist.Address == null)
+                    {
+                        var address = update.Address;
+                        var countryId = address.Country?.Id ?? address.CountryId;
+                        var country = _dbContext.Countries.SingleOrDefault(c => c.Id == countryId);
+                        address.Country = country;
+                        _dbContext.Addresses.Add(address);
+                        _dbContext.SaveChanges();
+                        artist.Address = address;
+                    }
+                    artist.Address.Street = update.Address.Street;
+                    artist.Address.City = update.Address.City;
+                    artist.Address.Region = update.Address.Region;
+                    artist.Address.PostalCode = update.Address.PostalCode;
+
+                    artist.Address.CountryId = update.Address.Country?.Id;
+                    if (artist.Address.CountryId.HasValue)
+                    {
+                        var country = _dbContext.Countries.SingleOrDefault(c => c.Id == artist.Address.CountryId);
+                        artist.Address.Country = country ?? throw new TaskException(SystemMessage("COUNTRY_NOT_FOUND"));
+                    }
+                }
 
                 artist.RecordLabelId = update.RecordLabel?.Id;
                 if (artist.RecordLabelId.HasValue)
