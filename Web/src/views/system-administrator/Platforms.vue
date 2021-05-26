@@ -151,7 +151,8 @@ export default {
         this.selectedServices[i] = platformHasService;
       }
       this.editedIndex = this.platforms.indexOf(platform);
-      this.editedPlatform = Object.assign(this.defaultPlatform, platform);
+      let emptyPlatform = JSON.parse(JSON.stringify(this.defaultPlatform));
+      this.editedPlatform = Object.assign(emptyPlatform, platform);
       this.dialog = true;
     },
 

@@ -206,7 +206,8 @@ export default {
       if (publisher && !publisher.address)
           publisher.address = this.defaultPublisher.address;
       this.editedIndex = this.publishers.indexOf(publisher);
-      this.editedPublisher = Object.assign(this.defaultPublisher, publisher);
+      let emptyPublisher = JSON.parse(JSON.stringify(this.defaultPublisher));
+      this.editedPublisher = Object.assign(emptyPublisher, publisher);
       if (publisher) {
         this.selectedCountry = publisher.address.country;
         this.loadCountryRegions();
