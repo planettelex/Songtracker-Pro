@@ -35,6 +35,11 @@ namespace SongtrackerPro.Tasks.Tests
 
             var seedPlatforms = new SeedPlatforms(_dbContext, new ListServices(_dbContext), new AddPlatform(_dbContext));
             seedPlatforms.DoTask(null);
+
+            #if DEBUG
+            var seedSuperuser = new SeedSuperuser(_dbContext, new AddUser(_dbContext, new AddPerson(_dbContext)));
+            seedSuperuser.DoTask(null);
+            #endif
         }
         private readonly ApplicationDbContext _dbContext;
 
@@ -43,7 +48,7 @@ namespace SongtrackerPro.Tasks.Tests
             get
             {
                 var countries = new ListCountries(_dbContext).DoTask(null).Data;
-                var usa = countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "USA");
+                var us = countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "US");
                 var streetNumber = new Random().Next(1000, 10000);
                 var postalCode = new Random().Next(10000, 99999);
                 var cityIndex = new Random().Next(4);
@@ -58,7 +63,7 @@ namespace SongtrackerPro.Tasks.Tests
                     City = city,
                     Region = region,
                     PostalCode = postalCode.ToString(),
-                    Country = usa
+                    Country = us
                 };
             }
         }

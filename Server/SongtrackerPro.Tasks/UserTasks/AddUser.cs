@@ -23,18 +23,10 @@ namespace SongtrackerPro.Tasks.UserTasks
         {
             try
             {
-                var person = user.Person;
-                var addPersonResult = _addPersonTask.DoTask(person);
-                if (!addPersonResult.Success)
-                    throw addPersonResult.Exception;
-
-                var personId = addPersonResult.Data;
                 var proId = user.PerformingRightsOrganization?.Id ?? user.PerformingRightsOrganizationId;
                 var publisherId = user.Publisher?.Id ?? user.PublisherId;
                 var recordLabelId = user.RecordLabel?.Id ?? user.RecordLabelId;
 
-                user.Person = null;
-                user.PersonId = personId;
                 user.PerformingRightsOrganization = null;
                 user.PerformingRightsOrganizationId = proId;
                 user.Publisher = null;
@@ -42,6 +34,18 @@ namespace SongtrackerPro.Tasks.UserTasks
                 user.RecordLabel = null;
                 user.RecordLabelId = recordLabelId;
 
+                var person = user.Person;
+                if (person != null)
+                {
+                    var addPersonResult = _addPersonTask.DoTask(person);
+                    if (!addPersonResult.Success)
+                        throw addPersonResult.Exception;
+
+                    var personId = addPersonResult.Data;
+                    user.Person = null;
+                    user.PersonId = personId;
+                }
+                
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();
 

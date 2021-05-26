@@ -169,12 +169,12 @@ export default {
         that.authInitialized = that.$gAuth.isInit;
         if (that.authInitialized) {
           clearInterval(authLoaded);
-          let isLoggedIn = that.Login !== null;
-          if (that.$route.query.logout && isLoggedIn) {
+          let isLoggedIn = that.Login !== null && Date.parse(that.Login.tokenExpiration) > Date.now();
+          if (that.$route.query.logout) {
             that.logout(true);
           }
           else {
-            that.userAuthenticated = isLoggedIn;
+            that.userAuthenticated = isLoggedIn && that.$gAuth.isAuthorized;
           }
         }
       }, 500);

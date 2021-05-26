@@ -23,8 +23,8 @@ namespace SongtrackerPro.Tasks.GeographicTasks
                 if (countries.Any())
                     return new TaskResult<bool>(false);
 
-                _dbContext.Countries.Add(new Country { Name = SeedData("COUNTRY_UNITED_STATES"), IsoCode = "USA" });
-                _dbContext.Countries.Add(new Country { Name = SeedData("COUNTRY_CANADA"), IsoCode = "CAN" });
+                _dbContext.Countries.Add(new Country { Name = SeedData("COUNTRY_UNITED_STATES"), IsoCode = "US" });
+                _dbContext.Countries.Add(new Country { Name = SeedData("COUNTRY_CANADA"), IsoCode = "CA" });
 
                 _dbContext.SaveChanges();
 

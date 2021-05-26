@@ -31,16 +31,30 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 publisher.TaxId = update.TaxId;
                 publisher.Email = update.Email;
                 publisher.Phone = update.Phone;
-                publisher.Address.Street = update.Address.Street;
-                publisher.Address.City = update.Address.City;
-                publisher.Address.Region = update.Address.Region;
-                publisher.Address.PostalCode = update.Address.PostalCode;
 
-                publisher.Address.CountryId = update.Address.Country?.Id;
-                if (publisher.Address.CountryId.HasValue)
+                if (update.Address != null)
                 {
-                    var country = _dbContext.Countries.SingleOrDefault(c => c.Id == publisher.Address.CountryId);
-                    publisher.Address.Country = country ?? throw new TaskException(SystemMessage("COUNTRY_NOT_FOUND"));
+                    if (publisher.Address == null)
+                    {
+                        var address = update.Address;
+                        var countryId = address.Country?.Id ?? address.CountryId;
+                        var country = _dbContext.Countries.SingleOrDefault(c => c.Id == countryId);
+                        address.Country = country;
+                        _dbContext.Addresses.Add(address);
+                        _dbContext.SaveChanges();
+                        publisher.Address = address;
+                    }
+                    publisher.Address.Street = update.Address.Street;
+                    publisher.Address.City = update.Address.City;
+                    publisher.Address.Region = update.Address.Region;
+                    publisher.Address.PostalCode = update.Address.PostalCode;
+
+                    publisher.Address.CountryId = update.Address.Country?.Id;
+                    if (publisher.Address.CountryId.HasValue)
+                    {
+                        var country = _dbContext.Countries.SingleOrDefault(c => c.Id == publisher.Address.CountryId);
+                        publisher.Address.Country = country ?? throw new TaskException(SystemMessage("COUNTRY_NOT_FOUND"));
+                    }
                 }
 
                 publisher.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id;

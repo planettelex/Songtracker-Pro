@@ -89,10 +89,12 @@ export default {
 
     computed: {
     ...mapState(["Login"]),
+    
     formTitle () {
       let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
       return verb + ' ' + this.$tc('Platform', 1);
     },
+
     headers () {
       return [
         { text: this.$tc('Platform', 1), value: "name", width: "23%" },
@@ -149,7 +151,7 @@ export default {
         this.selectedServices[i] = platformHasService;
       }
       this.editedIndex = this.platforms.indexOf(platform);
-      this.editedPlatform = Object.assign({}, platform);
+      this.editedPlatform = Object.assign(this.defaultPlatform, platform);
       this.dialog = true;
     },
 
