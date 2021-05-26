@@ -65,7 +65,7 @@
                   </v-row>
                 </v-container>
               </v-card-text>
-              <v-card-actions>
+              <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
                 <v-btn class="v-cancel-button rounded" @click="close">{{ $t('Cancel') }}</v-btn>
                 <v-btn class="v-button mr-4 rounded" @click="save">{{ $t('Save') }}</v-btn>

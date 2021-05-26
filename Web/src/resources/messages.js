@@ -49,7 +49,7 @@ const messages = {
         Server: 'Server',
         Service: 'Service | Services',
         SystemInformation: 'System Information',
-        TaxIndentifier: 'Tax Indentifier',
+        TaxIndentifier: 'Tax Identifier',
         User: 'User | Users',
         Version: 'Version',
         Website: 'Website'

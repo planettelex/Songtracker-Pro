@@ -30,7 +30,7 @@
                       <v-text-field :label="$t('TaxIndentifier')" v-model="editedArtist.taxId"></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-text-field :label="$t('PhoneNumber')" v-model="editedArtist.phone"></v-text-field>
+                      <v-select :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object single-line></v-select>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -57,7 +57,7 @@
                   </v-row>
                 </v-container>
               </v-card-text>
-              <v-card-actions>
+              <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
                 <v-btn class="v-cancel-button rounded" @click="close">{{ $t('Cancel') }}</v-btn>
                 <v-btn class="v-button mr-4 rounded" @click="save">{{ $t('Save') }}</v-btn>
@@ -94,6 +94,7 @@ export default {
     countryRegions: [],
     selectedCountryRegion: null,
     recordLabels: [],
+    selectedRecordLabel: null,
     artists: [],
     editedIndex: -1,
     editedArtist: {
@@ -111,8 +112,13 @@ export default {
           id: -1,
           name: '',
           isoCode: ''
-        }
-      }
+        },
+        hasServiceMark: false,
+        websiteUrl: '',
+        pressKitUrl: '',
+        recordLabel : null
+      },
+
     },
     defaultArtist: {
       name: '',
@@ -127,7 +133,11 @@ export default {
         country: {
           name: '',
           isoCode: ''
-        }
+        },
+        hasServiceMark: false,
+        websiteUrl: '',
+        pressKitUrl: '',
+        recordLabel : null
       }
     },
     error: null
@@ -198,6 +208,7 @@ export default {
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(artist.address.region);
+        this.selectedRecordLabel = artist.recordLabel;
       }
       this.dialog = true;
     },
@@ -208,6 +219,7 @@ export default {
         this.editedIndex = -1;
         this.selectedCountry = null;
         this.selectedCountryRegion = null;
+        this.selectedRecordLabel = null;
         this.editedArtist = Object.assign({}, this.defaultArtist);
       });
     },
@@ -216,6 +228,7 @@ export default {
       if (this.editedArtist) {
         this.editedArtist.address.country = this.selectedCountry;
         this.editedArtist.address.region = this.selectedCountryRegion.code;
+        this.editedArtist.recordLabel = this.selectedRecordLabel;
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         const artistData = new ArtistData(this.editedArtist);
         artistData.config(apiRequest).save()
