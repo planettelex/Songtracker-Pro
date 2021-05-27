@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Tasks.UserTasks
@@ -12,11 +13,18 @@ namespace SongtrackerPro.Tasks.UserTasks
 
     public class LoginUser : TaskBase, ILoginUserTask
     {
-        public LoginUser(ApplicationDbContext dbContext)
+        public LoginUser(ApplicationDbContext dbContext,
+                         IGetInstallationTask getInstallationTask,
+                         ISeedSystemDataTask seedSystemDataTask)
         {
             _dbContext = dbContext;
+            _getInstallationTask = getInstallationTask;
+            _seedSystemDataTask = seedSystemDataTask;
+
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IGetInstallationTask _getInstallationTask;
+        private readonly ISeedSystemDataTask _seedSystemDataTask;
 
         public TaskResult<Login> DoTask(Login login)
         {
@@ -44,6 +52,10 @@ namespace SongtrackerPro.Tasks.UserTasks
                         user = new User { AuthenticationId = login.AuthenticationId, Type = UserType.SystemAdministrator };
                         _dbContext.Users.Add(user);
                         _dbContext.SaveChanges();
+
+                        var installation = _getInstallationTask.DoTask(null);
+                        if (installation.HasNoData)
+                            _seedSystemDataTask.DoTask(null);
                     }
                     else
                         throw new TaskException(SystemMessage("USER_NOT_FOUND"));

@@ -56,8 +56,8 @@
               </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
-                <v-btn class="v-cancel-button rounded" @click="cancelInvite">{{ $t('Cancel') }}</v-btn>
-                <v-btn class="v-button mr-4 rounded" @click="inviteUser">{{ $t('Invite') }}</v-btn>
+                <v-btn class="v-cancel-button rounded" @click="closeInvite">{{ $t('Cancel') }}</v-btn>
+                <v-btn class="v-button mr-4 rounded" @click="sendInvite">{{ $t('Invite') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -199,18 +199,9 @@ export default {
       email: '',
       type: 0,
       roles: 0,
-      publisher: {
-        id: -1,
-        name: ''
-      },
-      recordLabel: {
-        id: -1,
-        name: ''
-      },
-      artist: {
-        id: -1,
-        name: ''
-      }
+      publisher: null,
+      recordLabel: null,
+      artist: null
     },
     defaultInvitation: {
       invitedByUserId: -1,
@@ -218,15 +209,9 @@ export default {
       email: '',
       type: 0,
       roles: 0,
-      publisher: {
-        name: ''
-      },
-      recordLabel: {
-        name: ''
-      },
-      artist: {
-        name: ''
-      }
+      publisher: null,
+      recordLabel: null,
+      artist: null
     },
     editedIndex: -1,
     editedUser: {
@@ -296,7 +281,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login"]),
+    ...mapState(["Login", "User"]),
 
     headers() {
       return [
@@ -387,7 +372,6 @@ export default {
     },
 
     async inviteUser() {
-
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       this.artists = await ArtistData.config(apiRequest).all();
       this.recordLabels = await RecordLabelData.config(apiRequest).all();
@@ -396,21 +380,40 @@ export default {
       this.inviteDialog = true;
     },
 
-    cancelInvite() {
-      this.inviteDialog = false;
-    },
-
     closeInvite() {
-      this.selectedPublisher = null;
-      this.selectedRecordLabel = null;
-      this.selectedArtist = null;
-      this.selectedUserRoles = [];
-      this.selectedUserType = {};
-      this.editedInvitation = Object.assign({}, this.defaultInvitation);
+      this.inviteDialog = false;
+      this.$nextTick(() => {
+        this.selectedPublisher = null;
+        this.selectedRecordLabel = null;
+        this.selectedArtist = null;
+        this.selectedUserRoles = [];
+        this.selectedUserType = {};
+        this.editedInvitation = Object.assign({}, this.defaultInvitation);
+      });
     },
 
     sendInvite() {
       if (this.editedInvitation) {
+        this.editedInvitation.invitedByUserId = this.User.id;
+        let userType = this.selectedUserType.value;
+        let userRoles = 0;
+        this.editedInvitation.type = userType;
+        switch (userType) {
+          case UserType.PublisherAdministrator:
+            this.editedInvitation.publisher = this.selectedPublisher;
+            break;
+          case UserType.LabelAdministrator:
+            this.editedInvitation.recordLabel = this.selectedRecordLabel;
+            break;
+          case UserType.SystemUser:
+            this.editedInvitation.publisher = this.selectedPublisher;
+            this.editedInvitation.artist = this.selectedArtist;
+            for (let i = 0; i < this.selectedUserRoles.length; i++) {
+              userRoles = userRoles | this.selectedUserRoles[i];
+            }
+            this.editedInvitation.roles = userRoles;
+            break;
+        }
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         const invitationData = new InvitationData(this.editedInvitation);
         invitationData.config(apiRequest).save()
@@ -418,8 +421,9 @@ export default {
           this.initialize();
         })
         .catch(error => this.handleError(error));
+        console.log(this.editedInvitation);
       }
-      this.closeInvite();
+      this.inviteDialog = false;
     },
 
     editUser(user) {
