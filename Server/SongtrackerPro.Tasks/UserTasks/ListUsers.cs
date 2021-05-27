@@ -26,10 +26,14 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (userType.HasValue) 
                     users = _dbContext.Users.Where(u => u.Type == userType.Value)
                         .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                        .Include(u => u.PerformingRightsOrganization).ThenInclude(p => p.Country)
+                        .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(p => p.Country)
                         .ToList();
                 else
                     users = _dbContext.Users
                         .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                        .Include(u => u.PerformingRightsOrganization).ThenInclude(p => p.Country)
+                        .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(p => p.Country)
                         .ToList();
                 
                 return new TaskResult<List<User>>(users);

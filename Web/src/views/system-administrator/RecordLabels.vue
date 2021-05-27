@@ -27,7 +27,7 @@
                       <v-text-field :label="$t('Name')" v-model="editedRecordLabel.name"></v-text-field>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('TaxIndentifier')" v-model="editedRecordLabel.taxId"></v-text-field>
+                      <v-text-field :label="$t('TaxIdentifier')" v-model="editedRecordLabel.taxId"></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pr-0">
                       <v-text-field :label="$t('PhoneNumber')" v-model="editedRecordLabel.phone"></v-text-field>
@@ -142,8 +142,8 @@ export default {
     headers () {
       return [
         { text: this.$tc('RecordLabel', 1), value: "name" },
-        { text: this.$t('TaxIndentifier'), value: "taxId", width: "40%" },
-        { text: '', value: 'actions', sortable: false, align: "center", width: "4%" },
+        { text: this.$t('TaxIdentifier'), value: "taxId" },
+        { text: '', value: 'actions', sortable: false, align: "center", width: "50px" },
       ];},
   },
 
@@ -233,3 +233,12 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .v-data-table-header > tr > th:first-child {
+    min-width: 210px;
+  }
+  .v-data-table-header > tr > th:nth-child(2) {
+    min-width: 155px;
+  }
+</style>

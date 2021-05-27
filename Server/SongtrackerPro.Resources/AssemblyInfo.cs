@@ -41,6 +41,7 @@
             "PRO_NOT_FOUND",
             "PUBLISHER_NOT_FOUND",
             "RECORD_LABEL_NOT_FOUND",
+            "SUPERUSER",
             "USA_NOT_FOUND",
             "USER_NOT_FOUND",
             "USER_ACCOUNT_NOT_FOUND",

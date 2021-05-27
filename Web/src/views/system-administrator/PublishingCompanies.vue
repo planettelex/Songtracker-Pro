@@ -27,7 +27,7 @@
                       <v-text-field :label="$t('Name')" v-model="editedPublisher.name"></v-text-field>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('TaxIndentifier')" v-model="editedPublisher.taxId"></v-text-field>
+                      <v-text-field :label="$t('TaxIdentifier')" v-model="editedPublisher.taxId"></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pr-0">
                       <v-text-field :label="$t('PhoneNumber')" v-model="editedPublisher.phone"></v-text-field>
@@ -149,33 +149,33 @@ export default {
   computed: {
     ...mapState(["Login"]),
 
-    formTitle () {
+    formTitle() {
         let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
         return verb + ' ' + this.$tc('PublishingCompany', 1);
     },
 
-    headers () {
+    headers() {
       return [
         { text: this.$tc('PublishingCompany', 1), value: "name" },
-        { text: this.$t('AffiliatedPro'), value: "performingRightsOrganization.name", width: "20%" },
-        { text: this.$t('ProIdentifier'), value: "performingRightsOrganizationPublisherNumber", width: "20%" },
-        { text: this.$t('TaxIndentifier'), value: "taxId", width: "20%" },
-        { text: '', value: 'actions', sortable: false, align: "center", width: "4%" },
+        { text: this.$t('AffiliatedPro'), value: "performingRightsOrganization.name" },
+        { text: this.$t('ProIdentifier'), value: "performingRightsOrganizationPublisherNumber" },
+        { text: this.$t('TaxIdentifier'), value: "taxId" },
+        { text: '', value: 'actions', sortable: false, align: "center", width: "50px" },
       ];},
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close();
     },
-    selectedCountry (val) {
+    selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
     }
   },
 
   methods: {
-    async initialize () { 
+    async initialize() { 
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       this.countries = await CountryData.config(apiRequest).all();
       this.performingRightsOrganizations = await PerformingRightsOrganizationData.config(apiRequest).all();
@@ -202,7 +202,7 @@ export default {
       return countryRegion;
     },
 
-    editPublisher (publisher) {
+    editPublisher(publisher) {
       if (publisher && !publisher.address)
           publisher.address = this.defaultPublisher.address;
       this.editedIndex = this.publishers.indexOf(publisher);
@@ -249,8 +249,23 @@ export default {
     },
   },
 
-  async mounted () {
+  async mounted() {
     this.initialize();
   }
 };
 </script>
+
+<style lang="scss">
+  .v-data-table-header > tr > th:first-child {
+    min-width: 210px;
+  }
+  .v-data-table-header > tr > th:nth-child(2) {
+    min-width: 155px;
+  }
+  .v-data-table-header > tr > th:nth-child(3) {
+    min-width: 155px;
+  }
+  .v-data-table-header > tr > th:nth-child(4) {
+    min-width: 155px;
+  }
+</style>

@@ -46,6 +46,10 @@
       "Value": "Publisher not found."
     },
     {
+      "Key": "SUPERUSER",
+      "Value": "Superuser"
+    },
+    {
       "Key": "USA_NOT_FOUND",
       "Value": "United States not found."
     },

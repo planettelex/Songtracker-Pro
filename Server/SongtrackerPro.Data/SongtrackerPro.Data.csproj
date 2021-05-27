@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SongtrackerPro.Resources\SongtrackerPro.Resources.csproj" />
     <ProjectReference Include="..\SongtrackerPro.Utilities\SongtrackerPro.Utilities.csproj" />
   </ItemGroup>
 

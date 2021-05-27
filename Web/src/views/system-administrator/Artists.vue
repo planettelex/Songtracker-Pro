@@ -27,7 +27,7 @@
                       <v-text-field :label="$t('Name')" v-model="editedArtist.name"></v-text-field>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('TaxIndentifier')" v-model="editedArtist.taxId"></v-text-field>
+                      <v-text-field :label="$t('TaxIdentifier')" v-model="editedArtist.taxId"></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pr-0">
                       <v-select :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object single-line></v-select>
@@ -146,32 +146,32 @@ export default {
   computed: {
     ...mapState(["Login"]),
 
-    formTitle () {
+    formTitle() {
         let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
         return verb + ' ' + this.$tc('Artist', 1);
     },
 
-    headers () {
+    headers() {
       return [
         { text: this.$tc('Artist', 1), value: "name" },
-        { text: this.$tc('RecordLabel', 1), value: "recordLabel.name", width: "30%" },
-        { text: this.$t('TaxIndentifier'), value: "taxId", width: "30%" },
-        { text: '', value: 'actions', sortable: false, align: "center", width: "4%" },
+        { text: this.$tc('RecordLabel', 1), value: "recordLabel.name" },
+        { text: this.$t('TaxIdentifier'), value: "taxId" },
+        { text: '', value: 'actions', sortable: false, align: "center", width: "50px" },
       ];},
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close();
     },
-    selectedCountry (val) {
+    selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
     }
   },
 
   methods: {
-    async initialize () { 
+    async initialize() { 
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       this.countries = await CountryData.config(apiRequest).all();
       this.recordLabels = await RecordLabelData.config(apiRequest).all();
@@ -198,7 +198,7 @@ export default {
       return countryRegion;
     },
 
-    editArtist (artist) {
+    editArtist(artist) {
       if (artist && !artist.address)
           artist.address = this.defaultArtist.address;
       this.editedIndex = this.artists.indexOf(artist);
@@ -250,3 +250,15 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .v-data-table-header > tr > th:first-child {
+    min-width: 120px;
+  }
+  .v-data-table-header > tr > th:nth-child(2) {
+    min-width: 150px;
+  }
+  .v-data-table-header > tr > th:nth-child(3) {
+    min-width: 155px;
+  }
+</style>

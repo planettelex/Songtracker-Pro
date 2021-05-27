@@ -90,20 +90,20 @@ export default {
     computed: {
     ...mapState(["Login"]),
     
-    formTitle () {
+    formTitle() {
       let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
       return verb + ' ' + this.$tc('Platform', 1);
     },
 
-    headers () {
+    headers() {
       return [
-        { text: this.$tc('Platform', 1), value: "name", width: "23%" },
-        { text: this.$t('Website'), value: "website", width: "27%" },
-        { text: this.$tc('Service', 2), value: "serviceList", sortable: false },
-        { text: '', value: 'actions', sortable: false, align: "center", width: "4%" },
+        { text: this.$tc('Platform', 1), value: "name" },
+        { text: this.$t('Website'), value: "website" },
+        { text: this.$tc('Service', 2), value: "serviceList", sortable: false, width: "50%" },
+        { text: '', value: 'actions', sortable: false, align: "center", width: "50px" },
       ];},
 
-    selectedServiceCount () {
+    selectedServiceCount() {
       let count = 0;
       this.selectedServices.forEach(isSelected => { if (isSelected) count++; })
       return count;
@@ -111,26 +111,26 @@ export default {
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close();
     }
   },
 
   methods: {
-    async initialize () { 
+    async initialize() { 
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       this.services = await ServiceData.config(apiRequest).all();
       this.platforms = await PlatformData.config(apiRequest).all();
       this.buildServiceLists();
     },
 
-    buildServiceLists () {
+    buildServiceLists() {
       this.platforms.forEach(platform => {
         this.buildServiceList(platform);
       });
     },
 
-    buildServiceList (platform) {
+    buildServiceList(platform) {
       platform.serviceList = "";
       if (!platform.services)
         return;
@@ -143,7 +143,7 @@ export default {
           platform.serviceList = platform.serviceList.substring(0, listLength - 2);
     },
 
-    editPlatform (platform) {
+    editPlatform(platform) {
       for (let i = 0; i < this.services.length; i++) {
         let platformHasService = false;
         if (platform)
@@ -156,7 +156,7 @@ export default {
       this.dialog = true;
     },
 
-    close () {
+    close() {
       this.dialog = false;
       this.$nextTick(() => {
         this.editedIndex = -1;
@@ -164,7 +164,7 @@ export default {
       });
     },
 
-    save () {
+    save() {
       if (this.editedPlatform) {
         this.editedPlatform.services = new Array(this.selectedServiceCount);
         let editedPlatformServiceIndex = 0;
@@ -196,3 +196,15 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .v-data-table-header > tr > th:first-child {
+    min-width: 120px;
+  }
+  .v-data-table-header > tr > th:nth-child(2) {
+    min-width: 155px;
+  }
+  .v-data-table-header > tr > th:nth-child(3) {
+    min-width: 155px;
+  }
+</style>
