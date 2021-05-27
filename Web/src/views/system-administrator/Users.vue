@@ -12,16 +12,51 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="inviteDialog" max-width="800px">
             <template v-slot:activator="{ attrs }">
-              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="inviteUser()">{{ $t('Invite') }} {{ $tc('User', 1) }}</v-btn>
+              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="inviteUser()"><v-icon class="pr-3">mdi-email</v-icon> {{ $t('Invite') }} {{ $tc('User', 1) }}</v-btn>
             </template>
             <v-card>
               <v-card-title class="modal-title pt-2">
                 <span>{{ $t('Invite') }} {{ $tc('User', 1) }}</span>
               </v-card-title>
-              <v-card-text></v-card-text>
+              <v-card-text>
+                <v-row>
+                  <v-col cols="5">
+                    <v-select :label="$tc('User', 1) + ' ' + $tc('Type', 1)" :items="userTypes" v-model="selectedUserType" item-text="name" item-value="value" return-object></v-select>
+                  </v-col>
+                  <v-col cols="3">
+                    <v-text-field :label="$t('Name')" v-model="editedInvitation.name"></v-text-field>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-text-field :label="$t('Email')" v-model="editedInvitation.email"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row v-if="showPublisherFields">
+                  <v-col cols="5">
+                    <v-select :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object></v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="showLabelFields">
+                  <v-col cols="5">
+                    <v-select :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object></v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="showUserFields">
+                  <v-col cols="5">
+                    <v-select :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object></v-select>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-select :label="$tc('Artist', 1)" :items="artists" v-model="selectedArtist" item-text="name" item-value="id" return-object></v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="showUserFields">
+                    <v-col cols="12">
+                      <v-select :label="$tc('Role', 2)" :items="userRoles" v-model="selectedUserRoles" item-text="name" item-value="value" multiple></v-select>
+                    </v-col>
+                  </v-row>
+              </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
-                <v-btn class="v-cancel-button rounded" @click="closeInvite">{{ $t('Cancel') }}</v-btn>
+                <v-btn class="v-cancel-button rounded" @click="cancelInvite">{{ $t('Cancel') }}</v-btn>
                 <v-btn class="v-button mr-4 rounded" @click="inviteUser">{{ $t('Invite') }}</v-btn>
               </v-card-actions>
             </v-card>
@@ -29,17 +64,81 @@
           <v-dialog v-model="editDialog" max-width="800px">
             <v-card>
               <v-card-title class="modal-title pt-2">
-                <span>{{ $t('Edit') }} {{ $tc('User', 1) }}</span>
+                <span>{{ $t('Edit') }} {{ selectedUserType.name }}</span>
               </v-card-title>
-              <v-card-text></v-card-text>
+              <v-card-text>
+                <v-container class="app-form">
+                  <v-row>
+                    <v-col cols="2" class="pl-0">
+                      <v-text-field :label="$t('First')" v-model="editedUser.person.firstName"></v-text-field>
+                    </v-col>
+                    <v-col cols="1">
+                      <v-text-field :label="$t('MiddleAbbreviation')" v-model="editedUser.person.middleName"></v-text-field>
+                    </v-col>
+                    <v-col cols="2">
+                      <v-text-field :label="$t('Last')" v-model="editedUser.person.lastName"></v-text-field>
+                    </v-col>
+                    <v-col cols="1">
+                      <v-text-field :label="$t('Suffix')" v-model="editedUser.person.nameSuffix"></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field :label="$t('SSN')" v-model="editedUser.socialSecurityNumber"></v-text-field>
+                    </v-col>
+                    <v-col cols="3" class="pr-0">
+                      <v-text-field :label="$t('PhoneNumber')" v-model="editedUser.person.phone"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="6" class="pl-0">
+                      <v-text-field :label="$t('Email')" v-model="editedUser.authenticationId"></v-text-field>
+                    </v-col>
+                    <v-col cols="6" class="pr-0">
+                      <v-text-field :label="$t('Address')" v-model="editedUser.person.address.street"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="3" class="pl-0">
+                      <v-text-field :label="$t('City')" v-model="editedUser.person.address.city"></v-text-field>
+                    </v-col>
+                    <v-col cols="3" >
+                      <v-text-field :label="$t('PostalCode')" v-model="editedUser.person.address.postalCode"></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                    </v-col>
+                    <v-col cols="3" class="pr-0">
+                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="4" class="pl-0">
+                      <v-select :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object></v-select>
+                    </v-col>
+                    <v-col cols="2">
+                      <v-select :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field :label="$t('ProIdentifier')" v-model="editedUser.performingRightsOrganizationMemberNumber"></v-text-field>
+                    </v-col>
+                    <v-col cols="3" class="pr-0">
+                      <v-text-field :label="$t('SoundExchangeId')" v-model="editedUser.soundExchangeAccountNumber"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" class="pl-0 pr-0">
+                      <v-select :label="$tc('Role', 2)" :items="userRoles" v-model="selectedUserRoles" item-text="name" item-value="value" multiple></v-select>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
                 <v-btn class="v-cancel-button rounded" @click="closeEdit">{{ $t('Cancel') }}</v-btn>
-                <v-btn class="v-button mr-4 rounded" @click="editUser">{{ $t('Save') }}</v-btn>
+                <v-btn class="v-button mr-4 rounded" @click="save" :disabled="disableSave">{{ $t('Save') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-        </v-toolbar>
+        </v-toolbar> 
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
@@ -54,14 +153,15 @@
 import ApiRequest from '../../models/local/ApiRequest';
 import CountryData from '../../models/api/Country';
 import CountryRegions from '../../resources/countryRegions';
-import UserTypes from '../../models/local/UserTypes';
-import UserRoles from '../../models/local/UserRoles';
 import PerformingRightsOrganizationData from '../../models/api/PerformingRightsOrganization';
 import PublisherData from '../../models/api/Publisher';
 import UserData from '../../models/api/User';
 import InvitationData from '../../models/api/Invitation';
 import ArtistData from '../../models/api/Artist';
 import RecordLabelData from '../../models/api/RecordLabel';
+import UserType from '../../enums/UserType';
+import UserTypes from '../../models/local/UserTypes';
+import UserRoles from '../../models/local/UserRoles';
 import { mapState } from "vuex";
 import appConfig from '../../appConfig';
 
@@ -83,11 +183,15 @@ export default {
     selectedPublisher: null,
     recordLabels: [],
     selectedRecordLabel: null,
+    userType: UserType,
     userTypes: [],
-    selectedUserType: null,
+    selectedUserType: {},
     userRoles: [],
-    selectedUserRoles: [ false, false, false, false, false, false, false, false, false, false ],
+    selectedUserRoles: [],
     users: [],
+    showPublisherFields: false,
+    showLabelFields: false,
+    showUserFields: false,
     editedInvitation: {
       uuid: '',
       invitedByUserId: -1,
@@ -95,9 +199,18 @@ export default {
       email: '',
       type: 0,
       roles: 0,
-      publisher: null,
-      recordLabel: null,
-      artist: null
+      publisher: {
+        id: -1,
+        name: ''
+      },
+      recordLabel: {
+        id: -1,
+        name: ''
+      },
+      artist: {
+        id: -1,
+        name: ''
+      }
     },
     defaultInvitation: {
       invitedByUserId: -1,
@@ -105,9 +218,15 @@ export default {
       email: '',
       type: 0,
       roles: 0,
-      publisher: null,
-      recordLabel: null,
-      artist: null
+      publisher: {
+        name: ''
+      },
+      recordLabel: {
+        name: ''
+      },
+      artist: {
+        name: ''
+      }
     },
     editedIndex: -1,
     editedUser: {
@@ -172,6 +291,7 @@ export default {
         soundExchangeAccountNumber: ''
       }
     },
+    disableSave: false,
     error: null
   }),
 
@@ -191,11 +311,39 @@ export default {
 
   watch: {
     inviteDialog(val) {
-      val || this.inviteClose();
+      val || this.closeInvite();
     },
     editDialog(val) {
-      val || this.editClose();
+      val || this.closeEdit();
     },
+    selectedCountry(val) {
+      if (val)
+        this.loadCountryRegions();
+    },
+    selectedUserType(val) {
+      switch(val.value) {
+        case UserType.PublisherAdministrator:
+          this.showPublisherFields = true;
+          this.showLabelFields = false;
+          this.showUserFields = false;
+          break;
+        case UserType.LabelAdministrator:
+          this.showPublisherFields = false;
+          this.showLabelFields = true;
+          this.showUserFields = false;
+          break;
+        case UserType.SystemUser:
+          this.showPublisherFields = false;
+          this.showLabelFields = false;
+          this.showUserFields = true;
+          break;
+        default:
+          this.showPublisherFields = false;
+          this.showLabelFields = false;
+          this.showUserFields = false;
+          break;
+      }
+    }
   },
 
   methods: {
@@ -239,26 +387,26 @@ export default {
     },
 
     async inviteUser() {
-      for (let i = 0; i < this.userRoles.length; i++) {
-        this.selectedUserRoles[i] = false;
-      }
+
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       this.artists = await ArtistData.config(apiRequest).all();
       this.recordLabels = await RecordLabelData.config(apiRequest).all();
-      this.editedInvitation = Object.assign({}, this.defaultInvitation);
-      this.inviteDialog = true; 
+      let emptyInvitation = JSON.parse(JSON.stringify(this.defaultInvitation));
+      this.editedInvitation = Object.assign(emptyInvitation, this.defaultInvitation);
+      this.inviteDialog = true;
+    },
+
+    cancelInvite() {
+      this.inviteDialog = false;
     },
 
     closeInvite() {
-      this.inviteDialog = false;
-      this.$nextTick(() => {
-        this.editedIndex = -1;
-        this.selectedUserType = null;
-        this.selectedPublisher = null;
-        this.selectedRecordLabel = null;
-        this.selectedArtist = null;
-        this.editedInvitation = Object.assign({}, this.defaultInvitation);
-      });
+      this.selectedPublisher = null;
+      this.selectedRecordLabel = null;
+      this.selectedArtist = null;
+      this.selectedUserRoles = [];
+      this.selectedUserType = {};
+      this.editedInvitation = Object.assign({}, this.defaultInvitation);
     },
 
     sendInvite() {
@@ -275,18 +423,25 @@ export default {
     },
 
     editUser(user) {
-      for (let i = 0; i < this.userRoles.length; i++) {
-        this.selectedUserRoles[i] = false;
-      }
       if (user && !user.address)
         user.address = this.defaultUser.address;
+      if (user && !user.person)
+        user.person = this.defaultUser.person;
+      for (let i = 0; i < UserRoles.length; i++) {
+        if (user.roles & UserRoles[i].value)
+          this.selectedUserRoles.push(UserRoles[i].value);
+      }
+      if (!user.person.id)
+        this.disableSave = true;
       this.editedIndex = this.users.indexOf(user);
-      this.editedUser = Object.assign({}, this.defaultUser);
+      this.editedUser = Object.assign({}, user);
       if (user) {
         this.selectedUserType = this.getUserType(user.type);
-        this.selectedCountry = user.address.country;
-        this.loadCountryRegions();
-        this.selectedCountryRegion = this.getCountryRegion(user.address.region);
+        if (user.person.address) {
+          this.selectedCountry = user.person.address.country;
+          this.loadCountryRegions();
+          this.selectedCountryRegion = this.getCountryRegion(user.person.address.region);
+        }
         this.selectedPerformingRightsOrganization = user.performingRightsOrganization;
         this.selectedPublisher = user.publisher;
       }
@@ -310,6 +465,9 @@ export default {
         this.selectedCountryRegion = null;
         this.selectedPerformingRightsOrganization = null;
         this.selectedPublisher = null;
+        this.selectedUserRoles = [];
+        this.selectedUserType = {};
+        this.disableSave = false;
         this.editedUser = Object.assign({}, this.defaultUser);
       });
     },
@@ -317,9 +475,13 @@ export default {
     save() {
       if (this.editedUser) {
         this.editedUser.person.address.country = this.selectedCountry;
-        this.editedUser.person.address.region = this.selectedCountryRegion.code;
+        if (this.selectedCountryRegion)
+          this.editedUser.person.address.region = this.selectedCountryRegion.code;
         this.editedUser.performingRightsOrganization = this.selectedPerformingRightsOrganization;
         this.editedUser.publisher = this.selectedPublisher;
+        let userRoles = 0;
+        this.selectedUserRoles.forEach(userRole => userRoles = userRoles | userRole);
+        this.editedUser.roles = userRoles;
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         const userData = new UserData(this.editedUser);
         userData.config(apiRequest).save()

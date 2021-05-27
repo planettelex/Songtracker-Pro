@@ -40,7 +40,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.IsTrue(addUserResult.Success);
             Assert.IsNull(addUserResult.Exception);
 
-            var task = new UpdateUser(DbContext, new UpdatePerson(DbContext));
+            var task = new UpdateUser(DbContext, new UpdatePerson(DbContext), new AddPerson(DbContext));
             var toUpdate = testUser;
             UpdateUserModel(toUpdate);
             var result = task.DoTask(toUpdate);
@@ -92,7 +92,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new UpdateUser(EmptyDbContext, new UpdatePerson(EmptyDbContext));
+            var task = new UpdateUser(EmptyDbContext, new UpdatePerson(EmptyDbContext), new AddPerson(EmptyDbContext));
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

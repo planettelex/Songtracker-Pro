@@ -30,7 +30,7 @@
                       <v-text-field :label="$t('TaxIdentifier')" v-model="editedArtist.taxId"></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object single-line></v-select>
+                      <v-select :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object></v-select>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -49,10 +49,10 @@
                       <v-text-field :label="$t('PostalCode')" v-model="editedArtist.address.postalCode"></v-text-field>
                     </v-col>
                     <v-col cols="3" >
-                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object single-line></v-select>
+                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object single-line></v-select>
+                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -204,7 +204,7 @@ export default {
       this.editedIndex = this.artists.indexOf(artist);
       let emptyArtist = JSON.parse(JSON.stringify(this.defaultArtist));
       this.editedArtist = Object.assign(emptyArtist, artist);
-      if (artist) {
+      if (artist.address) {
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(artist.address.region);

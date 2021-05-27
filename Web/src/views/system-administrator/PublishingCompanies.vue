@@ -49,15 +49,15 @@
                       <v-text-field :label="$t('PostalCode')" v-model="editedPublisher.address.postalCode"></v-text-field>
                     </v-col>
                     <v-col cols="3" >
-                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object single-line></v-select>
+                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object single-line></v-select>
+                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
-                      <v-select :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object single-line></v-select>
+                      <v-select :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
                     </v-col>
                      <v-col cols="3">
                       <v-text-field :label="$t('ProIdentifier')" v-model="editedPublisher.performingRightsOrganizationPublisherNumber"></v-text-field>
@@ -208,7 +208,7 @@ export default {
       this.editedIndex = this.publishers.indexOf(publisher);
       let emptyPublisher = JSON.parse(JSON.stringify(this.defaultPublisher));
       this.editedPublisher = Object.assign(emptyPublisher, publisher);
-      if (publisher) {
+      if (publisher.address) {
         this.selectedCountry = publisher.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(publisher.address.region);

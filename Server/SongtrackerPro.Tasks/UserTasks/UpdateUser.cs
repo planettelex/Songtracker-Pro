@@ -11,13 +11,15 @@ namespace SongtrackerPro.Tasks.UserTasks
 
     public class UpdateUser : TaskBase, IUpdateUserTask
     {
-        public UpdateUser(ApplicationDbContext dbContext, IUpdatePersonTask updatePersonTask)
+        public UpdateUser(ApplicationDbContext dbContext, IUpdatePersonTask updatePersonTask, IAddPersonTask addPersonTask)
         {
             _dbContext = dbContext;
             _updatePersonTask = updatePersonTask;
+            _addPersonTask = addPersonTask;
         }
         private readonly ApplicationDbContext _dbContext;
         private readonly IUpdatePersonTask _updatePersonTask;
+        private readonly IAddPersonTask _addPersonTask;
 
         public TaskResult<Nothing> DoTask(User update)
         {
@@ -32,8 +34,14 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 if (update.Person != null)
                 {
-                    update.Person.Id = user.Person.Id;
-                    _updatePersonTask.DoTask(update.Person);
+                    update.Person.Email = update.AuthenticationId;
+                    if (user.Person == null)
+                        _addPersonTask.DoTask(update.Person);
+                    else
+                    {
+                        update.Person.Id = user.Person.Id;
+                        _updatePersonTask.DoTask(update.Person);
+                    }
                 }
                 
                 user.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id;
