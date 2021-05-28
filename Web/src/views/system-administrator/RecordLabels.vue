@@ -98,33 +98,33 @@ export default {
       id: -1,
       name: '',
       email: '',
-      phone: '',
-      taxId: '',
+      phone: null,
+      taxId: null,
       address: {
-        street: '',
-        city: '',
-        region: '',
-        postalCode: '',
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
         country: {
           id: -1,
-          name: '',
-          isoCode: ''
+          name: null,
+          isoCode: null
         }
       }
     },
     defaultRecordLabel: {
       name: '',
       email: '',
-      phone: '',
-      taxId: '',
+      phone: null,
+      taxId: null,
       address: {
-        street: '',
-        city: '',
-        region: '',
-        postalCode: '',
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
         country: {
-          name: '',
-          isoCode: ''
+          name: null,
+          isoCode: null
         }
       }
     },
@@ -134,12 +134,12 @@ export default {
   computed: {
     ...mapState(["Login"]),
 
-    formTitle () {
+    formTitle() {
         let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
         return verb + ' ' + this.$tc('RecordLabel', 1);
     },
 
-    headers () {
+    headers() {
       return [
         { text: this.$tc('RecordLabel', 1), value: "name" },
         { text: this.$t('TaxIdentifier'), value: "taxId" },
@@ -148,17 +148,17 @@ export default {
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close();
     },
-    selectedCountry (val) {
+    selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
     }
   },
 
   methods: {
-    async initialize () { 
+    async initialize() { 
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       this.countries = await CountryData.config(apiRequest).all();
       this.recordLabels = await RecordLabelData.config(apiRequest).all();
@@ -184,13 +184,13 @@ export default {
       return countryRegion;
     },
 
-    editRecordLabel (recordLabel) {
+    editRecordLabel(recordLabel) {
       if (recordLabel && !recordLabel.address)
           recordLabel.address = this.defaultRecordLabel.address;
       this.editedIndex = this.recordLabels.indexOf(recordLabel);
       let emptyRecordLabel = JSON.parse(JSON.stringify(this.defaultRecordLabel));
       this.editedRecordLabel = Object.assign(emptyRecordLabel, recordLabel);
-      if (recordLabel.address) {
+      if (recordLabel) {
         this.selectedCountry = recordLabel.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(recordLabel.address.region);
@@ -228,7 +228,7 @@ export default {
     },
   },
 
-  async mounted () {
+  async mounted() {
     this.initialize();
   }
 };

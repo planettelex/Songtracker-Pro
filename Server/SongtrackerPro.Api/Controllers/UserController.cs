@@ -107,7 +107,7 @@ namespace SongtrackerPro.Api.Controllers
         }
 
         [Route(Routes.Invitation)]
-        [HttpPost]
+        [HttpPut]
         public IActionResult AcceptUserInvitation(Guid uuid, UserInvitation userInvitation)
         {
             try

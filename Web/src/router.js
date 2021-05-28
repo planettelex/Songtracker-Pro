@@ -197,6 +197,12 @@ const router = new Router({
           meta: { unauthenticatedOk: true, titleKey: "Login", userType: UserType.Unsassigned }
         },
         {
+          name: "Join",
+          path: "join",
+          component: () => import("@/views/Join"),
+          meta: { unauthenticatedOk: true, titleKey: "Join", userType: UserType.Unsassigned }
+        },
+        {
           name: "404",
           path: "*",
           component: () => import("@/views/FourOhFour"),

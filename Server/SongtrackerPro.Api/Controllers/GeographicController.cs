@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using SongtrackerPro.Api.Attributes;
-using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -25,14 +22,10 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Countries)]
         [HttpGet]
-        [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult ListCountries()
         {
             try
             {
-                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
-                    return Unauthorized();
-
                 var taskResults = _listCountriesTask.DoTask(null);
 
                 return taskResults.Success ? 

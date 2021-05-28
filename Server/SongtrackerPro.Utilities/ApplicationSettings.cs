@@ -128,15 +128,6 @@ namespace SongtrackerPro.Utilities
 
         public static class Web
         {
-            public static string Root
-            {
-                get
-                {
-                    var protocol = IsSecure ? "https://" : "http://";
-                    return $"{protocol}{Domain}/";
-                }
-            }
-
             public static string Domain
             {
                 get

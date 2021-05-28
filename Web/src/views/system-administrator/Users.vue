@@ -81,11 +81,11 @@
                     <v-col cols="1">
                       <v-text-field :label="$t('Suffix')" v-model="editedUser.person.nameSuffix"></v-text-field>
                     </v-col>
-                    <v-col cols="3">
-                      <v-text-field :label="$t('SSN')" v-model="editedUser.socialSecurityNumber"></v-text-field>
-                    </v-col>
-                    <v-col cols="3" class="pr-0">
+                    <v-col cols="3" >
                       <v-text-field :label="$t('PhoneNumber')" v-model="editedUser.person.phone"></v-text-field>
+                    </v-col>
+                    <v-col cols="3" class="pr-0" v-if="showUserFields">
+                      <v-text-field :label="$t('SSN')" v-model="editedUser.socialSecurityNumber"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -110,7 +110,7 @@
                       <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="showUserFields || showPublisherFields">
                     <v-col cols="4" class="pl-0">
                       <v-select :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object></v-select>
                     </v-col>
@@ -120,11 +120,11 @@
                     <v-col cols="3">
                       <v-text-field :label="$t('ProIdentifier')" v-model="editedUser.performingRightsOrganizationMemberNumber"></v-text-field>
                     </v-col>
-                    <v-col cols="3" class="pr-0">
+                    <v-col cols="3" class="pr-0" v-if="showUserFields">
                       <v-text-field :label="$t('SoundExchangeId')" v-model="editedUser.soundExchangeAccountNumber"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="showUserFields">
                     <v-col cols="12" class="pl-0 pr-0">
                       <v-select :label="$tc('Role', 2)" :items="userRoles" v-model="selectedUserRoles" item-text="name" item-value="value" multiple></v-select>
                     </v-col>
@@ -222,28 +222,28 @@ export default {
       person: {
         id: -1,
         firstName: '',
-        middleName: '',
+        middleName: null,
         lastName: '',
-        nameSuffix: '',
-        email: '',
-        phone: '',
+        nameSuffix: null,
+        email: null,
+        phone: null,
         address: {
-          street: '',
-          city: '',
-          region: '',
-          postalCode: '',
+          street: null,
+          city: null,
+          region: null,
+          postalCode: null,
           country: {
             id: -1,
-            name: '',
-            isoCode: ''
+            name: null,
+            isoCode: null
           }
         },
-        socialSecurityNumber: '',
+        socialSecurityNumber: null,
         publisher: null,
         recordLabel: null,
         performingRightsOrganization: null,
-        performingRightsOrganizationMemberNumber: '',
-        soundExchangeAccountNumber: ''
+        performingRightsOrganizationMemberNumber: null,
+        soundExchangeAccountNumber: null
       }
     },
     defaultUser: {
@@ -252,28 +252,28 @@ export default {
       roles: 0,
       person: {
         firstName: '',
-        middleName: '',
+        middleName: null,
         lastName: '',
-        nameSuffix: '',
-        email: '',
-        phone: '',
+        nameSuffix: null,
+        email: null,
+        phone: null,
         address: {
-          street: '',
-          city: '',
-          region: '',
-          postalCode: '',
+          street: null,
+          city: null,
+          region: null,
+          postalCode: null,
           country: {
             id: -1,
-            name: '',
-            isoCode: ''
+            name: null,
+            isoCode: null
           }
         },
-        socialSecurityNumber: '',
+        socialSecurityNumber: null,
         publisher: null,
         recordLabel: null,
         performingRightsOrganization: null,
-        performingRightsOrganizationMemberNumber: '',
-        soundExchangeAccountNumber: ''
+        performingRightsOrganizationMemberNumber: null,
+        soundExchangeAccountNumber: null
       }
     },
     disableSave: false,
@@ -421,7 +421,6 @@ export default {
           this.initialize();
         })
         .catch(error => this.handleError(error));
-        console.log(this.editedInvitation);
       }
       this.inviteDialog = false;
     },

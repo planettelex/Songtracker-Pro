@@ -135,7 +135,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                         .Include(p => p.Address).ThenInclude(a => a.Country)
                         .SingleOrDefault() : null;
 
-                userInvitation.LoginLink = ApplicationSettings.Web.Root + WebRoutes.Login;
+                userInvitation.LoginLink = ApplicationSettings.Web.Domain + WebRoutes.Login;
                 var installation = _getInstallationTask.DoTask(null).Data;
                 var emailTemplate = EmailTemplate($"{invitation.Type}Welcome.html");
                 var body = ReplaceTokens(emailTemplate, invitation, installation);

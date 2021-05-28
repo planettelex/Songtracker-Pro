@@ -101,21 +101,21 @@ export default {
       id: -1,
       name: '',
       email: '',
-      phone: '',
-      taxId: '',
+      phone: null,
+      taxId: null,
       address: {
-        street: '',
-        city: '',
-        region: '',
-        postalCode: '',
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
         country: {
           id: -1,
-          name: '',
-          isoCode: ''
+          name: null,
+          isoCode: null
         },
         hasServiceMark: false,
-        websiteUrl: '',
-        pressKitUrl: '',
+        websiteUrl: null,
+        pressKitUrl: null,
         recordLabel : null
       },
 
@@ -123,20 +123,20 @@ export default {
     defaultArtist: {
       name: '',
       email: '',
-      phone: '',
-      taxId: '',
+      phone: null,
+      taxId: null,
       address: {
-        street: '',
-        city: '',
-        region: '',
-        postalCode: '',
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
         country: {
-          name: '',
-          isoCode: ''
+          name: null,
+          isoCode: null
         },
         hasServiceMark: false,
-        websiteUrl: '',
-        pressKitUrl: '',
+        websiteUrl: null,
+        pressKitUrl: null,
         recordLabel : null
       }
     },
@@ -204,7 +204,7 @@ export default {
       this.editedIndex = this.artists.indexOf(artist);
       let emptyArtist = JSON.parse(JSON.stringify(this.defaultArtist));
       this.editedArtist = Object.assign(emptyArtist, artist);
-      if (artist.address) {
+      if (artist) {
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(artist.address.region);

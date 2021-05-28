@@ -109,37 +109,37 @@ export default {
       id: -1,
       name: '',
       performingRightsOrganization: null,
-      performingRightsOrganizationPublisherNumber: '',
+      performingRightsOrganizationPublisherNumber: null,
       email: '',
       phone: '',
-      taxId: '',
+      taxId: null,
       address: {
-        street: '',
-        city: '',
-        region: '',
-        postalCode: '',
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
         country: {
           id: -1,
-          name: '',
-          isoCode: ''
+          name: null,
+          isoCode: null
         }
       }
     },
     defaultPublisher: {
       name: '',
       performingRightsOrganization: null,
-      performingRightsOrganizationPublisherNumber: '',
+      performingRightsOrganizationPublisherNumber: null,
       email: '',
-      phone: '',
-      taxId: '',
+      phone: null,
+      taxId: null,
       address: {
-        street: '',
-        city: '',
-        region: '',
-        postalCode: '',
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
         country: {
-          name: '',
-          isoCode: ''
+          name: null,
+          isoCode: null
         }
       }
     },
@@ -208,7 +208,7 @@ export default {
       this.editedIndex = this.publishers.indexOf(publisher);
       let emptyPublisher = JSON.parse(JSON.stringify(this.defaultPublisher));
       this.editedPublisher = Object.assign(emptyPublisher, publisher);
-      if (publisher.address) {
+      if (publisher) {
         this.selectedCountry = publisher.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(publisher.address.region);
