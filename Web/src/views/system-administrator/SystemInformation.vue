@@ -9,23 +9,23 @@
     <v-row>
       <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('Installation')" v-bind:info="installationInfo" :linkName="$t('Console')" 
-        :linkUrl="systemInformation.hostingConsole" headerBackgroundColor="#b2e6d5" />
+        :linkUrl="systemInformation.hostingConsole" headerBackgroundColor="#e3b1a2" />
       </v-col>
       <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('API')" v-bind:info="apiInfo" :linkName="$t('Console')"
-        :linkUrl="systemInformation.apiHostingConsole" headerBackgroundColor="#99e6ff" />
+        :linkUrl="systemInformation.apiHostingConsole" headerBackgroundColor="#e9d5a4" />
       </v-col>
       <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box title="OAuth" v-bind:info="oauthInfo" :linkName="$t('Console')"
-        :linkUrl="systemInformation.oAuthConsole" headerBackgroundColor="#dfddb9" />
+        :linkUrl="systemInformation.oAuthConsole" headerBackgroundColor="#99d0b8" />
       </v-col>
       <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('Database')" v-bind:info="databaseInfo" :linkName="$t('Console')" 
-        :linkUrl="systemInformation.databaseConsole" headerBackgroundColor="#ffbeb3" />
+        :linkUrl="systemInformation.databaseConsole" headerBackgroundColor="#85c5d0" />
       </v-col>
       <v-col class="mb-6" cols="12" sm="12" md="6" lg="6" xl="4">
         <info-box :title="$t('Email')" v-bind:info="emailInfo" :linkName="$t('Console')" 
-        :linkUrl="systemInformation.emailConsole" headerBackgroundColor="#ebc7eb" />
+        :linkUrl="systemInformation.emailConsole" headerBackgroundColor="#dabbf6" />
       </v-col>
     </v-row>
     
