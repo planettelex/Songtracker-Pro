@@ -26,6 +26,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 var taskResults = _listCountriesTask.DoTask(null);
 
                 return taskResults.Success ? 

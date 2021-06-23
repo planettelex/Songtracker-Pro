@@ -69,6 +69,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -90,6 +93,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 var taskResults = _getUserInvitationTask.DoTask(uuid);
 
                 if (taskResults.HasException)
@@ -112,6 +118,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 var getUserInvitationResults = _getUserInvitationTask.DoTask(uuid);
 
                 if (getUserInvitationResults.HasException)
@@ -139,9 +148,12 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (login == null || string.IsNullOrEmpty(login.AuthenticationToken))
                     return BadRequest();
-            
+
                 var taskResults = _loginUserTask.DoTask(login);
 
                 return taskResults.Success ? 
@@ -163,6 +175,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticated())
                     return NoContent();
 
@@ -185,6 +200,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -207,6 +225,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -229,6 +250,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -258,6 +282,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -288,6 +315,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -318,6 +348,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -348,6 +381,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -390,6 +426,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 

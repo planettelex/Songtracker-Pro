@@ -63,6 +63,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
@@ -85,6 +88,9 @@ namespace SongtrackerPro.Api.Controllers
         {
             try
             {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 

@@ -94,8 +94,9 @@ export default {
           }
           this.ProfileImage = profile.getImageUrl();
           this.Login = loginModel;
+          let apiRequest = new ApiRequest();
           const loginData = new LoginData(loginModel);
-          loginData.save()
+          loginData.config(apiRequest).save()
           .then(response => { 
             let user = response.user;
             this.User = user;

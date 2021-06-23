@@ -25,7 +25,17 @@ namespace SongtrackerPro.Api
 
         protected const string JsonContentType = "application/json";
 
+        protected string ClientKey => Request.Headers["ClientKey"];
+
         protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
+
+        protected bool ClientKeyIsValid()
+        {
+            if (ClientKey == null)
+                return false;
+
+            return ClientKey == ApplicationSettings.Api.ClientKey;
+        }
 
         protected JsonSerializerOptions SerializerOptions =>
             new JsonSerializerOptions
