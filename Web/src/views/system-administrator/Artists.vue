@@ -20,8 +20,15 @@
                 <span>{{ formTitle }}</span>
               </v-card-title>
               <v-divider />
-              <v-card-text>
-                <v-container class="app-form">
+              <v-tabs v-if="editedIndex > -1" v-model="tab">
+                <v-tab>Info</v-tab>
+                <v-tab>Members</v-tab>
+                <v-tab>Managers</v-tab>
+                <v-tab>Accounts</v-tab>
+                <v-tab>Links</v-tab>
+              </v-tabs>
+              <v-card-text class="artist-modal-content">
+                <v-container v-if="tab == 0" class="app-form">
                   <v-row>
                     <v-col cols="6" class="pl-0">
                       <v-text-field :label="$t('Name')" v-model="editedArtist.name"></v-text-field>
@@ -56,6 +63,54 @@
                     </v-col>
                   </v-row>
                 </v-container>
+                <v-container v-if="tab == 1">
+                  <v-data-table dense hide-default-footer :headers="artistMemberHeaders" :items="artistMembers">
+
+                    <template v-slot:[`item.startedOn`]="{ item }">
+                      <v-menu v-model="editedArtistMemberStartedOnMenu" v-if="item.id === editedArtistMember.id" :close-on-content-click="false">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field dense single-line readonly class="small-font" prepend-icon="mdi-calendar" :hide-details="true"
+                                        v-model="editedArtistMember.startedOn" v-bind="attrs" v-on="on">
+                          </v-text-field>
+                        </template>
+                        <v-date-picker no-title @input="editedArtistMemberStartedOnMenu = false" v-model="editedArtistMember.startedOn"></v-date-picker>
+                      </v-menu>
+                      <span v-else>{{item.startedOn}}</span>
+                    </template>
+
+                    <template v-slot:[`item.endedOn`]="{ item }">
+                      <v-menu v-model="editedArtistMemberEndedOnMenu" v-if="item.id === editedArtistMember.id" :close-on-content-click="false">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field dense single-line readonly class="small-font" prepend-icon="mdi-calendar" :hide-details="true"
+                                        v-model="editedArtistMember.endedOn" v-bind="attrs" v-on="on">
+                          </v-text-field>
+                        </template>
+                        <v-date-picker no-title @input="editedArtistMemberEndedOnMenu = false" v-model="editedArtistMember.endedOn"></v-date-picker>
+                      </v-menu>
+                      <span v-else>{{item.endedOn}}</span>
+                    </template>
+
+                    <template v-slot:[`item.actions`]="{ item }">
+                      <div v-if="item.id === editedArtistMember.id">
+                        <v-icon small color="red" class="mr-3" @click="closeEditArtistMember">mdi-window-close</v-icon>
+                        <v-icon small color="green" @click="updateArtistMember(item)">mdi-content-save</v-icon>
+                      </div>
+                      <div v-else>
+                        <v-icon small @click="editArtistMember(item)">mdi-pencil</v-icon>
+                      </div>
+                    </template>
+
+                  </v-data-table>
+                </v-container>
+                <v-container v-if="tab == 2">
+                  Managers
+                </v-container>
+                <v-container v-if="tab == 3">
+                  Accounts
+                </v-container>
+                <v-container v-if="tab == 4">
+                  Links
+                </v-container>
               </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
@@ -80,6 +135,7 @@ import ApiRequest from '../../models/local/ApiRequest';
 import CountryData from '../../models/api/Country';
 import RecordLabelData from '../../models/api/RecordLabel';
 import ArtistData from '../../models/api/Artist';
+import ArtistMemberData from '../../models/api/ArtistMember';
 import CountryRegions from '../../resources/countryRegions';
 import { mapState } from "vuex";
 import appConfig from '../../appConfig';
@@ -89,6 +145,7 @@ export default {
 
   data: () => ({
     dialog: false,
+    tab: 0,
     countries: [],
     selectedCountry: null,
     countryRegions: [],
@@ -96,7 +153,9 @@ export default {
     recordLabels: [],
     selectedRecordLabel: null,
     artists: [],
+    artistMembers: [],
     editedIndex: -1,
+    editedArtistData: null,
     editedArtist: {
       id: -1,
       name: '',
@@ -118,7 +177,6 @@ export default {
         pressKitUrl: null,
         recordLabel : null
       },
-
     },
     defaultArtist: {
       name: '',
@@ -140,6 +198,22 @@ export default {
         recordLabel : null
       }
     },
+    editedArtistMemberIndex: -1,
+    editedArtistMember: {
+      id: -1,
+      member: null,
+      isActive: false,
+      startedOn: null,
+      endedOn: null
+    },
+    defaultArtistMember: {
+      member: null,
+      isActive: false,
+      startedOn: null,
+      endedOn: null
+    },
+    editedArtistMemberStartedOnMenu: false,
+    editedArtistMemberEndedOnMenu: false,
     error: null
   }),
 
@@ -157,12 +231,28 @@ export default {
         { text: this.$tc('RecordLabel', 1), value: "recordLabel.name" },
         { text: this.$t('TaxIdentifier'), value: "taxId" },
         { text: '', value: 'actions', sortable: false, align: "center", width: "50px" },
-      ];},
+      ];
+    },
+
+    artistMemberHeaders() {
+      return [
+        { text: this.$t('Name'), value: "member.firstAndLastName" },
+        { text: this.$t('StartedOn'), value: "startedOn", width: "25%" },
+        { text: this.$t('EndedOn'), value: "endedOn", width: "25%" },
+        { text: '', value: 'actions', sortable: false, align: "right", width: "80px" },
+      ];
+    }
   },
 
   watch: {
     dialog(val) {
       val || this.close();
+    },
+    tab(val) {
+      switch (val) {
+        case 1:
+          this.loadArtistMembers();
+      }
     },
     selectedCountry(val) {
       if (val)
@@ -176,6 +266,16 @@ export default {
       this.countries = await CountryData.config(apiRequest).all();
       this.recordLabels = await RecordLabelData.config(apiRequest).all();
       this.artists = await ArtistData.config(apiRequest).all();
+    },
+
+    async loadArtistMembers() {
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      this.artistMembers = await ArtistMemberData.config(apiRequest).custom(this.editedArtistData, 'members').get();
+      this.artistMembers.forEach(artistMember => {
+        artistMember.startedOn = artistMember.startedOn.substring(0,10);
+        if (artistMember.endedOn)
+          artistMember.endedOn = artistMember.endedOn.substring(0,10);
+      });
     },
 
     loadCountryRegions() {
@@ -198,13 +298,15 @@ export default {
       return countryRegion;
     },
 
-    editArtist(artist) {
+    async editArtist(artist) {
       if (artist && !artist.address)
           artist.address = this.defaultArtist.address;
       this.editedIndex = this.artists.indexOf(artist);
       let emptyArtist = JSON.parse(JSON.stringify(this.defaultArtist));
       this.editedArtist = Object.assign(emptyArtist, artist);
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
       if (artist) {
+        this.editedArtistData = await ArtistData.config(apiRequest).find(artist.id);
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(artist.address.region);
@@ -213,10 +315,33 @@ export default {
       this.dialog = true;
     },
 
+    editArtistMember(artistMember) {
+      this.editedArtistMemberIndex = this.artistMembers.indexOf(artistMember);
+      this.editedArtistMember = Object.assign({}, artistMember);
+    },
+
+    closeEditArtistMember() {
+      setTimeout(() => {
+        this.editedArtistMember = Object.assign({}, this.defaultArtistMember);
+        this.editedArtistMemberIndex = -1;
+      }, 300)
+    },
+
+    async updateArtistMember(artistMember) {
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      // TODO: The following code does not work.
+      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      await artist.members().sync(artistMember);
+      // --------------------------------------
+      this.closeEditArtistMember();
+    },
+
     close() {
       this.dialog = false;
       this.$nextTick(() => {
+        this.tab = 0;
         this.editedIndex = -1;
+        this.editedArtistData = null;
         this.selectedCountry = null;
         this.selectedCountryRegion = null;
         this.selectedRecordLabel = null;
@@ -252,6 +377,9 @@ export default {
 </script>
 
 <style lang="scss">
+  .artist-modal-content {
+    height: 300px;
+  }
   .v-data-table-header > tr > th:first-child {
     min-width: 120px;
   }
@@ -260,5 +388,18 @@ export default {
   }
   .v-data-table-header > tr > th:nth-child(3) {
     min-width: 155px;
+  }
+  .v-data-table .v-input__prepend-outer {
+    margin: 3px 0 0 0;
+  }
+  .v-data-table .v-input__prepend-outer .v-icon.v-icon {
+    font-size: 16px;
+  }
+  .v-data-table .v-text-field {
+    line-height: initial;
+    margin: -2px 0 0 -23px;
+  }
+  .v-data-table .v-input__slot::before {
+    border-style: none !important;
   }
 </style>
