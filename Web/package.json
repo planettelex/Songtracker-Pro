@@ -9,6 +9,9 @@
     },
     "dependencies": {
         "@mdi/js": "^5.6.55",
+        "@vue/composition-api": "^1.0.0-rc.12",
+        "@vuelidate/core": "^2.0.0-alpha.19",
+        "@vuelidate/validators": "^2.0.0-alpha.17",
         "algoliasearch": "^4.5.1",
         "apexcharts": "^3.21.0",
         "axios": "^0.21.1",

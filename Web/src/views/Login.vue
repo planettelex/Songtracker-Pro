@@ -133,7 +133,7 @@ export default {
           return;
         }
         await this.$gAuth.signOut();
-        const logoutData = new LogoutData();
+        const logoutData = new LogoutData(null);
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         let that = this;
         logoutData.config(apiRequest).save()

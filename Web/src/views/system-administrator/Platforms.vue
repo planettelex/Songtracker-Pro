@@ -5,6 +5,11 @@
         <v-alert type="error">{{ error }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showAddedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedPlatform.name }} {{ $t('Added') }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="platforms" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -24,10 +29,12 @@
                 <v-container class="app-form">
                   <v-row>
                     <v-col cols="4" class="pl-0">
-                      <v-text-field :label="$tc('Platform', 1)" v-model="editedPlatform.name"></v-text-field>
+                      <v-text-field hide-details="true" :label="$tc('Platform', 1)" v-model="editedPlatform.name"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPlatform.name.$error">{{ validationMessages(v$.editedPlatform.name.$errors) }}</span>
                     </v-col>
                     <v-col cols="8" class="pr-0">
-                      <v-text-field :label="$t('Website')" v-model="editedPlatform.website"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Website')" v-model="editedPlatform.website"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPlatform.website.$error">{{ validationMessages(v$.editedPlatform.website.$errors) }}</span>
                     </v-col>
                     <v-col class="pa-0">
                       <h6>{{ $tc('Service', 2) }}</h6>
@@ -61,10 +68,16 @@
 import ApiRequest from '../../models/local/ApiRequest';
 import PlatformData from '../../models/api/Platform';
 import ServiceData from '../../models/api/Service';
+import useVuelidate from '@vuelidate/core'
+import { required, url } from '@vuelidate/validators'
 import { mapState } from "vuex";
 
 export default {
   name: "Platforms",
+
+  setup () {
+    return { v$: useVuelidate() }
+  },
 
   data: () => ({
     dialog: false,
@@ -84,10 +97,17 @@ export default {
       website: '',
       services: []
     },
+    addedPlatform: {
+      id: -1,
+      name: '',
+      website: '',
+      services: []
+    },
+    showAddedAlert: false,
     error: null
   }),
 
-    computed: {
+  computed: {
     ...mapState(["Login"]),
     
     formTitle() {
@@ -107,6 +127,15 @@ export default {
       let count = 0;
       this.selectedServices.forEach(isSelected => { if (isSelected) count++; })
       return count;
+    }
+  },
+
+  validations () {
+    return {
+      editedPlatform: {
+        name: { required },
+        website: { url }
+      },
     }
   },
 
@@ -151,6 +180,8 @@ export default {
         this.selectedServices[i] = platformHasService;
       }
       this.editedIndex = this.platforms.indexOf(platform);
+      if (this.editedIndex != -1)
+        this.showAddedAlert = false;
       let emptyPlatform = JSON.parse(JSON.stringify(this.defaultPlatform));
       this.editedPlatform = Object.assign(emptyPlatform, platform);
       this.dialog = true;
@@ -161,11 +192,27 @@ export default {
       this.$nextTick(() => {
         this.editedIndex = -1;
         this.editedPlatform = Object.assign({}, this.defaultPlatform);
+        for (let i = 0; i < this.selectedServices.length; i++) {
+          this.selectedServices[i] = false;
+        }
+        this.v$.$reset();
       });
     },
 
-    save() {
+    async save() {
+      const formIsValid = await this.v$.$validate();
+      if (!formIsValid) 
+        return
+
       if (this.editedPlatform) {
+        let isAdded = false;
+        if (!this.editedPlatform.id) {
+          isAdded = true;
+          this.addedPlatform = Object.assign({}, this.editedPlatform);
+        }
+        else {
+          this.showAddedAlert = false;
+        }
         this.editedPlatform.services = new Array(this.selectedServiceCount);
         let editedPlatformServiceIndex = 0;
         for (let i = 0; i < this.services.length; i++) {
@@ -179,11 +226,22 @@ export default {
         const platformData = new PlatformData(this.editedPlatform);
         platformData.config(apiRequest).save()
         .then (() => {
+          if (isAdded) {
+            this.showAddedAlert = true;
+          }
           this.initialize();
         })
         .catch(error => this.handleError(error));
       }
       this.close();
+    },
+
+    validationMessages(errors) {
+      let messages = '';
+      errors.forEach(error => {
+        messages += error.$message + ' ';
+      });
+      return messages.trim();
     },
 
     handleError(error) {

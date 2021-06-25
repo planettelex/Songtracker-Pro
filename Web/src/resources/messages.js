@@ -2,6 +2,7 @@ const messages = {
     en: {
         Address: 'Address',
         Add: 'Add',
+        Added: 'Added',
         AdministratorFor: 'administrator for',
         Account: 'Account | Accounts',
         AffiliatedPro: 'Affiliated PRO',

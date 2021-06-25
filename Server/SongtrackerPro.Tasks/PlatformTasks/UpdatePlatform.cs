@@ -27,7 +27,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                     throw new TaskException(SystemMessage("PLATFORM_NOT_FOUND"));
 
                 platform.Name = update.Name;
-                platform.Website = update.Website;
+                platform.Website = string.IsNullOrWhiteSpace(update.Website) ? null : update.Website;
                 _dbContext.SaveChanges();
 
                 if (update.Services == null) 
@@ -35,13 +35,13 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                 
                 foreach (var platformService in platform.PlatformServices)
                 {
-                    var service = update.Services.SingleOrDefault(s => s.Id == platformService.ServiceId);
+                    var service = update.Services.SingleOrDefault(s => s?.Id == platformService.ServiceId);
                     if (service == null)
                         _dbContext.PlatformServices.Remove(platformService);
                 }
                 _dbContext.SaveChanges();
 
-                foreach (var service in update.Services)
+                foreach (var service in update.Services.Where(service => service != null))
                 {
                     var platformService = platform.PlatformServices.SingleOrDefault(ps => ps.ServiceId == service.Id);
                     if (platformService == null)
