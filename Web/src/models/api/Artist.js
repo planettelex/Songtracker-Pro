@@ -1,5 +1,7 @@
 import Model from './Model';
 import ArtistMember from './ArtistMember';
+import ArtistManager from './ArtistManager';
+import ArtistAccount from './ArtistAccount';
 
 export default class Artist extends Model {
     resource() {
@@ -10,9 +12,19 @@ export default class Artist extends Model {
         return this.hasMany(ArtistMember);
       }
 
+      managers() {
+        return this.hasMany(ArtistManager);
+      }
+
+      accounts() {
+        return this.hasMany(ArtistAccount);
+      }
+
       relations() {
         return {
-          'members': ArtistMember
+          'accounts': ArtistAccount,
+          'members': ArtistMember,
+          'managers': ArtistManager
         }
       }
 }

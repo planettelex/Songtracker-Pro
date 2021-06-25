@@ -34,8 +34,8 @@ h5 {
 h6 {
   font-size: $h6-font-size;
 }
-.small-font {
-  font-size: $small-font-size;
+.small-font, .small-font .v-label {
+  font-size: $small-font-size !important;
 }
 .v-application.theme--light {
   .border-top {
