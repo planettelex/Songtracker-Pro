@@ -62,7 +62,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 user.RecordLabelId = update.RecordLabel?.Id;
                 if (user.RecordLabelId.HasValue)
                 {
-                    var recordLabel = _dbContext.RecordLabels.SingleOrDefault(p => p.Id == user.PublisherId);
+                    var recordLabel = _dbContext.RecordLabels.SingleOrDefault(p => p.Id == user.RecordLabelId);
                     user.RecordLabel = recordLabel ?? throw new TaskException(SystemMessage("RECORD_LABEL_NOT_FOUND"));
                 }
 

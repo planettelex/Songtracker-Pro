@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 
 namespace SongtrackerPro.Tasks.PublishingTasks
 {
@@ -10,11 +11,13 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 
     public class UpdatePublisher : TaskBase, IUpdatePublisherTask
     {
-        public UpdatePublisher(ApplicationDbContext dbContext)
+        public UpdatePublisher(ApplicationDbContext dbContext, IFormattingService formattingService)
         {
             _dbContext = dbContext;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<Nothing> DoTask(Publisher update)
         {
@@ -28,9 +31,9 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                     throw new TaskException(SystemMessage("PUBLISHER_NOT_FOUND"));
 
                 publisher.Name = update.Name;
-                publisher.TaxId = update.TaxId;
+                publisher.TaxId = _formattingService.FormatTaxId(update.TaxId);
                 publisher.Email = update.Email;
-                publisher.Phone = update.Phone;
+                publisher.Phone = _formattingService.FormatPhoneNumber(update.Phone);
 
                 if (update.Address != null)
                 {

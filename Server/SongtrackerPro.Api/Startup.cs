@@ -71,6 +71,7 @@ namespace SongtrackerPro.Api
 
         public void RegisterTasks(IServiceCollection services)
         {
+            services.AddScoped<IFormattingService, FormattingService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IHtmlService, HtmlService>();
             services.AddScoped<ITokenService, TokenService>();

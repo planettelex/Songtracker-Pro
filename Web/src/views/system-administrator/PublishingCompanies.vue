@@ -5,6 +5,11 @@
         <v-alert type="error">{{ error }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showAddedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedPublisher.name }} {{ $t('Added') }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="publishers" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -24,43 +29,52 @@
                 <v-container class="app-form">
                   <v-row>
                     <v-col cols="6" class="pl-0">
-                      <v-text-field :label="$t('Name')" v-model="editedPublisher.name"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Name')" v-model="editedPublisher.name"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.name.$error">{{ validationMessages(v$.editedPublisher.name.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('TaxIdentifier')" v-model="editedPublisher.taxId"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('TaxIdentifier')" v-model="editedPublisher.taxId"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.taxId.$error">{{ validationMessages(v$.editedPublisher.taxId.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-text-field :label="$t('PhoneNumber')" v-model="editedPublisher.phone"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('PhoneNumber')" v-model="editedPublisher.phone"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.phone.$error">{{ validationMessages(v$.editedPublisher.phone.$errors) }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="6" class="pl-0">
-                      <v-text-field :label="$t('Email')" v-model="editedPublisher.email"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Email')" v-model="editedPublisher.email"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.email.$error">{{ validationMessages(v$.editedPublisher.email.$errors) }}</span>
                     </v-col>
                     <v-col cols="6" class="pr-0">
-                      <v-text-field :label="$t('Address')" v-model="editedPublisher.address.street"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Address')" v-model="editedPublisher.address.street"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.address.street.$error">{{ validationMessages(v$.editedPublisher.address.street.$errors) }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
-                      <v-text-field :label="$t('City')" v-model="editedPublisher.address.city"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('City')" v-model="editedPublisher.address.city"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.address.city.$error">{{ validationMessages(v$.editedPublisher.address.city.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('PostalCode')" v-model="editedPublisher.address.postalCode"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedPublisher.address.postalCode"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedPublisher.address.postalCode.$error">{{ validationMessages(v$.editedPublisher.address.postalCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" >
-                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                      <span class="validation-error" v-if="v$.selectedCountry.isoCode.$error">{{ validationMessages(v$.selectedCountry.isoCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                      <span class="validation-error" v-if="v$.selectedCountryRegion.$error">{{ validationMessages(v$.selectedCountryRegion.$errors) }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
-                      <v-select :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
                     </v-col>
                      <v-col cols="3">
-                      <v-text-field :label="$t('ProIdentifier')" v-model="editedPublisher.performingRightsOrganizationPublisherNumber"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('ProIdentifier')" v-model="editedPublisher.performingRightsOrganizationPublisherNumber"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -89,11 +103,17 @@ import CountryData from '../../models/api/Country';
 import PerformingRightsOrganizationData from '../../models/api/PerformingRightsOrganization';
 import PublisherData from '../../models/api/Publisher';
 import CountryRegions from '../../resources/countryRegions';
+import useVuelidate from '@vuelidate/core';
+import { required, email, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
 import appConfig from '../../appConfig';
 
 export default {
   name: "PublishingCompanies",
+
+  setup () {
+    return { v$: useVuelidate() }
+  },
 
   data: () => ({
     dialog: false,
@@ -143,6 +163,26 @@ export default {
         }
       }
     },
+    addedPublisher: {
+      id: -1,
+      name: '',
+      performingRightsOrganization: null,
+      performingRightsOrganizationPublisherNumber: null,
+      email: '',
+      phone: null,
+      taxId: null,
+      address: {
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
+        country: {
+          name: null,
+          isoCode: null
+        }
+      }
+    },
+    showAddedAlert: false,
     error: null
   }),
 
@@ -162,6 +202,26 @@ export default {
         { text: this.$t('TaxIdentifier'), value: "taxId" },
         { text: '', value: 'actions', sortable: false, align: "center", width: "50px" },
       ];},
+  },
+
+  validations () {
+    return {
+      selectedCountry: {
+        isoCode: { required }
+      },
+      selectedCountryRegion: { required },
+      editedPublisher: {
+        name: { required },
+        email: { required, email },
+        phone: { minLengthValue: minLength(10) },
+        taxId: { minLengthValue: minLength(9) },
+        address: {
+          street: { required },
+          city: { required },
+          postalCode: { required, minLengthValue: minLength(5) }
+        }
+      },
+    }
   },
 
   watch: {
@@ -206,6 +266,8 @@ export default {
       if (publisher && !publisher.address)
           publisher.address = this.defaultPublisher.address;
       this.editedIndex = this.publishers.indexOf(publisher);
+      if (this.editedIndex != -1)
+        this.showAddedAlert = false;
       let emptyPublisher = JSON.parse(JSON.stringify(this.defaultPublisher));
       this.editedPublisher = Object.assign(emptyPublisher, publisher);
       if (publisher) {
@@ -225,23 +287,48 @@ export default {
         this.selectedCountryRegion = null;
         this.selectedPerformingRightsOrganization = null;
         this.editedPublisher = Object.assign({}, this.defaultPublisher);
+        this.v$.$reset();
       });
     },
 
-    save() {
+    async save() {
+      const formIsValid = await this.v$.$validate();
+      if (!formIsValid) 
+        return;
+
       if (this.editedPublisher) {
+        let isAdded = false;
+        if (!this.editedPublisher.id) {
+          isAdded = true;
+          this.addedPublisher = Object.assign({}, this.editedPublisher);
+        }
+        else {
+          this.showAddedAlert = false;
+        }
         this.editedPublisher.address.country = this.selectedCountry;
         this.editedPublisher.address.region = this.selectedCountryRegion.code;
         this.editedPublisher.performingRightsOrganization = this.selectedPerformingRightsOrganization;
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
+        console.log(this.editedPublisher);
         const publisherData = new PublisherData(this.editedPublisher);
         publisherData.config(apiRequest).save()
         .then (() => {
+          if (isAdded) {
+            this.showAddedAlert = true;
+          }
           this.initialize();
         })
         .catch(error => this.handleError(error));
       }
       this.close();
+    },
+
+    validationMessages(errors) {
+      let messages = '';
+      errors.forEach(error => {
+        messages += error.$message + ' ';
+      });
+      return messages.trim();
     },
 
     handleError(error) {

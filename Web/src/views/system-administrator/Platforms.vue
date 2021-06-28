@@ -202,7 +202,7 @@ export default {
     async save() {
       const formIsValid = await this.v$.$validate();
       if (!formIsValid) 
-        return
+        return;
 
       if (this.editedPlatform) {
         let isAdded = false;

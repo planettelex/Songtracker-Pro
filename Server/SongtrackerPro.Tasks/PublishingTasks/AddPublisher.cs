@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 
 namespace SongtrackerPro.Tasks.PublishingTasks
 {
@@ -10,11 +11,13 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 
     public class AddPublisher : TaskBase, IAddPublisherTask
     {
-        public AddPublisher(ApplicationDbContext dbContext)
+        public AddPublisher(ApplicationDbContext dbContext, IFormattingService formattingService)
         {
             _dbContext = dbContext;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<int?> DoTask(Publisher publisher)
         {
@@ -33,6 +36,9 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                 publisher.AddressId = address.Id;
                 publisher.PerformingRightsOrganization = null;
                 publisher.PerformingRightsOrganizationId = proId;
+
+                publisher.TaxId = _formattingService.FormatTaxId(publisher.TaxId);
+                publisher.Phone = _formattingService.FormatPhoneNumber(publisher.Phone);
                 
                 _dbContext.Publishers.Add(publisher);
                 _dbContext.SaveChanges();

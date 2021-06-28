@@ -4,6 +4,7 @@ using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
@@ -235,7 +236,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     publisher = Publisher;
-                    new AddPublisher(_dbContext).DoTask(publisher);
+                    new AddPublisher(_dbContext, new FormattingService()).DoTask(publisher);
                 }
                 
                 var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
@@ -278,7 +279,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     publisher = Publisher;
-                    new AddPublisher(_dbContext).DoTask(publisher);
+                    new AddPublisher(_dbContext, new FormattingService()).DoTask(publisher);
                 }
                 
                 var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
