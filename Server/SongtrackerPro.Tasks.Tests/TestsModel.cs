@@ -299,7 +299,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     artist = Artist;
-                    new AddArtist(_dbContext).DoTask(artist);
+                    new AddArtist(_dbContext, new FormattingService()).DoTask(artist);
                 }
 
                 var users = new ListUsers(_dbContext).DoTask(null).Data;

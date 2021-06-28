@@ -298,6 +298,9 @@ export default {
 
       if (this.editedPublisher) {
         let isAdded = false;
+        this.editedPublisher.address.country = this.selectedCountry;
+        this.editedPublisher.address.region = this.selectedCountryRegion.code;
+        this.editedPublisher.performingRightsOrganization = this.selectedPerformingRightsOrganization;
         if (!this.editedPublisher.id) {
           isAdded = true;
           this.addedPublisher = Object.assign({}, this.editedPublisher);
@@ -305,11 +308,7 @@ export default {
         else {
           this.showAddedAlert = false;
         }
-        this.editedPublisher.address.country = this.selectedCountry;
-        this.editedPublisher.address.region = this.selectedCountryRegion.code;
-        this.editedPublisher.performingRightsOrganization = this.selectedPerformingRightsOrganization;
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        console.log(this.editedPublisher);
         const publisherData = new PublisherData(this.editedPublisher);
         publisherData.config(apiRequest).save()
         .then (() => {

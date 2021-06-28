@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 
 namespace SongtrackerPro.Tasks.ArtistTasks
 {
@@ -10,11 +11,13 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 
     public class AddArtist : TaskBase, IAddArtistTask
     {
-        public AddArtist(ApplicationDbContext dbContext)
+        public AddArtist(ApplicationDbContext dbContext, IFormattingService formattingService)
         {
             _dbContext = dbContext;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<int?> DoTask(Artist artist)
         {
@@ -33,6 +36,11 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                 artist.AddressId = address.Id;
                 artist.RecordLabel = null;
                 artist.RecordLabelId = recordLabelId;
+
+                artist.TaxId = _formattingService.FormatTaxId(artist.TaxId);
+                artist.Email = string.IsNullOrWhiteSpace(artist.Email) ? null : artist.Email;
+                artist.WebsiteUrl = string.IsNullOrWhiteSpace(artist.WebsiteUrl) ? null : artist.WebsiteUrl;
+                artist.PressKitUrl = string.IsNullOrWhiteSpace(artist.PressKitUrl) ? null : artist.PressKitUrl;
 
                 _dbContext.Artists.Add(artist);
                 _dbContext.SaveChanges();

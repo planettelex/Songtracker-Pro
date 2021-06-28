@@ -5,6 +5,11 @@
         <v-alert type="error">{{ error }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showAddedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedArtist.name }} {{ $t('Added') }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="artists" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -32,35 +37,48 @@
                 <v-container v-if="tab == 0" class="app-form">
                   <v-row>
                     <v-col cols="6" class="pl-0">
-                      <v-text-field :label="$t('Name')" v-model="editedArtist.name"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Name')" v-model="editedArtist.name"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.name.$error">{{ validationMessages(v$.editedArtist.name.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('TaxIdentifier')" v-model="editedArtist.taxId"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('TaxIdentifier')" v-model="editedArtist.taxId"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.taxId.$error">{{ validationMessages(v$.editedArtist.taxId.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object></v-select>
+                      <v-select hide-details="true" :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object></v-select>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="6" class="pl-0">
-                      <v-text-field :label="$t('Email')" v-model="editedArtist.email"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Email')" v-model="editedArtist.email"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.email.$error">{{ validationMessages(v$.editedArtist.email.$errors) }}</span>
                     </v-col>
                     <v-col cols="6" class="pr-0">
-                      <v-text-field :label="$t('Address')" v-model="editedArtist.address.street"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Address')" v-model="editedArtist.address.street"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.address.street.$error">{{ validationMessages(v$.editedArtist.address.street.$errors) }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
-                      <v-text-field :label="$t('City')" v-model="editedArtist.address.city"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('City')" v-model="editedArtist.address.city"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.address.city.$error">{{ validationMessages(v$.editedArtist.address.city.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field :label="$t('PostalCode')" v-model="editedArtist.address.postalCode"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedArtist.address.postalCode"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.address.postalCode.$error">{{ validationMessages(v$.editedArtist.address.postalCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" >
-                      <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                      <span class="validation-error" v-if="v$.selectedCountry.isoCode.$error">{{ validationMessages(v$.selectedCountry.isoCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                      <span class="validation-error" v-if="v$.selectedCountryRegion.$error">{{ validationMessages(v$.selectedCountryRegion.$errors) }}</span>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="3" class="pl-0">
+                      <v-checkbox hide-details="true" :label="$t('HasServiceMark')" v-model="editedArtist.hasServiceMark"></v-checkbox>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -148,13 +166,11 @@
                 <v-container v-if="tab == 3">
                   <div class="datatable-toolbar">
                     <v-toolbar flat dense>
-                      <v-select dense class="small-font" :label="$tc('Platform', 1)" :items="platforms" v-model="selectedAccountPlatform" item-text="name" item-value="id" return-object></v-select>
-                      <v-text-field class="small-font" :label="$t('Username')"></v-text-field>
-                      <v-checkbox class="small-font" :label="$t('Preferred')"></v-checkbox>
+                      <v-select style="margin-bottom: -7px; width: 26%" dense hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="selectedAccountPlatform" item-text="name" item-value="id" return-object></v-select>
+                      <v-text-field style="width: 24%" hide-details="true" class="small-font mr-2" :label="$t('Username')"></v-text-field>
+                      <v-checkbox style="margin-bottom: -10px;" hide-details="true" class="small-font" :label="$t('Preferred')"></v-checkbox>
                       <v-spacer></v-spacer>
-
-                        <v-icon @click="addNewArtistAccount">mdi-plus</v-icon> 
-
+                      <v-icon style="margin-bottom: -10px" @click="addNewArtistAccount">mdi-plus</v-icon>
                     </v-toolbar>
                   </div>
                   <v-data-table dense hide-default-footer :headers="artistAccountHeaders" :items="artistAccounts">
@@ -173,13 +189,43 @@
                 </v-container>
                 <!-- Links Tab -->
                 <v-container v-if="tab == 4">
-                  Links
+                  <v-row>
+                    <v-col cols="6" class="pl-5">
+                      <v-text-field hide-details="true" class="mr-1" :label="$t('Website') + ' ' + $tc('Link', 1)" v-model="editedArtist.websiteUrl"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.websiteUrl.$error">{{ validationMessages(v$.editedArtist.websiteUrl.$errors) }}</span>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-text-field hide-details="true" :label="$t('PressKit') + ' ' + $tc('Link', 1)" v-model="editedArtist.pressKitUrl"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedArtist.pressKitUrl.$error">{{ validationMessages(v$.editedArtist.pressKitUrl.$errors) }}</span>
+                    </v-col>
+                  </v-row>
+                  <div class="datatable-toolbar">
+                    <v-toolbar flat dense>
+                      <v-select style="margin-bottom: -7px; width: 26%" dense hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="selectedLinkPlatform" item-text="name" item-value="id" return-object></v-select>
+                      <v-text-field style="width: 50%" hide-details="true" class="small-font mr-2" :label="$tc('Link', 1)"></v-text-field>
+                      <v-spacer></v-spacer>
+                      <v-icon style="margin-bottom: -10px" @click="addNewArtistLink">mdi-plus</v-icon>
+                    </v-toolbar>
+                  </div>
+                  <v-data-table dense hide-default-footer :headers="artistLinkHeaders" :items="artistLinks">
+
+                    <template v-slot:[`item.actions`]="{ item }">
+                      <div v-if="item.id === editedArtistLink.id">
+                        <v-icon small color="red" class="mr-3" @click="closeEditArtistLink">mdi-window-close</v-icon>
+                        <v-icon small color="green" @click="updateArtistLink(item)">mdi-content-save</v-icon>
+                      </div>
+                      <div v-else>
+                        <v-icon small @click="editArtistLink(item)">mdi-pencil</v-icon>
+                      </div>
+                    </template>
+
+                  </v-data-table>
                 </v-container>
               </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
                 <v-btn class="v-cancel-button rounded" @click="close">{{ $t('Cancel') }}</v-btn>
-                <v-btn class="v-button mr-4 rounded" @click="save">{{ $t('Save') }}</v-btn>
+                <v-btn v-if="tab == 0 || tab == 4" class="v-button mr-4 rounded" @click="save">{{ $t('Save') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -203,12 +249,19 @@ import ArtistData from '../../models/api/Artist';
 import ArtistMemberData from '../../models/api/ArtistMember';
 import ArtistManagerData from '../../models/api/ArtistManager';
 import ArtistAccountData from '../../models/api/ArtistAccount';
+import ArtistLinkData from '../../models/api/ArtistLink';
 import CountryRegions from '../../resources/countryRegions';
+import useVuelidate from '@vuelidate/core';
+import { required, email, url, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
 import appConfig from '../../appConfig';
 
 export default {
   name: "Artists",
+
+  setup () {
+    return { v$: useVuelidate() }
+  },
 
   data: () => ({
     dialog: false,
@@ -225,6 +278,7 @@ export default {
     artistMembers: [],
     artistManagers: [],
     artistAccounts: [],
+    artistLinks: [],
     editedIndex: null,
     editedArtistData: null,
     editedArtist: {
@@ -268,6 +322,28 @@ export default {
         pressKitUrl: null,
         recordLabel : null
       }
+    },
+    addedArtist: {
+      id: -1,
+      name: '',
+      email: '',
+      phone: null,
+      taxId: null,
+      address: {
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
+        country: {
+          id: -1,
+          name: null,
+          isoCode: null
+        },
+        hasServiceMark: false,
+        websiteUrl: null,
+        pressKitUrl: null,
+        recordLabel : null
+      },
     },
     editedArtistMemberIndex: -1,
     editedArtistMember: {
@@ -314,6 +390,18 @@ export default {
       isPreferred: false
     },
     selectedAccountPlatform: null,
+    editedArtistLinkIndex: -1,
+    editedArtistLink: {
+      id: -1,
+      platform: null,
+      url: null
+    },
+    defaultArtistLink: {
+      platform: null,
+      url: null
+    },
+    selectedLinkPlatform: null,
+    showAddedAlert: false,
     error: null
   }),
 
@@ -349,12 +437,41 @@ export default {
 
     artistAccountHeaders() {
       return [
-        { text: this.$tc('Platform', 1), value: "platform.name", width: "30%" },
+        { text: this.$tc('Platform', 1), value: "platform.name", width: "37%" },
         { text: this.$t('Username'), value: "username" },
-        { text: this.$t('Is') + ' ' + this.$t('Preferred'), value: "isPreferred", width: "150px" },
+        { text: this.$t('Preferred'), value: "isPreferred", width: "120px" },
         { text: '', value: 'actions', sortable: false, align: "right", width: "80px" },
       ];
     },
+
+    artistLinkHeaders() {
+      return [
+        { text: this.$tc('Platform', 1), value: "platform.name", width: "32%" },
+        { text: this.$tc('Link', 1), value: "url" },
+        { text: '', value: 'actions', sortable: false, align: "right", width: "80px" },
+      ];
+    },
+  },
+
+  validations () {
+    return {
+      selectedCountry: {
+        isoCode: { required }
+      },
+      selectedCountryRegion: { required },
+      editedArtist: {
+        name: { required },
+        email: { email },
+        taxId: { minLengthValue: minLength(9) },
+        address: {
+          street: { required },
+          city: { required },
+          postalCode: { required, minLengthValue: minLength(5) }
+        },
+        websiteUrl: { url },
+        pressKitUrl: { url }
+      },
+    }
   },
 
   watch: {
@@ -380,6 +497,8 @@ export default {
           this.setFormTitle(this.$tc('Account', 2));
           break;
         case 4:
+          this.loadArtistLinks();
+          this.loadPlatforms();
           this.setFormTitle(this.$tc('Link', 2));
           break;
       }
@@ -462,10 +581,17 @@ export default {
       this.artistAccounts = await ArtistAccountData.config(apiRequest).custom(this.editedArtistData, 'accounts').get();
     },
 
+    async loadArtistLinks() {
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      this.artistLinks = await ArtistLinkData.config(apiRequest).custom(this.editedArtistData, 'links').get();
+    },
+
     async editArtist(artist) {
       if (artist && !artist.address)
           artist.address = this.defaultArtist.address;
       this.editedIndex = this.artists.indexOf(artist);
+      if (this.editedIndex != -1)
+        this.showAddedAlert = false;
       let emptyArtist = JSON.parse(JSON.stringify(this.defaultArtist));
       this.editedArtist = Object.assign(emptyArtist, artist);
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
@@ -538,6 +664,23 @@ export default {
       }, 300)
     },
 
+    addNewArtistLink() {
+      const newArtistLink = Object.assign({}, this.defaultArtistLink);
+      this.artistLinks.unshift(newArtistLink);
+    },
+
+    editArtistLink(artistLink) {
+      this.editedArtistLinkIndex = this.artistLinks.indexOf(artistLink);
+      this.editedArtistLink = Object.assign({}, artistLink);
+    },
+
+    closeEditArtistLink() {
+      setTimeout(() => {
+        this.editedArtistLink = Object.assign({}, this.defaultArtistLink);
+        this.editedArtistLinkIndex = -1;
+      }, 300)
+    },
+
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -548,23 +691,47 @@ export default {
         this.selectedCountryRegion = null;
         this.selectedRecordLabel = null;
         this.editedArtist = Object.assign({}, this.defaultArtist);
+        this.v$.$reset();
       });
     },
 
-    save() {
+    async save() {
+      const formIsValid = await this.v$.$validate();
+      if (!formIsValid) 
+        return;
+
       if (this.editedArtist) {
+        let isAdded = false;
         this.editedArtist.address.country = this.selectedCountry;
         this.editedArtist.address.region = this.selectedCountryRegion.code;
         this.editedArtist.recordLabel = this.selectedRecordLabel;
+        if (!this.editedArtist.id) {
+          isAdded = true;
+          this.addedArtist = Object.assign({}, this.editedArtist);
+        }
+        else {
+          this.showAddedAlert = false;
+        }
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         const artistData = new ArtistData(this.editedArtist);
         artistData.config(apiRequest).save()
         .then (() => {
+          if (isAdded) {
+            this.showAddedAlert = true;
+          }
           this.initialize();
         })
         .catch(error => this.handleError(error));
       }
       this.close();
+    },
+
+    validationMessages(errors) {
+      let messages = '';
+      errors.forEach(error => {
+        messages += error.$message + ' ';
+      });
+      return messages.trim();
     },
 
     handleError(error) {
@@ -580,7 +747,7 @@ export default {
 
 <style lang="scss">
   .artist-modal-content {
-    height: 350px;
+    height: 325px;
   }
   .datatable-toolbar {
     .v-toolbar__content {

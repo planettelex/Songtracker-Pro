@@ -232,7 +232,6 @@ export default {
       InvitationData.find(this.invitationCode)
       .then(response => {
         this.invitation = Object.assign({}, response);
-        console.log(this.invitation);
         this.invitationCodeValid = response.uuid.toLowerCase() == this.invitationCode.toLowerCase();
         if (this.invitationCodeValid) {
           this.userTypes.forEach(userType => {

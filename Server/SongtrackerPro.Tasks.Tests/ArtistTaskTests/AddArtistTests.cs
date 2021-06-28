@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 
 namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
@@ -10,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var task = new AddArtist(DbContext);
+            var task = new AddArtist(DbContext, new FormattingService());
             var testArtist = TestsModel.Artist;
             var result = task.DoTask(testArtist);
 
@@ -53,7 +54,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddArtist(EmptyDbContext);
+            var task = new AddArtist(EmptyDbContext, new FormattingService());
             var result = task.DoTask(new Artist());
             
             Assert.IsFalse(result.Success);

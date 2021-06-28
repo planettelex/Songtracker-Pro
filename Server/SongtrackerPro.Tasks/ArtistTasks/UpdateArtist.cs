@@ -2,6 +2,7 @@
 using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 
 namespace SongtrackerPro.Tasks.ArtistTasks
 {
@@ -9,11 +10,13 @@ namespace SongtrackerPro.Tasks.ArtistTasks
 
     public class UpdateArtist : TaskBase, IUpdateArtistTask
     {
-        public UpdateArtist(ApplicationDbContext dbContext)
+        public UpdateArtist(ApplicationDbContext dbContext, IFormattingService formattingService)
         {
             _dbContext = dbContext;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<Nothing> DoTask(Artist update)
         {
@@ -26,11 +29,11 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                     throw new TaskException(SystemMessage("ARTIST_NOT_FOUND"));
 
                 artist.Name = update.Name;
-                artist.TaxId = update.TaxId;
-                artist.Email = update.Email;
+                artist.TaxId = _formattingService.FormatTaxId(update.TaxId);
+                artist.Email = string.IsNullOrWhiteSpace(update.Email) ? null : update.Email;
                 artist.HasServiceMark = update.HasServiceMark;
-                artist.WebsiteUrl = update.WebsiteUrl;
-                artist.PressKitUrl = update.PressKitUrl;
+                artist.WebsiteUrl = string.IsNullOrWhiteSpace(update.WebsiteUrl) ? null : update.WebsiteUrl;
+                artist.PressKitUrl = string.IsNullOrWhiteSpace(update.PressKitUrl) ? null : update.PressKitUrl;
 
                 if (update.Address != null)
                 {

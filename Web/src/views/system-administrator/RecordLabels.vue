@@ -277,6 +277,8 @@ export default {
 
       if (this.editedRecordLabel) {
         let isAdded = false;
+        this.editedRecordLabel.address.country = this.selectedCountry;
+        this.editedRecordLabel.address.region = this.selectedCountryRegion.code;
         if (!this.editedRecordLabel.id) {
           isAdded = true;
           this.addedRecordLabel = Object.assign({}, this.editedRecordLabel);
@@ -284,8 +286,6 @@ export default {
         else {
           this.showAddedAlert = false;
         }
-        this.editedRecordLabel.address.country = this.selectedCountry;
-        this.editedRecordLabel.address.region = this.selectedCountryRegion.code;
         let apiRequest = new ApiRequest(this.Login.authenticationToken);
         const recordLabelData = new RecordLabelData(this.editedRecordLabel);
         recordLabelData.config(apiRequest).save()

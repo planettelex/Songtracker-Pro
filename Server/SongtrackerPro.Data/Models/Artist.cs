@@ -44,13 +44,5 @@ namespace SongtrackerPro.Data.Models
         [Column("record_label_id", Order = 9)]
         public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
-
-        public List<ArtistMember> Members { get; set; }
-
-        public List<ArtistManager> Managers { get; set; }
-
-        public List<ArtistAccount> Accounts { get; set; }
-
-        public List<ArtistLink> Links { get; set; }
     }
 }
