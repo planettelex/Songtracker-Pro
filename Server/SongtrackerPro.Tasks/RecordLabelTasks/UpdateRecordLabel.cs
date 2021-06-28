@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 
 namespace SongtrackerPro.Tasks.RecordLabelTasks
 {
@@ -10,11 +11,13 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 
     public class UpdateRecordLabel : TaskBase, IUpdateRecordLabelTask
     {
-        public UpdateRecordLabel(ApplicationDbContext dbContext)
+        public UpdateRecordLabel(ApplicationDbContext dbContext, IFormattingService formattingService)
         {
             _dbContext = dbContext;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<Nothing> DoTask(RecordLabel update)
         {
@@ -28,9 +31,9 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                     throw new TaskException(SystemMessage("RECORD_LABEL_NOT_FOUND"));
 
                 recordLabel.Name = update.Name;
-                recordLabel.TaxId = update.TaxId;
+                recordLabel.TaxId = _formattingService.FormatTaxId(update.TaxId);
                 recordLabel.Email = update.Email;
-                recordLabel.Phone = update.Phone;
+                recordLabel.Phone = _formattingService.FormatPhoneNumber(update.Phone);
                 recordLabel.Address.Street = update.Address.Street;
                 recordLabel.Address.City = update.Address.City;
                 recordLabel.Address.Region = update.Address.Region;

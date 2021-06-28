@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
 namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
@@ -10,11 +11,11 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var addRecordLabel = new AddRecordLabel(DbContext);
+            var addRecordLabel = new AddRecordLabel(DbContext, new FormattingService());
             var testRecordLabel1 = TestsModel.RecordLabel;
             var testRecordLabel1Id = addRecordLabel.DoTask(testRecordLabel1);
             Assert.IsTrue(testRecordLabel1Id.Data.HasValue);
-            addRecordLabel = new AddRecordLabel(DbContext);
+            addRecordLabel = new AddRecordLabel(DbContext, new FormattingService());
             var testRecordLabel2 = TestsModel.RecordLabel;
             var testRecordLabel2Id = addRecordLabel.DoTask(testRecordLabel2);
             Assert.IsTrue(testRecordLabel2Id.Data.HasValue);

@@ -2,6 +2,7 @@
 using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 
 namespace SongtrackerPro.Tasks.RecordLabelTasks
 {
@@ -9,11 +10,13 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 
     public class AddRecordLabel : TaskBase, IAddRecordLabelTask
     {
-        public AddRecordLabel(ApplicationDbContext dbContext)
+        public AddRecordLabel(ApplicationDbContext dbContext, IFormattingService formattingService)
         {
             _dbContext = dbContext;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<int?> DoTask(RecordLabel recordLabel)
         {
@@ -28,6 +31,9 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 
                 recordLabel.Address = null;
                 recordLabel.AddressId = address.Id;
+
+                recordLabel.TaxId = _formattingService.FormatTaxId(recordLabel.TaxId);
+                recordLabel.Phone = _formattingService.FormatPhoneNumber(recordLabel.Phone);
 
                 _dbContext.RecordLabels.Add(recordLabel);
                 _dbContext.SaveChanges();

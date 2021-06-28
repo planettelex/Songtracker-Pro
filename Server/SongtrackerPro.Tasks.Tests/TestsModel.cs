@@ -246,7 +246,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     recordLabel = RecordLabel;
-                    new AddRecordLabel(_dbContext).DoTask(recordLabel);
+                    new AddRecordLabel(_dbContext, new FormattingService()).DoTask(recordLabel);
                 }
                 
                 var stamp = DateTime.Now.Ticks;
@@ -289,7 +289,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     recordLabel = RecordLabel;
-                    new AddRecordLabel(_dbContext).DoTask(recordLabel);
+                    new AddRecordLabel(_dbContext, new FormattingService()).DoTask(recordLabel);
                 }
 
                 var artists = new ListArtists(_dbContext).DoTask(null).Data;

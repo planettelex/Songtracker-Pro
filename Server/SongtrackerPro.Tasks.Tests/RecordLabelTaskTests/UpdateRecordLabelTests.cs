@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
 namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
@@ -22,13 +23,13 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
         public void TaskSuccessTest()
         {
             var testRecordLabel = TestsModel.RecordLabel;
-            var addRecordLabelTask = new AddRecordLabel(DbContext);
+            var addRecordLabelTask = new AddRecordLabel(DbContext, new FormattingService());
             var addRecordLabelResult = addRecordLabelTask.DoTask(testRecordLabel);
 
             Assert.IsTrue(addRecordLabelResult.Success);
             Assert.IsNull(addRecordLabelResult.Exception);
 
-            var task = new UpdateRecordLabel(DbContext);
+            var task = new UpdateRecordLabel(DbContext, new FormattingService());
             var toUpdate = testRecordLabel;
             UpdateRecordLabelModel(toUpdate);
             var result = task.DoTask(toUpdate);
@@ -39,12 +40,13 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 
             var getRecordLabelTask = new GetRecordLabel(DbContext);
             var recordLabel = getRecordLabelTask.DoTask(toUpdate.Id)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(recordLabel);
             Assert.AreEqual(toUpdate.Name, recordLabel.Name);
-            Assert.AreEqual(toUpdate.TaxId, recordLabel.TaxId);
+            Assert.AreEqual(formattingService.FormatTaxId(toUpdate.TaxId), recordLabel.TaxId);
             Assert.AreEqual(toUpdate.Email, recordLabel.Email);
-            Assert.AreEqual(toUpdate.Phone, recordLabel.Phone);
+            Assert.AreEqual(formattingService.FormatPhoneNumber(toUpdate.Phone), recordLabel.Phone);
             Assert.AreEqual(toUpdate.Address.Street, recordLabel.Address.Street);
             Assert.AreEqual(toUpdate.Address.City, recordLabel.Address.City);
             Assert.AreEqual(toUpdate.Address.Region, recordLabel.Address.Region);
@@ -61,7 +63,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new UpdateRecordLabel(EmptyDbContext);
+            var task = new UpdateRecordLabel(EmptyDbContext, new FormattingService());
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);
