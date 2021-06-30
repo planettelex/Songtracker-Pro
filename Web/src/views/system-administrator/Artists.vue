@@ -241,16 +241,16 @@
 </template>
 
 <script>
-import ApiRequest from '../../models/local/ApiRequest';
-import CountryData from '../../models/api/Country';
+import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
+import CountryModel from '../../models/api/Country';
 import CountryRegions from '../../resources/countryRegions';
-import PlatformData from '../../models/api/Platform';
-import RecordLabelData from '../../models/api/RecordLabel';
-import ArtistData from '../../models/api/Artist';
-import ArtistMemberData from '../../models/api/ArtistMember';
-import ArtistManagerData from '../../models/api/ArtistManager';
-import ArtistAccountData from '../../models/api/ArtistAccount';
-import ArtistLinkData from '../../models/api/ArtistLink';
+import PlatformModel from '../../models/api/Platform';
+import RecordLabelModel from '../../models/api/RecordLabel';
+import ArtistModel from '../../models/api/Artist';
+import ArtistMemberModel from '../../models/api/ArtistMember';
+import ArtistManagerModel from '../../models/api/ArtistManager';
+import ArtistAccountModel from '../../models/api/ArtistAccount';
+import ArtistLinkModel from '../../models/api/ArtistLink';
 import useVuelidate from '@vuelidate/core';
 import { required, email, url, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
@@ -406,7 +406,10 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login"]),
+    ...mapState(["Authentication"]),
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
 
     headers() {
       return [
@@ -476,6 +479,10 @@ export default {
 
   watch: {
     dialog(val) {
+      if (val) {
+        this.loadCountries();
+        this.loadRecordLabels();
+      }
       val || this.close();
     },
     tab(val) {
@@ -515,10 +522,7 @@ export default {
   methods: {
     async initialize() { 
       this.editedIndex = -1;
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.countries = await CountryData.config(apiRequest).all();
-      this.recordLabels = await RecordLabelData.config(apiRequest).all();
-      this.artists = await ArtistData.config(apiRequest).all();
+      this.artists = await ArtistModel.config(this.RequestHeaders).all();
     },
 
     setFormTitle(tabName) {
@@ -529,6 +533,10 @@ export default {
           let verb = this.editedIndex == -1 ? this.$t('New') : this.$t('Edit');
           this.formTitle = verb + ' ' + this.$tc('Artist', 1);
         }
+    },
+
+    async loadCountries() {
+      this.countries = await CountryModel.config(this.RequestHeaders).all();
     },
 
     loadCountryRegions() {
@@ -551,14 +559,16 @@ export default {
       return countryRegion;
     },
 
+    async loadRecordLabels() {
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all();
+    },
+
     async loadPlatforms() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.platforms = await PlatformData.config(apiRequest).all();
+      this.platforms = await PlatformModel.config(this.RequestHeaders).all();
     },
 
     async loadArtistMembers() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.artistMembers = await ArtistMemberData.config(apiRequest).custom(this.editedArtistData, 'members').get();
+      this.artistMembers = await ArtistMemberModel.config(this.RequestHeaders).custom(this.editedArtistData, 'members').get();
       this.artistMembers.forEach(artistMember => {
         artistMember.startedOn = artistMember.startedOn.substring(0,10);
         if (artistMember.endedOn)
@@ -567,8 +577,7 @@ export default {
     },
 
     async loadArtistManagers() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.artistManagers = await ArtistManagerData.config(apiRequest).custom(this.editedArtistData, 'managers').get();
+      this.artistManagers = await ArtistManagerModel.config(this.RequestHeaders).custom(this.editedArtistData, 'managers').get();
       this.artistManagers.forEach(artistManager => {
         artistManager.startedOn = artistManager.startedOn.substring(0,10);
         if (artistManager.endedOn)
@@ -577,13 +586,11 @@ export default {
     },
 
     async loadArtistAccounts() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.artistAccounts = await ArtistAccountData.config(apiRequest).custom(this.editedArtistData, 'accounts').get();
+      this.artistAccounts = await ArtistAccountModel.config(this.RequestHeaders).custom(this.editedArtistData, 'accounts').get();
     },
 
     async loadArtistLinks() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.artistLinks = await ArtistLinkData.config(apiRequest).custom(this.editedArtistData, 'links').get();
+      this.artistLinks = await ArtistLinkModel.config(this.RequestHeaders).custom(this.editedArtistData, 'links').get();
     },
 
     async editArtist(artist) {
@@ -596,8 +603,7 @@ export default {
       this.editedArtist = Object.assign(emptyArtist, artist);
       
       if (artist) {
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        this.editedArtistData = await ArtistData.config(apiRequest).find(artist.id);
+        this.editedArtistData = await ArtistModel.config(this.RequestHeaders).find(artist.id);
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(artist.address.region);
@@ -612,9 +618,8 @@ export default {
     },
 
     async updateArtistMember(artistMember) {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
       // TODO: The following code does not work.
-      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
       await artist.members().sync(artistMember);
       // --------------------------------------
       this.closeEditArtistMember();
@@ -633,9 +638,8 @@ export default {
     },
 
     async updateArtistManager(artistManager) {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
       // TODO: The following code does not work.
-      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
       await artist.managers().sync(artistManager);
       // --------------------------------------
       this.closeEditArtistManager();
@@ -657,9 +661,8 @@ export default {
     async editArtistAccount(artistAccount) {
       this.editedArtistAccountIndex = this.artistAccounts.indexOf(artistAccount);
       this.editedArtistAccount = Object.assign({}, artistAccount);
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
       // TODO: The following code does not work.
-      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
       await artist.accounts().sync(this.editedArtistAccount);
       // --------------------------------------
       this.closeEditArtistAccount();
@@ -681,9 +684,8 @@ export default {
     async editArtistLink(artistLink) {
       this.editedArtistLinkIndex = this.artistLinks.indexOf(artistLink);
       this.editedArtistLink = Object.assign({}, artistLink);
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
       // TODO: The following code does not work.
-      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
       await artist.links().sync(this.editedArtistLink);
       // --------------------------------------
       this.closeEditArtistLink();
@@ -727,9 +729,8 @@ export default {
         else {
           this.showAddedAlert = false;
         }
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        const artistData = new ArtistData(this.editedArtist);
-        artistData.config(apiRequest).save()
+        const artistData = new ArtistModel(this.editedArtist);
+        artistData.config(this.RequestHeaders).save()
         .then (() => {
           if (isAdded) {
             this.showAddedAlert = true;

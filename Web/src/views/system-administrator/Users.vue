@@ -195,17 +195,17 @@
 </template>
 
 <script>
-import ApiRequest from '../../models/local/ApiRequest';
-import CountryData from '../../models/api/Country';
+import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
+import CountryModel from '../../models/api/Country';
 import CountryRegions from '../../resources/countryRegions';
-import PlatformData from '../../models/api/Platform';
-import PerformingRightsOrganizationData from '../../models/api/PerformingRightsOrganization';
-import PublisherData from '../../models/api/Publisher';
-import UserData from '../../models/api/User';
-import UserAccountData from '../../models/api/UserAccount';
-import InvitationData from '../../models/api/Invitation';
-import ArtistData from '../../models/api/Artist';
-import RecordLabelData from '../../models/api/RecordLabel';
+import PlatformModel from '../../models/api/Platform';
+import PerformingRightsOrganizationModel from '../../models/api/PerformingRightsOrganization';
+import PublisherModel from '../../models/api/Publisher';
+import UserModel from '../../models/api/User';
+import UserAccountModel from '../../models/api/UserAccount';
+import InvitationModel from '../../models/api/Invitation';
+import ArtistModel from '../../models/api/Artist';
+import RecordLabelModel from '../../models/api/RecordLabel';
 import UserType from '../../enums/UserType';
 import UserTypes from '../../models/local/UserTypes';
 import UserRoles from '../../models/local/UserRoles';
@@ -363,7 +363,12 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login", "User"]),
+    ...mapState(["Authentication"]),
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
+
+    ...mapState(["User"]),
 
     headers() {
       return [
@@ -410,9 +415,17 @@ export default {
 
   watch: {
     inviteDialog(val) {
+      if (val) {
+        this.loadCountries();
+      }
       val || this.closeInvite();
     },
     editDialog(val) {
+      if (val) {
+        this.loadCountries();
+        this.loadPerformingRightsOrganizations();
+        this.loadPublishers();
+      }
       val || this.closeEdit();
     },
     editTab(val) {
@@ -455,10 +468,6 @@ export default {
 
   methods: {
     async initialize() { 
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.countries = await CountryData.config(apiRequest).all();
-      this.performingRightsOrganizations = await PerformingRightsOrganizationData.config(apiRequest).all();
-      this.publishers = await PublisherData.config(apiRequest).all();
       this.userTypes = UserTypes;
       this.userTypes.forEach(userType => {
         userType.name = this.$t(userType.key);
@@ -467,10 +476,14 @@ export default {
       this.userRoles.forEach(userRole => {
         userRole.name = this.$tc(userRole.key, 1);
       });
-      this.users = await UserData.config(apiRequest).all();
+      this.users = await UserModel.config(this.RequestHeaders).all();
       this.users.forEach(user => {
         user.typeName = this.getUserType(user.type).name;
       });
+    },
+
+    async loadCountries() {
+      this.countries = await CountryModel.config(this.RequestHeaders).all();
     },
 
     loadCountryRegions() {
@@ -494,19 +507,24 @@ export default {
     },
 
     async loadPlatforms() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.platforms = await PlatformData.config(apiRequest).all();
+      this.platforms = await PlatformModel.config(this.RequestHeaders).all();
+    },
+
+    async loadPerformingRightsOrganizations() {
+      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.RequestHeaders).all();
+    },
+
+    async loadPublishers() {
+      this.publishers = await PublisherModel.config(this.RequestHeaders).all();
     },
 
     async loadUserAccounts() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.userAccounts = await UserAccountData.config(apiRequest).custom(this.editedUserData, 'accounts').get();
+      this.userAccounts = await UserAccountModel.config(this.RequestHeaders).custom(this.editedUserData, 'accounts').get();
     },
 
     async inviteUser() {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.artists = await ArtistData.config(apiRequest).all();
-      this.recordLabels = await RecordLabelData.config(apiRequest).all();
+      this.artists = await ArtistModel.config(this.RequestHeaders).all();
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all();
       let emptyInvitation = JSON.parse(JSON.stringify(this.defaultInvitation));
       this.editedInvitation = Object.assign(emptyInvitation, this.defaultInvitation);
       this.inviteDialog = true;
@@ -551,15 +569,14 @@ export default {
             this.editedInvitation.roles = userRoles;
             break;
         }
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        const invitationData = new InvitationData(this.editedInvitation);
-        invitationData.config(apiRequest).save()
-        .then (() => {
-          this.addedInvitation = Object.assign({}, this.editedInvitation);
-          this.showInvitedUserAlert = true;
-          this.initialize();
-        })
-        .catch(error => this.handleError(error));
+        const invitationModel = new InvitationModel(this.editedInvitation);
+        invitationModel.config(this.RequestHeaders).save()
+          .then (() => {
+            this.addedInvitation = Object.assign({}, this.editedInvitation);
+            this.showInvitedUserAlert = true;
+            this.initialize();
+          })
+          .catch(error => this.handleError(error));
       }
       this.inviteDialog = false;
     },
@@ -580,8 +597,7 @@ export default {
       this.editedUser = Object.assign({}, user);
       
       if (user) {
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        this.editedUserData = await UserData.config(apiRequest).find(user.id);
+        this.editedUserData = await UserModel.config(this.RequestHeaders).find(user.id);
         this.selectedUserType = this.getUserType(user.type);
         if (user.person.address) {
           this.selectedCountry = user.person.address.country;
@@ -612,9 +628,8 @@ export default {
     async editUserAccount(userAccount) {
       this.editedUserAccountIndex = this.artistAccounts.indexOf(userAccount);
       this.editedUserccount = Object.assign({}, userAccount);
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
       // TODO: The following code does not work.
-      const user = await UserData.config(apiRequest).find(this.editedUserData.id);
+      const user = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id);
       await user.accounts().sync(this.editedUserAccount);
       // --------------------------------------
       this.closeEditUserAccount();
@@ -658,13 +673,12 @@ export default {
         let userRoles = 0;
         this.selectedUserRoles.forEach(userRole => userRoles = userRoles | userRole);
         this.editedUser.roles = userRoles;
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        const userData = new UserData(this.editedUser);
-        userData.config(apiRequest).save()
-        .then (() => {
-          this.initialize();
-        })
-        .catch(error => this.handleError(error));
+        const userModel = new UserModel(this.editedUser);
+        userModel.config(this.RequestHeaders).save()
+          .then (() => {
+            this.initialize();
+          })
+          .catch(error => this.handleError(error));
       }
       this.closeEdit();
     },

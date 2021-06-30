@@ -1,6 +1,6 @@
 import appConfig from "../../appConfig";
 
-class ApiRequest {
+class ApiRequestHeaders {
     constructor(authToken) {
         if (!authToken)
             this.headers = {
@@ -14,4 +14,4 @@ class ApiRequest {
     }
 }
 
-export default ApiRequest;
+export default ApiRequestHeaders;

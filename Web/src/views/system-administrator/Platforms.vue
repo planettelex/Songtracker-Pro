@@ -65,9 +65,9 @@
 </template>
 
 <script>
-import ApiRequest from '../../models/local/ApiRequest';
-import PlatformData from '../../models/api/Platform';
-import ServiceData from '../../models/api/Service';
+import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
+import PlatformModel from '../../models/api/Platform';
+import ServiceModel from '../../models/api/Service';
 import useVuelidate from '@vuelidate/core'
 import { required, url } from '@vuelidate/validators'
 import { mapState } from "vuex";
@@ -108,7 +108,10 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login"]),
+    ...mapState(["Authentication"]),
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
     
     formTitle() {
       let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
@@ -147,9 +150,8 @@ export default {
 
   methods: {
     async initialize() { 
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.services = await ServiceData.config(apiRequest).all();
-      this.platforms = await PlatformData.config(apiRequest).all();
+      this.services = await ServiceModel.config(this.RequestHeaders).all();
+      this.platforms = await PlatformModel.config(this.RequestHeaders).all();
       this.buildServiceLists();
     },
 
@@ -222,16 +224,15 @@ export default {
           }
         }
         this.buildServiceList(this.editedPlatform);
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        const platformData = new PlatformData(this.editedPlatform);
-        platformData.config(apiRequest).save()
-        .then (() => {
-          if (isAdded) {
-            this.showAddedAlert = true;
-          }
-          this.initialize();
-        })
-        .catch(error => this.handleError(error));
+        const platformModel = new PlatformModel(this.editedPlatform);
+        platformModel.config(this.RequestHeaders).save()
+          .then (() => {
+            if (isAdded) {
+              this.showAddedAlert = true;
+            }
+            this.initialize();
+          })
+          .catch(error => this.handleError(error));
       }
       this.close();
     },

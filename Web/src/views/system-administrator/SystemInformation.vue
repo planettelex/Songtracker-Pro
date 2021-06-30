@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import ApiRequest from '../../models/local/ApiRequest';
-import SystemInformationData from '../../models/api/SystemInformation';
+import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
+import SystemInformationModel from '../../models/api/SystemInformation';
 import NameValuePair from '../../models/local/NameValuePair';
 import InfoBox from '../../components/InfoBox.vue';
 import { mapState } from "vuex";
@@ -54,12 +54,14 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Authentication", "User"])
+    ...mapState(["Authentication"]),
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
   },
 
   async mounted() {
-    let apiRequest = new ApiRequest(this.Authentication.authenticationToken);
-    this.systemInformation = await SystemInformationData.config(apiRequest).first();
+    this.systemInformation = await SystemInformationModel.config(this.RequestHeaders).first();
     
     this.installationInfo = new Array(3);
     this.installationInfo[0] = new NameValuePair(this.$t("Domain"), this.systemInformation.domain);

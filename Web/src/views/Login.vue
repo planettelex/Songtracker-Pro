@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import ApiRequest from '../models/local/ApiRequest';
-import ApplicationData from '../models/api/Application';
-import LoginData from '../models/api/Login';
-import LogoutData from '../models/api/Logout';
+import ApiRequestHeaders from '../models/local/ApiRequestHeaders';
+import ApplicationModel from '../models/api/Application';
+import LoginModel from '../models/api/Login';
+import LogoutModel from '../models/api/Logout';
 import UserType from '../enums/UserType';
 import { mapState } from "vuex";
 
@@ -77,6 +77,12 @@ export default {
       get() { return this.$store.state.User; },
       set(val) { this.$store.commit("SET_USER", val); }
     },
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
+    UnauthenticatedRequestHeaders: {
+      get () { return new ApiRequestHeaders(); }
+    }
   },
 
   methods: {
@@ -97,29 +103,28 @@ export default {
           }
           this.Authentication = authentication;
           this.ProfileImage = profile.getImageUrl();
-          let apiRequest = new ApiRequest();
-          const loginData = new LoginData(authentication);
-          loginData.config(apiRequest).save()
-          .then(response => { 
-            this.User = response.user;
-            switch (response.user.type) {
-              case UserType.SystemAdministrator:
-                this.$router.push("/system-information");
-                break;
-              case UserType.PublisherAdministrator:
-                this.Application.entityName = this.User.publisher.name;
-                this.$router.push("/publisher-earnings");
-                break;
-              case UserType.LabelAdministrator:
-                this.Application.entityName = this.User.recordLabel.name;
-                this.$router.push("/label-earnings");
-                break;
-              case UserType.SystemUser:
-                this.$router.push("/my-earnings");
-                break;
-            }
-          })
-          .catch(error => this.handleError(error));
+          const loginModel = new LoginModel(authentication);
+          loginModel.config(this.UnauthenticatedRequestHeaders).save()
+            .then(response => { 
+              this.User = response.user;
+              switch (response.user.type) {
+                case UserType.SystemAdministrator:
+                  this.$router.push("/system-information");
+                  break;
+                case UserType.PublisherAdministrator:
+                  this.Application.entityName = this.User.publisher.name;
+                  this.$router.push("/publisher-earnings");
+                  break;
+                case UserType.LabelAdministrator:
+                  this.Application.entityName = this.User.recordLabel.name;
+                  this.$router.push("/label-earnings");
+                  break;
+                case UserType.SystemUser:
+                  this.$router.push("/my-earnings");
+                  break;
+              }
+            })
+            .catch(error => this.handleError(error));
         }
       } 
       catch (error) {
@@ -135,10 +140,9 @@ export default {
           return;
         }
         await this.$gAuth.signOut();
-        const logoutData = new LogoutData(null);
-        let apiRequest = new ApiRequest(this.Authentication.authenticationToken);
+        const logoutModel = new LogoutModel(null);
         let that = this;
-        logoutData.config(apiRequest).save()
+        logoutModel.config(this.RequestHeaders).save()
         .then(() => {
           this.userAuthenticated = false;
           that.resetState();
@@ -165,7 +169,7 @@ export default {
   async mounted() {
     try {
       if (this.Application == null || this.Application.name == null) {
-        this.Application = await ApplicationData.first();
+        this.Application = await ApplicationModel.first();
       }
       Object.assign(this.applicationInfo, this.Application);
       let that = this;

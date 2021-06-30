@@ -98,10 +98,10 @@
 </template>
 
 <script>
-import ApiRequest from '../../models/local/ApiRequest';
-import CountryData from '../../models/api/Country';
-import PerformingRightsOrganizationData from '../../models/api/PerformingRightsOrganization';
-import PublisherData from '../../models/api/Publisher';
+import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
+import CountryModel from '../../models/api/Country';
+import PerformingRightsOrganizationModel from '../../models/api/PerformingRightsOrganization';
+import PublisherModel from '../../models/api/Publisher';
 import CountryRegions from '../../resources/countryRegions';
 import useVuelidate from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
@@ -187,7 +187,10 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login"]),
+    ...mapState(["Authentication"]),
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
 
     formTitle() {
         let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
@@ -226,6 +229,10 @@ export default {
 
   watch: {
     dialog(val) {
+      if (val) {
+        this.loadCountries();
+        this.loadPerformingRightsOrganizations();
+      }
       val || this.close();
     },
     selectedCountry(val) {
@@ -236,10 +243,11 @@ export default {
 
   methods: {
     async initialize() { 
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.countries = await CountryData.config(apiRequest).all();
-      this.performingRightsOrganizations = await PerformingRightsOrganizationData.config(apiRequest).all();
-      this.publishers = await PublisherData.config(apiRequest).all();
+      this.publishers = await PublisherModel.config(this.RequestHeaders).all();
+    },
+
+    async loadCountries() {
+      this.countries = await CountryModel.config(this.RequestHeaders).all();
     },
 
     loadCountryRegions() {
@@ -260,6 +268,10 @@ export default {
           }
         });
       return countryRegion;
+    },
+
+    async loadPerformingRightsOrganizations() {
+      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.RequestHeaders).all();
     },
 
     editPublisher(publisher) {

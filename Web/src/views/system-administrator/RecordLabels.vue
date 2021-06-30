@@ -90,9 +90,9 @@
 </template>
 
 <script>
-import ApiRequest from '../../models/local/ApiRequest';
-import CountryData from '../../models/api/Country';
-import RecordLabelData from '../../models/api/RecordLabel';
+import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
+import CountryModel from '../../models/api/Country';
+import RecordLabelModel from '../../models/api/RecordLabel';
 import CountryRegions from '../../resources/countryRegions';
 import useVuelidate from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
@@ -171,7 +171,10 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login"]),
+    ...mapState(["Authentication"]),
+    RequestHeaders: {
+      get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
+    },
 
     formTitle() {
         let verb = this.editedIndex === -1 ? this.$t('New') : this.$t('Edit');
@@ -208,6 +211,8 @@ export default {
 
   watch: {
     dialog(val) {
+      if (val) 
+        this.loadCountries();
       val || this.close();
     },
     selectedCountry(val) {
@@ -218,9 +223,11 @@ export default {
 
   methods: {
     async initialize() { 
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      this.countries = await CountryData.config(apiRequest).all();
-      this.recordLabels = await RecordLabelData.config(apiRequest).all();
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all();
+    },
+
+    async loadCountries() {
+      this.countries = await CountryModel.config(this.RequestHeaders).all();
     },
 
     loadCountryRegions() {
@@ -286,16 +293,15 @@ export default {
         else {
           this.showAddedAlert = false;
         }
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        const recordLabelData = new RecordLabelData(this.editedRecordLabel);
-        recordLabelData.config(apiRequest).save()
-        .then (() => {
-          if (isAdded) {
-            this.showAddedAlert = true;
-          }
-          this.initialize();
-        })
-        .catch(error => this.handleError(error));
+        const recordLabelModel = new RecordLabelModel(this.editedRecordLabel);
+        recordLabelModel.config(this.RequestHeaders).save()
+          .then (() => {
+            if (isAdded) {
+              this.showAddedAlert = true;
+            }
+            this.initialize();
+          })
+          .catch(error => this.handleError(error));
       }
       this.close();
     },
