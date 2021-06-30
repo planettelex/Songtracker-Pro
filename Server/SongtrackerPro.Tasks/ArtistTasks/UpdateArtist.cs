@@ -47,11 +47,11 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                         _dbContext.SaveChanges();
                         artist.Address = address;
                     }
+
                     artist.Address.Street = update.Address.Street;
                     artist.Address.City = update.Address.City;
                     artist.Address.Region = update.Address.Region;
                     artist.Address.PostalCode = update.Address.PostalCode;
-
                     artist.Address.CountryId = update.Address.Country?.Id;
                     if (artist.Address.CountryId.HasValue)
                     {

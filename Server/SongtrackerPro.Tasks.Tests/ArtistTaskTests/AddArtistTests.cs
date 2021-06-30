@@ -25,10 +25,11 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
 
             var getArtistTask = new GetArtist(DbContext);
             var artist = getArtistTask.DoTask(artistId.Value)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(artist);
             Assert.AreEqual(testArtist.Name, artist.Name);
-            Assert.AreEqual(testArtist.TaxId, artist.TaxId);
+            Assert.AreEqual(formattingService.FormatTaxId(testArtist.TaxId), artist.TaxId);
             Assert.AreEqual(testArtist.Email, artist.Email);
             Assert.IsNotNull(artist.Address);
             Assert.AreEqual(testArtist.Address.Street, artist.Address.Street);

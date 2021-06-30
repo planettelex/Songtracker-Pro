@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import goTo from "vuetify/es5/services/goto";
 import store from "./store/store";
-import UserType from "./enums/UserType"
+import UserType from "./enums/UserType";
 
 Vue.use(Router);
 
@@ -226,17 +226,19 @@ router.beforeResolve((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   if (to.meta.unauthenticatedOk) {
+    //store.state.Navigation.lastVisitedPage = to;
     next();
   }
-  else if (store.state.Login !== null) {
+  else if (store.state.Authentication !== null) {
     let now = new Date(Date.now());
-    let tokenExpiration = new Date(store.state.Login.tokenExpiration);
+    let tokenExpiration = new Date(store.state.Authentication.tokenExpiration);
     let userType = store.state.User ? store.state.User.type : UserType.Unsassigned;
     if (tokenExpiration < now) 
       next("/login?logout=true");
     else if (to.meta.userType != UserType.Unsassigned && to.meta.userType != userType)
       next("/403");
     else {
+      //store.state.Navigation.lastVisitedPage = to;
       next();
     }
   }

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -34,13 +35,13 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         {
             var testUser = TestsModel.User;
             testUser.Type = UserType.SystemUser;
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);
             Assert.IsNull(addUserResult.Exception);
 
-            var task = new UpdateUser(DbContext, new UpdatePerson(DbContext), new AddPerson(DbContext));
+            var task = new UpdateUser(DbContext, new UpdatePerson(DbContext, new FormattingService()), new AddPerson(DbContext, new FormattingService()), new FormattingService());
             UpdateUserModel(testUser);
             var result = task.DoTask(testUser);
 
@@ -50,9 +51,10 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 
             var getUserTask = new GetUser(DbContext);
             var user = getUserTask.DoTask(testUser.Id)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(user);
-            Assert.AreEqual(testUser.SocialSecurityNumber, user.SocialSecurityNumber);
+            Assert.AreEqual(formattingService.FormatSocialSecurityNumber(testUser.SocialSecurityNumber), user.SocialSecurityNumber);
             Assert.AreEqual(testUser.PerformingRightsOrganizationId, user.PerformingRightsOrganizationId);
             Assert.AreEqual(testUser.PerformingRightsOrganizationMemberNumber, user.PerformingRightsOrganizationMemberNumber);
             Assert.AreEqual(testUser.SoundExchangeAccountNumber, user.SoundExchangeAccountNumber);
@@ -63,7 +65,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(testUser.Person.MiddleName, user.Person.MiddleName);
             Assert.AreEqual(testUser.Person.LastName, user.Person.LastName);
             Assert.AreEqual(testUser.Person.NameSuffix, user.Person.NameSuffix);
-            Assert.AreEqual(testUser.Person.Phone, user.Person.Phone);
+            Assert.AreEqual(formattingService.FormatPhoneNumber(testUser.Person.Phone), user.Person.Phone);
             Assert.AreEqual(testUser.Person.Email, user.Person.Email);
             Assert.IsNotNull(user.Person.Address);
             Assert.AreEqual(testUser.Person.Address.Street, user.Person.Address.Street);
@@ -91,7 +93,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new UpdateUser(EmptyDbContext, new UpdatePerson(EmptyDbContext), new AddPerson(EmptyDbContext));
+            var task = new UpdateUser(EmptyDbContext, new UpdatePerson(EmptyDbContext, new FormattingService()), new AddPerson(EmptyDbContext, new FormattingService()), new FormattingService());
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

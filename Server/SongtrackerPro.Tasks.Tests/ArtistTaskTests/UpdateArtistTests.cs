@@ -54,10 +54,11 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
 
             var getArtistTask = new GetArtist(DbContext);
             var artist = getArtistTask.DoTask(toUpdate.Id)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(artist);
             Assert.AreEqual(toUpdate.Name, artist.Name);
-            Assert.AreEqual(toUpdate.TaxId, artist.TaxId);
+            Assert.AreEqual(formattingService.FormatTaxId(toUpdate.TaxId), artist.TaxId);
             Assert.AreEqual(toUpdate.Email, artist.Email);
             Assert.AreEqual(toUpdate.Address.Street, artist.Address.Street);
             Assert.AreEqual(toUpdate.Address.City, artist.Address.City);
@@ -70,9 +71,9 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             if (testArtist.RecordLabel != null)
             {
                 Assert.AreEqual(toUpdate.RecordLabel.Name, artist.RecordLabel.Name);
-                Assert.AreEqual(toUpdate.RecordLabel.TaxId, artist.RecordLabel.TaxId);
+                Assert.AreEqual(formattingService.FormatTaxId(toUpdate.RecordLabel.TaxId), artist.RecordLabel.TaxId);
                 Assert.AreEqual(toUpdate.RecordLabel.Email, artist.RecordLabel.Email);
-                Assert.AreEqual(toUpdate.RecordLabel.Phone, artist.RecordLabel.Phone);
+                Assert.AreEqual(formattingService.FormatPhoneNumber(toUpdate.RecordLabel.Phone), artist.RecordLabel.Phone);
                 Assert.IsNotNull(toUpdate.RecordLabel.Address);
                 Assert.AreEqual(toUpdate.RecordLabel.Address.Street, artist.RecordLabel.Address.Street);
                 Assert.AreEqual(toUpdate.RecordLabel.Address.City, artist.RecordLabel.Address.City);

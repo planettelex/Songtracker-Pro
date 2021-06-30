@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
@@ -22,13 +23,13 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
         public void TaskSuccessTest()
         {
             var testPerson = TestsModel.Person;
-            var addPersonTask = new AddPerson(DbContext);
+            var addPersonTask = new AddPerson(DbContext, new FormattingService());
             var addPersonResult = addPersonTask.DoTask(testPerson);
 
             Assert.IsTrue(addPersonResult.Success);
             Assert.IsNull(addPersonResult.Exception);
 
-            var task = new UpdatePerson(DbContext);
+            var task = new UpdatePerson(DbContext, new FormattingService());
             var toUpdate = testPerson;
             UpdatePersonModel(toUpdate);
             var result = task.DoTask(toUpdate);
@@ -63,7 +64,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new UpdatePerson(EmptyDbContext);
+            var task = new UpdatePerson(EmptyDbContext, new FormattingService());
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

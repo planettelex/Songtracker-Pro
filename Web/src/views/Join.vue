@@ -16,9 +16,9 @@
               </v-col>
               <v-col cols="10">
                 <div class="join-header">
-                  <h2 class="join-app-name">{{ this.AppInfo.name }}</h2>
-                  <span style="display:none;">v {{ this.AppInfo.version }}</span>
-                  <em class="join-tagline">{{ this.AppInfo.tagline }}</em>
+                  <h2 class="join-app-name">{{ this.Application.name }}</h2>
+                  <span style="display:none;">v {{ this.Application.version }}</span>
+                  <em class="join-tagline">{{ this.Application.tagline }}</em>
                 </div>
               </v-col>
             </v-row>
@@ -46,16 +46,16 @@
                               <p>{{ $t('Hello') }} {{ invitation.name }},</p>
                               <p>
                                 <span v-if="isSystemAdministrator">
-                                  {{ $t('InvitedToJoin') }} <b>{{ AppInfo.name }}</b> {{ $tc('AsA', 1) }} <em>{{ userTypeName }}</em>.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $tc('AsA', 1) }} <em>{{ userTypeName }}</em>.<br/>
                                 </span>
                                 <span v-if="isPublisherAdministrator">
-                                  {{ $t('InvitedToJoin') }} <b>{{ AppInfo.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.publisher.name }}</em>.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.publisher.name }}</em>.<br/>
                                 </span>
                                 <span v-if="isLabelAdministrator">
-                                  {{ $t('InvitedToJoin') }} <b>{{ AppInfo.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.recordLabel.name }}</em>.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.recordLabel.name }}</em>.<br/>
                                 </span>
                                 <span v-if="isSystemUser">
-                                  {{ $t('InvitedToJoin') }} <b>{{ AppInfo.name }}</b> {{ $t('By') }} {{ invitation.invitedByUser.name }}.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $t('By') }} {{ invitation.invitedByUser.name }}.<br/>
                                 </span>
                                 {{ $t('FillFormToComplete') }}
                               </p>
@@ -132,20 +132,23 @@
 </template>
 
 <script>
-//import ApiRequest from '../models/local/ApiRequest';
-import AppInfoData from '../models/api/AppInfo';
+import ApplicationData from '../models/api/Application';
 import CountryData from '../models/api/Country';
 import CountryRegions from '../resources/countryRegions';
 import InvitationData from '../models/api/Invitation';
 import UserType from '../enums/UserType';
 import UserTypes from '../models/local/UserTypes';
-import { mapState } from "vuex";
 import appConfig from '../appConfig';
 
 export default {
   name: "Join",
 
   data: () => ({
+    appInfo: {
+      name: null,
+      tagline: null,
+      version: null
+    },
     countries: [],
     selectedCountry: null,
     countryRegions: [],
@@ -202,15 +205,6 @@ export default {
     selectedPerformingRightsOrganization: null,
     error: null
   }),
-
-  computed: {
-    ...mapState(["AppInfo"]),
-
-    AppInfo: {
-      get() { return this.$store.state.AppInfo; },
-      set(val) { this.$store.commit("SET_APP_INFO", val); }
-    }
-  },
 
   watch: {
     hasInvitationCode(val) {
@@ -284,8 +278,8 @@ export default {
 
   async mounted() {
     try {
-      this.AppInfo = await AppInfoData.first();
-      document.title = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
+      this.appInfo = await ApplicationData.first();
+      document.title = this.appInfo.name + ' - ' + this.appInfo.tagline;
       this.userTypes = UserTypes;
       this.userTypes.forEach(userType => {
         userType.name = this.$t(userType.key);

@@ -16,9 +16,9 @@
               </v-col>
               <v-col cols="9">
                 <div class="login-box">
-                  <h2 class="login-app-name">{{ this.AppInfo.name }}</h2>
-                  <span style="display:none;">v {{ this.AppInfo.version }}</span>
-                  <em class="login-tagline">{{ this.AppInfo.tagline }}</em>
+                  <h2 class="login-app-name">{{ this.applicationInfo.name }}</h2>
+                  <span style="display:none;">v {{ this.applicationInfo.version }}</span>
+                  <em class="login-tagline">{{ this.applicationInfo.tagline }}</em>
                   <div class="login-button">
                     <button class="v-button" @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">{{ $t("Login") }} &gt;&gt;</button> 
                     <button class="v-cancel-button" @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">{{ $t("Logout") }}</button>
@@ -36,7 +36,7 @@
 
 <script>
 import ApiRequest from '../models/local/ApiRequest';
-import AppInfoData from '../models/api/AppInfo';
+import ApplicationData from '../models/api/Application';
 import LoginData from '../models/api/Login';
 import LogoutData from '../models/api/Logout';
 import UserType from '../enums/UserType';
@@ -48,68 +48,70 @@ export default {
   data: () => ({
     authInitialized: false,
     userAuthenticated: false,
+    applicationInfo: {
+      name: null,
+      tagline: null,
+      version: null
+    },
     error: null
   }),
 
   computed: {
+    ...mapState(["Application"]),
+    Application: {
+      get() { return this.$store.state.Application; },
+      set(val) { this.$store.commit("SET_APPLICATION", val); }
+    },
     ...mapState(["ProfileImage"]),
     ProfileImage: {
       get() { return this.$store.state.ProfileImage; },
       set(val) { this.$store.commit("SET_PROFILE_IMAGE", val); }
     },
-    ...mapState(["Login"]),
-    Login: {
-      get() { return this.$store.state.Login; },
-      set(val) { this.$store.commit("SET_LOGIN", val); }
+    ...mapState(["Authentication"]),
+    Authentication: {
+      get() { return this.$store.state.Authentication; },
+      set(val) { this.$store.commit("SET_AUTHENTICATION", val); }
     },
     ...mapState(["User"]),
-    User: { 
+    User: {
       get() { return this.$store.state.User; },
       set(val) { this.$store.commit("SET_USER", val); }
     },
-    ...mapState(["AppInfo"]),
-    AppInfo: {
-      get() { return this.$store.state.AppInfo; },
-      set(val) { this.$store.commit("SET_APP_INFO", val); }
-    }
   },
 
   methods: {
     handleError(error) {
       this.error = error;
-      this.logout(false);
     },
     
     async login() {
       try {
         const googleUser = await this.$gAuth.signIn();
         if (this.$gAuth.isAuthorized) {
-          this.isAuthorized = true;
           let profile = googleUser.getBasicProfile();
           let authResponse = googleUser.getAuthResponse();
-          let loginModel = {
+          let authentication = {
             authenticationId: profile.getEmail(),
             authenticationToken: authResponse.access_token,
             tokenExpiration: new Date(authResponse.expires_at).toISOString()
           }
+          this.Authentication = authentication;
           this.ProfileImage = profile.getImageUrl();
-          this.Login = loginModel;
           let apiRequest = new ApiRequest();
-          const loginData = new LoginData(loginModel);
+          const loginData = new LoginData(authentication);
           loginData.config(apiRequest).save()
           .then(response => { 
-            let user = response.user;
-            this.User = user;
-            switch (user.type) {
+            this.User = response.user;
+            switch (response.user.type) {
               case UserType.SystemAdministrator:
                 this.$router.push("/system-information");
                 break;
               case UserType.PublisherAdministrator:
-                this.AppInfo.entityName = this.User.publisher.name;
+                this.Application.entityName = this.User.publisher.name;
                 this.$router.push("/publisher-earnings");
                 break;
               case UserType.LabelAdministrator:
-                this.AppInfo.entityName = this.User.recordLabel.name;
+                this.Application.entityName = this.User.recordLabel.name;
                 this.$router.push("/label-earnings");
                 break;
               case UserType.SystemUser:
@@ -117,7 +119,7 @@ export default {
                 break;
             }
           })
-          .catch(error => this.handleError(error));          
+          .catch(error => this.handleError(error));
         }
       } 
       catch (error) {
@@ -127,56 +129,55 @@ export default {
 
     async logout(redirect) {
       try {
-        let isLoggedOut = this.Login === null;
+        let isLoggedOut = this.Authentication === null;
         if (isLoggedOut) {
           this.userAuthenticated = false;
           return;
         }
         await this.$gAuth.signOut();
         const logoutData = new LogoutData(null);
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
+        let apiRequest = new ApiRequest(this.Authentication.authenticationToken);
         let that = this;
         logoutData.config(apiRequest).save()
         .then(() => {
-          that.AppInfo.entityName = null;
-          that.Login = null;
-          that.ProfileImage = null;
-          that.User = null;
-          that.userAuthenticated = false;
-          if (redirect)
-            that.$router.push("/");
+          this.userAuthenticated = false;
+          that.resetState();
+          if (redirect) that.$router.push("/");
         })
         .catch(error => { 
-          that.AppInfo.entityName = null;
-          that.Login = null;
-          that.ProfileImage = null;
-          that.User = null;
-          that.userAuthenticated = false;
+          this.userAuthenticated = false;
+          that.resetState();
           that.handleError(error);
         });
       } 
       catch (error) {
         this.handleError(error);
       }
+    },
+
+    resetState() {
+      this.Authentication = null;
+      this.ProfileImage = null;
+      this.User = null;
     }
   },
 
   async mounted() {
     try {
-      this.AppInfo = await AppInfoData.first();
-      document.title = this.AppInfo.name + ' - ' + this.AppInfo.tagline;
+      if (this.Application == null || this.Application.name == null) {
+        this.Application = await ApplicationData.first();
+      }
+      Object.assign(this.applicationInfo, this.Application);
       let that = this;
       let authLoaded = setInterval(function() {
         that.authInitialized = that.$gAuth.isInit;
         if (that.authInitialized) {
           clearInterval(authLoaded);
-          let isLoggedIn = that.Login !== null && Date.parse(that.Login.tokenExpiration) > Date.now();
-          if (that.$route.query.logout) {
+          let isLoggedIn = that.Authentication !== null && Date.parse(that.Authentication.tokenExpiration) > Date.now();
+          if (that.$route.query.logout)
             that.logout(true);
-          }
-          else {
+          else
             that.userAuthenticated = isLoggedIn && that.$gAuth.isAuthorized;
-          }
         }
       }, 500);
     } 

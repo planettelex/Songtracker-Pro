@@ -25,6 +25,27 @@ namespace SongtrackerPro.Data.Tests.ServiceTests
         }
 
         [TestMethod]
+        public void FormatSocialSecurityNumberTest()
+        {
+            IFormattingService formattingService = new FormattingService();
+            var socialSecurityNumber = "354789876";
+            var formattedSocialSecurityNumber = formattingService.FormatSocialSecurityNumber(socialSecurityNumber);
+            Assert.AreEqual("354-78-9876", formattedSocialSecurityNumber);
+            socialSecurityNumber = "987-65-4321";
+            formattedSocialSecurityNumber = formattingService.FormatSocialSecurityNumber(socialSecurityNumber);
+            Assert.AreEqual("987-65-4321", formattedSocialSecurityNumber);
+            socialSecurityNumber = "444";
+            formattedSocialSecurityNumber = formattingService.FormatSocialSecurityNumber(socialSecurityNumber);
+            Assert.AreEqual("444", formattedSocialSecurityNumber);
+            socialSecurityNumber = "44455";
+            formattedSocialSecurityNumber = formattingService.FormatSocialSecurityNumber(socialSecurityNumber);
+            Assert.AreEqual("444-55", formattedSocialSecurityNumber);
+            socialSecurityNumber = "444556";
+            formattedSocialSecurityNumber = formattingService.FormatSocialSecurityNumber(socialSecurityNumber);
+            Assert.AreEqual("444-55-6", formattedSocialSecurityNumber);
+        }
+
+        [TestMethod]
         public void FormatPhoneNumberTest()
         {
             IFormattingService formattingService = new FormattingService();

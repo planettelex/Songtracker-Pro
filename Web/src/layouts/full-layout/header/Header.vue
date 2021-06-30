@@ -86,7 +86,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(["SidebarDrawer", "ProfileImage", "AppInfo"]),
+    ...mapState(["SidebarDrawer", "ProfileImage", "Application"]),
   },
 
   methods: {
@@ -100,7 +100,7 @@ export default {
   },
 
   async mounted() {
-    this.appName = this.AppInfo.entityName ? this.AppInfo.entityName : this.AppInfo.name;
+    this.appName = this.Application.entityName ? this.Application.entityName : this.Application.name;
     this.userMenu.forEach(menuItem => {
       menuItem.title = this.$t(menuItem.titleKey);
     });

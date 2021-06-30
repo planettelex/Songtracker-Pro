@@ -243,6 +243,7 @@
 <script>
 import ApiRequest from '../../models/local/ApiRequest';
 import CountryData from '../../models/api/Country';
+import CountryRegions from '../../resources/countryRegions';
 import PlatformData from '../../models/api/Platform';
 import RecordLabelData from '../../models/api/RecordLabel';
 import ArtistData from '../../models/api/Artist';
@@ -250,7 +251,6 @@ import ArtistMemberData from '../../models/api/ArtistMember';
 import ArtistManagerData from '../../models/api/ArtistManager';
 import ArtistAccountData from '../../models/api/ArtistAccount';
 import ArtistLinkData from '../../models/api/ArtistLink';
-import CountryRegions from '../../resources/countryRegions';
 import useVuelidate from '@vuelidate/core';
 import { required, email, url, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
@@ -272,6 +272,7 @@ export default {
     countryRegions: [],
     selectedCountryRegion: null,
     platforms: [],
+    selectedAccountPlatform: null,
     recordLabels: [],
     selectedRecordLabel: null,
     artists: [],
@@ -389,7 +390,6 @@ export default {
       username: null,
       isPreferred: false
     },
-    selectedAccountPlatform: null,
     editedArtistLinkIndex: -1,
     editedArtistLink: {
       id: -1,
@@ -594,8 +594,9 @@ export default {
         this.showAddedAlert = false;
       let emptyArtist = JSON.parse(JSON.stringify(this.defaultArtist));
       this.editedArtist = Object.assign(emptyArtist, artist);
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      
       if (artist) {
+        let apiRequest = new ApiRequest(this.Login.authenticationToken);
         this.editedArtistData = await ArtistData.config(apiRequest).find(artist.id);
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
@@ -610,13 +611,6 @@ export default {
       this.editedArtistMember = Object.assign({}, artistMember);
     },
 
-    closeEditArtistMember() {
-      setTimeout(() => {
-        this.editedArtistMember = Object.assign({}, this.defaultArtistMember);
-        this.editedArtistMemberIndex = -1;
-      }, 300)
-    },
-
     async updateArtistMember(artistMember) {
       let apiRequest = new ApiRequest(this.Login.authenticationToken);
       // TODO: The following code does not work.
@@ -626,9 +620,25 @@ export default {
       this.closeEditArtistMember();
     },
 
+    closeEditArtistMember() {
+      setTimeout(() => {
+        this.editedArtistMember = Object.assign({}, this.defaultArtistMember);
+        this.editedArtistMemberIndex = -1;
+      }, 300)
+    },
+
     editArtistManager(artistManager) {
       this.editedArtistManagerIndex = this.artistMembers.indexOf(artistManager);
       this.editedArtistManager = Object.assign({}, artistManager);
+    },
+
+    async updateArtistManager(artistManager) {
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      // TODO: The following code does not work.
+      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      await artist.managers().sync(artistManager);
+      // --------------------------------------
+      this.closeEditArtistManager();
     },
 
     closeEditArtistManager() {
@@ -638,23 +648,21 @@ export default {
       }, 300)
     },
 
-    async updateArtistManager(artistManager) {
-      let apiRequest = new ApiRequest(this.Login.authenticationToken);
-      // TODO: The following code does not work.
-      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
-      await artist.managers().sync(artistManager);
-      // --------------------------------------
-      this.closeEditArtistMember();
-    },
-
     addNewArtistAccount() {
       const newArtistAccount = Object.assign({}, this.defaultArtistAccount);
+      // TODO: API Call
       this.artistAccounts.unshift(newArtistAccount);
     },
 
-    editArtistAccount(artistAccount) {
+    async editArtistAccount(artistAccount) {
       this.editedArtistAccountIndex = this.artistAccounts.indexOf(artistAccount);
       this.editedArtistAccount = Object.assign({}, artistAccount);
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      // TODO: The following code does not work.
+      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      await artist.accounts().sync(this.editedArtistAccount);
+      // --------------------------------------
+      this.closeEditArtistAccount();
     },
 
     closeEditArtistAccount() {
@@ -666,12 +674,19 @@ export default {
 
     addNewArtistLink() {
       const newArtistLink = Object.assign({}, this.defaultArtistLink);
+      // TODO: API Call
       this.artistLinks.unshift(newArtistLink);
     },
 
-    editArtistLink(artistLink) {
+    async editArtistLink(artistLink) {
       this.editedArtistLinkIndex = this.artistLinks.indexOf(artistLink);
       this.editedArtistLink = Object.assign({}, artistLink);
+      let apiRequest = new ApiRequest(this.Login.authenticationToken);
+      // TODO: The following code does not work.
+      const artist = await ArtistData.config(apiRequest).find(this.editedArtistData.id);
+      await artist.links().sync(this.editedArtistLink);
+      // --------------------------------------
+      this.closeEditArtistLink();
     },
 
     closeEditArtistLink() {
@@ -735,6 +750,8 @@ export default {
     },
 
     handleError(error) {
+      console.log(error);
+      //this.$router.push("/login");
       this.error = error;
     },
   },

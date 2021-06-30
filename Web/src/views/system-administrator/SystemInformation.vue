@@ -54,11 +54,11 @@ export default {
   }),
 
   computed: {
-    ...mapState(["Login", "User"])
+    ...mapState(["Authentication", "User"])
   },
 
   async mounted() {
-    let apiRequest = new ApiRequest(this.Login.authenticationToken);
+    let apiRequest = new ApiRequest(this.Authentication.authenticationToken);
     this.systemInformation = await SystemInformationData.config(apiRequest).first();
     
     this.installationInfo = new Array(3);

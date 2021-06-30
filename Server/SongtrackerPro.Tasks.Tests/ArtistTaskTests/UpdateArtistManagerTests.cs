@@ -24,7 +24,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(artistId);
             Assert.IsTrue(artistId > 0);
 
-            var addPersonTask = new AddPerson(DbContext);
+            var addPersonTask = new AddPerson(DbContext, new FormattingService());
             var testPerson = TestsModel.Person;
             var addPersonResult = addPersonTask.DoTask(testPerson);
 

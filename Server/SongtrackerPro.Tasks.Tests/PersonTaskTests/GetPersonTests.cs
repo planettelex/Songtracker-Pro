@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
@@ -10,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var addPersonTask = new AddPerson(DbContext);
+            var addPersonTask = new AddPerson(DbContext, new FormattingService());
             var testPerson = TestsModel.Person;
             var testPersonId = addPersonTask.DoTask(testPerson);
             Assert.IsTrue(testPersonId.Data.HasValue);

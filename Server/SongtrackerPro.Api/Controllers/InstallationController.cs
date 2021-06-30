@@ -30,7 +30,7 @@ namespace SongtrackerPro.Api.Controllers
         
         [Route(Routes.Root)]
         [HttpGet]
-        public IActionResult GetApiInfo()
+        public IActionResult GetInstallationInfo()
         {
             try
             {
@@ -40,10 +40,11 @@ namespace SongtrackerPro.Api.Controllers
                     Documentation = ApplicationSettings.Api.Documentation
                 };
                 var taskResults = _getInstallationTask.DoTask(null);
+
                 apiInfo.Name = taskResults.Success ? 
                     taskResults.Data.Name : 
                     SeedData("APP_NAME");
-
+                
                 apiInfo.Tagline = taskResults.Success ? 
                     taskResults.Data.Tagline : 
                     SeedData("APP_TAGLINE");
@@ -59,7 +60,7 @@ namespace SongtrackerPro.Api.Controllers
         [Route(Routes.System)]
         [HttpGet]
         [UserTypesAllowed(UserType.SystemAdministrator)]
-        public IActionResult GetInstallationInfo()
+        public IActionResult GetSystemDetails()
         {
             try
             {

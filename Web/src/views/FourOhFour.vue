@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from "vuex";
-import AppInfo from '../models/api/AppInfo';
+import ApplicationData from '../models/api/Application';
 
 export default {
   name: "FourOhFour",
@@ -26,14 +26,14 @@ export default {
   }),
 
   computed: {
-    ...mapState(["AppInfo"]),
+    ...mapState(["Application"]),
   },
 
   async mounted() {
-    if (this.AppInfo)
-      this.appName = this.AppInfo.name;
+    if (this.Application)
+      this.appName = this.Application.name;
     else {
-      const appInfo = await AppInfo.first();
+      const appInfo = await ApplicationData.first();
       this.appName = appInfo.name;
     }
   }

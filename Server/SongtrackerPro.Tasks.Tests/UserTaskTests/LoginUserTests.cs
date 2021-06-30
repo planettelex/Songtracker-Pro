@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PersonTasks;
@@ -20,7 +21,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var startTime = DateTime.UtcNow;
             var testUser = TestsModel.User;
             testUser.Type = UserType.LabelAdministrator;
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);

@@ -6,6 +6,8 @@ namespace SongtrackerPro.Data.Services
     {
         public string FormatTaxId(string taxId);
 
+        public string FormatSocialSecurityNumber(string socialSecurityNumber);
+
         public string FormatPhoneNumber(string phoneNumber);
     }
 
@@ -22,6 +24,22 @@ namespace SongtrackerPro.Data.Services
                 return stripped;
 
             return $"{stripped[..2]}-{stripped[2..]}";
+        }
+
+        public string FormatSocialSecurityNumber(string socialSecurityNumber)
+        {
+            if (string.IsNullOrEmpty(socialSecurityNumber))
+                return null;
+
+            var stripped = StripNonNumeric(socialSecurityNumber);
+
+            if (stripped.Length <= 3)
+                return stripped;
+
+            if (stripped.Length > 3 && stripped.Length <= 5)
+                return $"{stripped[..3]}-{stripped[3..]}";
+
+            return $"{stripped[..3]}-{stripped[3..5]}-{stripped[5..]}";
         }
 
         public string FormatPhoneNumber(string phoneNumber)

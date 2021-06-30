@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 
 namespace SongtrackerPro.Tasks.UserTasks
@@ -11,13 +12,15 @@ namespace SongtrackerPro.Tasks.UserTasks
 
     public class AddUser : TaskBase, IAddUserTask
     {
-        public AddUser(ApplicationDbContext dbContext, IAddPersonTask addPersonTask)
+        public AddUser(ApplicationDbContext dbContext, IAddPersonTask addPersonTask, IFormattingService formattingService)
         {
             _dbContext = dbContext;
             _addPersonTask = addPersonTask;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
         private readonly IAddPersonTask _addPersonTask;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<int?> DoTask(User user)
         {
@@ -37,6 +40,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 var person = user.Person;
                 if (person != null)
                 {
+                    person.Email = user.AuthenticationId;
                     var addPersonResult = _addPersonTask.DoTask(person);
                     if (!addPersonResult.Success)
                         throw addPersonResult.Exception;
@@ -45,6 +49,10 @@ namespace SongtrackerPro.Tasks.UserTasks
                     user.Person = null;
                     user.PersonId = personId;
                 }
+
+                user.SocialSecurityNumber = _formattingService.FormatSocialSecurityNumber(user.SocialSecurityNumber);
+                user.PerformingRightsOrganizationMemberNumber = string.IsNullOrWhiteSpace(user.PerformingRightsOrganizationMemberNumber) ? null : user.PerformingRightsOrganizationMemberNumber;
+                user.SoundExchangeAccountNumber = string.IsNullOrWhiteSpace(user.SoundExchangeAccountNumber) ? null : user.SoundExchangeAccountNumber;
                 
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();

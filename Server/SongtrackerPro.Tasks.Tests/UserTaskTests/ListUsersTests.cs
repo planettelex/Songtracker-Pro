@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -12,35 +13,35 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var testArtistUser1 = TestsModel.User;
             testArtistUser1.Type = UserType.SystemUser;
             testArtistUser1.Roles = SystemUserRoles.ArtistMember;
             var testArtistUser1Id = addUserTask.DoTask(testArtistUser1);
             Assert.IsTrue(testArtistUser1Id.Data.HasValue);
-            addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var testArtistUser2 = TestsModel.User;
             testArtistUser2.Type = UserType.SystemUser;
             testArtistUser1.Roles = SystemUserRoles.ArtistMember | SystemUserRoles.VisualArtist;
             var testArtistUser2Id = addUserTask.DoTask(testArtistUser2);
             Assert.IsTrue(testArtistUser2Id.Data.HasValue);
-            addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var testManagerUser = TestsModel.User;
             testManagerUser.Roles = SystemUserRoles.ArtistManager;
             testManagerUser.Type = UserType.SystemUser;
             var testManagerUserId = addUserTask.DoTask(testManagerUser);
             Assert.IsTrue(testManagerUserId.Data.HasValue);
-            addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var testLabelUser = TestsModel.User;
             testLabelUser.Type = UserType.LabelAdministrator;
             var testLabelUserId = addUserTask.DoTask(testLabelUser);
             Assert.IsTrue(testLabelUserId.Data.HasValue);
-            addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var testPublisherUser = TestsModel.User;
             testPublisherUser.Type = UserType.PublisherAdministrator;
             var testPublisherUserId = addUserTask.DoTask(testPublisherUser);
             Assert.IsTrue(testPublisherUserId.Data.HasValue);
-            addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var testAdminUser = TestsModel.User;
             var testAdminUserId = addUserTask.DoTask(testAdminUser);
             Assert.IsTrue(testAdminUserId.Data.HasValue);

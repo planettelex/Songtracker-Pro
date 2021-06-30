@@ -310,7 +310,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     var user = User;
-                    new AddUser(_dbContext, new AddPerson(_dbContext)).DoTask(user);
+                    new AddUser(_dbContext, new AddPerson(_dbContext, new FormattingService()), new FormattingService()).DoTask(user);
                     invitedByUserId = user.Id;
                 }
 
