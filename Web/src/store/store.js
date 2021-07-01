@@ -14,6 +14,7 @@ export default new Vuex.Store({
         SidebarDrawer: null,
         SidebarColor: '#1d2228',
         User: null,
+        LastPageViewed: null
     },
 
     mutations: {
@@ -34,6 +35,9 @@ export default new Vuex.Store({
         },
         SET_USER(state, payload) {
             state.User = payload;
+        },
+        SET_LAST_PAGE_VIEWED(state, payload) {
+            state.LastPageViewed = payload;
         }
     },
 

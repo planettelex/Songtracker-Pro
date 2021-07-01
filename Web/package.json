@@ -23,7 +23,6 @@
         "core-js": "^3.6.5",
         "date-fns": "^2.16.1",
         "decache": "^4.6.0",
-        "err": "^2.1.12",
         "http-parser-js": "^0.5.3",
         "is-core-module": "^2.3.0",
         "merge": "^2.1.1",

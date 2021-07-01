@@ -226,7 +226,6 @@ router.beforeResolve((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   if (to.meta.unauthenticatedOk) {
-    //store.state.Navigation.lastVisitedPage = to;
     next();
   }
   else if (store.state.Authentication !== null) {
@@ -234,11 +233,11 @@ router.beforeEach((to, from, next) => {
     let tokenExpiration = new Date(store.state.Authentication.tokenExpiration);
     let userType = store.state.User ? store.state.User.type : UserType.Unsassigned;
     if (tokenExpiration < now) 
-      next("/login?logout=true");
+      next("/login?logout=true&reason=expired");
     else if (to.meta.userType != UserType.Unsassigned && to.meta.userType != userType)
       next("/403");
     else {
-      //store.state.Navigation.lastVisitedPage = to;
+      store.commit("SET_LAST_PAGE_VIEWED", to.path);
       next();
     }
   }

@@ -77,6 +77,11 @@ export default {
       get() { return this.$store.state.User; },
       set(val) { this.$store.commit("SET_USER", val); }
     },
+    ...mapState(["LastPageViewed"]),
+    LastPageViewed: {
+      get() { return this.$store.state.LastPageViewed; },
+      set(val) { this.$store.commit("SET_LAST_PAGE_VIEWED", val); }
+    },
     RequestHeaders: {
       get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
     },
@@ -107,21 +112,25 @@ export default {
           loginModel.config(this.UnauthenticatedRequestHeaders).save()
             .then(response => { 
               this.User = response.user;
-              switch (response.user.type) {
-                case UserType.SystemAdministrator:
-                  this.$router.push("/system-information");
-                  break;
-                case UserType.PublisherAdministrator:
-                  this.Application.entityName = this.User.publisher.name;
-                  this.$router.push("/publisher-earnings");
-                  break;
-                case UserType.LabelAdministrator:
-                  this.Application.entityName = this.User.recordLabel.name;
-                  this.$router.push("/label-earnings");
-                  break;
-                case UserType.SystemUser:
-                  this.$router.push("/my-earnings");
-                  break;
+              if (this.LastPageViewed)
+                this.$router.push(this.LastPageViewed);
+              else {
+                switch (response.user.type) {
+                  case UserType.SystemAdministrator:
+                    this.$router.push("/system-information");
+                    break;
+                  case UserType.PublisherAdministrator:
+                    this.Application.entityName = this.User.publisher.name;
+                    this.$router.push("/publisher-earnings");
+                    break;
+                  case UserType.LabelAdministrator:
+                    this.Application.entityName = this.User.recordLabel.name;
+                    this.$router.push("/label-earnings");
+                    break;
+                  case UserType.SystemUser:
+                    this.$router.push("/my-earnings");
+                    break;
+                }
               }
             })
             .catch(error => this.handleError(error));
@@ -132,7 +141,7 @@ export default {
       }
     },
 
-    async logout(redirect) {
+    async logout(redirect, reason) {
       try {
         let isLoggedOut = this.Authentication === null;
         if (isLoggedOut) {
@@ -146,7 +155,12 @@ export default {
         .then(() => {
           this.userAuthenticated = false;
           that.resetState();
-          if (redirect) that.$router.push("/");
+          
+          if (reason != "expired")
+            this.LastPageViewed = null;
+
+          if (redirect)
+            that.$router.push("/");
         })
         .catch(error => { 
           this.userAuthenticated = false;
@@ -155,6 +169,7 @@ export default {
         });
       } 
       catch (error) {
+        this.resetState();
         this.handleError(error);
       }
     },
@@ -179,7 +194,7 @@ export default {
           clearInterval(authLoaded);
           let isLoggedIn = that.Authentication !== null && Date.parse(that.Authentication.tokenExpiration) > Date.now();
           if (that.$route.query.logout)
-            that.logout(true);
+            that.logout(true, that.$route.query.reason);
           else
             that.userAuthenticated = isLoggedIn && that.$gAuth.isAuthorized;
         }
