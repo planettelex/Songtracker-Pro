@@ -241,6 +241,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../../models/local/ErrorHandler';
 import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
 import CountryModel from '../../models/api/Country';
 import CountryRegions from '../../resources/countryRegions';
@@ -485,6 +486,7 @@ export default {
       }
       val || this.close();
     },
+
     tab(val) {
       switch (val) {
         case 0:
@@ -510,9 +512,11 @@ export default {
           break;
       }
     },
+
     editedIndex() {
       this.setFormTitle();
     },
+
     selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
@@ -522,7 +526,8 @@ export default {
   methods: {
     async initialize() { 
       this.editedIndex = -1;
-      this.artists = await ArtistModel.config(this.RequestHeaders).all();
+      this.artists = await ArtistModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     setFormTitle(tabName) {
@@ -536,7 +541,8 @@ export default {
     },
 
     async loadCountries() {
-      this.countries = await CountryModel.config(this.RequestHeaders).all();
+      this.countries = await CountryModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     loadCountryRegions() {
@@ -560,15 +566,18 @@ export default {
     },
 
     async loadRecordLabels() {
-      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all();
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadPlatforms() {
-      this.platforms = await PlatformModel.config(this.RequestHeaders).all();
+      this.platforms = await PlatformModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadArtistMembers() {
-      this.artistMembers = await ArtistMemberModel.config(this.RequestHeaders).custom(this.editedArtistData, 'members').get();
+      this.artistMembers = await ArtistMemberModel.config(this.RequestHeaders).custom(this.editedArtistData, 'members').get()
+        .catch(error => this.handleError(error));
       this.artistMembers.forEach(artistMember => {
         artistMember.startedOn = artistMember.startedOn.substring(0,10);
         if (artistMember.endedOn)
@@ -577,7 +586,8 @@ export default {
     },
 
     async loadArtistManagers() {
-      this.artistManagers = await ArtistManagerModel.config(this.RequestHeaders).custom(this.editedArtistData, 'managers').get();
+      this.artistManagers = await ArtistManagerModel.config(this.RequestHeaders).custom(this.editedArtistData, 'managers').get()
+        .catch(error => this.handleError(error));
       this.artistManagers.forEach(artistManager => {
         artistManager.startedOn = artistManager.startedOn.substring(0,10);
         if (artistManager.endedOn)
@@ -586,11 +596,13 @@ export default {
     },
 
     async loadArtistAccounts() {
-      this.artistAccounts = await ArtistAccountModel.config(this.RequestHeaders).custom(this.editedArtistData, 'accounts').get();
+      this.artistAccounts = await ArtistAccountModel.config(this.RequestHeaders).custom(this.editedArtistData, 'accounts').get()
+        .catch(error => this.handleError(error));
     },
 
     async loadArtistLinks() {
-      this.artistLinks = await ArtistLinkModel.config(this.RequestHeaders).custom(this.editedArtistData, 'links').get();
+      this.artistLinks = await ArtistLinkModel.config(this.RequestHeaders).custom(this.editedArtistData, 'links').get()
+        .catch(error => this.handleError(error));
     },
 
     async editArtist(artist) {
@@ -603,7 +615,8 @@ export default {
       this.editedArtist = Object.assign(emptyArtist, artist);
       
       if (artist) {
-        this.editedArtistData = await ArtistModel.config(this.RequestHeaders).find(artist.id);
+        this.editedArtistData = await ArtistModel.config(this.RequestHeaders).find(artist.id)
+          .catch(error => this.handleError(error));
         this.selectedCountry = artist.address.country;
         this.loadCountryRegions();
         this.selectedCountryRegion = this.getCountryRegion(artist.address.region);
@@ -619,8 +632,9 @@ export default {
 
     async updateArtistMember(artistMember) {
       // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
-      await artist.members().sync(artistMember);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      await artist.members().sync(artistMember).catch(error => this.handleError(error));
       // --------------------------------------
       this.closeEditArtistMember();
     },
@@ -639,8 +653,9 @@ export default {
 
     async updateArtistManager(artistManager) {
       // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
-      await artist.managers().sync(artistManager);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      await artist.managers().sync(artistManager).catch(error => this.handleError(error));
       // --------------------------------------
       this.closeEditArtistManager();
     },
@@ -662,8 +677,9 @@ export default {
       this.editedArtistAccountIndex = this.artistAccounts.indexOf(artistAccount);
       this.editedArtistAccount = Object.assign({}, artistAccount);
       // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
-      await artist.accounts().sync(this.editedArtistAccount);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      await artist.accounts().sync(this.editedArtistAccount).catch(error => this.handleError(error));
       // --------------------------------------
       this.closeEditArtistAccount();
     },
@@ -685,8 +701,9 @@ export default {
       this.editedArtistLinkIndex = this.artistLinks.indexOf(artistLink);
       this.editedArtistLink = Object.assign({}, artistLink);
       // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id);
-      await artist.links().sync(this.editedArtistLink);
+      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      await artist.links().sync(this.editedArtistLink).catch(error => this.handleError(error));
       // --------------------------------------
       this.closeEditArtistLink();
     },
@@ -729,12 +746,11 @@ export default {
         else {
           this.showAddedAlert = false;
         }
-        const artistData = new ArtistModel(this.editedArtist);
-        artistData.config(this.RequestHeaders).save()
+
+        const artistModel = new ArtistModel(this.editedArtist);
+        artistModel.config(this.RequestHeaders).save()
         .then (() => {
-          if (isAdded) {
-            this.showAddedAlert = true;
-          }
+          if (isAdded) this.showAddedAlert = true;
           this.initialize();
         })
         .catch(error => this.handleError(error));
@@ -751,9 +767,7 @@ export default {
     },
 
     handleError(error) {
-      console.log(error);
-      //this.$router.push("/login");
-      this.error = error;
+      this.error = new ErrorHandler(error).handleError(this.$router);
     },
   },
 

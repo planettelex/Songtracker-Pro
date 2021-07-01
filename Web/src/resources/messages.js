@@ -85,6 +85,7 @@ const messages = {
         Save: 'Save',
         Server: 'Server',
         Service: 'Service | Services',
+        SessionExpired: 'Session expired, please login again.',
         Songwriter: "Songwriter | Songwriters",
         SoundExchangeId: "SoundExchange ID",
         SSN: 'SSN',

@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../../models/local/ErrorHandler';
 import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
 import PlatformModel from '../../models/api/Platform';
 import ServiceModel from '../../models/api/Service';
@@ -150,8 +151,10 @@ export default {
 
   methods: {
     async initialize() { 
-      this.services = await ServiceModel.config(this.RequestHeaders).all();
-      this.platforms = await PlatformModel.config(this.RequestHeaders).all();
+      this.services = await ServiceModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
+      this.platforms = await PlatformModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
       this.buildServiceLists();
     },
 
@@ -177,13 +180,11 @@ export default {
     editPlatform(platform) {
       for (let i = 0; i < this.services.length; i++) {
         let platformHasService = false;
-        if (platform)
-          platformHasService = platform.services.some(platformService => platformService.id == this.services[i].id);
+        if (platform) platformHasService = platform.services.some(platformService => platformService.id == this.services[i].id);
         this.selectedServices[i] = platformHasService;
       }
       this.editedIndex = this.platforms.indexOf(platform);
-      if (this.editedIndex != -1)
-        this.showAddedAlert = false;
+      if (this.editedIndex != -1) this.showAddedAlert = false;
       let emptyPlatform = JSON.parse(JSON.stringify(this.defaultPlatform));
       this.editedPlatform = Object.assign(emptyPlatform, platform);
       this.dialog = true;
@@ -224,12 +225,11 @@ export default {
           }
         }
         this.buildServiceList(this.editedPlatform);
+
         const platformModel = new PlatformModel(this.editedPlatform);
         platformModel.config(this.RequestHeaders).save()
           .then (() => {
-            if (isAdded) {
-              this.showAddedAlert = true;
-            }
+            if (isAdded) this.showAddedAlert = true;
             this.initialize();
           })
           .catch(error => this.handleError(error));
@@ -246,7 +246,7 @@ export default {
     },
 
     handleError(error) {
-      this.error = error;
+      this.error = new ErrorHandler(error).handleError(this.$router);
     },
   },
 

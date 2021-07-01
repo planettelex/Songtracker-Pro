@@ -33,7 +33,7 @@ export default {
     if (this.Application)
       this.appName = this.Application.name;
     else {
-      const appInfo = await ApplicationData.first();
+      const appInfo = await ApplicationData.first().catch(error => console.error(error));
       this.appName = appInfo.name;
     }
   }

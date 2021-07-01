@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../../models/local/ErrorHandler';
 import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
 import CountryModel from '../../models/api/Country';
 import PerformingRightsOrganizationModel from '../../models/api/PerformingRightsOrganization';
@@ -235,6 +236,7 @@ export default {
       }
       val || this.close();
     },
+
     selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
@@ -243,11 +245,13 @@ export default {
 
   methods: {
     async initialize() { 
-      this.publishers = await PublisherModel.config(this.RequestHeaders).all();
+      this.publishers = await PublisherModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadCountries() {
-      this.countries = await CountryModel.config(this.RequestHeaders).all();
+      this.countries = await CountryModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     loadCountryRegions() {
@@ -271,7 +275,8 @@ export default {
     },
 
     async loadPerformingRightsOrganizations() {
-      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.RequestHeaders).all();
+      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     editPublisher(publisher) {
@@ -320,16 +325,14 @@ export default {
         else {
           this.showAddedAlert = false;
         }
-        let apiRequest = new ApiRequest(this.Login.authenticationToken);
-        const publisherData = new PublisherData(this.editedPublisher);
-        publisherData.config(apiRequest).save()
-        .then (() => {
-          if (isAdded) {
-            this.showAddedAlert = true;
-          }
-          this.initialize();
-        })
-        .catch(error => this.handleError(error));
+
+        const publisherModel = new PublisherModel(this.editedPublisher);
+        publisherModel.config(this.RequestHeaders).save()
+          .then (() => {
+            if (isAdded) this.showAddedAlert = true;
+            this.initialize();
+          })
+          .catch(error => this.handleError(error));
       }
       this.close();
     },
@@ -343,7 +346,7 @@ export default {
     },
 
     handleError(error) {
-      this.error = error;
+      this.error = new ErrorHandler(error).handleError(this.$router);
     },
   },
 

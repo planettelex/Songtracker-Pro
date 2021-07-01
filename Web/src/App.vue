@@ -27,7 +27,7 @@ export default {
 
   methods: {
     async getAppInfo() {
-      return await ApplicationData.first();
+      return await ApplicationData.first().catch(error => console.error(error));
     },
 
     setDocumentTitle(appTitle, tagline, userType, pageTitle) {

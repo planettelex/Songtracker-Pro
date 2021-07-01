@@ -211,6 +211,7 @@ export default {
       if (val)
         this.validateInvitationCode();
     },
+
     selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
@@ -218,32 +219,29 @@ export default {
   },
 
   methods: {
-    handleError(error) {
-      this.error = error;
-    },
-
     async validateInvitationCode() {
       InvitationData.find(this.invitationCode)
-      .then(response => {
-        this.invitation = Object.assign({}, response);
-        this.invitationCodeValid = response.uuid.toLowerCase() == this.invitationCode.toLowerCase();
-        if (this.invitationCodeValid) {
-          this.userTypes.forEach(userType => {
-            if (userType.value == this.invitation.type) {
-              this.userTypeName = userType.name;
-              this.isSystemUser = userType.value == UserType.SystemUser;
-              this.isPublisherAdministrator = userType.value == UserType.PublisherAdministrator;
-              this.isLabelAdministrator = userType.value == UserType.LabelAdministrator;
-              this.isSystemAdministrator = userType.value == UserType.SystemAdministrator;
-            }
-            this.loadCountries();
-          });
-        }
-      });
+        .then(response => {
+          this.invitation = Object.assign({}, response);
+          this.invitationCodeValid = response.uuid.toLowerCase() == this.invitationCode.toLowerCase();
+          if (this.invitationCodeValid) {
+            this.userTypes.forEach(userType => {
+              if (userType.value == this.invitation.type) {
+                this.userTypeName = userType.name;
+                this.isSystemUser = userType.value == UserType.SystemUser;
+                this.isPublisherAdministrator = userType.value == UserType.PublisherAdministrator;
+                this.isLabelAdministrator = userType.value == UserType.LabelAdministrator;
+                this.isSystemAdministrator = userType.value == UserType.SystemAdministrator;
+              }
+              this.loadCountries();
+            });
+          }
+        })
+        .catch(error => this.handleError(error));
     },
 
     async loadCountries() {
-      this.countries = await CountryData.all();
+      this.countries = await CountryData.all().catch(error => this.handleError(error));
     },
 
     loadCountryRegions() {
@@ -265,20 +263,24 @@ export default {
           this.invitation.createdUser.person.address.region = this.selectedCountryRegion.code;
         const invitationData = new InvitationData(this.invitation);
         invitationData.save()
-        .then (() => {
-          this.$router.push("/login?logout=true");
-        })
-        .catch(error => this.handleError(error));
+          .then (() => {
+            this.$router.push("/login?logout=true");
+          })
+          .catch(error => this.handleError(error));
       } 
       catch (error) {
         this.handleError(error);
       }
     },
+
+    handleError(error) {
+      this.error = error;
+    }
   },
 
   async mounted() {
     try {
-      this.appInfo = await ApplicationData.first();
+      this.appInfo = await ApplicationData.first().catch(error => this.handleError(error));
       document.title = this.appInfo.name + ' - ' + this.appInfo.tagline;
       this.userTypes = UserTypes;
       this.userTypes.forEach(userType => {

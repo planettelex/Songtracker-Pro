@@ -90,6 +90,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../../models/local/ErrorHandler';
 import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
 import CountryModel from '../../models/api/Country';
 import RecordLabelModel from '../../models/api/RecordLabel';
@@ -211,10 +212,10 @@ export default {
 
   watch: {
     dialog(val) {
-      if (val) 
-        this.loadCountries();
+      if (val) this.loadCountries();
       val || this.close();
     },
+
     selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
@@ -223,11 +224,13 @@ export default {
 
   methods: {
     async initialize() { 
-      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all();
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadCountries() {
-      this.countries = await CountryModel.config(this.RequestHeaders).all();
+      this.countries = await CountryModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     loadCountryRegions() {
@@ -293,12 +296,11 @@ export default {
         else {
           this.showAddedAlert = false;
         }
+
         const recordLabelModel = new RecordLabelModel(this.editedRecordLabel);
         recordLabelModel.config(this.RequestHeaders).save()
           .then (() => {
-            if (isAdded) {
-              this.showAddedAlert = true;
-            }
+            if (isAdded) this.showAddedAlert = true;
             this.initialize();
           })
           .catch(error => this.handleError(error));
@@ -315,7 +317,7 @@ export default {
     },
 
     handleError(error) {
-      this.error = error;
+      this.error = new ErrorHandler(error).handleError(this.$router);
     },
   },
 

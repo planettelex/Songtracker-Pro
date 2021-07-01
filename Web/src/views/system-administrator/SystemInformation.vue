@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../../models/local/ErrorHandler';
 import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
 import SystemInformationModel from '../../models/api/SystemInformation';
 import NameValuePair from '../../models/local/NameValuePair';
@@ -59,9 +60,16 @@ export default {
       get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
     },
   },
+  
+  methods: {
+    handleError(error) {
+      this.error = new ErrorHandler(error).handleError(this.$router);
+    }
+  },
 
   async mounted() {
-    this.systemInformation = await SystemInformationModel.config(this.RequestHeaders).first();
+    this.systemInformation = await SystemInformationModel.config(this.RequestHeaders).first()
+      .catch(error => this.handleError(error));
     
     this.installationInfo = new Array(3);
     this.installationInfo[0] = new NameValuePair(this.$t("Domain"), this.systemInformation.domain);

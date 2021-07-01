@@ -195,6 +195,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../../models/local/ErrorHandler';
 import ApiRequestHeaders from '../../models/local/ApiRequestHeaders';
 import CountryModel from '../../models/api/Country';
 import CountryRegions from '../../resources/countryRegions';
@@ -420,6 +421,7 @@ export default {
       }
       val || this.closeInvite();
     },
+
     editDialog(val) {
       if (val) {
         this.loadCountries();
@@ -428,6 +430,7 @@ export default {
       }
       val || this.closeEdit();
     },
+
     editTab(val) {
       switch (val) {
         case 1:
@@ -436,10 +439,12 @@ export default {
           break;
       }
     },
+
     selectedCountry(val) {
       if (val)
         this.loadCountryRegions();
     },
+
     selectedUserType(val) {
       switch(val.value) {
         case UserType.PublisherAdministrator:
@@ -476,14 +481,16 @@ export default {
       this.userRoles.forEach(userRole => {
         userRole.name = this.$tc(userRole.key, 1);
       });
-      this.users = await UserModel.config(this.RequestHeaders).all();
+      this.users = await UserModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
       this.users.forEach(user => {
         user.typeName = this.getUserType(user.type).name;
       });
     },
 
     async loadCountries() {
-      this.countries = await CountryModel.config(this.RequestHeaders).all();
+      this.countries = await CountryModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     loadCountryRegions() {
@@ -507,24 +514,30 @@ export default {
     },
 
     async loadPlatforms() {
-      this.platforms = await PlatformModel.config(this.RequestHeaders).all();
+      this.platforms = await PlatformModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadPerformingRightsOrganizations() {
-      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.RequestHeaders).all();
+      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadPublishers() {
-      this.publishers = await PublisherModel.config(this.RequestHeaders).all();
+      this.publishers = await PublisherModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     async loadUserAccounts() {
-      this.userAccounts = await UserAccountModel.config(this.RequestHeaders).custom(this.editedUserData, 'accounts').get();
+      this.userAccounts = await UserAccountModel.config(this.RequestHeaders).custom(this.editedUserData, 'accounts').get()
+        .catch(error => this.handleError(error));
     },
 
     async inviteUser() {
-      this.artists = await ArtistModel.config(this.RequestHeaders).all();
-      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all();
+      this.artists = await ArtistModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
       let emptyInvitation = JSON.parse(JSON.stringify(this.defaultInvitation));
       this.editedInvitation = Object.assign(emptyInvitation, this.defaultInvitation);
       this.inviteDialog = true;
@@ -569,6 +582,7 @@ export default {
             this.editedInvitation.roles = userRoles;
             break;
         }
+
         const invitationModel = new InvitationModel(this.editedInvitation);
         invitationModel.config(this.RequestHeaders).save()
           .then (() => {
@@ -591,13 +605,13 @@ export default {
         if (user.roles & UserRoles[i].value)
           this.selectedUserRoles.push(UserRoles[i].value);
       }
-      if (!user.person.id)
-        this.disableSave = true;
+      if (!user.person.id) this.disableSave = true;
       this.editedIndex = this.users.indexOf(user);
       this.editedUser = Object.assign({}, user);
       
       if (user) {
-        this.editedUserData = await UserModel.config(this.RequestHeaders).find(user.id);
+        this.editedUserData = await UserModel.config(this.RequestHeaders).find(user.id)
+          .catch(error => this.handleError(error));
         this.selectedUserType = this.getUserType(user.type);
         if (user.person.address) {
           this.selectedCountry = user.person.address.country;
@@ -629,8 +643,9 @@ export default {
       this.editedUserAccountIndex = this.artistAccounts.indexOf(userAccount);
       this.editedUserccount = Object.assign({}, userAccount);
       // TODO: The following code does not work.
-      const user = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id);
-      await user.accounts().sync(this.editedUserAccount);
+      const user = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
+        .catch(error => this.handleError(error));
+      await user.accounts().sync(this.editedUserAccount).catch(error => this.handleError(error));
       // --------------------------------------
       this.closeEditUserAccount();
     },
@@ -692,9 +707,7 @@ export default {
     },
 
     handleError(error) {
-      console.log(error);
-      //this.$router.push("/login");
-      this.error = error;
+      this.error = new ErrorHandler(error).handleError(this.$router);
     },
   },
   

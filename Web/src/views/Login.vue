@@ -62,15 +62,15 @@ export default {
       get() { return this.$store.state.Application; },
       set(val) { this.$store.commit("SET_APPLICATION", val); }
     },
-    ...mapState(["ProfileImage"]),
-    ProfileImage: {
-      get() { return this.$store.state.ProfileImage; },
-      set(val) { this.$store.commit("SET_PROFILE_IMAGE", val); }
-    },
     ...mapState(["Authentication"]),
     Authentication: {
       get() { return this.$store.state.Authentication; },
       set(val) { this.$store.commit("SET_AUTHENTICATION", val); }
+    },
+    ...mapState(["ProfileImage"]),
+    ProfileImage: {
+      get() { return this.$store.state.ProfileImage; },
+      set(val) { this.$store.commit("SET_PROFILE_IMAGE", val); }
     },
     ...mapState(["User"]),
     User: {
@@ -90,11 +90,7 @@ export default {
     }
   },
 
-  methods: {
-    handleError(error) {
-      this.error = error;
-    },
-    
+  methods: {    
     async login() {
       try {
         const googleUser = await this.$gAuth.signIn();
@@ -155,8 +151,10 @@ export default {
         .then(() => {
           this.userAuthenticated = false;
           that.resetState();
-          
-          if (reason != "expired")
+
+          if (reason == "expired")
+            this.error = this.$t('SessionExpired');
+          else
             this.LastPageViewed = null;
 
           if (redirect)
@@ -169,6 +167,7 @@ export default {
         });
       } 
       catch (error) {
+        this.userAuthenticated = false;
         this.resetState();
         this.handleError(error);
       }
@@ -178,13 +177,17 @@ export default {
       this.Authentication = null;
       this.ProfileImage = null;
       this.User = null;
-    }
+    },
+
+    handleError(error) {
+      this.error = error;
+    },
   },
 
   async mounted() {
     try {
       if (this.Application == null || this.Application.name == null) {
-        this.Application = await ApplicationModel.first();
+        this.Application = await ApplicationModel.first().catch(error => this.handleError(error));
       }
       Object.assign(this.applicationInfo, this.Application);
       let that = this;
