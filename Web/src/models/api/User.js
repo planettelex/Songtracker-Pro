@@ -10,9 +10,5 @@ export default class User extends Model {
         return this.hasMany(UserAccount);
       }
 
-      relations() {
-        return {
-          'accounts': UserAccount,
-        }
-      }
+
 }

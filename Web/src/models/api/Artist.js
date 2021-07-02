@@ -19,12 +19,4 @@ export default class Artist extends Model {
       accounts() {
         return this.hasMany(ArtistAccount);
       }
-
-      relations() {
-        return {
-          'accounts': ArtistAccount,
-          'members': ArtistMember,
-          'managers': ArtistManager
-        }
-      }
 }

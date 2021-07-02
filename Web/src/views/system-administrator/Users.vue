@@ -154,22 +154,41 @@
                 <v-container v-if="editTab == 1">
                   <div class="datatable-toolbar">
                     <v-toolbar flat dense>
-                      <v-select style="margin-bottom: -7px; width: 26%" dense hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="selectedAccountPlatform" item-text="name" item-value="id" return-object></v-select>
-                      <v-text-field style="width: 24%" hide-details="true" class="small-font mr-2" :label="$t('Username')"></v-text-field>
-                      <v-checkbox style="margin-bottom: -10px;" hide-details="true" class="small-font" :label="$t('Preferred')"></v-checkbox>
+                      <v-select dense style="width: 26%; margin-bottom: -7px;  margin-left:-12px;" :hide-details="true" class="small-font mr-3" :label="$tc('Platform', 1)" :items="platforms" v-model="newAccountPlatform" item-text="name" item-value="id" return-object></v-select>
+                      <v-text-field dense style="width: 26%; margin-bottom: -7px; " :hide-details="true" class="small-font mr-5" :label="$t('Username')" v-model="newAccountUsername"></v-text-field>
+                      <v-checkbox dense style="margin-bottom: -18px;" :hide-details="true" class="small-font" :label="$t('Preferred')" v-model="newAccountIsPreferred"></v-checkbox>
                       <v-spacer></v-spacer>
-                      <v-icon style="margin-bottom: -10px" @click="addNewUserAccount">mdi-plus</v-icon>
+                      <v-btn style="margin: 0 -12px -10px 0;" class="v-circle-button" @click="addNewUserAccount">
+                        <v-icon color="white">mdi-plus</v-icon>
+                      </v-btn>
+                      
                     </v-toolbar>
                   </div>
                   <v-data-table dense hide-default-footer :headers="userAccountHeaders" :items="userAccounts">
 
+                    <template v-slot:[`item.platform.name`]="{ item }">
+                      <v-select dense style="margin-top: 0;" :hide-details="true" class="small-font" :items="platforms" v-model="editedUserAccount.platform" item-text="name" item-value="id" return-object v-if="item.id === editedUserAccount.id"></v-select>
+                      <span v-else>{{ item.platform.name }}</span>
+                    </template>
+                    
+                    <template v-slot:[`item.username`]="{ item }">
+                      <v-text-field single-line dense style="margin-top: 0;" :hide-details="true" class="small-font" v-model="editedUserAccount.username" v-if="item.id === editedUserAccount.id"></v-text-field>
+                      <span v-else>{{ item.username }}</span>
+                    </template>
+
+                    <template v-slot:[`item.isPreferred`]="{ item }">
+                      <v-simple-checkbox v-model="editedUserAccount.isPreferred" v-if="item.id === editedUserAccount.id" :ripple="false"></v-simple-checkbox>
+                      <v-simple-checkbox v-else v-model="item.isPreferred" disabled></v-simple-checkbox>
+                    </template>
+
                     <template v-slot:[`item.actions`]="{ item }">
-                      <div v-if="item.id === editedArtistAccount.id">
-                        <v-icon small color="red" class="mr-3" @click="closeEditArtistAccount">mdi-window-close</v-icon>
-                        <v-icon small color="green" @click="updateArtistAccount(item)">mdi-content-save</v-icon>
+                      <div v-if="item.id === editedUserAccount.id">
+                        <v-icon small color="red" class="mr-3" @click="closeEditUserAccount">mdi-window-close</v-icon>
+                        <v-icon small style="margin-right: -5px;" color="green" @click="updateUserAccount(item)">mdi-content-save</v-icon>
                       </div>
                       <div v-else>
-                        <v-icon small @click="editArtistAccount(item)">mdi-pencil</v-icon>
+                        <v-icon small class="mr-3" @click="editUserAccount(item)">mdi-pencil</v-icon>
+                        <v-icon small style="margin-right: -5px;" @click="deleteUserAccount(item)">mdi-delete</v-icon>
                       </div>
                     </template>
 
@@ -178,8 +197,8 @@
               </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
-                <v-btn class="v-cancel-button rounded" @click="closeEdit">{{ $t('Cancel') }}</v-btn>
-                <v-btn class="v-button mr-4 rounded" @click="save" :disabled="disableSave">{{ $t('Save') }}</v-btn>
+                <v-btn class="v-cancel-button mr-5 rounded" @click="closeEdit">{{ $t('Cancel') }}</v-btn>
+                <v-btn v-if="editTab == 0" class="v-button mr-4 rounded" @click="save" :disabled="disableSave">{{ $t('Save') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -231,7 +250,9 @@ export default {
     countryRegions: [],
     selectedCountryRegion: null,
     platforms: [],
-    selectedAccountPlatform: null,
+    newAccountPlatform: null,
+    newAccountUsername: null,
+    newAccountIsPreferred: false,
     performingRightsOrganizations: [],
     selectedPerformingRightsOrganization: null,
     artists: [],
@@ -384,9 +405,9 @@ export default {
 
     userAccountHeaders() {
       return [
-        { text: this.$tc('Platform', 1), value: "platform.name", width: "37%" },
+        { text: this.$tc('Platform', 1), value: "platform.name", width: "34%" },
         { text: this.$t('Username'), value: "username" },
-        { text: this.$t('Preferred'), value: "isPreferred", width: "120px" },
+        { text: this.$t('Preferred'), value: "isPreferred", width: "125px" },
         { text: '', value: 'actions', sortable: false, align: "right", width: "80px" },
       ];
     },
@@ -434,7 +455,7 @@ export default {
     editTab(val) {
       switch (val) {
         case 1:
-          this.load
+          this.loadUserAccounts();
           this.loadPlatforms();
           break;
       }
@@ -514,8 +535,16 @@ export default {
     },
 
     async loadPlatforms() {
-      this.platforms = await PlatformModel.config(this.RequestHeaders).all()
+      const allPlatforms = await PlatformModel.config(this.RequestHeaders).all()
         .catch(error => this.handleError(error));
+      this.platforms = [];
+      allPlatforms.forEach(platform => {
+        platform.services.forEach(service => {
+          if (service.name.toLowerCase() == 'payment') {
+            this.platforms.push(platform);
+          }
+        });
+      });
     },
 
     async loadPerformingRightsOrganizations() {
@@ -597,29 +626,32 @@ export default {
 
     async editUser(user) {
       this.showInvitedUserAlert = false;
-      if (user && !user.address)
-        user.address = this.defaultUser.address;
-      if (user && !user.person)
-        user.person = this.defaultUser.person;
-      for (let i = 0; i < UserRoles.length; i++) {
-        if (user.roles & UserRoles[i].value)
-          this.selectedUserRoles.push(UserRoles[i].value);
-      }
-      if (!user.person.id) this.disableSave = true;
-      this.editedIndex = this.users.indexOf(user);
-      this.editedUser = Object.assign({}, user);
       
       if (user) {
+        for (let i = 0; i < UserRoles.length; i++) {
+          if (user.roles & UserRoles[i].value)
+            this.selectedUserRoles.push(UserRoles[i].value);
+        }
+
+        this.editedIndex = this.users.indexOf(user);
         this.editedUserData = await UserModel.config(this.RequestHeaders).find(user.id)
           .catch(error => this.handleError(error));
-        this.selectedUserType = this.getUserType(user.type);
-        if (user.person.address) {
-          this.selectedCountry = user.person.address.country;
+
+        if (!this.editedUserData.person)
+          this.editedUserData.person = Object.assign({}, this.defaultUser.person);
+
+        if (!this.editedUserData.person.address)
+          this.editedUserData.person.address = Object.assign({}, this.defaultUser.person.address);
+
+        this.editedUser = Object.assign({}, this.editedUserData);
+        this.selectedUserType = this.getUserType(this.editedUser.type);
+        if (this.editedUser.person.address) {
+          this.selectedCountry = this.editedUser.person.address.country;
           this.loadCountryRegions();
-          this.selectedCountryRegion = this.getCountryRegion(user.person.address.region);
+          this.selectedCountryRegion = this.getCountryRegion(this.editedUser.person.address.region);
         }
-        this.selectedPerformingRightsOrganization = user.performingRightsOrganization;
-        this.selectedPublisher = user.publisher;
+        this.selectedPerformingRightsOrganization = this.editedUser.performingRightsOrganization;
+        this.selectedPublisher = this.editedUser.publisher;
       }
       this.editDialog = true;
     },
@@ -633,33 +665,63 @@ export default {
       return userType;
     },
 
-    addNewUserAccount() {
+    async addNewUserAccount() {
       const newUserAccount = Object.assign({}, this.defaultUserAccount);
-      // TODO: API Call
-      this.userAccounts.unshift(newUserAccount);
+      newUserAccount.platform = this.newAccountPlatform;
+      newUserAccount.username = this.newAccountUsername;
+      newUserAccount.isPreferred = this.newAccountIsPreferred;
+      const userModel = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
+        .catch(error => this.handleError(error));
+      const userAccountModel = new UserAccountModel(newUserAccount).config(this.RequestHeaders).for(userModel);
+      await userAccountModel.save()
+        .then (() => {
+          this.loadUserAccounts();
+          this.newAccountPlatform = null;
+          this.newAccountUsername = null;
+          this.newAccountIsPreferred = false;
+        })
+        .catch(error => this.handleError(error));
     },
 
     async editUserAccount(userAccount) {
-      this.editedUserAccountIndex = this.artistAccounts.indexOf(userAccount);
-      this.editedUserccount = Object.assign({}, userAccount);
-      // TODO: The following code does not work.
-      const user = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
+      this.editedUserAccountIndex = this.userAccounts.indexOf(userAccount);
+      this.editedUserAccount = Object.assign({}, userAccount);
+    },
+
+    async updateUserAccount() {
+      const userModel = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
         .catch(error => this.handleError(error));
-      await user.accounts().sync(this.editedUserAccount).catch(error => this.handleError(error));
-      // --------------------------------------
-      this.closeEditUserAccount();
+      const userAccountModel = new UserAccountModel(this.editedUserAccount).config(this.RequestHeaders).for(userModel);
+      await userAccountModel.save()
+        .then (() => {
+          this.closeEditUserAccount();
+          this.loadUserAccounts();
+        })
+        .catch(error => this.handleError(error));
     },
 
     closeEditUserAccount() {
       setTimeout(() => {
-        this.editedArtistAccount = Object.assign({}, this.defaultArtistAccount);
-        this.editedArtistAccountIndex = -1;
+        this.editedUserAccount = Object.assign({}, this.defaultUserAccount);
+        this.editedUserAccountIndex = -1;
       }, 300)
+    },
+
+    async deleteUserAccount(userAccount) {
+      const userModel = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
+        .catch(error => this.handleError(error));
+      const userAccountModel = new UserAccountModel(userAccount).config(this.RequestHeaders).for(userModel);
+      await userAccountModel.delete()
+        .then (() => {
+          this.loadUserAccounts();
+        })
+        .catch(error => this.handleError(error));
     },
 
     closeEdit() {
       this.editDialog = false;
       this.$nextTick(() => {
+        this.editTab = 0;
         this.editedIndex = -1;
         this.editedUserData = null;
         this.selectedCountry = null;
@@ -675,8 +737,8 @@ export default {
     },
 
     async save() {
-      const formIsValid = await this.v$.$validate();
-      if (!formIsValid) 
+      await this.v$.$validate();
+      if (this.v$.editedUser.$error) 
         return;
 
       if (this.editedUser) {
@@ -718,6 +780,9 @@ export default {
 </script>
 
 <style lang="scss">
+  .user-modal-content {
+    min-height: 300px;
+  }
   .v-data-table-header > tr > th:first-child {
     min-width: 50px;
   }

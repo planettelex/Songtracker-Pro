@@ -23,6 +23,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
             {
                 var artistAccounts = _dbContext.ArtistAccounts.Where(aa => aa.ArtistId == artist.Id)
                     .Include(aa => aa.Platform)
+                    .OrderByDescending(aa => aa.IsPreferred).ThenBy(aa => aa.Platform.Name)
                     .ToList();
 
                 foreach (var _ in artistAccounts.Select(aa => _dbContext.PlatformServices
