@@ -28,12 +28,14 @@ namespace SongtrackerPro.Tasks.UserTasks
                         .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                         .Include(u => u.PerformingRightsOrganization).ThenInclude(p => p.Country)
                         .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(p => p.Country)
+                        .OrderBy(u => u.Person.FirstName).ThenBy(u => u.Person.LastName)
                         .ToList();
                 else
                     users = _dbContext.Users
                         .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                         .Include(u => u.PerformingRightsOrganization).ThenInclude(p => p.Country)
                         .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(p => p.Country)
+                        .OrderBy(u => u.Person.FirstName).ThenBy(u => u.Person.LastName)
                         .ToList();
                 
                 return new TaskResult<List<User>>(users);

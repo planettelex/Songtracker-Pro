@@ -10,6 +10,11 @@
         <v-alert v-model="showInvitedUserAlert" type="success" dismissible>{{ $t('InvitationSentTo') }} {{ addedInvitation.email }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showEditedUserAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showEditedUserAlert" type="success" dismissible>{{ $t('Updated') }} {{ lastEditedUserName }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="users">
 
       <template v-slot:top>
@@ -113,21 +118,26 @@
                     </v-col>
                     <v-col cols="6" class="pr-0">
                       <v-text-field hide-details="true" :label="$t('Address')" v-model="editedUser.person.address.street"></v-text-field>
+                      <span class="validation-error" v-if="showStreetValidataion">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
                       <v-text-field hide-details="true" :label="$t('City')" v-model="editedUser.person.address.city"></v-text-field>
+                      <span class="validation-error" v-if="showCityValidataion">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                     <v-col cols="3" >
                       <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedUser.person.address.postalCode"></v-text-field>
+                      <span class="validation-error" v-if="showPostalCodeValidataion">{{ $t('ValueIsRequired') }}&nbsp;</span>
                       <span class="validation-error" v-if="v$.editedUser.person.address.postalCode.$error">{{ validationMessages(v$.editedUser.person.address.postalCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
                       <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                      <span class="validation-error" v-if="showCountryValidataion">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0">
                       <v-select hide-details="true" :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                      <span class="validation-error" v-if="showCountryRegionValidataion">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                   </v-row>
                   <v-row v-if="showUserFields || showPublisherFields">
@@ -305,6 +315,8 @@ export default {
     },
     editedIndex: null,
     editedUserData: null,
+    editedUserHasNullAddress: false,
+    lastEditedUserName: null,
     editedUser: {
       id: -1,
       authenticationId: '',
@@ -380,7 +392,14 @@ export default {
       isPreferred: false
     },
     disableSave: false,
+    showStreetValidataion: false,
+    showCityValidataion: false,
+    showPostalCodeValidataion: false,
+    showCountryValidataion: false,
+    showCountryRegionValidataion: false,
+    hasTriggeredValidation: false,
     showInvitedUserAlert: false,
+    showEditedUserAlert: false,
     error: null
   }),
 
@@ -461,9 +480,31 @@ export default {
       }
     },
 
+    'editedUser.person.address.street'(val) {
+        const valIsNull = val == null || val.trim() == '';
+        this.showStreetValidataion = this.hasTriggeredValidation && valIsNull;
+    },
+
+    'editedUser.person.address.city'(val) {
+        const valIsNull = val == null || val.trim() == '';
+        this.showCityValidataion = this.hasTriggeredValidation && valIsNull;
+    },
+
+    'editedUser.person.address.postalCode'(val) {
+        const valIsNull = val == null || val.trim() == '';
+        this.showPostalCodeValidataion = this.hasTriggeredValidation && valIsNull;
+    },
+
     selectedCountry(val) {
-      if (val)
+      const valIsNull = val == null;
+      this.showCountryValidataion = this.hasTriggeredValidation && valIsNull;
+      if (!valIsNull)
         this.loadCountryRegions();
+    },
+
+    selectedCountryRegion(val) {
+        const valIsNull = val == null || val.code.trim() == '';
+        this.showCountryRegionValidataion = this.hasTriggeredValidation && valIsNull;
     },
 
     selectedUserType(val) {
@@ -569,6 +610,7 @@ export default {
         .catch(error => this.handleError(error));
       let emptyInvitation = JSON.parse(JSON.stringify(this.defaultInvitation));
       this.editedInvitation = Object.assign(emptyInvitation, this.defaultInvitation);
+      this.showEditedUserAlert = false;
       this.inviteDialog = true;
     },
 
@@ -637,8 +679,10 @@ export default {
         this.editedUserData = await UserModel.config(this.RequestHeaders).find(user.id)
           .catch(error => this.handleError(error));
 
-        if (!this.editedUserData.person)
+        if (!this.editedUserData.person) {
+          this.disableSave = true; // Initial superuser has no associated person. Don't allow update on this user.
           this.editedUserData.person = Object.assign({}, this.defaultUser.person);
+        }
 
         if (!this.editedUserData.person.address)
           this.editedUserData.person.address = Object.assign({}, this.defaultUser.person.address);
@@ -665,6 +709,35 @@ export default {
       return userType;
     },
 
+    editedAddressIsValid() {
+      const address = this.editedUser.person.address;
+      if (!address) {
+        this.editedUserHasNullAddress = true;
+        return false;
+      }
+      let streetIsNull = !address.street || address.street.trim() == '';
+      let cityIsNull = !address.city || address.city.trim() == '';
+      let postalCodeIsNull = !address.postalCode || address.postalCode.trim() == '';
+      let countryIsNull = !this.selectedCountry || !this.selectedCountry.isoCode;
+      let regionIsNull = !this.selectedCountryRegion || this.selectedCountryRegion.code.trim() == '';
+      let addressIsNull = streetIsNull && cityIsNull && regionIsNull && postalCodeIsNull && countryIsNull;
+      let addressHasNull = streetIsNull || cityIsNull || regionIsNull || postalCodeIsNull || countryIsNull;
+
+      if (!addressIsNull && addressHasNull) {
+        this.showStreetValidataion = streetIsNull;
+        this.showCityValidataion = cityIsNull;
+        this.showPostalCodeValidataion = postalCodeIsNull;
+        this.showCountryValidataion = countryIsNull;
+        this.showCountryRegionValidataion = regionIsNull;
+        return false;
+      }
+
+      if (addressIsNull)
+        this.editedUserHasNullAddress = true;
+
+      return true;
+    },
+
     async addNewUserAccount() {
       const newUserAccount = Object.assign({}, this.defaultUserAccount);
       newUserAccount.platform = this.newAccountPlatform;
@@ -686,6 +759,8 @@ export default {
     async editUserAccount(userAccount) {
       this.editedUserAccountIndex = this.userAccounts.indexOf(userAccount);
       this.editedUserAccount = Object.assign({}, userAccount);
+      this.showEditedUserAlert = false;
+      this.showInvitedUserAlert = false;
     },
 
     async updateUserAccount() {
@@ -732,27 +807,47 @@ export default {
         this.selectedUserType = {};
         this.disableSave = false;
         this.editedUser = Object.assign({}, this.defaultUser);
+        this.editedUserHasNullAddress = false;
+        this.showStreetValidataion = false;
+        this.showCityValidataion = false;
+        this.showPostalCodeValidataion = false;
+        this.showCountryValidataion = false;
+        this.showCountryRegionValidataion = false;
+        this.hasTriggeredValidation = false;
         this.v$.$reset();
       });
     },
 
     async save() {
       await this.v$.$validate();
-      if (this.v$.editedUser.$error) 
+      let formIsValid = !this.v$.editedUser.$error && this.editedAddressIsValid();
+      this.hasTriggeredValidation = true;
+      if (!formIsValid) 
         return;
 
       if (this.editedUser) {
-        this.editedUser.person.address.country = this.selectedCountry;
-        if (this.selectedCountryRegion)
-          this.editedUser.person.address.region = this.selectedCountryRegion.code;
-        this.editedUser.performingRightsOrganization = this.selectedPerformingRightsOrganization;
-        this.editedUser.publisher = this.selectedPublisher;
+        let emptyUser = JSON.parse(JSON.stringify(this.defaultUser));
+        let editedUser = JSON.parse(JSON.stringify(this.editedUser));
+        let userToSave = Object.assign(emptyUser, editedUser);
+
+        if (this.editedUserHasNullAddress)
+          userToSave.person.address = null;
+         else {
+          userToSave.person.address.country = this.selectedCountry;
+          if (this.selectedCountryRegion) 
+            userToSave.person.address.region = this.selectedCountryRegion.code;
+        }
+
+        userToSave.performingRightsOrganization = this.selectedPerformingRightsOrganization;
+        userToSave.publisher = this.selectedPublisher;
         let userRoles = 0;
         this.selectedUserRoles.forEach(userRole => userRoles = userRoles | userRole);
-        this.editedUser.roles = userRoles;
-        const userModel = new UserModel(this.editedUser);
+        userToSave.roles = userRoles;
+        const userModel = new UserModel(userToSave);
         userModel.config(this.RequestHeaders).save()
           .then (() => {
+            this.lastEditedUserName = userToSave.person.firstName + ' ' + userToSave.person.lastName;
+            this.showEditedUserAlert = true;
             this.initialize();
           })
           .catch(error => this.handleError(error));

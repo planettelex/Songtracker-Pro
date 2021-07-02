@@ -96,8 +96,10 @@ const messages = {
         SystemUser: 'System User',
         TaxIdentifier: 'Tax Identifier',
         Type: 'Type | Types',
+        Updated: 'Updated',
         User: 'User | Users',
         Username: 'Username',
+        ValueIsRequired: 'Value is required',
         Version: 'Version',
         VisualArtist: 'Visual Artist | Visual Artists',
         Website: 'Website'
