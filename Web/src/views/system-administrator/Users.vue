@@ -21,6 +21,7 @@
         <v-toolbar flat>
           <v-toolbar-title class="mt-2"><h2>{{ $tc('User', 2) }}</h2></v-toolbar-title>
           <v-spacer></v-spacer>
+          <!-- Invite Dialog -->
           <v-dialog v-model="inviteDialog" max-width="800px">
             <template v-slot:activator="{ attrs }">
               <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="inviteUser()"><v-icon class="pr-3">mdi-email</v-icon> {{ $t('Invite') }} {{ $tc('User', 1) }}</v-btn>
@@ -38,19 +39,23 @@
                   </v-col>
                   <v-col cols="3">
                     <v-text-field hide-details="true" :label="$t('Name')" v-model="editedInvitation.name"></v-text-field>
+                    <span class="validation-error" v-if="v$.editedInvitation.name.$error">{{ validationMessages(v$.editedInvitation.name.$errors) }}</span>
                   </v-col>
                   <v-col cols="4">
                     <v-text-field hide-details="true" :label="$t('Email')" v-model="editedInvitation.email"></v-text-field>
+                    <span class="validation-error" v-if="v$.editedInvitation.email.$error">{{ validationMessages(v$.editedInvitation.email.$errors) }}</span>
                   </v-col>
                 </v-row>
                 <v-row v-if="showPublisherFields">
                   <v-col cols="5">
                     <v-select hide-details="true" :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object></v-select>
+                    <span class="validation-error" v-if="showInvitePublisherValidation">{{ $t('ValueIsRequired') }}</span>
                   </v-col>
                 </v-row>
                 <v-row v-if="showLabelFields">
                   <v-col cols="5">
                     <v-select hide-details="true" :label="$tc('RecordLabel', 1)" :items="recordLabels" v-model="selectedRecordLabel" item-text="name" item-value="id" return-object></v-select>
+                    <span class="validation-error" v-if="showInviteLabelValidation">{{ $t('ValueIsRequired') }}</span>
                   </v-col>
                 </v-row>
                 <v-row v-if="showUserFields">
@@ -64,16 +69,18 @@
                 <v-row v-if="showUserFields">
                     <v-col cols="12">
                       <v-select hide-details="true" :label="$tc('Role', 2)" :items="userRoles" v-model="selectedUserRoles" item-text="name" item-value="value" multiple></v-select>
+                      <span class="validation-error" v-if="showInviteRolesValidation">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                   </v-row>
               </v-card-text>
               <v-card-actions class="pb-6">
                 <v-spacer></v-spacer>
-                <v-btn class="v-cancel-button rounded" @click="closeInvite">{{ $t('Cancel') }}</v-btn>
+                <v-btn class="v-cancel-button mr-5 rounded" @click="closeInvite">{{ $t('Cancel') }}</v-btn>
                 <v-btn class="v-button mr-4 rounded" @click="sendInvite">{{ $t('Invite') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <!-- Edit Dialog -->
           <v-dialog v-model="editDialog" max-width="800px">
             <v-card>
               <v-card-title class="modal-title pt-2">
@@ -89,74 +96,74 @@
                 <v-container v-if="editTab == 0" class="app-form">
                   <v-row>
                     <v-col cols="2" class="pl-0">
-                      <v-text-field hide-details="true" :label="$t('First')" v-model="editedUser.person.firstName"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('First')" v-model="editedUser.person.firstName" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="v$.editedUser.person.firstName.$error">{{ validationMessages(v$.editedUser.person.firstName.$errors) }}</span>
                     </v-col>
                     <v-col cols="1">
-                      <v-text-field hide-details="true" :label="$t('MiddleAbbreviation')" v-model="editedUser.person.middleName"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('MiddleAbbreviation')" v-model="editedUser.person.middleName" :disabled="disableSave"></v-text-field>
                     </v-col>
                     <v-col cols="2">
-                      <v-text-field hide-details="true" :label="$t('Last')" v-model="editedUser.person.lastName"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Last')" v-model="editedUser.person.lastName" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="v$.editedUser.person.lastName.$error">{{ validationMessages(v$.editedUser.person.lastName.$errors) }}</span>
                     </v-col>
                     <v-col cols="1">
-                      <v-text-field hide-details="true" :label="$t('Suffix')" v-model="editedUser.person.nameSuffix"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Suffix')" v-model="editedUser.person.nameSuffix" :disabled="disableSave"></v-text-field>
                     </v-col>
                     <v-col cols="3" >
-                      <v-text-field hide-details="true" :label="$t('PhoneNumber')" v-model="editedUser.person.phone"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('PhoneNumber')" v-model="editedUser.person.phone" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="v$.editedUser.person.phone.$error">{{ validationMessages(v$.editedUser.person.phone.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0" v-if="showUserFields">
-                      <v-text-field hide-details="true" :label="$t('SSN')" v-model="editedUser.socialSecurityNumber"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('SSN')" v-model="editedUser.socialSecurityNumber" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="v$.editedUser.socialSecurityNumber.$error">{{ validationMessages(v$.editedUser.socialSecurityNumber.$errors) }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="6" class="pl-0">
-                      <v-text-field hide-details="true" :label="$t('Email')" v-model="editedUser.authenticationId"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Email')" v-model="editedUser.authenticationId" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="v$.editedUser.authenticationId.$error">{{ validationMessages(v$.editedUser.authenticationId.$errors) }}</span>
                     </v-col>
                     <v-col cols="6" class="pr-0">
-                      <v-text-field hide-details="true" :label="$t('Address')" v-model="editedUser.person.address.street"></v-text-field>
-                      <span class="validation-error" v-if="showStreetValidataion">{{ $t('ValueIsRequired') }}</span>
+                      <v-text-field hide-details="true" :label="$t('Address')" v-model="editedUser.person.address.street" :disabled="disableSave"></v-text-field>
+                      <span class="validation-error" v-if="showStreetValidation">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
-                      <v-text-field hide-details="true" :label="$t('City')" v-model="editedUser.person.address.city"></v-text-field>
-                      <span class="validation-error" v-if="showCityValidataion">{{ $t('ValueIsRequired') }}</span>
+                      <v-text-field hide-details="true" :label="$t('City')" v-model="editedUser.person.address.city" :disabled="disableSave"></v-text-field>
+                      <span class="validation-error" v-if="showCityValidation">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                     <v-col cols="3" >
-                      <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedUser.person.address.postalCode"></v-text-field>
-                      <span class="validation-error" v-if="showPostalCodeValidataion">{{ $t('ValueIsRequired') }}&nbsp;</span>
+                      <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedUser.person.address.postalCode" :disabled="disableSave"></v-text-field>
+                      <span class="validation-error" v-if="showPostalCodeValidation">{{ $t('ValueIsRequired') }}&nbsp;</span>
                       <span class="validation-error" v-if="v$.editedUser.person.address.postalCode.$error">{{ validationMessages(v$.editedUser.person.address.postalCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
-                      <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object :disabled="disableSave"></v-select>
                       <span class="validation-error" v-if="showCountryValidataion">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0">
-                      <v-select hide-details="true" :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object :disabled="disableSave"></v-select>
                       <span class="validation-error" v-if="showCountryRegionValidataion">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                   </v-row>
                   <v-row v-if="showUserFields || showPublisherFields">
                     <v-col cols="4" class="pl-0">
-                      <v-select hide-details="true" :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object></v-select>
+                      <v-select hide-details="true" :label="$tc('PublishingCompany', 1)" :items="publishers" v-model="selectedPublisher" item-text="name" item-value="id" return-object :disabled="disableSave"></v-select>
                     </v-col>
                     <v-col cols="2">
-                      <v-select hide-details="true" :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
+                      <v-select hide-details="true" :label="$t('AffiliatedPro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object :disabled="disableSave"></v-select>
                     </v-col>
                     <v-col cols="3">
-                      <v-text-field hide-details="true" :label="$t('ProIdentifier')" v-model="editedUser.performingRightsOrganizationMemberNumber"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('ProIdentifier')" v-model="editedUser.performingRightsOrganizationMemberNumber" :disabled="disableSave"></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pr-0" v-if="showUserFields">
-                      <v-text-field hide-details="true" :label="$t('SoundExchangeId')" v-model="editedUser.soundExchangeAccountNumber"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('SoundExchangeId')" v-model="editedUser.soundExchangeAccountNumber" :disabled="disableSave"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row v-if="showUserFields">
                     <v-col cols="12" class="pl-0 pr-0">
-                      <v-select hide-details="true" :label="$tc('Role', 2)" :items="userRoles" v-model="selectedUserRoles" item-text="name" item-value="value" multiple></v-select>
+                      <v-select hide-details="true" :label="$tc('Role', 2)" :items="userRoles" v-model="selectedUserRoles" item-text="name" item-value="value" multiple :disabled="disableSave"></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -164,14 +171,23 @@
                 <v-container v-if="editTab == 1">
                   <div class="datatable-toolbar">
                     <v-toolbar flat dense>
-                      <v-select dense style="width: 26%; margin-bottom: -7px;  margin-left:-12px;" :hide-details="true" class="small-font mr-3" :label="$tc('Platform', 1)" :items="platforms" v-model="newAccountPlatform" item-text="name" item-value="id" return-object></v-select>
-                      <v-text-field dense style="width: 26%; margin-bottom: -7px; " :hide-details="true" class="small-font mr-5" :label="$t('Username')" v-model="newAccountUsername"></v-text-field>
-                      <v-checkbox dense style="margin-bottom: -18px;" :hide-details="true" class="small-font" :label="$t('Preferred')" v-model="newAccountIsPreferred"></v-checkbox>
-                      <v-spacer></v-spacer>
-                      <v-btn style="margin: 0 -12px -10px 0;" class="v-circle-button" @click="addNewUserAccount">
-                        <v-icon color="white">mdi-plus</v-icon>
-                      </v-btn>
-                      
+                      <v-row>
+                        <v-col cols="4">
+                          <v-select style="margin-bottom: -7px;" dense :hide-details="true" class="small-font pl-2 pr-1" :label="$tc('Platform', 1)" :items="platforms" v-model="newAccountPlatform" item-text="name" item-value="id" return-object :disabled="disableSave"></v-select>
+                          <div style="padding: 8px 0 0 8px;" class="validation-error" v-if="showAccountPlatformValidation">{{ $t('ValueIsRequired') }}</div>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-text-field style="margin-bottom: -7px;" dense :hide-details="true" class="small-font pl-2" :label="$t('Username')" v-model="newAccountUsername" :disabled="disableSave"></v-text-field>
+                          <div style="padding: 8px 0 0 8px;" class="validation-error" v-if="showAccountUsernameValidation">{{ $t('ValueIsRequired') }}</div>
+                        </v-col>
+                        <v-col cols="3">
+                          <v-checkbox style="padding-top: 5px;" dense :hide-details="true" class="small-font pl-8" :label="$t('Preferred')" v-model="newAccountIsPreferred" :disabled="disableSave"></v-checkbox>
+                        </v-col>
+                        <v-col cols="1" class="pr-0">
+                          <v-spacer></v-spacer>
+                          <v-icon style="margin-bottom: -10px" @click="addNewUserAccount" :disabled="disableSave">mdi-plus</v-icon>
+                        </v-col>
+                      </v-row>
                     </v-toolbar>
                   </div>
                   <v-data-table dense hide-default-footer :headers="userAccountHeaders" :items="userAccounts">
@@ -194,7 +210,7 @@
                     <template v-slot:[`item.actions`]="{ item }">
                       <div v-if="item.id === editedUserAccount.id">
                         <v-icon small color="red" class="mr-3" @click="closeEditUserAccount">mdi-window-close</v-icon>
-                        <v-icon small style="margin-right: -5px;" color="green" @click="updateUserAccount(item)">mdi-content-save</v-icon>
+                        <v-icon small style="margin-right: -5px;" color="green" @click="updateUserAccount()">mdi-content-save</v-icon>
                       </div>
                       <div v-else>
                         <v-icon small class="mr-3" @click="editUserAccount(item)">mdi-pencil</v-icon>
@@ -213,6 +229,14 @@
             </v-card>
           </v-dialog>
         </v-toolbar> 
+      </template>
+
+      <template v-slot:[`item.roles`]="{ item }">
+        <v-icon class="role-icon" color="#4355db" v-if="userInRole(item, systemUserRoles.Songwriter)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon" color="#49e66c" v-if="userInRole(item, systemUserRoles.ArtistMember)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon" color="#f7d038" v-if="userInRole(item, systemUserRoles.ArtistManager)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon" color="#eb7532" v-if="userInRole(item, systemUserRoles.Producer)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon" color="#e6261f" v-if="userInRole(item, systemUserRoles.VisualArtist)">mdi-rectangle</v-icon>
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
@@ -239,6 +263,7 @@ import RecordLabelModel from '../../models/api/RecordLabel';
 import UserType from '../../enums/UserType';
 import UserTypes from '../../models/local/UserTypes';
 import UserRoles from '../../models/local/UserRoles';
+import SystemUserRoles from '../../enums/SystemUserRoles';
 import useVuelidate from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
@@ -275,6 +300,7 @@ export default {
     userTypes: [],
     selectedUserType: {},
     userRoles: [],
+    systemUserRoles: SystemUserRoles,
     selectedUserRoles: [],
     users: [],
     userAccounts: [],
@@ -392,11 +418,16 @@ export default {
       isPreferred: false
     },
     disableSave: false,
-    showStreetValidataion: false,
-    showCityValidataion: false,
-    showPostalCodeValidataion: false,
+    showStreetValidation: false,
+    showCityValidation: false,
+    showPostalCodeValidation: false,
     showCountryValidataion: false,
     showCountryRegionValidataion: false,
+    showAccountPlatformValidation: false,
+    showAccountUsernameValidation: false,
+    showInviteRolesValidation: false,
+    showInvitePublisherValidation: false,
+    showInviteLabelValidation: false,
     hasTriggeredValidation: false,
     showInvitedUserAlert: false,
     showEditedUserAlert: false,
@@ -482,17 +513,27 @@ export default {
 
     'editedUser.person.address.street'(val) {
         const valIsNull = val == null || val.trim() == '';
-        this.showStreetValidataion = this.hasTriggeredValidation && valIsNull;
+        this.showStreetValidation = this.hasTriggeredValidation && valIsNull;
     },
 
     'editedUser.person.address.city'(val) {
         const valIsNull = val == null || val.trim() == '';
-        this.showCityValidataion = this.hasTriggeredValidation && valIsNull;
+        this.showCityValidation = this.hasTriggeredValidation && valIsNull;
     },
 
     'editedUser.person.address.postalCode'(val) {
         const valIsNull = val == null || val.trim() == '';
-        this.showPostalCodeValidataion = this.hasTriggeredValidation && valIsNull;
+        this.showPostalCodeValidation = this.hasTriggeredValidation && valIsNull;
+    },
+
+    newAccountPlatform(val) {
+      if (val != null && this.showAccountPlatformValidation)
+        this.showAccountPlatformValidation = false;
+    },
+
+    newAccountUsername(val) {
+      if (val != null && this.showAccountUsernameValidation)
+        this.showAccountUsernameValidation = false;
     },
 
     selectedCountry(val) {
@@ -507,19 +548,33 @@ export default {
         this.showCountryRegionValidataion = this.hasTriggeredValidation && valIsNull;
     },
 
+    selectedPublisher(val) {
+      if (val != null && this.showInvitePublisherValidation)
+        this.showInvitePublisherValidation = false;
+    },
+
+    selectedRecordLabel(val) {
+      if (val != null && this.showInviteLabelValidation)
+        this.showInviteLabelValidation = false;
+    },
+
     selectedUserType(val) {
       switch(val.value) {
         case UserType.PublisherAdministrator:
+          this.loadPublishers();
           this.showPublisherFields = true;
           this.showLabelFields = false;
           this.showUserFields = false;
           break;
         case UserType.LabelAdministrator:
+          this.loadRecordLabels();
           this.showPublisherFields = false;
           this.showLabelFields = true;
           this.showUserFields = false;
           break;
         case UserType.SystemUser:
+          this.loadPublishers();
+          this.loadArtists();
           this.showPublisherFields = false;
           this.showLabelFields = false;
           this.showUserFields = true;
@@ -530,6 +585,11 @@ export default {
           this.showUserFields = false;
           break;
       }
+    },
+
+    selectedUserRoles(val) {
+      if (val != null && val.length > 0 && this.showInviteRolesValidation)
+        this.showInviteRolesValidation = false;
     }
   },
 
@@ -598,20 +658,30 @@ export default {
         .catch(error => this.handleError(error));
     },
 
+    async loadRecordLabels() {
+      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
+    },
+
+    async loadArtists() {
+      this.artists = await ArtistModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
+    },
+
     async loadUserAccounts() {
       this.userAccounts = await UserAccountModel.config(this.RequestHeaders).custom(this.editedUserData, 'accounts').get()
         .catch(error => this.handleError(error));
     },
 
     async inviteUser() {
-      this.artists = await ArtistModel.config(this.RequestHeaders).all()
-        .catch(error => this.handleError(error));
-      this.recordLabels = await RecordLabelModel.config(this.RequestHeaders).all()
-        .catch(error => this.handleError(error));
       let emptyInvitation = JSON.parse(JSON.stringify(this.defaultInvitation));
       this.editedInvitation = Object.assign(emptyInvitation, this.defaultInvitation);
       this.showEditedUserAlert = false;
       this.inviteDialog = true;
+    },
+
+    userInRole(user, role) {
+      return (user.roles & role) == role;
     },
 
     closeInvite() {
@@ -628,13 +698,29 @@ export default {
     },
 
     async sendInvite() {
-      const formIsValid = await this.v$.$validate();
+      let formIsValid = await this.v$.$validate();
+      let userType = this.selectedUserType.value;
+
+      if (userType == UserType.SystemUser && (this.selectedUserRoles == null || this.selectedUserRoles.length == 0)) {
+        this.showInviteRolesValidation = true;
+        formIsValid = false;
+      }
+
+      if (userType == UserType.PublisherAdministrator && this.selectedPublisher == null) {
+        this.showInvitePublisherValidation = true;
+        formIsValid = false;
+      }
+
+      if (userType == UserType.LabelAdministrator && this.selectedRecordLabel == null) {
+        this.showInviteLabelValidation = true;
+        formIsValid = false;
+      }
+
       if (!formIsValid) 
         return;
 
       if (this.editedInvitation) {
         this.editedInvitation.invitedByUserId = this.User.id;
-        let userType = this.selectedUserType.value;
         let userRoles = 0;
         this.editedInvitation.type = userType;
         switch (userType) {
@@ -724,9 +810,9 @@ export default {
       let addressHasNull = streetIsNull || cityIsNull || regionIsNull || postalCodeIsNull || countryIsNull;
 
       if (!addressIsNull && addressHasNull) {
-        this.showStreetValidataion = streetIsNull;
-        this.showCityValidataion = cityIsNull;
-        this.showPostalCodeValidataion = postalCodeIsNull;
+        this.showStreetValidation = streetIsNull;
+        this.showCityValidation = cityIsNull;
+        this.showPostalCodeValidation = postalCodeIsNull;
         this.showCountryValidataion = countryIsNull;
         this.showCountryRegionValidataion = regionIsNull;
         return false;
@@ -740,9 +826,26 @@ export default {
 
     async addNewUserAccount() {
       const newUserAccount = Object.assign({}, this.defaultUserAccount);
-      newUserAccount.platform = this.newAccountPlatform;
-      newUserAccount.username = this.newAccountUsername;
+      let accountInformationIsValid = true;
+
+      if (this.newAccountPlatform)
+        newUserAccount.platform = this.newAccountPlatform;
+      else {
+        this.showAccountPlatformValidation = true;
+        accountInformationIsValid = false;
+      }
+
+      if (this.newAccountUsername)
+        newUserAccount.username = this.newAccountUsername;
+      else {
+        this.showAccountUsernameValidation = true;
+        accountInformationIsValid = false;
+      }
+
       newUserAccount.isPreferred = this.newAccountIsPreferred;
+      if (!accountInformationIsValid)
+        return;
+      
       const userModel = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
         .catch(error => this.handleError(error));
       const userAccountModel = new UserAccountModel(newUserAccount).config(this.RequestHeaders).for(userModel);
@@ -764,6 +867,9 @@ export default {
     },
 
     async updateUserAccount() {
+      if (this.editedUserAccount.username == null || this.editedUserAccount.username.trim() == '')
+        return;
+      
       const userModel = await UserModel.config(this.RequestHeaders).find(this.editedUserData.id)
         .catch(error => this.handleError(error));
       const userAccountModel = new UserAccountModel(this.editedUserAccount).config(this.RequestHeaders).for(userModel);
@@ -808,9 +914,9 @@ export default {
         this.disableSave = false;
         this.editedUser = Object.assign({}, this.defaultUser);
         this.editedUserHasNullAddress = false;
-        this.showStreetValidataion = false;
-        this.showCityValidataion = false;
-        this.showPostalCodeValidataion = false;
+        this.showStreetValidation = false;
+        this.showCityValidation = false;
+        this.showPostalCodeValidation = false;
         this.showCountryValidataion = false;
         this.showCountryRegionValidataion = false;
         this.hasTriggeredValidation = false;
@@ -878,19 +984,15 @@ export default {
   .user-modal-content {
     min-height: 300px;
   }
-  .v-data-table-header > tr > th:first-child {
-    min-width: 50px;
+  .datatable-toolbar {
+    .v-toolbar__content {
+      padding: 0;
+    }
   }
-  .v-data-table-header > tr > th:nth-child(2) {
-    min-width: 100px;
-  }
-  .v-data-table-header > tr > th:nth-child(3) {
-    min-width: 90px;
-  }
-  .v-data-table-header > tr > th:nth-child(4) {
-    min-width: 155px;
-  }
-  .v-data-table-header > tr > th:nth-child(5) {
-    min-width: 155px;
+  .role-icon {
+    width: 10px;
+    font-size: 40px !important;
+    overflow: hidden !important; 
+    margin-top: -3px;
   }
 </style>

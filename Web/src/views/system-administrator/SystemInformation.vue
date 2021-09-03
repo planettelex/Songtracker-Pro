@@ -90,7 +90,7 @@ export default {
 
     this.emailInfo = new Array(2);
     this.emailInfo[0] = new NameValuePair(this.$t("Server"), this.systemInformation.emailServer);
-    this.emailInfo[1] = new NameValuePair(this.$t("Account"), this.systemInformation.emailAccount);
+    this.emailInfo[1] = new NameValuePair(this.$tc("Account"), this.systemInformation.emailAccount);
   }
 };
 </script>

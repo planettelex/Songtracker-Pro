@@ -113,7 +113,7 @@
                     <template v-slot:[`item.actions`]="{ item }">
                       <div v-if="item.id === editedArtistMember.id">
                         <v-icon small color="red" class="mr-3" @click="closeEditArtistMember">mdi-window-close</v-icon>
-                        <v-icon small color="green" @click="updateArtistMember(item)">mdi-content-save</v-icon>
+                        <v-icon small color="green" @click="updateArtistMember()">mdi-content-save</v-icon>
                       </div>
                       <div v-else>
                         <v-icon small @click="editArtistMember(item)">mdi-pencil</v-icon>
@@ -153,7 +153,7 @@
                     <template v-slot:[`item.actions`]="{ item }">
                       <div v-if="item.id === editedArtistManager.id">
                         <v-icon small color="red" class="mr-3" @click="closeEditArtistManager">mdi-window-close</v-icon>
-                        <v-icon small color="green" @click="updateArtistManager(item)">mdi-content-save</v-icon>
+                        <v-icon small color="green" @click="updateArtistManager()">mdi-content-save</v-icon>
                       </div>
                       <div v-else>
                         <v-icon small @click="editArtistManager(item)">mdi-pencil</v-icon>
@@ -166,9 +166,9 @@
                 <v-container v-if="tab == 3">
                   <div class="datatable-toolbar">
                     <v-toolbar flat dense>
-                      <v-select style="margin-bottom: -7px; width: 26%" dense hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="selectedAccountPlatform" item-text="name" item-value="id" return-object></v-select>
-                      <v-text-field style="width: 24%" hide-details="true" class="small-font mr-2" :label="$t('Username')"></v-text-field>
-                      <v-checkbox style="margin-bottom: -10px;" hide-details="true" class="small-font" :label="$t('Preferred')"></v-checkbox>
+                      <v-select style="margin-bottom: -7px; width: 26%" dense :hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="newAccountPlatform" item-text="name" item-value="id" return-object></v-select>
+                      <v-text-field style="width: 24%; margin-bottom: -7px;" dense :hide-details="true" class="small-font mr-2" :label="$t('Username')" v-model="newAccountUsername"></v-text-field>
+                      <v-checkbox style="margin-bottom: -18px;" dense :hide-details="true" class="small-font" :label="$t('Preferred')" v-model="newAccountIsPreferred"></v-checkbox>
                       <v-spacer></v-spacer>
                       <v-icon style="margin-bottom: -10px" @click="addNewArtistAccount">mdi-plus</v-icon>
                     </v-toolbar>
@@ -273,7 +273,9 @@ export default {
     countryRegions: [],
     selectedCountryRegion: null,
     platforms: [],
-    selectedAccountPlatform: null,
+    newAccountPlatform: null,
+    newAccountUsername: null,
+    newAccountIsPreferred: false,
     recordLabels: [],
     selectedRecordLabel: null,
     artists: [],
@@ -630,13 +632,16 @@ export default {
       this.editedArtistMember = Object.assign({}, artistMember);
     },
 
-    async updateArtistMember(artistMember) {
-      // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+    async updateArtistMember() {
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
         .catch(error => this.handleError(error));
-      await artist.members().sync(artistMember).catch(error => this.handleError(error));
-      // --------------------------------------
-      this.closeEditArtistMember();
+      const artistMemberModel = new ArtistMemberModel(this.editedArtistMember).config(this.RequestHeaders).for(artistModel);
+      await artistMemberModel.save()
+        .then (() => {
+          this.closeEditArtistMember();
+          this.loadArtistMembers();
+        })
+        .catch(error => this.handleError(error));
     },
 
     closeEditArtistMember() {
@@ -651,13 +656,16 @@ export default {
       this.editedArtistManager = Object.assign({}, artistManager);
     },
 
-    async updateArtistManager(artistManager) {
-      // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+    async updateArtistManager() {
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
         .catch(error => this.handleError(error));
-      await artist.managers().sync(artistManager).catch(error => this.handleError(error));
-      // --------------------------------------
-      this.closeEditArtistManager();
+      const artistManagerModel = new ArtistManagerModel(this.editedArtistManager).config(this.RequestHeaders).for(artistModel);
+      await artistManagerModel.save()
+        .then (() => {
+          this.closeEditArtistManager();
+          this.loadArtistManagers();
+        })
+        .catch(error => this.handleError(error));
     },
 
     closeEditArtistManager() {
@@ -669,7 +677,7 @@ export default {
 
     addNewArtistAccount() {
       const newArtistAccount = Object.assign({}, this.defaultArtistAccount);
-      // TODO: API Call
+      //TODO: newArtistAccount.platform = this.newA
       this.artistAccounts.unshift(newArtistAccount);
     },
 
