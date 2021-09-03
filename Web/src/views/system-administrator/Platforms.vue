@@ -12,7 +12,7 @@
     </v-row>
     <v-row v-if="showEditedAlert" justify="center">
       <v-col cols="12">
-        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ $t('Updated') }} {{ lastEditedPlatformName }}</v-alert>
+        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ lastEditedPlatformName }} {{ $t('Updated') }} </v-alert>
       </v-col>
     </v-row>
     <v-data-table :headers="headers" :items="platforms" sort-by="name" must-sort>
@@ -191,7 +191,6 @@ export default {
         this.selectedServices[i] = platformHasService;
       }
       this.editedIndex = this.platforms.indexOf(platform);
-      if (this.editedIndex != -1) this.showAddedAlert = false;
       let emptyPlatform = JSON.parse(JSON.stringify(this.defaultPlatform));
       this.editedPlatform = Object.assign(emptyPlatform, platform);
       this.dialog = true;

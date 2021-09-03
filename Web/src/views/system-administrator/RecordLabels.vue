@@ -10,6 +10,11 @@
         <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedRecordLabel.name }} {{ $t('Added') }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showEditedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ lastEditedLabelName }} {{ $t('Updated') }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="recordLabels" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -114,6 +119,7 @@ export default {
     countryRegions: [],
     selectedCountryRegion: null,
     recordLabels: [],
+    lastEditedLabelName: null,
     editedIndex: -1,
     editedRecordLabel: {
       id: -1,
@@ -168,6 +174,7 @@ export default {
       }
     },
     showAddedAlert: false,
+    showEditedAlert: false,
     error: null
   }),
 
@@ -257,8 +264,6 @@ export default {
       if (recordLabel && !recordLabel.address)
           recordLabel.address = this.defaultRecordLabel.address;
       this.editedIndex = this.recordLabels.indexOf(recordLabel);
-      if (this.editedIndex != -1)
-        this.showAddedAlert = false;
       let emptyRecordLabel = JSON.parse(JSON.stringify(this.defaultRecordLabel));
       this.editedRecordLabel = Object.assign(emptyRecordLabel, recordLabel);
       if (recordLabel) {
@@ -287,6 +292,8 @@ export default {
 
       if (this.editedRecordLabel) {
         let isAdded = false;
+        this.showAddedAlert = false;
+        this.showEditedAlert = false;
         this.editedRecordLabel.address.country = this.selectedCountry;
         this.editedRecordLabel.address.region = this.selectedCountryRegion.code;
         if (!this.editedRecordLabel.id) {
@@ -294,13 +301,14 @@ export default {
           this.addedRecordLabel = Object.assign({}, this.editedRecordLabel);
         }
         else {
-          this.showAddedAlert = false;
+          this.lastEditedLabelName = this.editedRecordLabel.name;
         }
 
         const recordLabelModel = new RecordLabelModel(this.editedRecordLabel);
         recordLabelModel.config(this.RequestHeaders).save()
           .then (() => {
-            if (isAdded) this.showAddedAlert = true;
+            this.showAddedAlert = isAdded;
+            this.showEditedAlert = !isAdded;
             this.initialize();
           })
           .catch(error => this.handleError(error));

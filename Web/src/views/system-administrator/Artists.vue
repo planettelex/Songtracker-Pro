@@ -12,7 +12,7 @@
     </v-row>
     <v-row v-if="showEditedAlert" justify="center">
       <v-col cols="12">
-        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ $t('Updated') }} {{ lastEditedArtistName }}</v-alert>
+        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ lastEditedArtistName }} {{ $t('Updated') }}</v-alert>
       </v-col>
     </v-row>
     <v-data-table :headers="headers" :items="artists" sort-by="name" must-sort>
@@ -718,8 +718,6 @@ export default {
       if (artist && !artist.address)
           artist.address = this.defaultArtist.address;
       this.editedIndex = this.artists.indexOf(artist);
-      if (this.editedIndex != -1)
-        this.showAddedAlert = false;
       let emptyArtist = JSON.parse(JSON.stringify(this.defaultArtist));
       this.editedArtist = Object.assign(emptyArtist, artist);
       

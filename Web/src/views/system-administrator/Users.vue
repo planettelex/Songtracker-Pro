@@ -12,7 +12,7 @@
     </v-row>
     <v-row v-if="showEditedUserAlert" justify="center">
       <v-col cols="12">
-        <v-alert v-model="showEditedUserAlert" type="success" dismissible>{{ $t('Updated') }} {{ lastEditedUserName }}</v-alert>
+        <v-alert v-model="showEditedUserAlert" type="success" dismissible>{{ lastEditedUserName }} {{ $t('Updated') }}</v-alert>
       </v-col>
     </v-row>
     <v-data-table :headers="headers" :items="users">
@@ -676,7 +676,6 @@ export default {
     async inviteUser() {
       let emptyInvitation = JSON.parse(JSON.stringify(this.defaultInvitation));
       this.editedInvitation = Object.assign(emptyInvitation, this.defaultInvitation);
-      this.showEditedUserAlert = false;
       this.inviteDialog = true;
     },
 
