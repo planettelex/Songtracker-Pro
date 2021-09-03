@@ -10,6 +10,11 @@
         <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedPublisher.name }} {{ $t('Added') }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showEditedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ lastEditedPublisherName }} {{ $t('Updated') }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="publishers" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -125,6 +130,7 @@ export default {
     performingRightsOrganizations: [],
     selectedPerformingRightsOrganization: null,
     publishers: [],
+    lastEditedPublisherName: null,
     editedIndex: -1,
     editedPublisher: {
       id: -1,
@@ -184,6 +190,7 @@ export default {
       }
     },
     showAddedAlert: false,
+    showEditedAlert: false,
     error: null
   }),
 
@@ -283,8 +290,6 @@ export default {
       if (publisher && !publisher.address)
           publisher.address = this.defaultPublisher.address;
       this.editedIndex = this.publishers.indexOf(publisher);
-      if (this.editedIndex != -1)
-        this.showAddedAlert = false;
       let emptyPublisher = JSON.parse(JSON.stringify(this.defaultPublisher));
       this.editedPublisher = Object.assign(emptyPublisher, publisher);
       if (publisher) {
@@ -315,6 +320,8 @@ export default {
 
       if (this.editedPublisher) {
         let isAdded = false;
+        this.showAddedAlert = false;
+        this.showEditedAlert = false;
         this.editedPublisher.address.country = this.selectedCountry;
         this.editedPublisher.address.region = this.selectedCountryRegion.code;
         this.editedPublisher.performingRightsOrganization = this.selectedPerformingRightsOrganization;
@@ -323,13 +330,14 @@ export default {
           this.addedPublisher = Object.assign({}, this.editedPublisher);
         }
         else {
-          this.showAddedAlert = false;
+          this.lastEditedPublisherName = this.editedPublisher.name;
         }
 
         const publisherModel = new PublisherModel(this.editedPublisher);
         publisherModel.config(this.RequestHeaders).save()
           .then (() => {
-            if (isAdded) this.showAddedAlert = true;
+            this.showAddedAlert = isAdded;
+            this.showEditedAlert = !isAdded;
             this.initialize();
           })
           .catch(error => this.handleError(error));
