@@ -10,6 +10,11 @@
         <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedPlatform.name }} {{ $t('Added') }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showEditedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ $t('Updated') }} {{ lastEditedPlatformName }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="platforms" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -85,7 +90,8 @@ export default {
     platforms: [],
     services: [],
     selectedServices: [ false, false, false, false, false, false, false, false, false, false,
-                        false, false, false, false, false, false, false, false, false, false],
+                        false, false, false, false, false, false, false, false, false, false ],
+    lastEditedPlatformName: null,
     editedIndex: -1,
     editedPlatform: {
       id: -1,
@@ -105,6 +111,7 @@ export default {
       services: []
     },
     showAddedAlert: false,
+    showEditedAlert: false,
     error: null
   }),
 
@@ -209,12 +216,14 @@ export default {
 
       if (this.editedPlatform) {
         let isAdded = false;
+        this.showAddedAlert = false;
+        this.showEditedAlert = false;
         if (!this.editedPlatform.id) {
           isAdded = true;
           this.addedPlatform = Object.assign({}, this.editedPlatform);
         }
         else {
-          this.showAddedAlert = false;
+          this.lastEditedPlatformName = this.editedPlatform.name;
         }
         this.editedPlatform.services = new Array(this.selectedServiceCount);
         let editedPlatformServiceIndex = 0;
@@ -229,7 +238,8 @@ export default {
         const platformModel = new PlatformModel(this.editedPlatform);
         platformModel.config(this.RequestHeaders).save()
           .then (() => {
-            if (isAdded) this.showAddedAlert = true;
+            this.showAddedAlert = isAdded;
+            this.showEditedAlert = !isAdded;
             this.initialize();
           })
           .catch(error => this.handleError(error));
