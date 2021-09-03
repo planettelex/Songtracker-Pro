@@ -28,6 +28,7 @@ namespace SongtrackerPro.Api.Controllers
                                 IListArtistLinksTask listArtistLinksTask,
                                 IGetArtistLinkTask getArtistLinkTask,
                                 IAddArtistLinkTask addArtistLinkTask,
+                                IUpdateArtistLinkTask updateArtistLinkTask,
                                 IRemoveArtistLinkTask removeArtistLinkTask,
                                 IListArtistMembersTask listArtistMembersTask,
                                 IGetArtistMemberTask getArtistMemberTask,
@@ -51,6 +52,7 @@ namespace SongtrackerPro.Api.Controllers
             _listArtistLinksTask = listArtistLinksTask;
             _getArtistLinkTask = getArtistLinkTask;
             _addArtistLinkTask = addArtistLinkTask;
+            _updateArtistLinkTask = updateArtistLinkTask;
             _removeArtistLinkTask = removeArtistLinkTask;
             _listArtistMembersTask = listArtistMembersTask;
             _getArtistMemberTask = getArtistMemberTask;
@@ -73,6 +75,7 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IListArtistLinksTask _listArtistLinksTask;
         private readonly IGetArtistLinkTask _getArtistLinkTask;
         private readonly IAddArtistLinkTask _addArtistLinkTask;
+        private readonly IUpdateArtistLinkTask _updateArtistLinkTask;
         private readonly IRemoveArtistLinkTask _removeArtistLinkTask;
         private readonly IListArtistMembersTask _listArtistMembersTask;
         private readonly IGetArtistMemberTask _getArtistMemberTask;
@@ -673,6 +676,52 @@ namespace SongtrackerPro.Api.Controllers
 
                 return taskResults.Success ? 
                     Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
+        }
+
+        [Route(Routes.ArtistLink)]
+        [HttpPut]
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.SystemUser)]
+        [SystemUserRolesAllowed(SystemUserRoles.ArtistMember | SystemUserRoles.ArtistManager)]
+        public IActionResult UpdateArtistLink(int artistId, int artistLinkId, ArtistLink artistLink)
+        {
+            try
+            {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                if (!UserIsAuthorizedForArtist(artistId))
+                    return Unauthorized();
+
+                var invalidArtistPathResult = InvalidArtistPathResult(artistId);
+                if (invalidArtistPathResult != null)
+                    return invalidArtistPathResult;
+
+                var getArtistLinkResult = _getArtistLinkTask.DoTask(artistLinkId);
+
+                if (getArtistLinkResult.HasException)
+                    return Error(getArtistLinkResult.Exception);
+
+                if (getArtistLinkResult.HasNoData)
+                    return NotFound();
+
+                if (getArtistLinkResult.Data.ArtistId != artistId)
+                    return BadRequest();
+
+                artistLink.ArtistId = artistId;
+                artistLink.Id = artistLinkId;
+                var taskResults = _updateArtistLinkTask.DoTask(artistLink);
+
+                return taskResults.Success ? 
+                    Ok() : 
                     Error(taskResults.Exception);
             }
             catch (Exception e)

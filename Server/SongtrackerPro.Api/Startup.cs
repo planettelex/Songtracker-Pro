@@ -127,6 +127,7 @@ namespace SongtrackerPro.Api
             services.AddScoped<IListArtistLinksTask, ListArtistLinks>();
             services.AddScoped<IGetArtistLinkTask, GetArtistLink>();
             services.AddScoped<IAddArtistLinkTask, AddArtistLink>();
+            services.AddScoped<IUpdateArtistLinkTask, UpdateArtistLink>();
             services.AddScoped<IRemoveArtistLinkTask, RemoveArtistLink>();
 
             services.AddScoped<IGetPersonTask, GetPerson>();

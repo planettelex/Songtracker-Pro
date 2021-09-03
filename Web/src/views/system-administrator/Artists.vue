@@ -10,6 +10,11 @@
         <v-alert v-model="showAddedAlert" type="success" dismissible>{{ addedArtist.name }} {{ $t('Added') }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showEditedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showEditedAlert" type="success" dismissible>{{ $t('Updated') }} {{ lastEditedArtistName }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="artists" sort-by="name" must-sort>
 
       <template v-slot:top>
@@ -166,22 +171,50 @@
                 <v-container v-if="tab == 3">
                   <div class="datatable-toolbar">
                     <v-toolbar flat dense>
-                      <v-select style="margin-bottom: -7px; width: 26%" dense :hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="newAccountPlatform" item-text="name" item-value="id" return-object></v-select>
-                      <v-text-field style="width: 24%; margin-bottom: -7px;" dense :hide-details="true" class="small-font mr-2" :label="$t('Username')" v-model="newAccountUsername"></v-text-field>
-                      <v-checkbox style="margin-bottom: -18px;" dense :hide-details="true" class="small-font" :label="$t('Preferred')" v-model="newAccountIsPreferred"></v-checkbox>
-                      <v-spacer></v-spacer>
-                      <v-icon style="margin-bottom: -10px" @click="addNewArtistAccount">mdi-plus</v-icon>
+                      <v-row>
+                        <v-col cols="4">
+                          <v-select style="margin-bottom: -7px;" dense :hide-details="true" class="small-font pl-2 pr-1" :label="$tc('Platform', 1)" :items="paymentPlatforms" v-model="newAccountPlatform" item-text="name" item-value="id" return-object></v-select>
+                          <div style="padding: 8px 0 0 8px;" class="validation-error" v-if="showAccountPlatformValidation">{{ $t('ValueIsRequired') }}</div>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-text-field style="margin-bottom: -7px;" dense :hide-details="true" class="small-font pl-2" :label="$t('Username')" v-model="newAccountUsername"></v-text-field>
+                          <div style="padding: 8px 0 0 8px;" class="validation-error" v-if="showAccountUsernameValidation">{{ $t('ValueIsRequired') }}</div>
+                        </v-col>
+                        <v-col cols="3">
+                          <v-checkbox style="padding-top: 5px;" dense :hide-details="true" class="small-font pl-8" :label="$t('Preferred')" v-model="newAccountIsPreferred"></v-checkbox>
+                        </v-col>
+                        <v-col cols="1" class="pr-0">
+                          <v-spacer></v-spacer>
+                          <v-icon style="margin-bottom: -10px" @click="addNewArtistAccount">mdi-plus</v-icon>
+                        </v-col>
+                      </v-row>
                     </v-toolbar>
                   </div>
                   <v-data-table dense hide-default-footer :headers="artistAccountHeaders" :items="artistAccounts">
 
+                    <template v-slot:[`item.platform.name`]="{ item }">
+                      <v-select dense style="margin-top: 0;" :hide-details="true" class="small-font" :items="paymentPlatforms" v-model="editedArtistAccount.platform" item-text="name" item-value="id" return-object v-if="item.id === editedArtistAccount.id"></v-select>
+                      <span v-else>{{ item.platform.name }}</span>
+                    </template>
+
+                    <template v-slot:[`item.username`]="{ item }">
+                      <v-text-field single-line dense style="margin-top: 0;" :hide-details="true" class="small-font" v-model="editedArtistAccount.username" v-if="item.id === editedArtistAccount.id"></v-text-field>
+                      <span v-else>{{ item.username }}</span>
+                    </template>
+
+                    <template v-slot:[`item.isPreferred`]="{ item }">
+                      <v-simple-checkbox v-model="editedArtistAccount.isPreferred" v-if="item.id === editedArtistAccount.id" :ripple="false"></v-simple-checkbox>
+                      <v-simple-checkbox v-else v-model="item.isPreferred" disabled></v-simple-checkbox>
+                    </template>
+
                     <template v-slot:[`item.actions`]="{ item }">
                       <div v-if="item.id === editedArtistAccount.id">
                         <v-icon small color="red" class="mr-3" @click="closeEditArtistAccount">mdi-window-close</v-icon>
-                        <v-icon small color="green" @click="updateArtistAccount(item)">mdi-content-save</v-icon>
+                        <v-icon small style="margin-right: -5px;" color="green" @click="updateArtistAccount()">mdi-content-save</v-icon>
                       </div>
                       <div v-else>
-                        <v-icon small @click="editArtistAccount(item)">mdi-pencil</v-icon>
+                        <v-icon small class="mr-3" @click="editArtistAccount(item)">mdi-pencil</v-icon>
+                        <v-icon small style="margin-right: -5px;" @click="deleteArtistAccount(item)">mdi-delete</v-icon>
                       </div>
                     </template>
 
@@ -191,31 +224,53 @@
                 <v-container v-if="tab == 4">
                   <v-row>
                     <v-col cols="6" class="pl-5">
-                      <v-text-field hide-details="true" class="mr-1" :label="$t('Website') + ' ' + $tc('Link', 1)" v-model="editedArtist.websiteUrl"></v-text-field>
+                      <v-text-field dense hide-details="true" class="mr-1" :label="$t('Website') + ' ' + $tc('Link', 1)" v-model="editedArtist.websiteUrl"></v-text-field>
                       <span class="validation-error" v-if="v$.editedArtist.websiteUrl.$error">{{ validationMessages(v$.editedArtist.websiteUrl.$errors) }}</span>
                     </v-col>
                     <v-col cols="6">
-                      <v-text-field hide-details="true" :label="$t('PressKit') + ' ' + $tc('Link', 1)" v-model="editedArtist.pressKitUrl"></v-text-field>
+                      <v-text-field dense hide-details="true" :label="$t('PressKit') + ' ' + $tc('Link', 1)" v-model="editedArtist.pressKitUrl"></v-text-field>
                       <span class="validation-error" v-if="v$.editedArtist.pressKitUrl.$error">{{ validationMessages(v$.editedArtist.pressKitUrl.$errors) }}</span>
                     </v-col>
                   </v-row>
+
                   <div class="datatable-toolbar">
                     <v-toolbar flat dense>
-                      <v-select style="margin-bottom: -7px; width: 26%" dense hide-details="true" class="small-font ml-2 mr-2" :label="$tc('Platform', 1)" :items="platforms" v-model="selectedLinkPlatform" item-text="name" item-value="id" return-object></v-select>
-                      <v-text-field style="width: 50%" hide-details="true" class="small-font mr-2" :label="$tc('Link', 1)"></v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-icon style="margin-bottom: -10px" @click="addNewArtistLink">mdi-plus</v-icon>
+                      <v-row>
+                        <v-col cols="4">
+                          <v-select style="margin-bottom: -7px;" dense :hide-details="true" class="small-font pl-2 pr-1" :label="$tc('Platform', 1)" :items="platforms" v-model="newLinkPlatform" item-text="name" item-value="id" return-object></v-select>
+                          <div style="padding: 8px 0 0 8px;" class="validation-error" v-if="showLinkPlatformValidation">{{ $t('ValueIsRequired') }}</div>
+                        </v-col>
+                        <v-col cols="7">
+                          <v-text-field style="margin-bottom: -7px;" dense :hide-details="true" class="small-font pl-2" :label="$tc('Link', 1)" v-model="newLinkUrl"></v-text-field>
+                          <div style="padding: 8px 0 0 8px;" class="validation-error" v-if="showLinkUrlValidation">{{ linkUrlValidationMessage }}</div>
+                        </v-col>
+                        <v-col cols="1">
+                          <v-spacer></v-spacer>
+                          <v-icon style="margin-bottom: -10px" @click="addNewArtistLink">mdi-plus</v-icon>
+                        </v-col>
+                      </v-row>
                     </v-toolbar>
                   </div>
                   <v-data-table dense hide-default-footer :headers="artistLinkHeaders" :items="artistLinks">
 
+                    <template v-slot:[`item.platform.name`]="{ item }">
+                      <v-select dense style="margin-top: 0;" :hide-details="true" class="small-font" :items="platforms" v-model="editedArtistLink.platform" item-text="name" item-value="id" return-object v-if="item.id === editedArtistLink.id"></v-select>
+                      <span v-else>{{ item.platform.name }}</span>
+                    </template>
+
+                    <template v-slot:[`item.url`]="{ item }">
+                      <v-text-field single-line dense style="margin-top: 0;" :hide-details="true" class="small-font" v-model="editedArtistLink.url" v-if="item.id === editedArtistLink.id"></v-text-field>
+                      <span v-else>{{ item.url }}</span>
+                    </template>
+
                     <template v-slot:[`item.actions`]="{ item }">
                       <div v-if="item.id === editedArtistLink.id">
                         <v-icon small color="red" class="mr-3" @click="closeEditArtistLink">mdi-window-close</v-icon>
-                        <v-icon small color="green" @click="updateArtistLink(item)">mdi-content-save</v-icon>
+                        <v-icon small style="margin-right: -5px;" color="green" @click="updateArtistLink(item)">mdi-content-save</v-icon>
                       </div>
                       <div v-else>
-                        <v-icon small @click="editArtistLink(item)">mdi-pencil</v-icon>
+                        <v-icon small class="mr-3" @click="editArtistLink(item)">mdi-pencil</v-icon>
+                        <v-icon small style="margin-right: -5px;" @click="deleteArtistLink(item)">mdi-delete</v-icon>
                       </div>
                     </template>
 
@@ -252,6 +307,7 @@ import ArtistMemberModel from '../../models/api/ArtistMember';
 import ArtistManagerModel from '../../models/api/ArtistManager';
 import ArtistAccountModel from '../../models/api/ArtistAccount';
 import ArtistLinkModel from '../../models/api/ArtistLink';
+import Link from '../../models/local/Link';
 import useVuelidate from '@vuelidate/core';
 import { required, email, url, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
@@ -273,9 +329,12 @@ export default {
     countryRegions: [],
     selectedCountryRegion: null,
     platforms: [],
+    paymentPlatforms: [],
     newAccountPlatform: null,
     newAccountUsername: null,
     newAccountIsPreferred: false,
+    newLinkPlatform: null,
+    newLinkUrl: null,
     recordLabels: [],
     selectedRecordLabel: null,
     artists: [],
@@ -285,6 +344,7 @@ export default {
     artistLinks: [],
     editedIndex: null,
     editedArtistData: null,
+    lastEditedArtistName: null,
     editedArtist: {
       id: -1,
       name: '',
@@ -403,8 +463,13 @@ export default {
       platform: null,
       url: null
     },
-    selectedLinkPlatform: null,
+    showAccountPlatformValidation: false,
+    showAccountUsernameValidation: false,
+    showLinkPlatformValidation: false,
+    showLinkUrlValidation: false,
+    linkUrlValidationMessage: null,
     showAddedAlert: false,
+    showEditedAlert: false,
     error: null
   }),
 
@@ -443,16 +508,16 @@ export default {
 
     artistAccountHeaders() {
       return [
-        { text: this.$tc('Platform', 1), value: "platform.name", width: "37%" },
+        { text: this.$tc('Platform', 1), value: "platform.name", width: "34%" },
         { text: this.$t('Username'), value: "username" },
-        { text: this.$t('Preferred'), value: "isPreferred", width: "120px" },
+        { text: this.$t('Preferred'), value: "isPreferred", width: "125px" },
         { text: '', value: 'actions', sortable: false, align: "right", width: "80px" },
       ];
     },
 
     artistLinkHeaders() {
       return [
-        { text: this.$tc('Platform', 1), value: "platform.name", width: "32%" },
+        { text: this.$tc('Platform', 1), value: "platform.name", width: "34%" },
         { text: this.$tc('Link', 1), value: "url" },
         { text: '', value: 'actions', sortable: false, align: "right", width: "80px" },
       ];
@@ -504,12 +569,12 @@ export default {
           break;
         case 3:
           this.loadArtistAccounts();
-          this.loadPlatforms();
+          this.loadPaymentPlatforms();
           this.setFormTitle(this.$tc('Account', 2));
           break;
         case 4:
           this.loadArtistLinks();
-          this.loadPlatforms();
+          this.loadNonPaymentPlatforms();
           this.setFormTitle(this.$tc('Link', 2));
           break;
       }
@@ -517,6 +582,26 @@ export default {
 
     editedIndex() {
       this.setFormTitle();
+    },
+
+    newAccountPlatform(val) {
+      if (val != null && this.showAccountPlatformValidation)
+        this.showAccountPlatformValidation = false;
+    },
+
+    newAccountUsername(val) {
+      if (val != null && this.showAccountUsernameValidation)
+        this.showAccountUsernameValidation = false;
+    },
+
+    newLinkPlatform(val) {
+      if (val != null && this.showLinkPlatformValidation)
+        this.showLinkPlatformValidation = false;
+    },
+
+    newLinkUrl(val) {
+      if (val != null && this.showLinkUrlValidation)
+        this.showLinkUrlValidation = false;
     },
 
     selectedCountry(val) {
@@ -572,9 +657,31 @@ export default {
         .catch(error => this.handleError(error));
     },
 
-    async loadPlatforms() {
-      this.platforms = await PlatformModel.config(this.RequestHeaders).all()
+    async loadPaymentPlatforms() {
+      console.log("load payment platforms");
+      const allPlatforms = await PlatformModel.config(this.RequestHeaders).all()
         .catch(error => this.handleError(error));
+      this.paymentPlatforms = [];
+      allPlatforms.forEach(platform => {
+        platform.services.forEach(service => {
+          if (service.name.toLowerCase() == 'payment') {
+            this.paymentPlatforms.push(platform);
+          }
+        });
+      });
+    },
+
+    async loadNonPaymentPlatforms() {
+      const allPlatforms = await PlatformModel.config(this.RequestHeaders).all()
+        .catch(error => this.handleError(error));
+      this.platforms = [];
+      allPlatforms.forEach(platform => {
+        platform.services.forEach(service => {
+          if (service.name.toLowerCase() != 'payment') {
+            this.platforms.push(platform);
+          }
+        });
+      });
     },
 
     async loadArtistMembers() {
@@ -675,21 +782,70 @@ export default {
       }, 300)
     },
 
-    addNewArtistAccount() {
+    async addNewArtistAccount() {
       const newArtistAccount = Object.assign({}, this.defaultArtistAccount);
-      //TODO: newArtistAccount.platform = this.newA
-      this.artistAccounts.unshift(newArtistAccount);
+      let accountInformationIsValid = true;
+
+      if (this.newAccountPlatform)
+        newArtistAccount.platform = this.newAccountPlatform;
+      else {
+        this.showAccountPlatformValidation = true;
+        accountInformationIsValid = false;
+      }
+
+      if (this.newAccountUsername)
+        newArtistAccount.username = this.newAccountUsername;
+      else {
+        this.showAccountUsernameValidation = true;
+        accountInformationIsValid = false;
+      }
+
+      newArtistAccount.isPreferred = this.newAccountIsPreferred;
+      if (!accountInformationIsValid)
+        return;
+
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      const artistAccountModel = new ArtistAccountModel(newArtistAccount).config(this.RequestHeaders).for(artistModel);
+      await artistAccountModel.save()
+        .then (() => {
+          this.loadArtistAccounts();
+          this.newAccountPlatform = null;
+          this.newAccountUsername = null;
+          this.newAccountIsPreferred = false;
+        })
+        .catch(error => this.handleError(error));
     },
 
     async editArtistAccount(artistAccount) {
       this.editedArtistAccountIndex = this.artistAccounts.indexOf(artistAccount);
       this.editedArtistAccount = Object.assign({}, artistAccount);
-      // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+    },
+
+    async updateArtistAccount() {
+      if (this.editedArtistAccount.username == null || this.editedArtistAccount.username.trim() == '')
+        return;
+
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
         .catch(error => this.handleError(error));
-      await artist.accounts().sync(this.editedArtistAccount).catch(error => this.handleError(error));
-      // --------------------------------------
-      this.closeEditArtistAccount();
+      const artistAccountModel = new ArtistAccountModel(this.editedArtistAccount).config(this.RequestHeaders).for(artistModel);
+      await artistAccountModel.save()
+        .then (() => {
+          this.closeEditArtistAccount();
+          this.loadArtistAccounts();
+        })
+        .catch(error => this.handleError(error));
+    },
+
+    async deleteArtistAccount(artistAccount) {
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      const artistAccountModel = new ArtistAccountModel(artistAccount).config(this.RequestHeaders).for(artistModel);
+      await artistAccountModel.delete()
+        .then (() => {
+          this.loadArtistAccounts();
+        })
+        .catch(error => this.handleError(error));
     },
 
     closeEditArtistAccount() {
@@ -699,21 +855,81 @@ export default {
       }, 300)
     },
 
-    addNewArtistLink() {
+    async addNewArtistLink() {
       const newArtistLink = Object.assign({}, this.defaultArtistLink);
-      // TODO: API Call
-      this.artistLinks.unshift(newArtistLink);
+      let linkInformationIsValid = true;
+      
+      if (this.newLinkPlatform)
+        newArtistLink.platform = this.newLinkPlatform;
+      else {
+        this.showLinkPlatformValidation = true;
+        linkInformationIsValid = false;
+      }
+
+      if (this.newLinkUrl) {
+        const link = new Link(this.newLinkUrl);
+        if (link.urlIsValid())
+          newArtistLink.url = link.Url;
+        else {
+          this.linkUrlValidationMessage = this.$t('Invalid') + ' ' + this.$t("Url");
+          this.showLinkUrlValidation = true;
+          linkInformationIsValid = false;
+        }
+      }
+      else {
+        this.linkUrlValidationMessage = this.$t('ValueIsRequired');
+        this.showLinkUrlValidation = true;
+        linkInformationIsValid = false;
+      }
+
+      if (!linkInformationIsValid)
+        return;
+
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      const artistLinkModel = new ArtistLinkModel(newArtistLink).config(this.RequestHeaders).for(artistModel);
+      await artistLinkModel.save()
+        .then (() => {
+          this.loadArtistLinks();
+          this.newLinkPlatform = null;
+          this.newLinkUrl = null;
+        })
+        .catch(error => this.handleError(error));
     },
 
     async editArtistLink(artistLink) {
       this.editedArtistLinkIndex = this.artistLinks.indexOf(artistLink);
       this.editedArtistLink = Object.assign({}, artistLink);
-      // TODO: The following code does not work.
-      const artist = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+    },
+
+    async updateArtistLink() {
+      if (this.editedArtistLink.url == null || this.editedArtistLink.url.trim() == '')
+        return;
+
+      const link = new Link(this.editedArtistLink.url);
+      if (!link.urlIsValid())
+        return;
+
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
         .catch(error => this.handleError(error));
-      await artist.links().sync(this.editedArtistLink).catch(error => this.handleError(error));
-      // --------------------------------------
-      this.closeEditArtistLink();
+      const artistLinkModel = new ArtistLinkModel(this.editedArtistLink).config(this.RequestHeaders).for(artistModel);
+      await artistLinkModel.save()
+        .then (() => {
+          this.closeEditArtistLink();
+          this.loadArtistLinks();
+        })
+        .catch(error => this.handleError(error));
+    },
+
+    async deleteArtistLink(artistLink) {
+      const artistModel = await ArtistModel.config(this.RequestHeaders).find(this.editedArtistData.id)
+        .catch(error => this.handleError(error));
+      const artistLinkModel = new ArtistLinkModel(artistLink).config(this.RequestHeaders).for(artistModel);
+      await artistLinkModel.delete()
+        .then (() => {
+          this.loadArtistLinks();
+        })
+        .catch(error => this.handleError(error));
     },
 
     closeEditArtistLink() {
@@ -732,6 +948,10 @@ export default {
         this.selectedCountry = null;
         this.selectedCountryRegion = null;
         this.selectedRecordLabel = null;
+        this.showAccountPlatformValidation = false;
+        this.showAccountUsernameValidation = false;
+        this.showLinkPlatformValidation = false;
+        this.showLinkUrlValidation = false;
         this.editedArtist = Object.assign({}, this.defaultArtist);
         this.v$.$reset();
       });
@@ -744,6 +964,8 @@ export default {
 
       if (this.editedArtist) {
         let isAdded = false;
+        this.showAddedAlert = false;
+        this.showEditedAlert = false;
         this.editedArtist.address.country = this.selectedCountry;
         this.editedArtist.address.region = this.selectedCountryRegion.code;
         this.editedArtist.recordLabel = this.selectedRecordLabel;
@@ -752,13 +974,13 @@ export default {
           this.addedArtist = Object.assign({}, this.editedArtist);
         }
         else {
-          this.showAddedAlert = false;
+          this.lastEditedArtistName = this.editedArtist.name;
         }
-
         const artistModel = new ArtistModel(this.editedArtist);
         artistModel.config(this.RequestHeaders).save()
         .then (() => {
-          if (isAdded) this.showAddedAlert = true;
+          this.showAddedAlert = isAdded;
+          this.showEditedAlert = !isAdded;  
           this.initialize();
         })
         .catch(error => this.handleError(error));

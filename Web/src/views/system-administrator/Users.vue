@@ -744,6 +744,7 @@ export default {
         invitationModel.config(this.RequestHeaders).save()
           .then (() => {
             this.addedInvitation = Object.assign({}, this.editedInvitation);
+            this.showEditedUserAlert = false;
             this.showInvitedUserAlert = true;
             this.initialize();
           })
@@ -752,9 +753,7 @@ export default {
       this.inviteDialog = false;
     },
 
-    async editUser(user) {
-      this.showInvitedUserAlert = false;
-      
+    async editUser(user) {      
       if (user) {
         for (let i = 0; i < UserRoles.length; i++) {
           if (user.roles & UserRoles[i].value)
@@ -862,8 +861,6 @@ export default {
     async editUserAccount(userAccount) {
       this.editedUserAccountIndex = this.userAccounts.indexOf(userAccount);
       this.editedUserAccount = Object.assign({}, userAccount);
-      this.showEditedUserAlert = false;
-      this.showInvitedUserAlert = false;
     },
 
     async updateUserAccount() {
@@ -919,6 +916,8 @@ export default {
         this.showPostalCodeValidation = false;
         this.showCountryValidataion = false;
         this.showCountryRegionValidataion = false;
+        this.showAccountPlatformValidation = false;
+        this.showAccountUsernameValidation = false;
         this.hasTriggeredValidation = false;
         this.v$.$reset();
       });
@@ -953,6 +952,7 @@ export default {
         userModel.config(this.RequestHeaders).save()
           .then (() => {
             this.lastEditedUserName = userToSave.person.firstName + ' ' + userToSave.person.lastName;
+            this.showInvitedUserAlert = false;
             this.showEditedUserAlert = true;
             this.initialize();
           })
