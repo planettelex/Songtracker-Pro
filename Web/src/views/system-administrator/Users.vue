@@ -228,15 +228,15 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-        </v-toolbar> 
+        </v-toolbar>
       </template>
 
       <template v-slot:[`item.roles`]="{ item }">
-        <v-icon class="role-icon" color="#4355db" v-if="userInRole(item, systemUserRoles.Songwriter)">mdi-rectangle</v-icon>
-        <v-icon class="role-icon" color="#49e66c" v-if="userInRole(item, systemUserRoles.ArtistMember)">mdi-rectangle</v-icon>
-        <v-icon class="role-icon" color="#f7d038" v-if="userInRole(item, systemUserRoles.ArtistManager)">mdi-rectangle</v-icon>
-        <v-icon class="role-icon" color="#eb7532" v-if="userInRole(item, systemUserRoles.Producer)">mdi-rectangle</v-icon>
-        <v-icon class="role-icon" color="#e6261f" v-if="userInRole(item, systemUserRoles.VisualArtist)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon role-songwriter" v-if="userInRole(item, systemUserRoles.Songwriter)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon role-artistMember" v-if="userInRole(item, systemUserRoles.ArtistMember)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon role-artistManager" v-if="userInRole(item, systemUserRoles.ArtistManager)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon role-producer" v-if="userInRole(item, systemUserRoles.Producer)">mdi-rectangle</v-icon>
+        <v-icon class="role-icon role-visualArtist" v-if="userInRole(item, systemUserRoles.VisualArtist)">mdi-rectangle</v-icon>
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
@@ -683,6 +683,13 @@ export default {
       return (user.roles & role) == role;
     },
 
+    getUserRole(systemUserRole) {
+      this.userRoles.forEach(userRole => {
+        if (userRole.value == systemUserRole)
+          return userRole;    
+      });
+    },
+
     closeInvite() {
       this.inviteDialog = false;
       this.$nextTick(() => {
@@ -987,11 +994,5 @@ export default {
     .v-toolbar__content {
       padding: 0;
     }
-  }
-  .role-icon {
-    width: 10px;
-    font-size: 40px !important;
-    overflow: hidden !important; 
-    margin-top: -3px;
   }
 </style>

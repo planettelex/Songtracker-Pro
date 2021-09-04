@@ -24,11 +24,8 @@ namespace SongtrackerPro.Api.Controllers
             IGetUserAccountTask getUserAccountTask,
             IAddUserAccountTask addUserAccountTask,
             IUpdateUserAccountTask updateUserAccountTask,
-            IRemoveUserAccountTask removeUserAccountTask,
-            ISendUserInvitationTask sendUserInvitationTask,
-            IGetUserInvitationTask getUserInvitationTask,
-            IAcceptUserInvitationTask acceptUserInvitationTask) :
-            base(getLoginTask)
+            IRemoveUserAccountTask removeUserAccountTask) :
+        base(getLoginTask)
         {
             _listUsersTask = listUsersTask;
             _getUserTask = getUserTask;
@@ -41,9 +38,6 @@ namespace SongtrackerPro.Api.Controllers
             _addUserAccountTask = addUserAccountTask;
             _updateUserAccountTask = updateUserAccountTask;
             _removeUserAccountTask = removeUserAccountTask;
-            _sendUserInvitationTask = sendUserInvitationTask;
-            _getUserInvitationTask = getUserInvitationTask;
-            _acceptUserInvitationTask = acceptUserInvitationTask;
         }
         private readonly IListUsersTask _listUsersTask;
         private readonly IGetUserTask _getUserTask;
@@ -56,91 +50,8 @@ namespace SongtrackerPro.Api.Controllers
         private readonly IAddUserAccountTask _addUserAccountTask;
         private readonly IUpdateUserAccountTask _updateUserAccountTask;
         private readonly IRemoveUserAccountTask _removeUserAccountTask;
-        private readonly ISendUserInvitationTask _sendUserInvitationTask;
-        private readonly IGetUserInvitationTask _getUserInvitationTask;
-        private readonly IAcceptUserInvitationTask _acceptUserInvitationTask;
 
         #endregion
-
-        [Route(Routes.Invitations)]
-        [HttpPost]
-        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.PublisherAdministrator)]
-        public IActionResult InviteUser(UserInvitation userInvitation)
-        {
-            try
-            {
-                if (!ClientKeyIsValid())
-                    return Unauthorized();
-
-                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
-                    return Unauthorized();
-
-                var taskResults = _sendUserInvitationTask.DoTask(userInvitation);
-
-                return taskResults.Success ? 
-                    Json(taskResults) : 
-                    Error(taskResults.Exception);
-            }
-            catch (Exception e)
-            {
-                return Error(e);
-            }
-        }
-
-        [Route(Routes.Invitation)]
-        [HttpGet]
-        public IActionResult GetUserInvitation(Guid uuid)
-        {
-            try
-            {
-                if (!ClientKeyIsValid())
-                    return Unauthorized();
-
-                var taskResults = _getUserInvitationTask.DoTask(uuid);
-
-                if (taskResults.HasException)
-                    return Error(taskResults.Exception);
-
-                if (taskResults.HasNoData)
-                    return NotFound();
-
-                return Json(taskResults);
-            }
-            catch (Exception e)
-            {
-                return Error(e);
-            }
-        }
-
-        [Route(Routes.Invitation)]
-        [HttpPut]
-        public IActionResult AcceptUserInvitation(Guid uuid, UserInvitation userInvitation)
-        {
-            try
-            {
-                if (!ClientKeyIsValid())
-                    return Unauthorized();
-
-                var getUserInvitationResults = _getUserInvitationTask.DoTask(uuid);
-
-                if (getUserInvitationResults.HasException)
-                    return Error(getUserInvitationResults.Exception);
-
-                if (getUserInvitationResults.HasNoData)
-                    return NotFound();
-
-                userInvitation.Uuid = uuid;
-                var taskResults = _acceptUserInvitationTask.DoTask(userInvitation);
-
-                return taskResults.Success ? 
-                    Json(taskResults) : 
-                    Error(taskResults.Exception);
-            }
-            catch (Exception e)
-            {
-                return Error(e);
-            }
-        }
 
         [Route(Routes.Login)]
         [HttpPost]

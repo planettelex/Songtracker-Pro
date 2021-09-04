@@ -56,8 +56,37 @@ $h5-font-size: 16px !default;
 $h6-font-size: 14px !default;
 
 $small-font-size: 0.875rem;
+$large-font-size: 1.125rem;
 
-// Dark
+.small-font {
+  font-size: $small-font-size !important;
+}
+.large-font {
+  font-size: $large-font-size !important;
+}
+
 $dark-theme-layout: #111519;
 $dark-theme-card: #1d2228;
 $dark-theme-hover: #616161;
+
+$role-color-songwriter: #4355db;
+$role-color-artistMember: #49e66c;
+$role-color-artistManager: #f7d038;
+$role-color-producer: #eb7532;
+$role-color-visualArtist: #e6261f;
+
+.role-songwriter {
+  color: $role-color-songwriter !important;
+}
+.role-artistMember {
+  color: $role-color-artistMember !important;
+}
+.role-artistManager {
+  color: $role-color-artistManager !important;
+}
+.role-producer {
+  color: $role-color-producer !important;
+}
+.role-visualArtist {
+  color: $role-color-visualArtist !important;
+}

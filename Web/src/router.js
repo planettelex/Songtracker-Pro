@@ -65,6 +65,12 @@ const router = new Router({
           component: () => import("@/views/system-administrator/Users"),
           meta: { titleKey: "User", userType: UserType.SystemAdministrator }
         },
+        {
+          name: "Invitations",
+          path: "invitations",
+          component: () => import("@/views/system-administrator/Invitations"),
+          meta: { titleKey: "Invitation", userType: UserType.SystemAdministrator }
+        },
         // Label Administrator
         {
           name: "LabelEarnings",

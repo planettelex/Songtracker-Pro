@@ -21,6 +21,7 @@
         <v-toolbar flat>
           <v-toolbar-title class="mt-2"><h2>{{ $tc('RecordLabel', 2) }}</h2></v-toolbar-title>
           <v-spacer></v-spacer>
+          <!-- Dialog -->
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ attrs }">
               <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editRecordLabel(null)">{{ $t('New') }} {{ $tc('RecordLabel', 1) }}</v-btn>

@@ -316,7 +316,7 @@ namespace SongtrackerPro.Tasks.Tests
 
                 return new UserInvitation
                 {
-                    Uuid = Guid.Empty,
+                    Uuid = Guid.NewGuid(),
                     InvitedByUserId = invitedByUserId,
                     Name = Person.FirstAndLastName,
                     Email = Person.Email,

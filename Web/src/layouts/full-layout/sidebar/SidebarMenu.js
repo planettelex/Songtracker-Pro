@@ -33,6 +33,11 @@ function getSidebarMenu(userType)
                     icon: 'mdi-account-multiple',
                     titleKey: 'User',
                     to: '/users',
+                },
+                {
+                    icon: 'mdi-email',
+                    titleKey: 'Invitation',
+                    to: '/invitations'
                 }
             ];
         case UserType.LabelAdministrator:
