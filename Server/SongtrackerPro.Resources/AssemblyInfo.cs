@@ -45,6 +45,8 @@
             "USA_NOT_FOUND",
             "USER_NOT_FOUND",
             "USER_ACCOUNT_NOT_FOUND",
+            "USER_INVITATION_CANNOT_DELETE_ACCEPTED",
+            "USER_INVITATION_CANNOT_RESEND_ACCEPTED",
             "USER_INVITATION_UNASSIGNED"
         };
 

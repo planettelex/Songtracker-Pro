@@ -66,6 +66,16 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                 Assert.AreEqual(testUserInvitation.Artist.WebsiteUrl, userInvitation.Artist.WebsiteUrl);
                 Assert.AreEqual(testUserInvitation.Artist.PressKitUrl, userInvitation.Artist.PressKitUrl);
             }
+
+            var resendUserInvitationTask = new ResendUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), new GetInstallation(DbContext));
+            var resendResults = resendUserInvitationTask.DoTask(testUserInvitation.Uuid);
+            Assert.IsTrue(resendResults.Success);
+            var resentInvitation = resendResults.Data;
+            Assert.IsTrue(resentInvitation.SentOn > testUserInvitation.SentOn);
+
+            var removeUserInvitationTask = new RemoveUserInvitation(DbContext);
+            var removed = removeUserInvitationTask.DoTask(testUserInvitation.Uuid).Success;
+            Assert.IsTrue(removed);
         }
 
         [TestMethod]

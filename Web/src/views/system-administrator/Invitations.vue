@@ -6,6 +6,16 @@
         <v-alert type="error">{{ error }}</v-alert>
       </v-col>
     </v-row>
+    <v-row v-if="showInviteResentAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showInviteResentAlert" type="success" dismissible>{{ $t('InvitationSentTo') }} {{ resentToEmail }}</v-alert>
+      </v-col>
+    </v-row>
+    <v-row v-if="showInviteDeletedAlert" justify="center">
+      <v-col cols="12">
+        <v-alert v-model="showInviteDeletedAlert" type="error" dismissible>{{ $tc('Invitation', 1) }} {{ $t('To') }} {{ deletedName }} {{ $t('Deleted').toLowerCase() }}</v-alert>
+      </v-col>
+    </v-row>
     <v-data-table :headers="headers" :items="invitations">
 
       <template v-slot:top>
@@ -26,7 +36,7 @@
                    <v-row>
                       <v-col cols="12">
                         <p class="large-font">
-                          <span>{{ selectedInvitation.name }}&nbsp;</span>
+                          <strong>{{ selectedInvitation.name }}&nbsp;</strong>
                           <span>{{ $t('Was') }} {{ $t('Invited').toLowerCase() }}&nbsp;</span>
                           <span v-if="selectedInvitation.type != userType.SystemUser" >{{ $t('ToBeA') }} {{ selectedInvitation.typeName.toLowerCase() }}&nbsp;</span>
                           <span>{{ $t('By') }} {{ selectedInvitation.invitedByUser.name }}&nbsp;</span>
@@ -36,16 +46,17 @@
                           <span>{{ $t('They') }} {{ $t('Accepted').toLowerCase() }} {{ $t('On') }}&nbsp;</span>
                           <span>{{ $d(new Date(selectedInvitation.acceptedOn), 'long') }}&nbsp;</span>
                           <span>{{ $t('And') }} {{ $t('Created').toLowerCase() }} {{ $tc('User', 1).toLowerCase() }}&nbsp;</span>
-                          <span>{{ selectedInvitation.createdUser.name }}.</span>
+                          <strong>{{ selectedInvitation.createdUser.name }}.</strong>
                         </p>
                       </v-col>
                    </v-row>
                    <v-row>
                       <v-col cols="12">
-                        <p v-if="selectedInvitation.publisher.id > 0" class="large-font label-paragraph"><label>{{ $tc('Publisher', 1) }}:&nbsp;</label><span>{{ selectedInvitation.publisher.name }}</span></p>
-                        <p v-if="selectedInvitation.recordLabel.id > 0" class="large-font label-paragraph"><label>{{ $tc('RecordLabel', 1) }}:&nbsp;</label><span>{{ selectedInvitation.recordLabel.name }}</span></p>
-                        <p v-if="selectedInvitation.artist.id > 0" class="large-font label-paragraph"><label>{{ $tc('Artist', 1) }}:&nbsp;</label><span>{{ selectedInvitation.artist.name }}</span></p>
+                        <p class="large-font label-paragraph"><label>{{ $t('Email') }}:&nbsp;</label><span>{{ selectedInvitation.email }}</span></p>
                         <p v-if="selectedInvitation.type == userType.SystemUser" class="large-font label-paragraph"><label>{{ $tc('Role', 2) }}:&nbsp;</label><span>{{ getUserRoles(selectedInvitation.roles) }}</span></p>
+                        <p v-if="selectedInvitation.artist.id > 0" class="large-font label-paragraph"><label>{{ $tc('Artist', 1) }}:&nbsp;</label><span>{{ selectedInvitation.artist.name }}</span></p>
+                        <p v-if="selectedInvitation.recordLabel.id > 0" class="large-font label-paragraph"><label>{{ $tc('RecordLabel', 1) }}:&nbsp;</label><span>{{ selectedInvitation.recordLabel.name }}</span></p>
+                        <p v-if="selectedInvitation.publisher.id > 0" class="large-font label-paragraph"><label>{{ $tc('Publisher', 1) }}:&nbsp;</label><span>{{ selectedInvitation.publisher.name }}</span></p>
                       </v-col>
                    </v-row>
                 </v-container>
@@ -171,6 +182,10 @@ export default {
         },
         userRoles: [],
         systemUserRoles: SystemUserRoles,
+        showInviteResentAlert: false,
+        showInviteDeletedAlert: false,
+        resentToEmail: null,
+        deletedName: null,
         error: null
     }),
 
@@ -208,11 +223,15 @@ export default {
           this.userRoles.forEach(userRole => {
             userRole.name = this.$tc(userRole.key, 1);
           });
+          await this.loadInvitations();
+        },
+
+        async loadInvitations() {
           this.invitations = await InvitationModel.config(this.RequestHeaders).all()
             .catch(error => this.handleError(error));
           this.invitations.forEach(invitation => {
             invitation.typeName = this.getUserType(invitation.type).name;
-          });
+          });   
         },
 
         getUserType(typeValue) {
@@ -261,11 +280,30 @@ export default {
         },
 
         async resendInvitation() {
-
+          const invitationModel = new InvitationModel(this.selectedInvitation);
+          let requestConfig = this.RequestHeaders;
+          requestConfig.method = 'POST';
+          invitationModel.config(requestConfig).save()
+            .then(() => {
+              this.resentToEmail = this.selectedInvitation.email;
+              this.showInviteResentAlert = true;
+              this.showInviteDeletedAlert = false;
+              this.close();
+            })
+            .catch(error => this.handleError(error));
         },
 
         async deleteInvitation() {
-
+          const invitationModel = new InvitationModel(this.selectedInvitation);
+          invitationModel.config(this.RequestHeaders).delete()
+            .then(() => {
+              this.deletedName = this.selectedInvitation.name;
+              this.showInviteDeletedAlert = true;
+              this.showInviteResentAlert = false;
+              this.loadInvitations();
+              this.close();
+            })
+            .catch(error => this.handleError(error));
         },
 
         handleError(error) {

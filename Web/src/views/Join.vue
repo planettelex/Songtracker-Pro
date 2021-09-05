@@ -16,14 +16,14 @@
               </v-col>
               <v-col cols="10">
                 <div class="join-header">
-                  <h2 class="join-app-name">{{ this.Application.name }}</h2>
-                  <span style="display:none;">v {{ this.Application.version }}</span>
-                  <em class="join-tagline">{{ this.Application.tagline }}</em>
+                  <h2 class="join-app-name">{{ applicationInfo.name }}</h2>
+                  <span style="display:none;">v {{ applicationInfo.version }}</span>
+                  <em class="join-tagline">{{ applicationInfo.tagline }}</em>
                 </div>
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="join-form pr-0" cols="10" offset="1">
+              <v-col class="join-form pr-8" cols="12">
                 <v-container>
                   <v-row v-if="!hasInvitationCode">
                     <v-col cols="12" class="pl-6">
@@ -46,16 +46,16 @@
                               <p>{{ $t('Hello') }} {{ invitation.name }},</p>
                               <p>
                                 <span v-if="isSystemAdministrator">
-                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $tc('AsA', 1) }} <em>{{ userTypeName }}</em>.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ applicationInfo.name }}</b> {{ $tc('AsA', 1) }} <em>{{ userTypeName }}</em>.<br/>
                                 </span>
                                 <span v-if="isPublisherAdministrator">
-                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.publisher.name }}</em>.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ applicationInfo.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.publisher.name }}</em>.<br/>
                                 </span>
                                 <span v-if="isLabelAdministrator">
-                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.recordLabel.name }}</em>.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ applicationInfo.name }}</b> {{ $tc('AsA', 2) }} {{ $t('AdministratorFor') }} <em>{{ invitation.recordLabel.name }}</em>.<br/>
                                 </span>
                                 <span v-if="isSystemUser">
-                                  {{ $t('InvitedToJoin') }} <b>{{ Application.name }}</b> {{ $t('By') }} {{ invitation.invitedByUser.name }}.<br/>
+                                  {{ $t('InvitedToJoin') }} <b>{{ applicationInfo.name }}</b> {{ $t('By') }} {{ invitation.invitedByUser.name }}.<br/>
                                 </span>
                                 {{ $t('FillFormToComplete') }}
                               </p>
@@ -112,7 +112,7 @@
                           </v-row>
                           <v-row>
                             <v-spacer></v-spacer>
-                            <v-col cols="2">
+                            <v-col class="mr-5" cols="1">
                               <v-btn class="v-button mr-4 rounded" @click="join">{{ $t('Join') }}</v-btn>
                             </v-col>
                           </v-row>
@@ -132,19 +132,21 @@
 </template>
 
 <script>
-import ApplicationData from '../models/api/Application';
-import CountryData from '../models/api/Country';
+import ApiRequestHeaders from '../models/local/ApiRequestHeaders';
+import ApplicationModel from '../models/api/Application';
+import CountryModel from '../models/api/Country';
 import CountryRegions from '../resources/countryRegions';
-import InvitationData from '../models/api/Invitation';
+import InvitationModel from '../models/api/Invitation';
 import UserType from '../enums/UserType';
 import UserTypes from '../models/local/UserTypes';
+import { mapState } from "vuex";
 import appConfig from '../appConfig';
 
 export default {
   name: "Join",
 
   data: () => ({
-    appInfo: {
+    applicationInfo: {
       name: null,
       tagline: null,
       version: null
@@ -206,6 +208,19 @@ export default {
     error: null
   }),
 
+  computed: {
+    ...mapState(["Application"]),
+    Application: {
+      get() { return this.$store.state.Application; },
+      set(val) { this.$store.commit("SET_APPLICATION", val); }
+    },
+
+    UnauthenticatedRequestHeaders: {
+      get () { return new ApiRequestHeaders(); }
+    }
+
+  },
+
   watch: {
     hasInvitationCode(val) {
       if (val)
@@ -220,7 +235,7 @@ export default {
 
   methods: {
     async validateInvitationCode() {
-      InvitationData.find(this.invitationCode)
+      InvitationModel.config(this.UnauthenticatedRequestHeaders).find(this.invitationCode)
         .then(response => {
           this.invitation = Object.assign({}, response);
           this.invitationCodeValid = response.uuid.toLowerCase() == this.invitationCode.toLowerCase();
@@ -241,7 +256,8 @@ export default {
     },
 
     async loadCountries() {
-      this.countries = await CountryData.all().catch(error => this.handleError(error));
+      this.countries = await CountryModel.config(this.UnauthenticatedRequestHeaders).all()
+        .catch(error => this.handleError(error));
     },
 
     loadCountryRegions() {
@@ -252,6 +268,17 @@ export default {
         this.countryRegions = CountryRegions[culture];
       }
     },
+
+    getCountryRegion(code) {
+      let countryRegion = null;
+      if (this.countryRegions)
+        this.countryRegions.forEach(region => {
+          if (region.code == code) {
+            countryRegion = region;
+          }
+        });
+      return countryRegion;
+    },
     
     async join() {
       try {
@@ -261,7 +288,7 @@ export default {
         this.invitation.createdUser.person.address.country = this.selectedCountry;
         if (this.selectedCountryRegion)
           this.invitation.createdUser.person.address.region = this.selectedCountryRegion.code;
-        const invitationData = new InvitationData(this.invitation);
+        const invitationData = new InvitationModel(this.invitation);
         invitationData.save()
           .then (() => {
             this.$router.push("/login?logout=true");
@@ -280,8 +307,12 @@ export default {
 
   async mounted() {
     try {
-      this.appInfo = await ApplicationData.first().catch(error => this.handleError(error));
-      document.title = this.appInfo.name + ' - ' + this.appInfo.tagline;
+      if (this.Application == null || this.Application.name == null) {
+        this.Application = await ApplicationModel.first().catch(error => this.handleError(error));
+      }
+      Object.assign(this.applicationInfo, this.Application);
+
+      document.title = this.applicationInfo.name + ' - ' + this.applicationInfo.tagline;
       this.userTypes = UserTypes;
       this.userTypes.forEach(userType => {
         userType.name = this.$t(userType.key);

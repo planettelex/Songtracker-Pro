@@ -15,20 +15,26 @@ namespace SongtrackerPro.Api.Controllers
 
         public InvitationController(IGetLoginTask getLoginTask,
             ISendUserInvitationTask sendUserInvitationTask,
+            IResendUserInvitationTask resendUserInvitationTask,
             IListUserInvitationsTask listUserInvitationsTask,
             IGetUserInvitationTask getUserInvitationTask,
-            IAcceptUserInvitationTask acceptUserInvitationTask) : 
+            IAcceptUserInvitationTask acceptUserInvitationTask,
+            IRemoveUserInvitationTask removeUserInvitationTask) : 
         base(getLoginTask)
         {
             _sendUserInvitationTask = sendUserInvitationTask;
+            _resendUserInvitationTask = resendUserInvitationTask;
             _listUserInvitationsTask = listUserInvitationsTask;
             _getUserInvitationTask = getUserInvitationTask;
             _acceptUserInvitationTask = acceptUserInvitationTask;
+            _removeUserInvitationTask = removeUserInvitationTask;
         }
         private readonly ISendUserInvitationTask _sendUserInvitationTask;
+        private readonly IResendUserInvitationTask _resendUserInvitationTask;
         private readonly IListUserInvitationsTask _listUserInvitationsTask;
         private readonly IGetUserInvitationTask _getUserInvitationTask;
         private readonly IAcceptUserInvitationTask _acceptUserInvitationTask;
+        private readonly IRemoveUserInvitationTask _removeUserInvitationTask;
 
         #endregion
 
@@ -108,6 +114,31 @@ namespace SongtrackerPro.Api.Controllers
         }
 
         [Route(Routes.Invitation)]
+        [HttpPost]
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.PublisherAdministrator)]
+        public IActionResult ResendInvitation(Guid uuid)
+        {
+            try
+            {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                var taskResults = _resendUserInvitationTask.DoTask(uuid);
+
+                return taskResults.Success ? 
+                    Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
+        }
+
+        [Route(Routes.Invitation)]
         [HttpPut]
         public IActionResult AcceptInvitation(Guid uuid, UserInvitation userInvitation)
         {
@@ -129,6 +160,31 @@ namespace SongtrackerPro.Api.Controllers
 
                 return taskResults.Success ? 
                     Json(taskResults) : 
+                    Error(taskResults.Exception);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
+        }
+
+        [Route(Routes.Invitation)]
+        [HttpDelete]
+        [UserTypesAllowed(UserType.SystemAdministrator, UserType.LabelAdministrator, UserType.PublisherAdministrator)]
+        public IActionResult DeleteInvitation(Guid uuid)
+        {
+            try
+            {
+                if (!ClientKeyIsValid())
+                    return Unauthorized();
+
+                if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
+                    return Unauthorized();
+
+                var taskResults = _removeUserInvitationTask.DoTask(uuid);
+
+                return taskResults.Success ? 
+                    Json(true) : 
                     Error(taskResults.Exception);
             }
             catch (Exception e)

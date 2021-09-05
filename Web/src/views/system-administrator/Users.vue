@@ -704,7 +704,8 @@ export default {
     },
 
     async sendInvite() {
-      let formIsValid = await this.v$.$validate();
+      await this.v$.$validate();
+      let formIsValid = !this.v$.editedInvitation.$error;
       let userType = this.selectedUserType.value;
 
       if (userType == UserType.SystemUser && (this.selectedUserRoles == null || this.selectedUserRoles.length == 0)) {
@@ -745,14 +746,13 @@ export default {
             this.editedInvitation.roles = userRoles;
             break;
         }
-
+        
+        this.addedInvitation = Object.assign({}, this.editedInvitation);
         const invitationModel = new InvitationModel(this.editedInvitation);
         invitationModel.config(this.RequestHeaders).save()
-          .then (() => {
-            this.addedInvitation = Object.assign({}, this.editedInvitation);
+          .then(() => {
             this.showEditedUserAlert = false;
             this.showInvitedUserAlert = true;
-            this.initialize();
           })
           .catch(error => this.handleError(error));
       }

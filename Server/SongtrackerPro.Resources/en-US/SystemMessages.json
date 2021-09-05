@@ -62,6 +62,14 @@
       "Value": "User account not found."
     },
     {
+      "Key": "USER_INVITATION_CANNOT_DELETE_ACCEPTED",
+      "Value": "Cannot delete an accepted invitation."
+    },
+    {
+      "Key": "USER_INVITATION_CANNOT_RESEND_ACCEPTED",
+      "Value": "Cannot resend an accepted invitation."
+    },
+    {
       "Key": "USER_INVITATION_UNASSIGNED",
       "Value": "User cannot accept invitation for unassigned type."
     }

@@ -16,9 +16,9 @@
               </v-col>
               <v-col cols="9">
                 <div class="login-box">
-                  <h2 class="login-app-name">{{ this.applicationInfo.name }}</h2>
-                  <span style="display:none;">v {{ this.applicationInfo.version }}</span>
-                  <em class="login-tagline">{{ this.applicationInfo.tagline }}</em>
+                  <h2 class="login-app-name">{{ applicationInfo.name }}</h2>
+                  <span style="display:none;">v {{ applicationInfo.version }}</span>
+                  <em class="login-tagline">{{ applicationInfo.tagline }}</em>
                   <div class="login-button">
                     <button class="v-button" @click="login" v-if="!userAuthenticated" :disabled="!authInitialized">{{ $t("Login") }} &gt;&gt;</button> 
                     <button class="v-cancel-button" @click="logout(false)" v-if="userAuthenticated" :disabled="!authInitialized">{{ $t("Logout") }}</button>
@@ -62,29 +62,35 @@ export default {
       get() { return this.$store.state.Application; },
       set(val) { this.$store.commit("SET_APPLICATION", val); }
     },
+
     ...mapState(["Authentication"]),
     Authentication: {
       get() { return this.$store.state.Authentication; },
       set(val) { this.$store.commit("SET_AUTHENTICATION", val); }
     },
+
     ...mapState(["ProfileImage"]),
     ProfileImage: {
       get() { return this.$store.state.ProfileImage; },
       set(val) { this.$store.commit("SET_PROFILE_IMAGE", val); }
     },
+
     ...mapState(["User"]),
     User: {
       get() { return this.$store.state.User; },
       set(val) { this.$store.commit("SET_USER", val); }
     },
+
     ...mapState(["LastPageViewed"]),
     LastPageViewed: {
       get() { return this.$store.state.LastPageViewed; },
       set(val) { this.$store.commit("SET_LAST_PAGE_VIEWED", val); }
     },
+
     RequestHeaders: {
       get () { return new ApiRequestHeaders(this.Authentication.authenticationToken); }
     },
+
     UnauthenticatedRequestHeaders: {
       get () { return new ApiRequestHeaders(); }
     }
@@ -190,6 +196,7 @@ export default {
         this.Application = await ApplicationModel.first().catch(error => this.handleError(error));
       }
       Object.assign(this.applicationInfo, this.Application);
+
       let that = this;
       let authLoaded = setInterval(function() {
         that.authInitialized = that.$gAuth.isInit;

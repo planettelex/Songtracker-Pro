@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
@@ -23,8 +22,11 @@ namespace SongtrackerPro.Tasks.UserTasks
             try
             {
                 var userInvitations = _dbContext.UserInvitations
-                    .Include(u => u.InvitedByUser).ThenInclude(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
-                    .Include(u => u.CreatedUser).ThenInclude(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(i => i.InvitedByUser).ThenInclude(u => u.Person)
+                    .Include(i => i.CreatedUser).ThenInclude(u => u.Person)
+                    .Include(i => i.Publisher)
+                    .Include(i => i.RecordLabel)
+                    .Include(i => i.Artist)
                     .ToList();
 
                 return new TaskResult<List<UserInvitation>>(userInvitations);
