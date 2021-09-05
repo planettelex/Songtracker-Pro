@@ -61,53 +61,62 @@
                               </p>
                             </v-col>
                             <v-col cols="4">
-                              <v-text-field :label="$t('Email')" v-model="invitation.email" disabled></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('Email')" v-model="invitation.email" disabled></v-text-field>
                             </v-col>
                             <v-col cols="2">
-                              <v-text-field :label="$t('First')" v-model="invitedUser.person.firstName"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('First')" v-model="invitedUser.person.firstName"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.person.firstName.$error">{{ validationMessages(v$.invitedUser.person.firstName.$errors) }}</span>
                             </v-col>
                             <v-col cols="2">
-                              <v-text-field :label="$t('Middle')" v-model="invitedUser.person.middleName"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('Middle')" v-model="invitedUser.person.middleName"></v-text-field>
                             </v-col>
                             <v-col cols="2">
-                              <v-text-field :label="$t('Last')" v-model="invitedUser.person.lastName"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('Last')" v-model="invitedUser.person.lastName"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.person.lastName.$error">{{ validationMessages(v$.invitedUser.person.lastName.$errors) }}</span>
                             </v-col>
                             <v-col cols="2">
-                              <v-text-field :label="$t('Suffix')" v-model="invitedUser.person.nameSuffix"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('Suffix')" v-model="invitedUser.person.nameSuffix"></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row>
                             <v-col cols="4">
-                              <v-text-field :label="$t('Address')" v-model="invitedUser.person.address.street"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('Address')" v-model="invitedUser.person.address.street"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.person.address.street.$error">{{ validationMessages(v$.invitedUser.person.address.street.$errors) }}</span>
                             </v-col>
                             <v-col cols="2">
-                              <v-text-field :label="$t('City')" v-model="invitedUser.person.address.city"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('City')" v-model="invitedUser.person.address.city"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.person.address.city.$error">{{ validationMessages(v$.invitedUser.person.address.city.$errors) }}</span>
                             </v-col>
                             <v-col cols="2" >
-                              <v-text-field :label="$t('PostalCode')" v-model="invitedUser.person.address.postalCode"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="invitedUser.person.address.postalCode"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.person.address.postalCode.$error">{{ validationMessages(v$.invitedUser.person.address.postalCode.$errors) }}</span>
                             </v-col>
                             <v-col cols="2">
-                              <v-select :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                              <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object></v-select>
+                              <span class="validation-error" v-if="v$.selectedCountry.isoCode.$error">{{ $t('ValueIsRequired') }}</span>
                             </v-col>
                             <v-col cols="2">
-                              <v-select :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                              <v-select hide-details="true" :label="$t('CountryRegion')" :items="countryRegions" v-model="selectedCountryRegion" item-text="name" item-value="code" return-object></v-select>
+                              <span class="validation-error" v-if="v$.selectedCountryRegion.$error">{{ $t('ValueIsRequired') }}</span>
                             </v-col>
                           </v-row>
                           <v-row>
                             <v-col cols="3">
-                              <v-text-field :label="$t('Phone')" v-model="invitedUser.person.phone"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('Phone')" v-model="invitedUser.person.phone"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.person.phone.$error">{{ validationMessages(v$.invitedUser.person.phone.$errors) }}</span>
                             </v-col>
                             <v-col cols="2" v-if="isSystemUser">
-                              <v-text-field :label="$t('SSN')" v-model="invitedUser.socialSecurityNumber"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('SSN')" v-model="invitedUser.socialSecurityNumber"></v-text-field>
+                              <span class="validation-error" v-if="v$.invitedUser.socialSecurityNumber.$error">{{ validationMessages(v$.invitedUser.socialSecurityNumber.$errors) }}</span>
                             </v-col>
                             <v-col cols="2" v-if="isSystemUser">
-                              <v-select :label="$t('Pro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
+                              <v-select hide-details="true" :label="$t('Pro')" :items="performingRightsOrganizations" v-model="selectedPerformingRightsOrganization" item-text="name" item-value="id" return-object></v-select>
                             </v-col>
                             <v-col cols="2" v-if="isSystemUser">
-                              <v-text-field :label="$t('ProId')" v-model="invitedUser.performingRightsOrganizationMemberNumber"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('ProId')" v-model="invitedUser.performingRightsOrganizationMemberNumber"></v-text-field>
                             </v-col>
                             <v-col cols="3" v-if="isSystemUser">
-                              <v-text-field :label="$t('SoundExchangeId')" v-model="invitedUser.soundExchangeAccountNumber"></v-text-field>
+                              <v-text-field hide-details="true" :label="$t('SoundExchangeId')" v-model="invitedUser.soundExchangeAccountNumber"></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row>
@@ -132,6 +141,7 @@
 </template>
 
 <script>
+import ErrorHandler from '../models/local/ErrorHandler';
 import ApiRequestHeaders from '../models/local/ApiRequestHeaders';
 import ApplicationModel from '../models/api/Application';
 import CountryModel from '../models/api/Country';
@@ -139,11 +149,17 @@ import CountryRegions from '../resources/countryRegions';
 import InvitationModel from '../models/api/Invitation';
 import UserType from '../enums/UserType';
 import UserTypes from '../models/local/UserTypes';
+import useVuelidate from '@vuelidate/core';
+import { required, minLength } from '@vuelidate/validators';
 import { mapState } from "vuex";
 import appConfig from '../appConfig';
 
 export default {
   name: "Join",
+
+  setup () {
+    return { v$: useVuelidate() }
+  },
 
   data: () => ({
     applicationInfo: {
@@ -174,28 +190,28 @@ export default {
     },
     invitedUser: {
       authenticationId: '',
-        socialSecurityNumber: null,
-        person: {
-          firstName: '',
-          middleName: null,
-          lastName: '',
-          nameSuffix: null,
-          phone: null,
-          address: {
-            street: null,
-            city: null,
-            region: null,
-            postalCode: null,
-            country: {
-              id: -1,
-              name: null,
-              isoCode: null
-            }
+      socialSecurityNumber: null,
+      person: {
+        firstName: '',
+        middleName: null,
+        lastName: '',
+        nameSuffix: null,
+        phone: null,
+        address: {
+          street: null,
+          city: null,
+          region: null,
+          postalCode: null,
+          country: {
+            id: -1,
+            name: null,
+            isoCode: null
           }
-        },
-        performingRightsOrganization: null,
-        performingRightsOrganizationMemberNumber: null,
-        soundExchangeAccountNumber: null
+        }
+      },
+      performingRightsOrganization: null,
+      performingRightsOrganizationMemberNumber: null,
+      soundExchangeAccountNumber: null
     },
     userTypes: [],
     userTypeName: '',
@@ -218,7 +234,27 @@ export default {
     UnauthenticatedRequestHeaders: {
       get () { return new ApiRequestHeaders(); }
     }
+  },
 
+  validations () {
+    return {
+      selectedCountry: {
+        isoCode: { required }
+      },
+      selectedCountryRegion: { required },
+      invitedUser: {
+        person: {
+          firstName: { required },
+          lastName: { required },
+          phone: { minLengthValue: minLength(10) },
+          address: {
+            street: { required },
+            city: { required },
+            postalCode: { required, minLengthValue: minLength(5) }
+          }
+        }
+      }
+    }
   },
 
   watch: {
@@ -268,40 +304,42 @@ export default {
         this.countryRegions = CountryRegions[culture];
       }
     },
-
-    getCountryRegion(code) {
-      let countryRegion = null;
-      if (this.countryRegions)
-        this.countryRegions.forEach(region => {
-          if (region.code == code) {
-            countryRegion = region;
-          }
-        });
-      return countryRegion;
-    },
     
     async join() {
       try {
+        const formIsValid = await this.v$.$validate();
+        if (!formIsValid) 
+          return;
+
         this.invitation.createdUser = this.invitedUser;
         this.invitation.createdUser.authenticationId = this.invitation.email;
         this.invitation.createdUser.person.email = this.invitation.email;
         this.invitation.createdUser.person.address.country = this.selectedCountry;
         if (this.selectedCountryRegion)
           this.invitation.createdUser.person.address.region = this.selectedCountryRegion.code;
-        const invitationData = new InvitationModel(this.invitation);
-        invitationData.save()
+
+        const invitationModel = new InvitationModel(this.invitation);
+        invitationModel.config(this.UnauthenticatedRequestHeaders).save()
           .then (() => {
             this.$router.push("/login?logout=true");
           })
-          .catch(error => this.handleError(error));
+          .catch(error => this.handleError(error));   
       } 
       catch (error) {
         this.handleError(error);
       }
     },
 
+    validationMessages(errors) {
+      let messages = '';
+      errors.forEach(error => {
+        messages += error.$message + ' ';
+      });
+      return messages.trim();
+    },
+
     handleError(error) {
-      this.error = error;
+      this.error = new ErrorHandler(error).handleError(this.$router);
     }
   },
 

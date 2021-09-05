@@ -930,41 +930,46 @@ export default {
     },
 
     async save() {
-      await this.v$.$validate();
-      let formIsValid = !this.v$.editedUser.$error && this.editedAddressIsValid();
-      this.hasTriggeredValidation = true;
-      if (!formIsValid) 
-        return;
+      try {
+        await this.v$.$validate();
+        let formIsValid = !this.v$.editedUser.$error && this.editedAddressIsValid();
+        this.hasTriggeredValidation = true;
+        if (!formIsValid) 
+          return;
 
-      if (this.editedUser) {
-        let emptyUser = JSON.parse(JSON.stringify(this.defaultUser));
-        let editedUser = JSON.parse(JSON.stringify(this.editedUser));
-        let userToSave = Object.assign(emptyUser, editedUser);
+        if (this.editedUser) {
+          let emptyUser = JSON.parse(JSON.stringify(this.defaultUser));
+          let editedUser = JSON.parse(JSON.stringify(this.editedUser));
+          let userToSave = Object.assign(emptyUser, editedUser);
 
-        if (this.editedUserHasNullAddress)
-          userToSave.person.address = null;
-         else {
-          userToSave.person.address.country = this.selectedCountry;
-          if (this.selectedCountryRegion) 
-            userToSave.person.address.region = this.selectedCountryRegion.code;
+          if (this.editedUserHasNullAddress)
+            userToSave.person.address = null;
+          else {
+            userToSave.person.address.country = this.selectedCountry;
+            if (this.selectedCountryRegion) 
+              userToSave.person.address.region = this.selectedCountryRegion.code;
+          }
+
+          userToSave.performingRightsOrganization = this.selectedPerformingRightsOrganization;
+          userToSave.publisher = this.selectedPublisher;
+          let userRoles = 0;
+          this.selectedUserRoles.forEach(userRole => userRoles = userRoles | userRole);
+          userToSave.roles = userRoles;
+          const userModel = new UserModel(userToSave);
+          userModel.config(this.RequestHeaders).save()
+            .then (() => {
+              this.lastEditedUserName = userToSave.person.firstName + ' ' + userToSave.person.lastName;
+              this.showInvitedUserAlert = false;
+              this.showEditedUserAlert = true;
+              this.initialize();
+            })
+            .catch(error => this.handleError(error));
         }
-
-        userToSave.performingRightsOrganization = this.selectedPerformingRightsOrganization;
-        userToSave.publisher = this.selectedPublisher;
-        let userRoles = 0;
-        this.selectedUserRoles.forEach(userRole => userRoles = userRoles | userRole);
-        userToSave.roles = userRoles;
-        const userModel = new UserModel(userToSave);
-        userModel.config(this.RequestHeaders).save()
-          .then (() => {
-            this.lastEditedUserName = userToSave.person.firstName + ' ' + userToSave.person.lastName;
-            this.showInvitedUserAlert = false;
-            this.showEditedUserAlert = true;
-            this.initialize();
-          })
-          .catch(error => this.handleError(error));
+        this.closeEdit();
       }
-      this.closeEdit();
+      catch (error) {
+        this.handleError(error);
+      }
     },
 
     validationMessages(errors) {
