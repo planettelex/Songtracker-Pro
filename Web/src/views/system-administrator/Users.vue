@@ -1,4 +1,5 @@
 <template>
+
   <v-container fluid class="down-top-padding pt-0">
     <v-row v-if="error" justify="center">
       <v-col cols="12">
@@ -463,7 +464,7 @@ export default {
     },
   },
 
-  validations () {
+  validations() {
     return {
       selectedUserType: { required },
       editedInvitation: {
@@ -487,9 +488,6 @@ export default {
 
   watch: {
     inviteDialog(val) {
-      if (val) {
-        this.loadCountries();
-      }
       val || this.closeInvite();
     },
 
