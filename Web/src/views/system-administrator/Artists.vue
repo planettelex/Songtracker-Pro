@@ -23,7 +23,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ attrs }">
-              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editArtist(null)">{{ $t('New') }} {{ $tc('Artist', 1) }}</v-btn>
+              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editArtist(null)"><v-icon class="pr-3">mdi-plus</v-icon> {{ $t('New') }} {{ $tc('Artist', 1) }}</v-btn>
             </template>
             <v-card>
               <v-card-title class="modal-title pt-2">
@@ -956,34 +956,39 @@ export default {
     },
 
     async save() {
-      const formIsValid = await this.v$.$validate();
-      if (!formIsValid) 
-        return;
+      try {
+        const formIsValid = await this.v$.$validate();
+        if (!formIsValid) 
+          return;
 
-      if (this.editedArtist) {
-        let isAdded = false;
-        this.showAddedAlert = false;
-        this.showEditedAlert = false;
-        this.editedArtist.address.country = this.selectedCountry;
-        this.editedArtist.address.region = this.selectedCountryRegion.code;
-        this.editedArtist.recordLabel = this.selectedRecordLabel;
-        if (!this.editedArtist.id) {
-          isAdded = true;
-          this.addedArtist = Object.assign({}, this.editedArtist);
+        if (this.editedArtist) {
+          let isAdded = false;
+          this.showAddedAlert = false;
+          this.showEditedAlert = false;
+          this.editedArtist.address.country = this.selectedCountry;
+          this.editedArtist.address.region = this.selectedCountryRegion.code;
+          this.editedArtist.recordLabel = this.selectedRecordLabel;
+          if (!this.editedArtist.id) {
+            isAdded = true;
+            this.addedArtist = Object.assign({}, this.editedArtist);
+          }
+          else {
+            this.lastEditedArtistName = this.editedArtist.name;
+          }
+          const artistModel = new ArtistModel(this.editedArtist);
+          artistModel.config(this.RequestHeaders).save()
+          .then (() => {
+            this.showAddedAlert = isAdded;
+            this.showEditedAlert = !isAdded;  
+            this.initialize();
+          })
+          .catch(error => this.handleError(error));
         }
-        else {
-          this.lastEditedArtistName = this.editedArtist.name;
-        }
-        const artistModel = new ArtistModel(this.editedArtist);
-        artistModel.config(this.RequestHeaders).save()
-        .then (() => {
-          this.showAddedAlert = isAdded;
-          this.showEditedAlert = !isAdded;  
-          this.initialize();
-        })
-        .catch(error => this.handleError(error));
+        this.close();
       }
-      this.close();
+      catch (error) {
+        this.handleError(error);
+      }
     },
 
     validationMessages(errors) {
