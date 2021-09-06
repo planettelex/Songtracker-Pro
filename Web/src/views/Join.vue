@@ -145,6 +145,7 @@ import ErrorHandler from '../models/local/ErrorHandler';
 import ApiRequestHeaders from '../models/local/ApiRequestHeaders';
 import ApplicationModel from '../models/api/Application';
 import CountryModel from '../models/api/Country';
+import PerformingRightsOrganizationModel from '../models/api/PerformingRightsOrganization';
 import CountryRegions from '../resources/countryRegions';
 import InvitationModel from '../models/api/Invitation';
 import UserType from '../enums/UserType';
@@ -243,6 +244,7 @@ export default {
       },
       selectedCountryRegion: { required },
       invitedUser: {
+        socialSecurityNumber: { minLengthValue: minLength(9) },
         person: {
           firstName: { required },
           lastName: { required },
@@ -273,6 +275,7 @@ export default {
     async validateInvitationCode() {
       InvitationModel.config(this.UnauthenticatedRequestHeaders).find(this.invitationCode)
         .then(response => {
+          
           this.invitation = Object.assign({}, response);
           this.invitationCodeValid = response.uuid.toLowerCase() == this.invitationCode.toLowerCase();
           if (this.invitationCodeValid) {
@@ -285,6 +288,7 @@ export default {
                 this.isSystemAdministrator = userType.value == UserType.SystemAdministrator;
               }
               this.loadCountries();
+              this.loadPerformingRightsOrganizations();
             });
           }
         })
@@ -304,6 +308,11 @@ export default {
         this.countryRegions = CountryRegions[culture];
       }
     },
+
+    async loadPerformingRightsOrganizations() {
+      this.performingRightsOrganizations = await PerformingRightsOrganizationModel.config(this.UnauthenticatedRequestHeaders).all()
+        .catch(error => this.handleError(error));
+    },
     
     async join() {
       try {
@@ -317,13 +326,15 @@ export default {
         this.invitation.createdUser.person.address.country = this.selectedCountry;
         if (this.selectedCountryRegion)
           this.invitation.createdUser.person.address.region = this.selectedCountryRegion.code;
+        if (this.selectedPerformingRightsOrganization)
+          this.invitation.createdUser.performingRightsOrganization = this.selectedPerformingRightsOrganization;
 
         const invitationModel = new InvitationModel(this.invitation);
         invitationModel.config(this.UnauthenticatedRequestHeaders).save()
           .then (() => {
             this.$router.push("/login?logout=true");
           })
-          .catch(error => this.handleError(error));   
+          .catch(error => this.handleError(error));
       } 
       catch (error) {
         this.handleError(error);

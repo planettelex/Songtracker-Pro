@@ -55,6 +55,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Login)]
         [HttpPost]
+        [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult LoginUser(Login login)
         {
             try
@@ -82,6 +83,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Logout)]
         [HttpPost]
+        [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult LogoutUser()
         {
             try
