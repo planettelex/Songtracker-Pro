@@ -23,7 +23,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ attrs }">
-              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editPublisher(null)">{{ $t('New') }} {{ $tc('Publisher', 1) }}</v-btn>
+              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editPublisher(null)"><v-icon class="pr-3">mdi-plus</v-icon> {{ $t('New') }} {{ $tc('Publisher', 1) }}</v-btn>
             </template>
             <v-card>
               <v-card-title class="modal-title pt-2">
@@ -314,35 +314,40 @@ export default {
     },
 
     async save() {
-      const formIsValid = await this.v$.$validate();
-      if (!formIsValid) 
-        return;
+      try {
+        const formIsValid = await this.v$.$validate();
+        if (!formIsValid) 
+          return;
 
-      if (this.editedPublisher) {
-        let isAdded = false;
-        this.showAddedAlert = false;
-        this.showEditedAlert = false;
-        this.editedPublisher.address.country = this.selectedCountry;
-        this.editedPublisher.address.region = this.selectedCountryRegion.code;
-        this.editedPublisher.performingRightsOrganization = this.selectedPerformingRightsOrganization;
-        if (!this.editedPublisher.id) {
-          isAdded = true;
-          this.addedPublisher = Object.assign({}, this.editedPublisher);
-        }
-        else {
-          this.lastEditedPublisherName = this.editedPublisher.name;
-        }
+        if (this.editedPublisher) {
+          let isAdded = false;
+          this.showAddedAlert = false;
+          this.showEditedAlert = false;
+          this.editedPublisher.address.country = this.selectedCountry;
+          this.editedPublisher.address.region = this.selectedCountryRegion.code;
+          this.editedPublisher.performingRightsOrganization = this.selectedPerformingRightsOrganization;
+          if (!this.editedPublisher.id) {
+            isAdded = true;
+            this.addedPublisher = Object.assign({}, this.editedPublisher);
+          }
+          else {
+            this.lastEditedPublisherName = this.editedPublisher.name;
+          }
 
-        const publisherModel = new PublisherModel(this.editedPublisher);
-        publisherModel.config(this.RequestHeaders).save()
-          .then (() => {
-            this.showAddedAlert = isAdded;
-            this.showEditedAlert = !isAdded;
-            this.initialize();
-          })
-          .catch(error => this.handleError(error));
+          const publisherModel = new PublisherModel(this.editedPublisher);
+          publisherModel.config(this.RequestHeaders).save()
+            .then (() => {
+              this.showAddedAlert = isAdded;
+              this.showEditedAlert = !isAdded;
+              this.initialize();
+            })
+            .catch(error => this.handleError(error));
+        }
+        this.close();
       }
-      this.close();
+      catch (error) {
+        this.handleError(error);
+      }
     },
 
     validationMessages(errors) {
