@@ -452,61 +452,66 @@ export default {
         },
 
         async sendInvite() {
-          await this.v$.$validate();
-          let formIsValid = !this.v$.editedInvitation.$error;
-          let userType = this.selectedUserType.value;
+          try {
+            await this.v$.$validate();
+            let formIsValid = !this.v$.editedInvitation.$error;
+            let userType = this.selectedUserType.value;
 
-          if (userType == UserType.SystemUser && (this.selectedUserRoles == null || this.selectedUserRoles.length == 0)) {
-            this.showInviteRolesValidation = true;
-            formIsValid = false;
-          }
-
-          if (userType == UserType.PublisherAdministrator && this.selectedPublisher == null) {
-            this.showInvitePublisherValidation = true;
-            formIsValid = false;
-          }
-
-          if (userType == UserType.LabelAdministrator && this.selectedRecordLabel == null) {
-            this.showInviteLabelValidation = true;
-            formIsValid = false;
-          }
-
-          if (!formIsValid) 
-            return;
-
-          if (this.editedInvitation) {
-            this.editedInvitation.invitedByUserId = this.User.id;
-            let userRoles = 0;
-            this.editedInvitation.type = userType;
-            switch (userType) {
-              case UserType.PublisherAdministrator:
-                this.editedInvitation.publisher = this.selectedPublisher;
-                break;
-              case UserType.LabelAdministrator:
-                this.editedInvitation.recordLabel = this.selectedRecordLabel;
-                break;
-              case UserType.SystemUser:
-                this.editedInvitation.publisher = this.selectedPublisher;
-                this.editedInvitation.artist = this.selectedArtist;
-                for (let i = 0; i < this.selectedUserRoles.length; i++) {
-                  userRoles = userRoles | this.selectedUserRoles[i];
-                }
-                this.editedInvitation.roles = userRoles;
-                break;
+            if (userType == UserType.SystemUser && (this.selectedUserRoles == null || this.selectedUserRoles.length == 0)) {
+              this.showInviteRolesValidation = true;
+              formIsValid = false;
             }
-            
-            this.addedInvitation = Object.assign({}, this.editedInvitation);
-            const invitationModel = new InvitationModel(this.editedInvitation);
-            invitationModel.config(this.RequestHeaders).save()
-              .then(() => {
-                this.loadInvitations();
-                this.showInviteResentAlert = false;
-                this.showInviteDeletedAlert = false;
-                this.showInvitedUserAlert = true;
-              })
-              .catch(error => this.handleError(error));
+
+            if (userType == UserType.PublisherAdministrator && this.selectedPublisher == null) {
+              this.showInvitePublisherValidation = true;
+              formIsValid = false;
+            }
+
+            if (userType == UserType.LabelAdministrator && this.selectedRecordLabel == null) {
+              this.showInviteLabelValidation = true;
+              formIsValid = false;
+            }
+
+            if (!formIsValid) 
+              return;
+
+            if (this.editedInvitation) {
+              this.editedInvitation.invitedByUserId = this.User.id;
+              let userRoles = 0;
+              this.editedInvitation.type = userType;
+              switch (userType) {
+                case UserType.PublisherAdministrator:
+                  this.editedInvitation.publisher = this.selectedPublisher;
+                  break;
+                case UserType.LabelAdministrator:
+                  this.editedInvitation.recordLabel = this.selectedRecordLabel;
+                  break;
+                case UserType.SystemUser:
+                  this.editedInvitation.publisher = this.selectedPublisher;
+                  this.editedInvitation.artist = this.selectedArtist;
+                  for (let i = 0; i < this.selectedUserRoles.length; i++) {
+                    userRoles = userRoles | this.selectedUserRoles[i];
+                  }
+                  this.editedInvitation.roles = userRoles;
+                  break;
+              }
+              
+              this.addedInvitation = Object.assign({}, this.editedInvitation);
+              const invitationModel = new InvitationModel(this.editedInvitation);
+              invitationModel.config(this.RequestHeaders).save()
+                .then(() => {
+                  this.loadInvitations();
+                  this.showInviteResentAlert = false;
+                  this.showInviteDeletedAlert = false;
+                  this.showInvitedUserAlert = true;
+                })
+                .catch(error => this.handleError(error));
+            }
+            this.inviteDialog = false;
           }
-          this.inviteDialog = false;
+          catch (error) {
+            this.handleError(error);
+          }
         },
 
         getUserType(typeValue) {
@@ -556,32 +561,42 @@ export default {
         },
 
         async resendInvitation() {
-          const invitationModel = new InvitationModel(this.viewingInvitation);
-          let requestConfig = this.RequestHeaders;
-          requestConfig.method = 'POST';
-          invitationModel.config(requestConfig).save()
-            .then(() => {
-              this.resentToEmail = this.viewingInvitation.email;
-              this.showInviteResentAlert = true;
-              this.showInviteDeletedAlert = false;
-              this.showInvitedUserAlert = false;
-              this.closeView();
-            })
-            .catch(error => this.handleError(error));
+          try {
+            const invitationModel = new InvitationModel(this.viewingInvitation);
+            let requestConfig = this.RequestHeaders;
+            requestConfig.method = 'POST';
+            invitationModel.config(requestConfig).save()
+              .then(() => {
+                this.resentToEmail = this.viewingInvitation.email;
+                this.showInviteResentAlert = true;
+                this.showInviteDeletedAlert = false;
+                this.showInvitedUserAlert = false;
+                this.closeView();
+              })
+              .catch(error => this.handleError(error));
+          }
+          catch (error) {
+            this.handleError(error);
+          }
         },
 
         async deleteInvitation() {
-          const invitationModel = new InvitationModel(this.viewingInvitation);
-          invitationModel.config(this.RequestHeaders).delete()
-            .then(() => {
-              this.deletedName = this.viewingInvitation.name;
-              this.showInviteDeletedAlert = true;
-              this.showInviteResentAlert = false;
-              this.showInvitedUserAlert = false;
-              this.loadInvitations();
-              this.closeView();
-            })
-            .catch(error => this.handleError(error));
+          try {
+            const invitationModel = new InvitationModel(this.viewingInvitation);
+            invitationModel.config(this.RequestHeaders).delete()
+              .then(() => {
+                this.deletedName = this.viewingInvitation.name;
+                this.showInviteDeletedAlert = true;
+                this.showInviteResentAlert = false;
+                this.showInvitedUserAlert = false;
+                this.loadInvitations();
+                this.closeView();
+              })
+              .catch(error => this.handleError(error));
+          }
+          catch (error) {
+            this.handleError(error);
+          }
         },
 
         handleError(error) {
