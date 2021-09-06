@@ -23,7 +23,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="675px">
             <template v-slot:activator="{ attrs }">
-              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editPlatform(null)">{{ $t('New') }} {{ $tc('Platform', 1) }}</v-btn>
+              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editPlatform(null)"><v-icon class="pr-3">mdi-plus</v-icon> {{ $t('New') }} {{ $tc('Platform', 1) }}</v-btn>
             </template>
             <v-card>
               <v-card-title class="modal-title pt-2">
@@ -209,41 +209,46 @@ export default {
     },
 
     async save() {
-      const formIsValid = await this.v$.$validate();
-      if (!formIsValid) 
-        return;
+      try {
+        const formIsValid = await this.v$.$validate();
+        if (!formIsValid) 
+          return;
 
-      if (this.editedPlatform) {
-        let isAdded = false;
-        this.showAddedAlert = false;
-        this.showEditedAlert = false;
-        if (!this.editedPlatform.id) {
-          isAdded = true;
-          this.addedPlatform = Object.assign({}, this.editedPlatform);
-        }
-        else {
-          this.lastEditedPlatformName = this.editedPlatform.name;
-        }
-        this.editedPlatform.services = new Array(this.selectedServiceCount);
-        let editedPlatformServiceIndex = 0;
-        for (let i = 0; i < this.services.length; i++) {
-          if (this.selectedServices[i]) {
-            this.editedPlatform.services[editedPlatformServiceIndex] = this.services[i];
-            editedPlatformServiceIndex++;
+        if (this.editedPlatform) {
+          let isAdded = false;
+          this.showAddedAlert = false;
+          this.showEditedAlert = false;
+          if (!this.editedPlatform.id) {
+            isAdded = true;
+            this.addedPlatform = Object.assign({}, this.editedPlatform);
           }
-        }
-        this.buildServiceList(this.editedPlatform);
+          else {
+            this.lastEditedPlatformName = this.editedPlatform.name;
+          }
+          this.editedPlatform.services = new Array(this.selectedServiceCount);
+          let editedPlatformServiceIndex = 0;
+          for (let i = 0; i < this.services.length; i++) {
+            if (this.selectedServices[i]) {
+              this.editedPlatform.services[editedPlatformServiceIndex] = this.services[i];
+              editedPlatformServiceIndex++;
+            }
+          }
+          this.buildServiceList(this.editedPlatform);
 
-        const platformModel = new PlatformModel(this.editedPlatform);
-        platformModel.config(this.RequestHeaders).save()
-          .then (() => {
-            this.showAddedAlert = isAdded;
-            this.showEditedAlert = !isAdded;
-            this.initialize();
-          })
-          .catch(error => this.handleError(error));
+          const platformModel = new PlatformModel(this.editedPlatform);
+          platformModel.config(this.RequestHeaders).save()
+            .then (() => {
+              this.showAddedAlert = isAdded;
+              this.showEditedAlert = !isAdded;
+              this.initialize();
+            })
+            .catch(error => this.handleError(error));
+        }
+        this.close();
       }
-      this.close();
+      catch (error) {
+        this.handleError(error);
+      }
     },
 
     validationMessages(errors) {
