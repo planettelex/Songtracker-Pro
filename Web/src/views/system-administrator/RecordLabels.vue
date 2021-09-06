@@ -24,7 +24,7 @@
           <!-- Dialog -->
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ attrs }">
-              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editRecordLabel(null)">{{ $t('New') }} {{ $tc('RecordLabel', 1) }}</v-btn>
+              <v-btn class="v-button rounded mt-3" v-bind="attrs" @click="editRecordLabel(null)"><v-icon class="pr-3">mdi-plus</v-icon> {{ $t('New') }} {{ $tc('RecordLabel', 1) }}</v-btn>
             </template>
             <v-card>
               <v-card-title class="modal-title pt-2">
@@ -287,34 +287,39 @@ export default {
     },
 
     async save() {
-      const formIsValid = await this.v$.$validate();
-      if (!formIsValid) 
-        return;
+      try {
+        const formIsValid = await this.v$.$validate();
+        if (!formIsValid) 
+          return;
 
-      if (this.editedRecordLabel) {
-        let isAdded = false;
-        this.showAddedAlert = false;
-        this.showEditedAlert = false;
-        this.editedRecordLabel.address.country = this.selectedCountry;
-        this.editedRecordLabel.address.region = this.selectedCountryRegion.code;
-        if (!this.editedRecordLabel.id) {
-          isAdded = true;
-          this.addedRecordLabel = Object.assign({}, this.editedRecordLabel);
-        }
-        else {
-          this.lastEditedLabelName = this.editedRecordLabel.name;
-        }
+        if (this.editedRecordLabel) {
+          let isAdded = false;
+          this.showAddedAlert = false;
+          this.showEditedAlert = false;
+          this.editedRecordLabel.address.country = this.selectedCountry;
+          this.editedRecordLabel.address.region = this.selectedCountryRegion.code;
+          if (!this.editedRecordLabel.id) {
+            isAdded = true;
+            this.addedRecordLabel = Object.assign({}, this.editedRecordLabel);
+          }
+          else {
+            this.lastEditedLabelName = this.editedRecordLabel.name;
+          }
 
-        const recordLabelModel = new RecordLabelModel(this.editedRecordLabel);
-        recordLabelModel.config(this.RequestHeaders).save()
-          .then (() => {
-            this.showAddedAlert = isAdded;
-            this.showEditedAlert = !isAdded;
-            this.initialize();
-          })
-          .catch(error => this.handleError(error));
+          const recordLabelModel = new RecordLabelModel(this.editedRecordLabel);
+          recordLabelModel.config(this.RequestHeaders).save()
+            .then (() => {
+              this.showAddedAlert = isAdded;
+              this.showEditedAlert = !isAdded;
+              this.initialize();
+            })
+            .catch(error => this.handleError(error));
+        }
+        this.close();
       }
-      this.close();
+      catch (error) {
+        this.handleError(error);
+      }
     },
 
     validationMessages(errors) {
