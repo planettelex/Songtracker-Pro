@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.PersonTasks;
 
@@ -13,7 +14,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var addArtistTask = new AddArtist(DbContext);
+            var addArtistTask = new AddArtist(DbContext, new FormattingService());
             var testArtist = TestsModel.Artist;
             var addArtistResult = addArtistTask.DoTask(testArtist);
 
@@ -25,7 +26,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(artistId);
             Assert.IsTrue(artistId > 0);
 
-            var addPersonTask = new AddPerson(DbContext);
+            var addPersonTask = new AddPerson(DbContext, new FormattingService());
             var testPerson = TestsModel.Person;
             var addPersonResult = addPersonTask.DoTask(testPerson);
 

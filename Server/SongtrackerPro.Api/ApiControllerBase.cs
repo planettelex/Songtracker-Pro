@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
@@ -25,7 +26,17 @@ namespace SongtrackerPro.Api
 
         protected const string JsonContentType = "application/json";
 
+        protected string ClientKey => Request.Headers["ClientKey"];
+
         protected string AuthenticationToken => Request.Headers["AuthenticationToken"];
+
+        protected bool ClientKeyIsValid()
+        {
+            if (ClientKey == null)
+                return false;
+
+            return ClientKey == ApplicationSettings.Api.ClientKey;
+        }
 
         protected JsonSerializerOptions SerializerOptions =>
             new JsonSerializerOptions
@@ -92,7 +103,16 @@ namespace SongtrackerPro.Api
 
         protected bool UserIsAuthenticatedAndAuthorized(MethodBase callingMethod)
         {
-            return UserIsAuthenticated() && UserIsAuthorized(callingMethod);
+            var userTypesAllowedAttributes = (UserTypesAllowedAttribute[]) callingMethod.GetCustomAttributes(typeof(UserTypesAllowedAttribute), true);
+            if (!userTypesAllowedAttributes.Any())
+                return false;
+
+            var userTypesAllowedAttribute = userTypesAllowedAttributes.First();
+            var userTypesAllowed = userTypesAllowedAttribute.UserTypes;
+            if (userTypesAllowed.Contains(UserType.Unassigned)) // Unassigned user types allowed means allow unauthenticated access.
+                return true;
+
+            return UserIsAuthenticated() && UserIsAuthorized(callingMethod, userTypesAllowed);
         }
 
         protected bool UserIsAuthenticated()
@@ -115,17 +135,8 @@ namespace SongtrackerPro.Api
             return true;
         }
 
-        private bool UserIsAuthorized(ICustomAttributeProvider callingMethod)
+        private bool UserIsAuthorized(ICustomAttributeProvider callingMethod, IEnumerable<UserType> userTypesAllowed)
         {
-            var userTypesAllowedAttributes = (UserTypesAllowedAttribute[]) callingMethod.GetCustomAttributes(typeof(UserTypesAllowedAttribute), true);
-            if (!userTypesAllowedAttributes.Any())
-                return false;
-
-            var userTypesAllowedAttribute = userTypesAllowedAttributes.First();
-            var userTypesAllowed = userTypesAllowedAttribute.UserTypes;
-            if (userTypesAllowed.Contains(UserType.Unassigned))
-                return true;
-
             if (AuthenticatedUser.Type == UserType.Unassigned)
                 return false;
 

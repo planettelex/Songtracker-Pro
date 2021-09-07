@@ -20,6 +20,9 @@ namespace SongtrackerPro.Tasks.PlatformTasks
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(platform.Website))
+                    platform.Website = null;
+
                 _dbContext.Platforms.Add(platform);
                 _dbContext.SaveChanges();
 
@@ -27,7 +30,7 @@ namespace SongtrackerPro.Tasks.PlatformTasks
                     return new TaskResult<int?>(platform.Id);
 
                 platform.PlatformServices = new List<PlatformService>();
-                foreach (var service in platform.Services)
+                foreach (var service in platform.Services.Where(service => service != null))
                 {
                     platform.PlatformServices.Add(new PlatformService
                     {

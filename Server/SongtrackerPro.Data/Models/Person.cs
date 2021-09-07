@@ -27,7 +27,7 @@ namespace SongtrackerPro.Data.Models
         [MaxLength(5)]
         public string NameSuffix { get; set; }
 
-        [JsonIgnore] 
+        [NotMapped]
         public string FirstAndLastName => $"{FirstName} {LastName}";
 
         [Column("email", Order = 6)]

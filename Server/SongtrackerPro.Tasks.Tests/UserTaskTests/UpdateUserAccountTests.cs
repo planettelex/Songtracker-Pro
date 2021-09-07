@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.UserTasks;
@@ -18,7 +19,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         {
             var testUser = TestsModel.User;
             testUser.Type = UserType.PublisherAdministrator;
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);

@@ -2,7 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
+using SongtrackerPro.Tasks.GeographicTasks;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PersonTasks;
+using SongtrackerPro.Tasks.PlatformTasks;
+using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Tasks.Tests.UserTaskTests
@@ -16,13 +21,18 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var startTime = DateTime.UtcNow;
             var testUser = TestsModel.User;
             testUser.Type = UserType.LabelAdministrator;
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext));
+            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);
             Assert.IsNull(addUserResult.Exception);
 
-            var task = new LoginUser(DbContext);
+            var task = new LoginUser(DbContext, new GetInstallation(DbContext), 
+                new SeedSystemData(new SeedInstallation(DbContext), 
+                                   new SeedCountries(DbContext), 
+                                   new SeedPerformingRightsOrganizations(DbContext, new SeedCountries(DbContext)), 
+                                   new SeedServices(DbContext), 
+                                   new SeedPlatforms(DbContext, new ListServices(DbContext), new AddPlatform(DbContext))));
             var login = new Login
             {
                 AuthenticationId = testUser.AuthenticationId,
@@ -119,7 +129,13 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new LoginUser(EmptyDbContext);
+            var task = new LoginUser(EmptyDbContext, new GetInstallation(EmptyDbContext), 
+                new SeedSystemData(new SeedInstallation(EmptyDbContext), 
+                                   new SeedCountries(EmptyDbContext), 
+                                   new SeedPerformingRightsOrganizations(EmptyDbContext, new SeedCountries(EmptyDbContext)), 
+                                   new SeedServices(EmptyDbContext), 
+                                   new SeedPlatforms(EmptyDbContext, new ListServices(EmptyDbContext), new AddPlatform(EmptyDbContext))));
+            
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

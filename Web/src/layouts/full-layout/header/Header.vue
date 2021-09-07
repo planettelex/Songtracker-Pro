@@ -2,14 +2,15 @@
   <v-app-bar
     app
     clipped-left
-    clipped-right>
+    clipped-right
+    elevation="1">
 
     <!--- Logo -->
     <v-toolbar-title
       class="align-center d-flex logo-section"
       :class="`${showLogo ? 'logo-width' : ''}`">
       <div class="logo-icon">
-        <img src="../../../assets/images/logo.svg" class="mt-2" /> 
+        <img src="../../../assets/images/logo-header.svg" class="mt-2" /> 
         <h1 class="app-name">{{ appName }}</h1>
       </div>
     </v-toolbar-title>
@@ -85,7 +86,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(["SidebarDrawer", "ProfileImage", "AppInfo"]),
+    ...mapState(["SidebarDrawer", "ProfileImage", "Application"]),
   },
 
   methods: {
@@ -99,7 +100,7 @@ export default {
   },
 
   async mounted() {
-    this.appName = this.AppInfo.entityName ? this.AppInfo.entityName : this.AppInfo.name;
+    this.appName = this.Application.entityName ? this.Application.entityName : this.Application.name;
     this.userMenu.forEach(menuItem => {
       menuItem.title = this.$t(menuItem.titleKey);
     });
@@ -110,13 +111,10 @@ export default {
 
 <style lang="scss">
 .app-name {
-    color: $default;
+    color: #121c37;
   }
 .v-application--is-ltr .v-user-menu .v-list-item__icon:first-child {
   margin-right: 10px;
-}
-.v-application .theme--dark.white .theme--dark.v-btn.v-btn--icon {
-  color: $font-color !important;
 }
 .v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined),
 .v-sheet.v-card:not(.v-sheet--outlined) {

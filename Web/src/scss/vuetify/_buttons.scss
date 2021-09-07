@@ -8,16 +8,39 @@
     box-shadow: inset 0 -0.6em 1em -0.35em rgba(0,0,0,0.17),inset 0 0.6em 2em -0.3em rgba(255,255,255,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
     text-align: center;
 }
+@mixin app-circle-button {
+    display: inline-block;
+    padding: 0.7em 1.7em;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 3em;
+    box-sizing: border-box;
+    text-decoration: none;
+    box-shadow: inset 0 -0.6em 1em -0.35em rgba(0,0,0,0.17),inset 0 0.6em 2em -0.3em rgba(255,255,255,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
+    text-align: center;
+    min-width: unset !important; 
+    width: 26px !important;
+    height: 30px !important;
+}
 .v-button {
     @include app-button();
-    color: $light-primary;
-    background-color: $primary;
+    color: $light-primary !important;
+    background-color: $primary !important;
+}
+.v-circle-button {
+    @include app-circle-button();
+    color: $light-primary !important;
+    background-color: $primary !important;
 }
 .v-cancel-button {
     @include app-button();
-    color: $light-primary;
-    background-color: $gray-500;
+    color: $light-primary !important;
+    background-color: $gray-500 !important;
+}
+.v-danger-button {
+    @include app-button();
+    color: $light-primary !important;
+    background-color: $accent !important;
 }
 .v-button:active, .v-cancel-button:active {
     box-shadow: inset 0 0.6em 2em -0.3em rgba(0,0,0,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
-  }
+}

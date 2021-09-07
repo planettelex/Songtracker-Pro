@@ -15,10 +15,11 @@ $default: #181818;
 
 $page-background: #f4f6f9;
 $font-color: #403f40;
-$subtitle-color: #a1aab2;
+$subtitle-color: #808080;
 $box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
 $info: #1e88e5;
 $gray-500: #a1aab2;
+$gray-250: #bfc9d2;
 $border-color: rgba(0, 0, 0, 0.1);
 $light: #eeeeee;
 $dark: #111111;
@@ -54,7 +55,38 @@ $h4-font-size: 18px !default;
 $h5-font-size: 16px !default;
 $h6-font-size: 14px !default;
 
-// Dark
+$small-font-size: 0.875rem;
+$large-font-size: 1.125rem;
+
+.small-font {
+  font-size: $small-font-size !important;
+}
+.large-font {
+  font-size: $large-font-size !important;
+}
+
 $dark-theme-layout: #111519;
 $dark-theme-card: #1d2228;
 $dark-theme-hover: #616161;
+
+$role-color-songwriter: #4355db;
+$role-color-artistMember: #49e66c;
+$role-color-artistManager: #f7d038;
+$role-color-producer: #eb7532;
+$role-color-visualArtist: #e6261f;
+
+.role-songwriter {
+  color: $role-color-songwriter !important;
+}
+.role-artistMember {
+  color: $role-color-artistMember !important;
+}
+.role-artistManager {
+  color: $role-color-artistManager !important;
+}
+.role-producer {
+  color: $role-color-producer !important;
+}
+.role-visualArtist {
+  color: $role-color-visualArtist !important;
+}

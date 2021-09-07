@@ -1,27 +1,28 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from "vuex-persistedstate";
+import VuexPersistence from 'vuex-persist';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    plugins: [createPersistedState()],
+    plugins: [new VuexPersistence().plugin],
 
     state: {
-        AppInfo: null,
-        Login: null,
+        Application: null,
+        Authentication: null,
         ProfileImage: null,
         SidebarDrawer: null,
         SidebarColor: '#1d2228',
-        User: null
+        User: null,
+        LastPageViewed: null
     },
 
     mutations: {
-        SET_APP_INFO(state, payload) {
-            state.AppInfo = payload;
+        SET_APPLICATION(state, payload) {
+            state.Application = payload;
         },
-        SET_LOGIN(state, payload) {
-            state.Login = payload;
+        SET_AUTHENTICATION(state, payload) {
+            state.Authentication = payload;
         },
         SET_PROFILE_IMAGE(state, payload) {
             state.ProfileImage = payload;
@@ -34,6 +35,9 @@ export default new Vuex.Store({
         },
         SET_USER(state, payload) {
             state.User = payload;
+        },
+        SET_LAST_PAGE_VIEWED(state, payload) {
+            state.LastPageViewed = payload;
         }
     },
 

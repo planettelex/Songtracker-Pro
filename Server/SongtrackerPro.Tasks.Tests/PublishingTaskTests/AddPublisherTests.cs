@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PublishingTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
@@ -10,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var task = new AddPublisher(DbContext);
+            var task = new AddPublisher(DbContext, new FormattingService());
             var testPublisher = TestsModel.Publisher;
             var result = task.DoTask(testPublisher);
 
@@ -24,12 +25,13 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
 
             var getPublisherTask = new GetPublisher(DbContext);
             var publisher = getPublisherTask.DoTask(publisherId.Value)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(publisher);
             Assert.AreEqual(testPublisher.Name, publisher.Name);
-            Assert.AreEqual(testPublisher.TaxId, publisher.TaxId);
+            Assert.AreEqual(formattingService.FormatTaxId(testPublisher.TaxId), publisher.TaxId);
             Assert.AreEqual(testPublisher.Email, publisher.Email);
-            Assert.AreEqual(testPublisher.Phone, publisher.Phone);
+            Assert.AreEqual(formattingService.FormatPhoneNumber(testPublisher.Phone), publisher.Phone);
             Assert.IsNotNull(publisher.Address);
             Assert.AreEqual(testPublisher.Address.Street, publisher.Address.Street);
             Assert.AreEqual(testPublisher.Address.City, publisher.Address.City);
@@ -51,7 +53,7 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddPublisher(EmptyDbContext);
+            var task = new AddPublisher(EmptyDbContext, new FormattingService());
             var result = task.DoTask(new Publisher());
             
             Assert.IsFalse(result.Success);

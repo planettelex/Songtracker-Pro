@@ -22,27 +22,27 @@ namespace SongtrackerPro.Data.Models
         [Column("tax_id", Order = 3)]
         public string TaxId { get; set; }
 
+        [Column("email", Order = 4)]
+        public string Email { get; set; }
+
+        [JsonIgnore]
+        [Column("address_id", Order = 5)]
+        public int? AddressId { get; set; }
+        public Address Address { get; set; }
+
         [Required]
-        [Column("has_service_mark", Order = 4)]
+        [Column("has_service_mark", Order = 6)]
         public bool HasServiceMark { get; set; }
 
-        [Column("website_url", Order = 5)]
+        [Column("website_url", Order = 7)]
         public string WebsiteUrl { get; set; }
 
-        [Column("press_kit_url", Order = 6)]
+        [Column("press_kit_url", Order = 8)]
         public string PressKitUrl { get; set; }
 
         [JsonIgnore]
-        [Column("record_label_id", Order = 7)]
+        [Column("record_label_id", Order = 9)]
         public int? RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
-
-        public List<ArtistMember> Members { get; set; }
-
-        public List<ArtistManager> Managers { get; set; }
-
-        public List<ArtistAccount> Accounts { get; set; }
-
-        public List<ArtistLink> Links { get; set; }
     }
 }

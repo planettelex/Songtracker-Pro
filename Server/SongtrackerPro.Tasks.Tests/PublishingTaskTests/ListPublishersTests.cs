@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PublishingTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
@@ -10,11 +11,11 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var addPublisherTask = new AddPublisher(DbContext);
+            var addPublisherTask = new AddPublisher(DbContext, new FormattingService());
             var testPublisher1 = TestsModel.Publisher;
             var testPublisher1Id = addPublisherTask.DoTask(testPublisher1);
             Assert.IsTrue(testPublisher1Id.Data.HasValue);
-            addPublisherTask = new AddPublisher(DbContext);
+            addPublisherTask = new AddPublisher(DbContext, new FormattingService());
             var testPublisher2 = TestsModel.Publisher;
             var testPublisher2Id = addPublisherTask.DoTask(testPublisher2);
             Assert.IsTrue(testPublisher2Id.Data.HasValue);

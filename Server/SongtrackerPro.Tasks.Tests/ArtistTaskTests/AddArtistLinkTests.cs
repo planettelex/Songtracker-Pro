@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 
@@ -14,7 +15,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var addArtistTask = new AddArtist(DbContext);
+            var addArtistTask = new AddArtist(DbContext, new FormattingService());
             var testArtist = TestsModel.Artist;
             var addArtistResult = addArtistTask.DoTask(testArtist);
 

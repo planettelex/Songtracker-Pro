@@ -71,6 +71,7 @@ namespace SongtrackerPro.Api
 
         public void RegisterTasks(IServiceCollection services)
         {
+            services.AddScoped<IFormattingService, FormattingService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IHtmlService, HtmlService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -126,6 +127,7 @@ namespace SongtrackerPro.Api
             services.AddScoped<IListArtistLinksTask, ListArtistLinks>();
             services.AddScoped<IGetArtistLinkTask, GetArtistLink>();
             services.AddScoped<IAddArtistLinkTask, AddArtistLink>();
+            services.AddScoped<IUpdateArtistLinkTask, UpdateArtistLink>();
             services.AddScoped<IRemoveArtistLinkTask, RemoveArtistLink>();
 
             services.AddScoped<IGetPersonTask, GetPerson>();
@@ -133,8 +135,11 @@ namespace SongtrackerPro.Api
             services.AddScoped<IUpdatePersonTask, UpdatePerson>();
 
             services.AddScoped<ISendUserInvitationTask, SendUserInvitation>();
+            services.AddScoped<IResendUserInvitationTask, ResendUserInvitation>();
+            services.AddScoped<IListUserInvitationsTask, ListUserInvitations>();
             services.AddScoped<IGetUserInvitationTask, GetUserInvitation>();
             services.AddScoped<IAcceptUserInvitationTask, AcceptUserInvitation>();
+            services.AddScoped<IRemoveUserInvitationTask, RemoveUserInvitation>();
 
             services.AddScoped<IListUsersTask, ListUsers>();
             services.AddScoped<IGetUserTask, GetUser>();

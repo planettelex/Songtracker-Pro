@@ -33,6 +33,8 @@ namespace SongtrackerPro.Tasks.UserTasks
                     _dbContext.SaveChanges();
                 }
 
+                userAccount.PlatformId = update.Platform?.Id ?? update.PlatformId;
+                userAccount.Platform = _dbContext.Platforms.Single(p => p.Id == userAccount.PlatformId);
                 userAccount.IsPreferred = update.IsPreferred;
                 userAccount.Username = update.Username;
                 _dbContext.SaveChanges();

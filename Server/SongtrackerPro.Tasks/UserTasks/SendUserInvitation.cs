@@ -76,7 +76,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (artistId != null)
                     userInvitation.Artist = _dbContext.Artists.SingleOrDefault(p => p.Id == artistId);
 
-                userInvitation.AcceptLink = ApplicationSettings.Web.Root + string.Format(WebRoutes.Join, userInvitation.Uuid);
+                userInvitation.AcceptLink = ApplicationSettings.Web.Domain + string.Format(WebRoutes.Join, userInvitation.Uuid);
                 
                 var emailTemplate = EmailTemplate($"{userInvitation.Type}Invitation.html");
                 var installation = _getInstallationTask.DoTask(null).Data;

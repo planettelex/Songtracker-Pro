@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 
 namespace SongtrackerPro.Tasks.UserTasks
@@ -11,13 +12,17 @@ namespace SongtrackerPro.Tasks.UserTasks
 
     public class UpdateUser : TaskBase, IUpdateUserTask
     {
-        public UpdateUser(ApplicationDbContext dbContext, IUpdatePersonTask updatePersonTask)
+        public UpdateUser(ApplicationDbContext dbContext, IUpdatePersonTask updatePersonTask, IAddPersonTask addPersonTask, IFormattingService formattingService)
         {
             _dbContext = dbContext;
             _updatePersonTask = updatePersonTask;
+            _addPersonTask = addPersonTask;
+            _formattingService = formattingService;
         }
         private readonly ApplicationDbContext _dbContext;
         private readonly IUpdatePersonTask _updatePersonTask;
+        private readonly IAddPersonTask _addPersonTask;
+        private readonly IFormattingService _formattingService;
 
         public TaskResult<Nothing> DoTask(User update)
         {
@@ -32,8 +37,14 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 if (update.Person != null)
                 {
-                    update.Person.Id = user.Person.Id;
-                    _updatePersonTask.DoTask(update.Person);
+                    update.Person.Email = update.AuthenticationId;
+                    if (user.Person == null)
+                        _addPersonTask.DoTask(update.Person);
+                    else
+                    {
+                        update.Person.Id = user.Person.Id;
+                        _updatePersonTask.DoTask(update.Person);
+                    }
                 }
                 
                 user.PerformingRightsOrganizationId = update.PerformingRightsOrganization?.Id;
@@ -42,7 +53,6 @@ namespace SongtrackerPro.Tasks.UserTasks
                     var pro = _dbContext.PerformingRightsOrganizations.SingleOrDefault(r => r.Id == user.PerformingRightsOrganizationId);
                     user.PerformingRightsOrganization = pro ?? throw new TaskException(SystemMessage("PRO_NOT_FOUND"));
                 }
-                user.PerformingRightsOrganizationMemberNumber = update.PerformingRightsOrganizationMemberNumber;
 
                 user.PublisherId = update.Publisher?.Id;
                 if (user.PublisherId.HasValue)
@@ -54,16 +64,17 @@ namespace SongtrackerPro.Tasks.UserTasks
                 user.RecordLabelId = update.RecordLabel?.Id;
                 if (user.RecordLabelId.HasValue)
                 {
-                    var recordLabel = _dbContext.RecordLabels.SingleOrDefault(p => p.Id == user.PublisherId);
+                    var recordLabel = _dbContext.RecordLabels.SingleOrDefault(p => p.Id == user.RecordLabelId);
                     user.RecordLabel = recordLabel ?? throw new TaskException(SystemMessage("RECORD_LABEL_NOT_FOUND"));
                 }
 
+                user.AuthenticationId = update.AuthenticationId;
                 user.Type = update.Type;
                 user.Roles = update.Roles;
-                user.SoundExchangeAccountNumber = update.SoundExchangeAccountNumber;
-                user.SocialSecurityNumber = update.SocialSecurityNumber;
-                user.AuthenticationId = update.AuthenticationId;
-
+                user.PerformingRightsOrganizationMemberNumber = string.IsNullOrWhiteSpace(update.PerformingRightsOrganizationMemberNumber) ? null : update.PerformingRightsOrganizationMemberNumber;
+                user.SoundExchangeAccountNumber = string.IsNullOrWhiteSpace(update.SoundExchangeAccountNumber) ? null : update.SoundExchangeAccountNumber;
+                user.SocialSecurityNumber = _formattingService.FormatSocialSecurityNumber(update.SocialSecurityNumber);
+                
                 _dbContext.SaveChanges();
 
                 return new TaskResult<Nothing>(true);

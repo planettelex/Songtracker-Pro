@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import goTo from "vuetify/es5/services/goto";
 import store from "./store/store";
-import UserType from "./enums/UserType"
+import UserType from "./enums/UserType";
 
 Vue.use(Router);
 
@@ -39,31 +39,37 @@ const router = new Router({
           name: "PublishingCompanies",
           path: "publishing-companies",
           component: () => import("@/views/system-administrator/PublishingCompanies"),
-          meta: { titleKey: "PublishingCompanies", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "PublishingCompany", userType: UserType.SystemAdministrator }
         },
         {
           name: "RecordLabels",
           path: "record-labels",
           component: () => import("@/views/system-administrator/RecordLabels"),
-          meta: { titleKey: "RecordLabels", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "RecordLabel", userType: UserType.SystemAdministrator }
         },
         {
           name: "Platforms",
           path: "platforms",
           component: () => import("@/views/system-administrator/Platforms"),
-          meta: { titleKey: "Platforms", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "Platform", userType: UserType.SystemAdministrator }
         },
         {
           name: "Artists",
           path: "artists",
           component: () => import("@/views/system-administrator/Artists"),
-          meta: { titleKey: "Artists", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "Artist", userType: UserType.SystemAdministrator }
         },
         {
           name: "Users",
           path: "users",
           component: () => import("@/views/system-administrator/Users"),
-          meta: { titleKey: "Users", userType: UserType.SystemAdministrator }
+          meta: { titleKey: "User", userType: UserType.SystemAdministrator }
+        },
+        {
+          name: "Invitations",
+          path: "invitations",
+          component: () => import("@/views/system-administrator/Invitations"),
+          meta: { titleKey: "Invitation", userType: UserType.SystemAdministrator }
         },
         // Label Administrator
         {
@@ -76,31 +82,31 @@ const router = new Router({
           name: "LabelDocuments",
           path: "label-documents",
           component: () => import("@/views/label-administrator/LabelDocuments"),
-          meta: { titleKey: "Documents", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Document", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelRecordings",
           path: "label-recordings",
           component: () => import("@/views/label-administrator/LabelRecordings"),
-          meta: { titleKey: "Releases", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Recording", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelReleases",
           path: "label-releases",
           component: () => import("@/views/label-administrator/LabelReleases"),
-          meta: { titleKey: "Recordings", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Release", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelArtists",
           path: "label-artists",
           component: () => import("@/views/label-administrator/LabelArtists"),
-          meta: { titleKey: "Artists", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "Artist", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelUsers",
           path: "label-users",
           component: () => import("@/views/label-administrator/LabelUsers"),
-          meta: { titleKey: "Users", userType: UserType.LabelAdministrator }
+          meta: { titleKey: "User", userType: UserType.LabelAdministrator }
         },
         {
           name: "LabelInformation",
@@ -119,19 +125,19 @@ const router = new Router({
           name: "PublisherDocuments",
           path: "publisher-documents",
           component: () => import("@/views/publisher-administrator/PublisherDocuments"),
-          meta: { titleKey: "Documents", userType: UserType.PublisherAdministrator }
+          meta: { titleKey: "Document", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherCompositions",
           path: "publisher-compositions",
           component: () => import("@/views/publisher-administrator/PublisherCompositions"),
-          meta: { titleKey: "Compositions", userType: UserType.PublisherAdministrator }
+          meta: { titleKey: "Composition", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherUsers",
           path: "publisher-users",
           component: () => import("@/views/publisher-administrator/PublisherUsers"),
-          meta: { titleKey: "Users", userType: UserType.PublisherAdministrator }
+          meta: { titleKey: "User", userType: UserType.PublisherAdministrator }
         },
         {
           name: "PublisherInformation",
@@ -197,6 +203,12 @@ const router = new Router({
           meta: { unauthenticatedOk: true, titleKey: "Login", userType: UserType.Unsassigned }
         },
         {
+          name: "Join",
+          path: "join",
+          component: () => import("@/views/Join"),
+          meta: { unauthenticatedOk: true, titleKey: "Join", userType: UserType.Unsassigned }
+        },
+        {
           name: "404",
           path: "*",
           component: () => import("@/views/FourOhFour"),
@@ -222,15 +234,16 @@ router.beforeEach((to, from, next) => {
   if (to.meta.unauthenticatedOk) {
     next();
   }
-  else if (store.state.Login !== null) {
+  else if (store.state.Authentication !== null) {
     let now = new Date(Date.now());
-    let tokenExpiration = new Date(store.state.Login.tokenExpiration);
+    let tokenExpiration = new Date(store.state.Authentication.tokenExpiration);
     let userType = store.state.User ? store.state.User.type : UserType.Unsassigned;
     if (tokenExpiration < now) 
-      next("/login");
+      next("/login?logout=true&reason=expired");
     else if (to.meta.userType != UserType.Unsassigned && to.meta.userType != userType)
       next("/403");
     else {
+      store.commit("SET_LAST_PAGE_VIEWED", to.path);
       next();
     }
   }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PersonTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
@@ -10,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var task = new AddPerson(DbContext);
+            var task = new AddPerson(DbContext, new FormattingService());
             var testPerson = TestsModel.Person;
             var result = task.DoTask(testPerson);
 
@@ -24,6 +25,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
 
             var getPersonTask = new GetPerson(DbContext);
             var person = getPersonTask.DoTask(personId.Value)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(person);
             Assert.AreEqual(testPerson.FirstName, person.FirstName);
@@ -31,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
             Assert.AreEqual(testPerson.LastName, person.LastName);
             Assert.AreEqual(testPerson.NameSuffix, person.NameSuffix);
             Assert.AreEqual(testPerson.Email, person.Email);
-            Assert.AreEqual(testPerson.Phone, person.Phone);
+            Assert.AreEqual(formattingService.FormatPhoneNumber(testPerson.Phone), person.Phone);
             Assert.IsNotNull(testPerson.Address);
             Assert.AreEqual(testPerson.Address.Street, person.Address.Street);
             Assert.AreEqual(testPerson.Address.City, person.Address.City);
@@ -51,7 +53,7 @@ namespace SongtrackerPro.Tasks.Tests.PersonTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddPerson(EmptyDbContext);
+            var task = new AddPerson(EmptyDbContext, new FormattingService());
             var result = task.DoTask(new Person());
             
             Assert.IsFalse(result.Success);

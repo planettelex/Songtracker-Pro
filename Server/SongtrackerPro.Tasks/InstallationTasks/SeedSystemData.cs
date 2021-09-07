@@ -29,11 +29,11 @@ namespace SongtrackerPro.Tasks.InstallationTasks
 
         public TaskResult<bool> DoTask(Nothing nothing)
         {
-            var installationSeeded = _seedInstallationTask.DoTask(nothing).Data;
-            var countriesSeeded = _seedCountriesTask.DoTask(nothing).Data;
-            var prosSeeded = _seedPerformingRightsOrganizationsTask.DoTask(nothing).Data;
-            var servicesSeeded = _seedServicesTask.DoTask(nothing).Data;
-            var platformsSeeded = _seedPlatformsTask.DoTask(nothing).Data;
+            var installationSeeded = _seedInstallationTask.DoTask(nothing).Success;
+            var countriesSeeded = _seedCountriesTask.DoTask(nothing).Success;
+            var prosSeeded = _seedPerformingRightsOrganizationsTask.DoTask(nothing).Success;
+            var servicesSeeded = _seedServicesTask.DoTask(nothing).Success;
+            var platformsSeeded = _seedPlatformsTask.DoTask(nothing).Success;
 
             return new TaskResult<bool>(installationSeeded || countriesSeeded || prosSeeded || servicesSeeded || platformsSeeded);
         }

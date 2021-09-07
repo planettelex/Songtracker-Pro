@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SongtrackerPro.Data.Migrations
 {
-    public partial class v_0_04 : Migration
+    public partial class v_0_05 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -218,6 +218,8 @@ namespace SongtrackerPro.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tax_id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    address_id = table.Column<int>(type: "int", nullable: true),
                     has_service_mark = table.Column<bool>(type: "bit", nullable: false),
                     website_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     press_kit_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -226,6 +228,12 @@ namespace SongtrackerPro.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_artists", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_artists_addresses_address_id",
+                        column: x => x.address_id,
+                        principalTable: "addresses",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_artists_record_labels_record_label_id",
                         column: x => x.record_label_id,
@@ -540,6 +548,11 @@ namespace SongtrackerPro.Data.Migrations
                 name: "IX_artist_members_person_id",
                 table: "artist_members",
                 column: "person_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_artists_address_id",
+                table: "artists",
+                column: "address_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_artists_record_label_id",

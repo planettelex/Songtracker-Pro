@@ -4,6 +4,7 @@ using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
@@ -43,7 +44,7 @@ namespace SongtrackerPro.Tasks.Tests
             get
             {
                 var countries = new ListCountries(_dbContext).DoTask(null).Data;
-                var usa = countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "USA");
+                var us = countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "US");
                 var streetNumber = new Random().Next(1000, 10000);
                 var postalCode = new Random().Next(10000, 99999);
                 var cityIndex = new Random().Next(4);
@@ -58,7 +59,7 @@ namespace SongtrackerPro.Tasks.Tests
                     City = city,
                     Region = region,
                     PostalCode = postalCode.ToString(),
-                    Country = usa
+                    Country = us
                 };
             }
         }
@@ -185,10 +186,12 @@ namespace SongtrackerPro.Tasks.Tests
                 {
                     Name = nameof(Artist) + " " + stamp,
                     TaxId = stamp.ToString(),
+                    Email = $"test@artist{stamp}.com",
+                    Address = Address,
+                    RecordLabel = label,
                     HasServiceMark = fiftyFifty,
                     WebsiteUrl = "http://www.artist.com",
-                    PressKitUrl = "http://www.presskit.com",
-                    RecordLabel = label
+                    PressKitUrl = "http://www.presskit.com"
                 };
             }
         }
@@ -233,7 +236,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     publisher = Publisher;
-                    new AddPublisher(_dbContext).DoTask(publisher);
+                    new AddPublisher(_dbContext, new FormattingService()).DoTask(publisher);
                 }
                 
                 var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
@@ -243,7 +246,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     recordLabel = RecordLabel;
-                    new AddRecordLabel(_dbContext).DoTask(recordLabel);
+                    new AddRecordLabel(_dbContext, new FormattingService()).DoTask(recordLabel);
                 }
                 
                 var stamp = DateTime.Now.Ticks;
@@ -276,7 +279,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     publisher = Publisher;
-                    new AddPublisher(_dbContext).DoTask(publisher);
+                    new AddPublisher(_dbContext, new FormattingService()).DoTask(publisher);
                 }
                 
                 var recordLabels = new ListRecordLabels(_dbContext).DoTask(null).Data;
@@ -286,7 +289,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     recordLabel = RecordLabel;
-                    new AddRecordLabel(_dbContext).DoTask(recordLabel);
+                    new AddRecordLabel(_dbContext, new FormattingService()).DoTask(recordLabel);
                 }
 
                 var artists = new ListArtists(_dbContext).DoTask(null).Data;
@@ -296,7 +299,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     artist = Artist;
-                    new AddArtist(_dbContext).DoTask(artist);
+                    new AddArtist(_dbContext, new FormattingService()).DoTask(artist);
                 }
 
                 var users = new ListUsers(_dbContext).DoTask(null).Data;
@@ -307,13 +310,13 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     var user = User;
-                    new AddUser(_dbContext, new AddPerson(_dbContext)).DoTask(user);
+                    new AddUser(_dbContext, new AddPerson(_dbContext, new FormattingService()), new FormattingService()).DoTask(user);
                     invitedByUserId = user.Id;
                 }
 
                 return new UserInvitation
                 {
-                    Uuid = Guid.Empty,
+                    Uuid = Guid.NewGuid(),
                     InvitedByUserId = invitedByUserId,
                     Name = Person.FirstAndLastName,
                     Email = Person.Email,

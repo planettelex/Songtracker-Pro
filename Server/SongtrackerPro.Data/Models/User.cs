@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using SongtrackerPro.Data.Attributes;
 using SongtrackerPro.Data.Enums;
+using SongtrackerPro.Resources;
+using SongtrackerPro.Utilities;
 
 namespace SongtrackerPro.Data.Models
 {
@@ -29,6 +31,9 @@ namespace SongtrackerPro.Data.Models
         [Column("person_id", Order = 5)]
         public int? PersonId { get; set; }
         public Person Person { get; set; }
+
+        [NotMapped]
+        public string Name => Person != null ? Person.FirstAndLastName : GetResource.SystemMessage(ApplicationSettings.Culture, "SUPERUSER");
 
         [Encrypted]
         [Column("social_security_number", Order = 6)]

@@ -28,12 +28,12 @@ namespace SongtrackerPro.Tasks.PublishingTasks
 
                 _seedCountriesTask.DoTask(nothing);
 
-                var usa = _dbContext.Countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "USA");
-                if (usa == null)
+                var us = _dbContext.Countries.SingleOrDefault(c => c.IsoCode.ToUpper() == "US");
+                if (us == null)
                     throw new NullReferenceException(SystemMessage("USA_NOT_FOUND"));
 
-                _dbContext.PerformingRightsOrganizations.Add(new PerformingRightsOrganization { Name = "ASCAP", CountryId = usa.Id });
-                _dbContext.PerformingRightsOrganizations.Add(new PerformingRightsOrganization { Name = "BMI", CountryId = usa.Id });
+                _dbContext.PerformingRightsOrganizations.Add(new PerformingRightsOrganization { Name = "ASCAP", CountryId = us.Id });
+                _dbContext.PerformingRightsOrganizations.Add(new PerformingRightsOrganization { Name = "BMI", CountryId = us.Id });
 
                 _dbContext.SaveChanges();
 

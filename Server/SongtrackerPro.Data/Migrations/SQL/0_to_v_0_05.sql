@@ -119,11 +119,14 @@ CREATE TABLE [artists] (
     [id] int NOT NULL IDENTITY,
     [name] nvarchar(max) NOT NULL,
     [tax_id] nvarchar(max) NULL,
+    [email] nvarchar(max) NULL,
+    [address_id] int NULL,
     [has_service_mark] bit NOT NULL,
     [website_url] nvarchar(max) NULL,
     [press_kit_url] nvarchar(max) NULL,
     [record_label_id] int NULL,
     CONSTRAINT [PK_artists] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_artists_addresses_address_id] FOREIGN KEY ([address_id]) REFERENCES [addresses] ([id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_artists_record_labels_record_label_id] FOREIGN KEY ([record_label_id]) REFERENCES [record_labels] ([id]) ON DELETE NO ACTION
 );
 GO
@@ -270,6 +273,9 @@ GO
 CREATE INDEX [IX_artist_members_person_id] ON [artist_members] ([person_id]);
 GO
 
+CREATE INDEX [IX_artists_address_id] ON [artists] ([address_id]);
+GO
+
 CREATE INDEX [IX_artists_record_label_id] ON [artists] ([record_label_id]);
 GO
 
@@ -331,7 +337,7 @@ CREATE INDEX [IX_users_record_label_id] ON [users] ([record_label_id]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20210511230552_v_0_04', N'5.0.3');
+VALUES (N'20210526213412_v_0_05', N'5.0.3');
 GO
 
 COMMIT;

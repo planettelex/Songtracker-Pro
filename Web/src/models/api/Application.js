@@ -1,6 +1,6 @@
 import Model from './Model';
 
-export default class AppInfo extends Model {
+export default class Application extends Model {
     resource() {
         return '';
       }

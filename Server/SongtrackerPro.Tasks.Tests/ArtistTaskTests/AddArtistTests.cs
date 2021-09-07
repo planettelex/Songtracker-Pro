@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 
 namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
@@ -10,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var task = new AddArtist(DbContext);
+            var task = new AddArtist(DbContext, new FormattingService());
             var testArtist = TestsModel.Artist;
             var result = task.DoTask(testArtist);
 
@@ -24,10 +25,20 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
 
             var getArtistTask = new GetArtist(DbContext);
             var artist = getArtistTask.DoTask(artistId.Value)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(artist);
             Assert.AreEqual(testArtist.Name, artist.Name);
-            Assert.AreEqual(testArtist.TaxId, artist.TaxId);
+            Assert.AreEqual(formattingService.FormatTaxId(testArtist.TaxId), artist.TaxId);
+            Assert.AreEqual(testArtist.Email, artist.Email);
+            Assert.IsNotNull(artist.Address);
+            Assert.AreEqual(testArtist.Address.Street, artist.Address.Street);
+            Assert.AreEqual(testArtist.Address.City, artist.Address.City);
+            Assert.AreEqual(testArtist.Address.Region, artist.Address.Region);
+            Assert.AreEqual(testArtist.Address.PostalCode, artist.Address.PostalCode);
+            Assert.IsNotNull(artist.Address.Country);
+            Assert.AreEqual(testArtist.Address.Country.Name, artist.Address.Country.Name);
+            Assert.AreEqual(testArtist.Address.Country.IsoCode, artist.Address.Country.IsoCode);
             Assert.AreEqual(testArtist.HasServiceMark, artist.HasServiceMark);
             Assert.AreEqual(testArtist.WebsiteUrl, artist.WebsiteUrl);
             Assert.AreEqual(testArtist.PressKitUrl, artist.PressKitUrl);
@@ -44,7 +55,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddArtist(EmptyDbContext);
+            var task = new AddArtist(EmptyDbContext, new FormattingService());
             var result = task.DoTask(new Artist());
             
             Assert.IsFalse(result.Success);

@@ -124,19 +124,21 @@ namespace SongtrackerPro.Utilities
                 set => _documentation = value;
             }
             private static string _documentation;
+
+            public static string ClientKey
+            {
+                get
+                {
+                    if (!_hasLoaded) LoadSettings();
+                    return _clientKey;
+                }
+                set => _clientKey = value;
+            }
+            private static string _clientKey;
         }
 
         public static class Web
         {
-            public static string Root
-            {
-                get
-                {
-                    var protocol = IsSecure ? "https://" : "http://";
-                    return $"{protocol}{Domain}/";
-                }
-            }
-
             public static string Domain
             {
                 get
@@ -292,6 +294,7 @@ namespace SongtrackerPro.Utilities
             Api.MinifyJson = bool.Parse(configuration.GetSection("Api")?.GetSection("MinifyJson")?.Value ?? bool.TrueString);
             Api.HostingConsole = configuration.GetSection("Api")?.GetSection("HostingConsole")?.Value;
             Api.Documentation = configuration.GetSection("Api")?.GetSection("Documentation")?.Value;
+            Api.ClientKey = configuration.GetSection("Api")?.GetSection("ClientKey")?.Value;
 
             Web.Domain = configuration.GetSection("Web")?.GetSection("Domain")?.Value;
             Web.IsSecure = bool.Parse(configuration.GetSection("Web")?.GetSection("IsSecure")?.Value ?? bool.FalseString);

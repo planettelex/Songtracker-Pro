@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 
 namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
@@ -10,7 +11,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
         [TestMethod]
         public void TaskSuccessTest()
         {
-            var task = new AddRecordLabel(DbContext);
+            var task = new AddRecordLabel(DbContext, new FormattingService());
             var testRecordLabel = TestsModel.RecordLabel;
             var result = task.DoTask(testRecordLabel);
 
@@ -24,12 +25,13 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 
             var getRecordLabelTask = new GetRecordLabel(DbContext);
             var recordLabel = getRecordLabelTask.DoTask(recordLabelId.Value)?.Data;
+            var formattingService = new FormattingService();
 
             Assert.IsNotNull(recordLabel);
             Assert.AreEqual(testRecordLabel.Name, recordLabel.Name);
-            Assert.AreEqual(testRecordLabel.TaxId, recordLabel.TaxId);
+            Assert.AreEqual(formattingService.FormatTaxId(testRecordLabel.TaxId), recordLabel.TaxId);
             Assert.AreEqual(testRecordLabel.Email, recordLabel.Email);
-            Assert.AreEqual(testRecordLabel.Phone, recordLabel.Phone);
+            Assert.AreEqual(formattingService.FormatPhoneNumber(testRecordLabel.Phone), recordLabel.Phone);
             Assert.IsNotNull(testRecordLabel.Address);
             Assert.AreEqual(testRecordLabel.Address.Street, recordLabel.Address.Street);
             Assert.AreEqual(testRecordLabel.Address.City, recordLabel.Address.City);
@@ -49,7 +51,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddRecordLabel(EmptyDbContext);
+            var task = new AddRecordLabel(EmptyDbContext, new FormattingService());
             var result = task.DoTask(new RecordLabel());
             
             Assert.IsFalse(result.Success);
