@@ -90,6 +90,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Invitation)]
         [HttpGet]
+        [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult GetInvitation(Guid uuid)
         {
             try
@@ -140,6 +141,7 @@ namespace SongtrackerPro.Api.Controllers
 
         [Route(Routes.Invitation)]
         [HttpPut]
+        [UserTypesAllowed(UserType.Unassigned)]
         public IActionResult AcceptInvitation(Guid uuid, UserInvitation userInvitation)
         {
             try

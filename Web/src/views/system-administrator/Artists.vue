@@ -98,7 +98,7 @@
                                         v-model="editedArtistMember.startedOn" v-bind="attrs" v-on="on">
                           </v-text-field>
                         </template>
-                        <v-date-picker no-title @input="editedArtistMemberStartedOnMenu = false" v-model="editedArtistMember.startedOn"></v-date-picker>
+                        <v-date-picker no-title @input="editedArtistMemberStartedOnMenu = false" v-model="editedArtistMember.startedOn" :locale="locale"></v-date-picker>
                       </v-menu>
                       <span v-else>{{item.startedOn}}</span>
                     </template>
@@ -110,7 +110,7 @@
                                         v-model="editedArtistMember.endedOn" v-bind="attrs" v-on="on">
                           </v-text-field>
                         </template>
-                        <v-date-picker no-title @input="editedArtistMemberEndedOnMenu = false" v-model="editedArtistMember.endedOn"></v-date-picker>
+                        <v-date-picker no-title @input="editedArtistMemberEndedOnMenu = false" v-model="editedArtistMember.endedOn" :locale="locale"></v-date-picker>
                       </v-menu>
                       <span v-else>{{item.endedOn}}</span>
                     </template>
@@ -138,7 +138,7 @@
                                         v-model="editedArtistManager.startedOn" v-bind="attrs" v-on="on">
                           </v-text-field>
                         </template>
-                        <v-date-picker no-title @input="editedArtistManagerStartedOnMenu = false" v-model="editedArtistManager.startedOn"></v-date-picker>
+                        <v-date-picker no-title @input="editedArtistManagerStartedOnMenu = false" v-model="editedArtistManager.startedOn" :locale="locale"></v-date-picker>
                       </v-menu>
                       <span v-else>{{item.startedOn}}</span>
                     </template>
@@ -150,7 +150,7 @@
                                         v-model="editedArtistManager.endedOn" v-bind="attrs" v-on="on">
                           </v-text-field>
                         </template>
-                        <v-date-picker no-title @input="editedArtistManagerEndedOnMenu = false" v-model="editedArtistManager.endedOn"></v-date-picker>
+                        <v-date-picker no-title @input="editedArtistManagerEndedOnMenu = false" v-model="editedArtistManager.endedOn" :locale="locale"></v-date-picker>
                       </v-menu>
                       <span v-else>{{item.endedOn}}</span>
                     </template>
@@ -322,6 +322,7 @@ export default {
 
   data: () => ({
     dialog: false,
+    locale: appConfig.locale,
     tab: 0,
     formTitle: '',
     countries: [],
@@ -470,6 +471,10 @@ export default {
     linkUrlValidationMessage: null,
     showAddedAlert: false,
     showEditedAlert: false,
+    datePickerConfig: {
+      type: 'string',
+      mask: 'MM DD YYYY'
+    },
     error: null
   }),
 
@@ -636,7 +641,7 @@ export default {
       if (this.selectedCountry == null)
         this.countryRegions = new Array(0);
       else {
-        let culture = appConfig.locale + '-' + this.selectedCountry.isoCode;
+        let culture = this.locale + '-' + this.selectedCountry.isoCode;
         this.countryRegions = CountryRegions[culture];
       }
     },
@@ -658,7 +663,6 @@ export default {
     },
 
     async loadPaymentPlatforms() {
-      console.log("load payment platforms");
       const allPlatforms = await PlatformModel.config(this.RequestHeaders).all()
         .catch(error => this.handleError(error));
       this.paymentPlatforms = [];
@@ -863,21 +867,21 @@ export default {
         this.showLinkPlatformValidation = true;
         linkInformationIsValid = false;
       }
-
+      
       if (this.newLinkUrl) {
         const link = new Link(this.newLinkUrl);
         if (link.urlIsValid())
-          newArtistLink.url = link.Url;
+          newArtistLink.url = link.url;
         else {
           this.linkUrlValidationMessage = this.$t('Invalid') + ' ' + this.$t("Url");
           this.showLinkUrlValidation = true;
-          linkInformationIsValid = false;
+          this.linkInformationIsValid = false;
         }
       }
       else {
         this.linkUrlValidationMessage = this.$t('ValueIsRequired');
         this.showLinkUrlValidation = true;
-        linkInformationIsValid = false;
+        this.linkInformationIsValid = false;
       }
 
       if (!linkInformationIsValid)
