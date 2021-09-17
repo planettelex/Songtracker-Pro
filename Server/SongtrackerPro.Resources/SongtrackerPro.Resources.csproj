@@ -35,4 +35,8 @@
     <EmbeddedResource Include="en-US\SystemMessages.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="en-US\SeedDocuments\" />
+  </ItemGroup>
+
 </Project>

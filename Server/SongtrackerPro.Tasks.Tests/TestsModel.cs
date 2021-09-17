@@ -108,7 +108,7 @@ namespace SongtrackerPro.Tasks.Tests
             get
             {
                 var listServicesTask = new ListServices(_dbContext);
-                var allServices = listServicesTask.DoTask(null).Data;
+                var allServices = listServicesTask.DoTask(ServiceType.Platform).Data;
 
                 const int maxServiceCount = 5;
                 var numberOfServices = new Random().Next(1, maxServiceCount);

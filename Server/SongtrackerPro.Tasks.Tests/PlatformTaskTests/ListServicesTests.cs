@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SongtrackerPro.Tasks.PlatformTasks;
+using SongtrackerPro.Data.Enums;
+using SongtrackerPro.Tasks.InstallationTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
 {
@@ -11,7 +12,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         public void TaskSuccessTest()
         {
             var task = new ListServices(DbContext);
-            var result = task.DoTask(null);
+            var result = task.DoTask(ServiceType.Unspecified);
             
             Assert.IsTrue(result.Success);
             Assert.IsNull(result.Exception);
@@ -28,7 +29,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         public void TaskFailTest()
         {
             var task = new ListServices(EmptyDbContext);
-            var result = task.DoTask(null);
+            var result = task.DoTask(ServiceType.Unspecified);
             
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Exception);

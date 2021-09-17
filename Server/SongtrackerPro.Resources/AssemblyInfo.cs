@@ -25,7 +25,23 @@
             "SERVICE_PHYSICAL_SALES",
             "SERVICE_PAYMENT",
             "SERVICE_MUSIC_IDENTIFICATION",
-            "SERVICE_EVENT_MANAGEMENT"
+            "SERVICE_EVENT_MANAGEMENT",
+            "SERVICE_VENUE",
+            "SERVICE_RESTAURANT_BAR",
+            "SERVICE_BOOKING_AGENT",
+            "SERVICE_RECORDING_STUDIO",
+            "SERVICE_PRODUCTION_COMPANY",
+            "SERVICE_RECORD_LABEL",
+            "SERVICE_LEGAL_SERVICES",
+            "SERVICE_TALENT_AGENCY",
+            "SERVICE_PUBLISHING",
+            "SERVICE_PROFESSIONAL_SERVICES",
+            "SERVICE_RETAIL_SALES",
+            "SERVICE_BROADCASTING",
+            "SERVICE_EVENT_PLANNING",
+            "SERVICE_ROYALTY_COLLECTIONS",
+            "SERVICE_MANUFACTURING",
+            "SERVICE_WHOLESALE_PROVIDER"
         };
 
         public static string[] SystemMessageKeys =

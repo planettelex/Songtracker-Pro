@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -50,7 +51,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                var taskResults = _listServicesTask.DoTask(null);
+                var taskResults = _listServicesTask.DoTask(ServiceType.Platform);
 
                 return taskResults.Success ? 
                     Json(taskResults) : 

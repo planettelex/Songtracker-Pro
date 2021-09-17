@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 
 namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
@@ -27,7 +29,8 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(artistId);
             Assert.IsTrue(artistId > 0);
 
-            var paymentService = new ListServices(DbContext).DoTask(null).Data.SingleOrDefault(s => s.Name.ToLower() == "payment");
+            var paymentService = new ListServices(DbContext).DoTask(ServiceType.Platform).Data
+                .SingleOrDefault(s => s.Name.ToLower() == "payment");
             Assert.IsNotNull(paymentService);
 
             var allPlatforms = new ListPlatforms(DbContext).DoTask(null).Data.ToList();

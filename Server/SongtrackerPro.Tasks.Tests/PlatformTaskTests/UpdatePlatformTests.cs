@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 
 namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
@@ -13,7 +15,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         public void UpdatePlatformModel(Platform platform)
         {
             var listServicesTask = new ListServices(DbContext);
-            var allServices = listServicesTask.DoTask(null).Data;
+            var allServices = listServicesTask.DoTask(ServiceType.Platform).Data;
 
             const int maxServiceCount = 5;
             var numberOfServices = new Random().Next(1, maxServiceCount);

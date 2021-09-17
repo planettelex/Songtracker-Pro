@@ -60,6 +60,70 @@
     {
       "Key": "SERVICE_EVENT_MANAGEMENT",
       "Value": "Event Management"
+    },
+    {
+      "Key": "SERVICE_VENUE",
+      "Value": "Venue"
+    },
+    {
+      "Key": "SERVICE_RESTAURANT_BAR",
+      "Value": "Restaurant/Bar"
+    },
+    {
+      "Key": "SERVICE_BOOKING_AGENT",
+      "Value": "Booking Agent"
+    },
+    {
+      "Key": "SERVICE_RECORDING_STUDIO",
+      "Value": "Recording Studio"
+    },
+    {
+      "Key": "SERVICE_PRODUCTION_COMPANY",
+      "Value": "Production Company"
+    },
+    {
+      "Key": "SERVICE_RECORD_LABEL",
+      "Value": "Record Label"
+    },
+    {
+      "Key": "SERVICE_LEGAL_SERVICES",
+      "Value": "Legal Services"
+    },
+    {
+      "Key": "SERVICE_TALENT_AGENCY",
+      "Value": "Talent Agency"
+    },
+    {
+      "Key": "SERVICE_PUBLISHING",
+      "Value": "Publishing"
+    },
+    {
+      "Key": "SERVICE_PROFESSIONAL_SERVICES",
+      "Value": "Professional Services"
+    },
+    {
+      "Key": "SERVICE_RETAIL_SALES",
+      "Value": "Retail Sales"
+    },
+    {
+      "Key": "SERVICE_BROADCASTING",
+      "Value": "Broadcasting"
+    },
+    {
+      "Key": "SERVICE_EVENT_PLANNING",
+      "Value": "Event Planning"
+    },
+    {
+      "Key": "SERVICE_ROYALTY_COLLECTIONS",
+      "Value": "Royalty Collections"
+    },
+    {
+      "Key": "SERVICE_MANUFACTURING",
+      "Value": "Manufacturing"
+    },
+    {
+      "Key": "SERVICE_WHOLESALE_PROVIDER",
+      "Value": "Wholesale Provider"
     }
   ]
 }
