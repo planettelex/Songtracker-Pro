@@ -20,7 +20,7 @@ namespace SongtrackerPro.Data.Models
         public Release Release { get; set; }
 
         [Required]
-        [Column("recording_id", Order = 2)]
+        [Column("recording_id", Order = 3)]
         public int RecordingId { get; set; }
         public Recording Recording { get; set; }
 

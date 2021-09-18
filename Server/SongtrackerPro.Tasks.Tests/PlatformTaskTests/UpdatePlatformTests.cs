@@ -35,7 +35,7 @@ namespace SongtrackerPro.Tasks.Tests.PlatformTaskTests
         {
             var listPlatformsTask = new ListPlatforms(DbContext);
             var allPlatforms = listPlatformsTask.DoTask(null);
-            var randomIndex = new Random().Next(allPlatforms.Data.Count);
+            var randomIndex = new Random().Next(allPlatforms.Data.Count - 1);
             var randomPlatform = allPlatforms.Data[randomIndex];
             Assert.IsNotNull(randomPlatform);
 

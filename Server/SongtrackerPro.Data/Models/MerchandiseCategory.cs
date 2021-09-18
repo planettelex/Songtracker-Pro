@@ -20,9 +20,8 @@ namespace SongtrackerPro.Data.Models
         public string Description { get; set; }
 
         [JsonIgnore]
-        [Required]
         [Column("parent_category_id", Order = 4)]
-        public int ParentCategoryId { get; set; }
+        public int? ParentCategoryId { get; set; }
         public MerchandiseCategory ParentCategory { get; set; }
     }
 }

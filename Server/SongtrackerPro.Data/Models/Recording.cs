@@ -44,7 +44,7 @@ namespace SongtrackerPro.Data.Models
 
         [JsonIgnore]
         [Column("original_recording_id", Order = 9)]
-        public int OriginalRecordingId { get; set; }
+        public int? OriginalRecordingId { get; set; }
         public Recording OriginalRecording { get; set; }
     }
 }

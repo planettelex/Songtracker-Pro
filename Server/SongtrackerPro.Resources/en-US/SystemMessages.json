@@ -26,6 +26,10 @@
       "Value": "Installation not found."
     },
     {
+      "Key": "LEGAL_ENTITY_NOT_FOUND",
+      "Value": "Legal entity not found."
+    },
+    {
       "Key": "PERSON_NOT_FOUND",
       "Value": "Person not found."
     },

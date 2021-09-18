@@ -12,11 +12,11 @@ namespace SongtrackerPro.Data
 
         /* PMC Commands (https://docs.microsoft.com/en-us/ef/core/cli/powershell):
         
-           Add-Migration -project SongtrackerPro.Data -name v_0_05
+           Add-Migration -project SongtrackerPro.Data -name v_0_06
 
            Remove-Migration -project SongtrackerPro.Data
         
-           Script-Migration 0 v_0_05 -project SongtrackerPro.Data -output SongtrackerPro.Data/Migrations/SQL/0_to_v_0_05.sql
+           Script-Migration 0 v_0_06 -project SongtrackerPro.Data -output SongtrackerPro.Data/Migrations/SQL/0_to_v_0_06.sql
 
            Update-Database -project SongtrackerPro.Data
         

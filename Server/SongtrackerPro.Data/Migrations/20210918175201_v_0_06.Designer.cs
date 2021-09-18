@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SongtrackerPro.Data;
 
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210918175201_v_0_06")]
+    partial class v_0_06
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1356,7 +1358,7 @@ namespace SongtrackerPro.Data.Migrations
 
                     b.ToTable("storage_items");
 
-                    b.HasDiscriminator<string>("discriminator").HasValue("StorageItem");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("StorageItem");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.User", b =>
@@ -2143,13 +2145,13 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Recording", "Recording")
                         .WithMany()
                         .HasForeignKey("RecordingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Release", "Release")
                         .WithMany()
                         .HasForeignKey("ReleaseId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Recording");

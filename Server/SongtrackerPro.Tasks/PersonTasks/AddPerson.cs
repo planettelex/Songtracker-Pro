@@ -15,16 +15,8 @@ namespace SongtrackerPro.Tasks.PersonTasks
             _dbContext = dbContext;
             _formattingService = formattingService;
         }
-
-        public AddPerson(ApplicationDbContext dbContext)
-        {
-            DbContext = dbContext;
-        }
-
         private readonly ApplicationDbContext _dbContext;
         private readonly IFormattingService _formattingService;
-
-        public ApplicationDbContext DbContext { get; }
 
         public TaskResult<int?> DoTask(Person person)
         {

@@ -63,10 +63,10 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(result.Data);
             Assert.AreEqual(paymentPlatforms.Count, result.Data.Count);
 
-            foreach (var userAccount in result.Data)
+            foreach (var artistAccount in result.Data)
             {
-                Assert.AreEqual(userAccount.ArtistId, testArtist.Id);
-                Assert.IsNotNull(userAccount.Username);
+                Assert.AreEqual(artistAccount.ArtistId, testArtist.Id);
+                Assert.IsNotNull(artistAccount.Username);
             }
             
             var removeArtistTask = new RemoveArtist(DbContext);
@@ -79,8 +79,8 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddArtistAccount(EmptyDbContext);
-            var result = task.DoTask(new ArtistAccount());
+            var task = new ListArtistAccounts(EmptyDbContext);
+            var result = task.DoTask(new Artist());
             
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Exception);

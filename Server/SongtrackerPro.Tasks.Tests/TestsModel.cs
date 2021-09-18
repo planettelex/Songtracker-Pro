@@ -129,6 +129,36 @@ namespace SongtrackerPro.Tasks.Tests
             }
         }
 
+        public LegalEntity LegalEntity
+        {
+            get
+            {
+                var listServicesTask = new ListServices(_dbContext);
+                var allServices = listServicesTask.DoTask(ServiceType.LegalEntity).Data;
+
+                const int maxServiceCount = 5;
+                var numberOfServices = new Random().Next(1, maxServiceCount);
+
+                var services = new List<Service>();
+                for (var i = 0; i < numberOfServices; i++)
+                {
+                    var randomIndex = new Random().Next(allServices.Count - 1);
+                    services.Add(allServices[randomIndex]);
+                }
+
+                var stamp = DateTime.Now.Ticks;
+                return new LegalEntity
+                {
+                    Name = nameof(Data.Models.LegalEntity) + " " + stamp,
+                    TradeName = nameof(Data.Models.LegalEntity) + " Trade Name",
+                    TaxId = stamp.ToString(),
+                    Email = $"test@legalentity{stamp}.com",
+                    Address = Address,
+                    Services = services
+                };
+            }
+        }
+
         public Publisher Publisher
         {
             get

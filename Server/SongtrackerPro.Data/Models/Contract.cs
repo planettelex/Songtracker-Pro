@@ -23,7 +23,7 @@ namespace SongtrackerPro.Data.Models
 
         [JsonIgnore]
         [Column("template_id", Order = 20)]
-        public int? TemplateId { get; set; }
+        public Guid? TemplateId { get; set; }
         public Contract Template { get; set; }
 
         [Column("contract_status", Order = 21)]

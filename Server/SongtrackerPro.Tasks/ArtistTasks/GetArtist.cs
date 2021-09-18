@@ -21,7 +21,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
             try
             {
                 var artist = _dbContext.Artists.Where(a => a.Id == artistId)
-                    .Include(a => a.Address)
+                    .Include(a => a.Address).ThenInclude(a => a.Country)
                     .Include(a => a.RecordLabel).ThenInclude(l => l.Address).ThenInclude(a => a.Country)
                     .SingleOrDefault();
 
