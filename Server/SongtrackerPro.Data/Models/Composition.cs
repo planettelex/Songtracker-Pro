@@ -24,11 +24,11 @@ namespace SongtrackerPro.Data.Models
 
         [JsonIgnore]
         [Column("legal_entity_id", Order = 4)]
-        public int LegalEntityId { get; set; }
+        public int? LegalEntityId { get; set; }
         public LegalEntity ExternalPublisher { get; set; }
 
         [Column("iswc", Order = 5)]
-        public string Isbn { get; set; }
+        public string Iswc { get; set; }
 
         [Column("catalog_number", Order = 6)]
         public string CatalogNumber { get; set; }

@@ -51,6 +51,8 @@
             "ARTIST_MANAGER_NOT_FOUND",
             "ARTIST_MEMBER_NOT_FOUND",
             "COUNTRY_NOT_FOUND",
+            "COMPOSITION_NOT_FOUND",
+            "COMPOSITION_AUTHOR_NOT_FOUND",
             "INSTALLATION_NOT_FOUND",
             "LEGAL_ENTITY_NOT_FOUND",
             "PERSON_NOT_FOUND",

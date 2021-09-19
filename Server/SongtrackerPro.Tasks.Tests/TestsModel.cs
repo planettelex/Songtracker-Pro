@@ -199,6 +199,24 @@ namespace SongtrackerPro.Tasks.Tests
             
         }
 
+        public Composition Composition(Publisher publisher)
+        {
+            if (publisher == null)
+                return null;
+
+            var stamp = DateTime.Now.Ticks;
+            return new Composition
+            {
+                PublisherId = publisher.Id,
+                Publisher = publisher,
+                Title = nameof(Publication) + " " + stamp,
+                CatalogNumber = "#" + stamp,
+                Iswc = "ISWC" + stamp,
+                CopyrightedOn = DateTime.Today.AddMonths(-3)
+            };
+            
+        }
+
         public RecordLabel RecordLabel
         {
             get

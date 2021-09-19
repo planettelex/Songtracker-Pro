@@ -263,11 +263,11 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("copyrighted_on");
 
-                    b.Property<string>("Isbn")
+                    b.Property<string>("Iswc")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("iswc");
 
-                    b.Property<int>("LegalEntityId")
+                    b.Property<int?>("LegalEntityId")
                         .HasColumnType("int")
                         .HasColumnName("legal_entity_id");
 
@@ -1722,9 +1722,7 @@ namespace SongtrackerPro.Data.Migrations
                 {
                     b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "ExternalPublisher")
                         .WithMany()
-                        .HasForeignKey("LegalEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LegalEntityId");
 
                     b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
                         .WithMany()

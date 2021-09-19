@@ -13,6 +13,7 @@ namespace SongtrackerPro.Data
         /* PMC Commands (https://docs.microsoft.com/en-us/ef/core/cli/powershell):
         
            Add-Migration -project SongtrackerPro.Data -name v_0_06
+            fix ReleaseTrack cascade deletes and discriminator casing.
 
            Remove-Migration -project SongtrackerPro.Data
         

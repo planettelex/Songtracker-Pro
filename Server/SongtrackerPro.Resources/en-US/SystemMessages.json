@@ -18,6 +18,14 @@
       "Value": "Artist member not found."
     },
     {
+      "Key": "COMPOSITION_NOT_FOUND",
+      "Value": "Composition not found."
+    },
+    {
+      "Key": "COMPOSITION_AUTHOR_NOT_FOUND",
+      "Value": "Composition author not found."
+    },
+    {
       "Key": "COUNTRY_NOT_FOUND",
       "Value": "Country not found."
     },

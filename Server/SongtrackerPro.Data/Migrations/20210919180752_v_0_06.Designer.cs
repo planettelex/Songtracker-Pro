@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210918175201_v_0_06")]
+    [Migration("20210919180752_v_0_06")]
     partial class v_0_06
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -265,11 +265,11 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("copyrighted_on");
 
-                    b.Property<string>("Isbn")
+                    b.Property<string>("Iswc")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("iswc");
 
-                    b.Property<int>("LegalEntityId")
+                    b.Property<int?>("LegalEntityId")
                         .HasColumnType("int")
                         .HasColumnName("legal_entity_id");
 
@@ -1724,9 +1724,7 @@ namespace SongtrackerPro.Data.Migrations
                 {
                     b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "ExternalPublisher")
                         .WithMany()
-                        .HasForeignKey("LegalEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LegalEntityId");
 
                     b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
                         .WithMany()

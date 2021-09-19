@@ -457,7 +457,7 @@ namespace SongtrackerPro.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     publisher_id = table.Column<int>(type: "int", nullable: false),
-                    legal_entity_id = table.Column<int>(type: "int", nullable: false),
+                    legal_entity_id = table.Column<int>(type: "int", nullable: true),
                     iswc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     catalog_number = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     copyrighted_on = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -470,7 +470,7 @@ namespace SongtrackerPro.Data.Migrations
                         column: x => x.legal_entity_id,
                         principalTable: "legal_entities",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_compositions_publishers_publisher_id",
                         column: x => x.publisher_id,
