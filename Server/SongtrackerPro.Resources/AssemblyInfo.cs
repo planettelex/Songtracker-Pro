@@ -56,6 +56,8 @@
             "PERSON_NOT_FOUND",
             "PLATFORM_NOT_FOUND",
             "PRO_NOT_FOUND",
+            "PUBLICATION_NOT_FOUND",
+            "PUBLICATION_AUTHOR_NOT_FOUND",
             "PUBLISHER_NOT_FOUND",
             "RECORD_LABEL_NOT_FOUND",
             "SUPERUSER",

@@ -49,7 +49,7 @@ namespace SongtrackerPro.Data
                 }
             }
         }
-        private static bool IsDiscriminator(IPropertyBase property) => property.Name == "Discriminator" || property.PropertyInfo == null;
+        private static bool IsDiscriminator(IPropertyBase property) => property.Name == "discriminator" || property.PropertyInfo == null;
 
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Artist> Artists { get; set; }

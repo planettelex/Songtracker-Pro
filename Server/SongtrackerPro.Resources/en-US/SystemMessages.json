@@ -42,6 +42,14 @@
       "Value": "Performing rights organization not found."
     },
     {
+      "Key": "PUBLICATION_NOT_FOUND",
+      "Value": "Publication not found."
+    },
+    {
+      "Key": "PUBLICATION_AUTHOR_NOT_FOUND",
+      "Value": "Publication author not found."
+    },
+    {
       "Key": "PUBLISHER_NOT_FOUND",
       "Value": "Publisher not found."
     },

@@ -181,6 +181,24 @@ namespace SongtrackerPro.Tasks.Tests
             }
         }
 
+        public Publication Publication(Publisher publisher)
+        {
+            if (publisher == null)
+                return null;
+
+            var stamp = DateTime.Now.Ticks;
+            return new Publication
+            {
+                PublisherId = publisher.Id,
+                Publisher = publisher,
+                Title = nameof(Publication) + " " + stamp,
+                CatalogNumber = "#" + stamp,
+                Isbn = "ISBN" + stamp,
+                CopyrightedOn = DateTime.Today.AddMonths(-3)
+            };
+            
+        }
+
         public RecordLabel RecordLabel
         {
             get
