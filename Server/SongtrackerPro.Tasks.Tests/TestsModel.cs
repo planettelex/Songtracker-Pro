@@ -233,6 +233,26 @@ namespace SongtrackerPro.Tasks.Tests
             }
         }
 
+        public Recording Recording(Composition composition, Artist artist, RecordLabel recordLabel)
+        {
+            if (composition == null || artist == null || recordLabel == null)
+                return null;
+
+            var stamp = DateTime.Now.Ticks;
+            return new Recording
+            {
+                Title = composition.Title,
+                Composition = composition,
+                CompositionId = composition.Id,
+                Artist = artist,
+                ArtistId = artist.Id,
+                RecordLabel = recordLabel,
+                RecordLabelId = recordLabel.Id,
+                Isrc = "ISRC" + stamp,
+                SecondsLong = new Random().Next(60, 600)
+            };
+        }
+
         public Artist Artist
         {
             get

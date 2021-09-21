@@ -66,6 +66,10 @@
       "Value": "Record label not found."
     },
     {
+      "Key": "RECORDING_NOT_FOUND",
+      "Value": "Recording not found."
+    },
+    {
       "Key": "SUPERUSER",
       "Value": "Superuser"
     },

@@ -781,6 +781,8 @@ namespace SongtrackerPro.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    artist_id = table.Column<int>(type: "int", nullable: false),
                     record_label_id = table.Column<int>(type: "int", nullable: false),
                     composition_id = table.Column<int>(type: "int", nullable: false),
                     isrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -793,6 +795,12 @@ namespace SongtrackerPro.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_recordings", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_recordings_artists_artist_id",
+                        column: x => x.artist_id,
+                        principalTable: "artists",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_recordings_compositions_composition_id",
                         column: x => x.composition_id,
@@ -1437,6 +1445,11 @@ namespace SongtrackerPro.Data.Migrations
                 column: "recording_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_recordings_artist_id",
+                table: "recordings",
+                column: "artist_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_recordings_composition_id",
                 table: "recordings",
                 column: "composition_id");
@@ -1654,10 +1667,10 @@ namespace SongtrackerPro.Data.Migrations
                 name: "recordings");
 
             migrationBuilder.DropTable(
-                name: "artists");
+                name: "people");
 
             migrationBuilder.DropTable(
-                name: "people");
+                name: "artists");
 
             migrationBuilder.DropTable(
                 name: "compositions");

@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210919180752_v_0_06")]
+    [Migration("20210921190117_v_0_06")]
     partial class v_0_06
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1072,6 +1072,10 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("int")
+                        .HasColumnName("artist_id");
+
                     b.Property<int>("CompositionId")
                         .HasColumnType("int")
                         .HasColumnName("composition_id");
@@ -1104,7 +1108,14 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("seconds_long");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("title");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ArtistId");
 
                     b.HasIndex("CompositionId");
 
@@ -2055,6 +2066,12 @@ namespace SongtrackerPro.Data.Migrations
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Recording", b =>
                 {
+                    b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SongtrackerPro.Data.Models.Composition", "Composition")
                         .WithMany()
                         .HasForeignKey("CompositionId")
@@ -2070,6 +2087,8 @@ namespace SongtrackerPro.Data.Migrations
                         .HasForeignKey("RecordLabelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Artist");
 
                     b.Navigation("Composition");
 

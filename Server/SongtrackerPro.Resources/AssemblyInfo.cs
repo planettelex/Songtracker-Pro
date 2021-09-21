@@ -61,6 +61,7 @@
             "PUBLICATION_NOT_FOUND",
             "PUBLICATION_AUTHOR_NOT_FOUND",
             "PUBLISHER_NOT_FOUND",
+            "RECORDING_NOT_FOUND",
             "RECORD_LABEL_NOT_FOUND",
             "SUPERUSER",
             "USA_NOT_FOUND",

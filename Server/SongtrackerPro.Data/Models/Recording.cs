@@ -12,6 +12,16 @@ namespace SongtrackerPro.Data.Models
         [Column("id", Order = 1)]
         public int Id { get; set; }
 
+        [Required]
+        [Column("title", Order = 2)]
+        public string Title { get; set; }
+
+        [JsonIgnore]
+        [Required]
+        [Column("artist_id", Order = 2)]
+        public int ArtistId { get; set; }
+        public Artist Artist { get; set; }
+
         [JsonIgnore]
         [Required]
         [Column("record_label_id", Order = 2)]
@@ -27,6 +37,7 @@ namespace SongtrackerPro.Data.Models
         [Column("isrc", Order = 4)]
         public string Isrc { get; set; }
 
+        [Required]
         [Column("seconds_long", Order = 5)]
         public int SecondsLong { get; set; }
 

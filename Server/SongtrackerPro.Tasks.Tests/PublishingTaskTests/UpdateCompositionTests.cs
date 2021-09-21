@@ -9,7 +9,7 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
     [TestClass]
     public class UpdateCompositionTests : TestsBase
     {
-        public void UpdateCompositionModel(Composition composition)
+        private void UpdateCompositionModel(Composition composition)
         {
             var stamp = DateTime.Now.Ticks;
             composition.Title = "Update " + stamp;

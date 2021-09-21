@@ -1070,6 +1070,10 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("int")
+                        .HasColumnName("artist_id");
+
                     b.Property<int>("CompositionId")
                         .HasColumnType("int")
                         .HasColumnName("composition_id");
@@ -1102,7 +1106,14 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("seconds_long");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("title");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ArtistId");
 
                     b.HasIndex("CompositionId");
 
@@ -1356,7 +1367,7 @@ namespace SongtrackerPro.Data.Migrations
 
                     b.ToTable("storage_items");
 
-                    b.HasDiscriminator<string>("discriminator").HasValue("StorageItem");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("StorageItem");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.User", b =>
@@ -2053,6 +2064,12 @@ namespace SongtrackerPro.Data.Migrations
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Recording", b =>
                 {
+                    b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SongtrackerPro.Data.Models.Composition", "Composition")
                         .WithMany()
                         .HasForeignKey("CompositionId")
@@ -2068,6 +2085,8 @@ namespace SongtrackerPro.Data.Migrations
                         .HasForeignKey("RecordLabelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Artist");
 
                     b.Navigation("Composition");
 
@@ -2141,13 +2160,13 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Recording", "Recording")
                         .WithMany()
                         .HasForeignKey("RecordingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Release", "Release")
                         .WithMany()
                         .HasForeignKey("ReleaseId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Recording");
