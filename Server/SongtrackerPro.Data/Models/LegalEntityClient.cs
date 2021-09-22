@@ -22,6 +22,6 @@ namespace SongtrackerPro.Data.Models
         [Required]
         [Column("person_id", Order = 3)]
         public int PersonId { get; set; }
-        public Person Client { get; set; }
+        public Person Person { get; set; }
     }
 }

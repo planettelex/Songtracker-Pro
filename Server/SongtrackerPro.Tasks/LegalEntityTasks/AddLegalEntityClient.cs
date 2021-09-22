@@ -19,11 +19,11 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
             try
             {
                 var legalEntityId = legalEntityClient.LegalEntity?.Id ?? legalEntityClient.LegalEntityId;
-                var personId = legalEntityClient.Client?.Id ?? legalEntityClient.PersonId;
+                var personId = legalEntityClient.Person?.Id ?? legalEntityClient.PersonId;
 
                 legalEntityClient.LegalEntity = null;
                 legalEntityClient.LegalEntityId = legalEntityId;
-                legalEntityClient.Client = null;
+                legalEntityClient.Person = null;
                 legalEntityClient.PersonId = personId;
 
                 _dbContext.LegalEntityClients.Add(legalEntityClient);

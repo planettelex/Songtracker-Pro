@@ -18,16 +18,21 @@ namespace SongtrackerPro.Data.Models
         public string Title { get; set; }
 
         [JsonIgnore]
+        [Column("artist_id", Order = 3)]
+        public int? ArtistId { get; set; }
+        public Artist Artist { get; set; }
+
+        [JsonIgnore]
         [Required]
-        [Column("record_label_id", Order = 3)]
+        [Column("record_label_id", Order = 4)]
         public int RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
         [Required]
-        [Column("type", Order = 4)]
+        [Column("type", Order = 5)]
         public ReleaseType Type { get; set; }
 
-        [Column("catalog_number", Order = 5)]
+        [Column("catalog_number", Order = 6)]
         public string CatalogNumber { get; set; }
     }
 }

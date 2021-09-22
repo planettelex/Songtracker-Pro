@@ -34,6 +34,10 @@
       "Value": "Installation not found."
     },
     {
+      "Key": "LEGAL_ENTITY_CONTACT_NOT_FOUND",
+      "Value": "Legal entity contact not found."
+    },
+    {
       "Key": "LEGAL_ENTITY_NOT_FOUND",
       "Value": "Legal entity not found."
     },
@@ -68,6 +72,14 @@
     {
       "Key": "RECORDING_NOT_FOUND",
       "Value": "Recording not found."
+    },
+    {
+      "Key": "RELEASE_NOT_FOUND",
+      "Value": "Release not found."
+    },
+    {
+      "Key": "RELEASE_TRACK_NOT_FOUND",
+      "Value": "Release track not found."
     },
     {
       "Key": "SUPERUSER",

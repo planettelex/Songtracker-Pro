@@ -253,6 +253,36 @@ namespace SongtrackerPro.Tasks.Tests
             };
         }
 
+        public Release Release(Artist artist, RecordLabel recordLabel)
+        {
+            if (recordLabel == null)
+                return null;
+
+            var stamp = DateTime.Now.Ticks;
+            return new Release
+            {
+                Artist = artist,
+                ArtistId = artist?.Id,
+                CatalogNumber = "#" + stamp,
+                RecordLabel = recordLabel,
+                RecordLabelId = recordLabel.Id,
+                Title = nameof(Release) + " " + stamp,
+                Type = ReleaseType.Lp
+            };
+        }
+
+        public ReleaseTrack ReleaseTrack(Release release, Recording recording, int trackNumber)
+        {
+            return new ReleaseTrack
+            {
+                Release = release,
+                ReleaseId = release.Id,
+                Recording = recording,
+                RecordingId = recording.Id,
+                TrackNumber = trackNumber
+            };
+        }
+
         public Artist Artist
         {
             get

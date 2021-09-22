@@ -57,9 +57,9 @@ namespace SongtrackerPro.Tasks.Tests.PublishingTaskTests
             Assert.AreEqual(testComposition2.Iswc, composition2.Iswc);
             Assert.AreEqual(testComposition2.CopyrightedOn, composition2.CopyrightedOn);
 
-            var removePublicationTask = new RemoveComposition(DbContext);
-            var removeResult1 = removePublicationTask.DoTask(composition1);
-            var removeResult2 = removePublicationTask.DoTask(composition2);
+            var removeCompositionTask = new RemoveComposition(DbContext);
+            var removeResult1 = removeCompositionTask.DoTask(composition1);
+            var removeResult2 = removeCompositionTask.DoTask(composition2);
 
             Assert.IsTrue(removeResult1.Success);
             Assert.IsNull(removeResult1.Exception);

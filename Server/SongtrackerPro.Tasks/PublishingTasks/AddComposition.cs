@@ -25,7 +25,7 @@ namespace SongtrackerPro.Tasks.PublishingTasks
                     .Where(p => p.Id == publisherId)
                     .Include(p => p.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .Include(p => p.Address).ThenInclude(a => a.Country)
-                    .SingleOrDefault();
+                    .Single();
 
                 composition.Publisher = null;
                 composition.PublisherId = publisherId;

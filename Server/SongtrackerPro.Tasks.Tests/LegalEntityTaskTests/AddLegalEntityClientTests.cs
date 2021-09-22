@@ -34,7 +34,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
 
             var legalEntityClient = new LegalEntityClient
             {
-                Client = testPerson,
+                Person = testPerson,
                 LegalEntity = testLegalEntity
             };
 

@@ -22,7 +22,7 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
             try
             {
                 var legalEntityContacts = _dbContext.LegalEntityContacts.Where(le => le.LegalEntityId == legalEntity.Id)
-                    .Include(le => le.Contact).ThenInclude(c => c.Address).ThenInclude(a => a.Country)
+                    .Include(le => le.Person).ThenInclude(c => c.Address).ThenInclude(a => a.Country)
                     .ToList();
 
                 return new TaskResult<List<LegalEntityContact>>(legalEntityContacts);

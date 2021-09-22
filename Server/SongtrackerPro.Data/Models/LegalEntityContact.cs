@@ -22,7 +22,7 @@ namespace SongtrackerPro.Data.Models
         [Required]
         [Column("person_id", Order = 3)]
         public int PersonId { get; set; }
-        public Person Contact { get; set; }
+        public Person Person { get; set; }
 
         [Column("position", Order = 4)]
         public string Position { get; set; }

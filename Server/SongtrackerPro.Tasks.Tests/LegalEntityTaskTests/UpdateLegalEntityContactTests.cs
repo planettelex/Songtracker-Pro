@@ -7,7 +7,7 @@ using SongtrackerPro.Tasks.PersonTasks;
 namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
 {
     [TestClass]
-    public class AddLegalEntityContactTests : TestsBase
+    public class UpdateLegalEntityContactTests : TestsBase
     {
         [TestMethod]
         public void TaskSuccessTest()
@@ -32,18 +32,20 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             Assert.IsNull(addPersonResult.Exception);
             Assert.IsNotNull(addPersonResult.Data);
 
+            const string position = "Potential Lunch Winner";
             var legalEntityContact = new LegalEntityContact
             {
                 Person = testPerson,
-                LegalEntity = testLegalEntity
+                LegalEntity = testLegalEntity,
+                Position = position
             };
 
-            var task = new AddLegalEntityContact(DbContext);
-            var result = task.DoTask(legalEntityContact);
+            var addContactTask = new AddLegalEntityContact(DbContext);
+            var addContactResult = addContactTask.DoTask(legalEntityContact);
 
-            Assert.IsTrue(result.Success);
-            Assert.IsNull(result.Exception);
-            Assert.IsNotNull(result.Data);
+            Assert.IsTrue(addContactResult.Success);
+            Assert.IsNull(addContactResult.Exception);
+            Assert.IsNotNull(addContactResult.Data);
 
             var getLegalEntityContactTask = new GetLegalEntityContact(DbContext);
             var getLegalEntityContactResult = getLegalEntityContactTask.DoTask(legalEntityContact.Id);
@@ -54,6 +56,26 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
 
             Assert.AreEqual(legalEntityContact.LegalEntityId, getLegalEntityContactResult.Data.LegalEntityId);
             Assert.AreEqual(legalEntityContact.PersonId, getLegalEntityContactResult.Data.PersonId);
+            Assert.AreEqual(position, getLegalEntityContactResult.Data.Position);
+
+            const string newPosition = "Sponge Shredder";
+            legalEntityContact.Position = newPosition;
+
+            var task = new UpdateLegalEntityContact(DbContext);
+            var result = task.DoTask(legalEntityContact);
+
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Exception);
+
+            getLegalEntityContactTask = new GetLegalEntityContact(DbContext);
+            getLegalEntityContactResult = getLegalEntityContactTask.DoTask(legalEntityContact.Id);
+
+            Assert.IsTrue(getLegalEntityContactResult.Success);
+            Assert.IsNull(getLegalEntityContactResult.Exception);
+            Assert.IsNotNull(getLegalEntityContactResult.Data);
+            Assert.AreEqual(legalEntityContact.LegalEntityId, getLegalEntityContactResult.Data.LegalEntityId);
+            Assert.AreEqual(legalEntityContact.PersonId, getLegalEntityContactResult.Data.PersonId);
+            Assert.AreEqual(newPosition, getLegalEntityContactResult.Data.Position);
 
             var removeLegalEntityTask = new RemoveLegalEntity(DbContext);
             var removeLegalEntityResult = removeLegalEntityTask.DoTask(testLegalEntity);
@@ -65,8 +87,8 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AddLegalEntityClient(EmptyDbContext);
-            var result = task.DoTask(new LegalEntityClient());
+            var task = new UpdateLegalEntityContact(EmptyDbContext);
+            var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Exception);
