@@ -8,6 +8,7 @@ using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
+using SongtrackerPro.Tasks.RecordLabelTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Tasks.Tests.UserTaskTests
@@ -32,7 +33,9 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                                    new SeedCountries(DbContext), 
                                    new SeedPerformingRightsOrganizations(DbContext, new SeedCountries(DbContext)), 
                                    new SeedServices(DbContext), 
-                                   new SeedPlatforms(DbContext, new ListServices(DbContext), new AddPlatform(DbContext))));
+                                   new SeedPlatforms(DbContext, new ListServices(DbContext), new AddPlatform(DbContext)),
+                                   new SeedRecordingRoles(DbContext)));
+
             var login = new Login
             {
                 AuthenticationId = testUser.AuthenticationId,
@@ -134,7 +137,8 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                                    new SeedCountries(EmptyDbContext), 
                                    new SeedPerformingRightsOrganizations(EmptyDbContext, new SeedCountries(EmptyDbContext)), 
                                    new SeedServices(EmptyDbContext), 
-                                   new SeedPlatforms(EmptyDbContext, new ListServices(EmptyDbContext), new AddPlatform(EmptyDbContext))));
+                                   new SeedPlatforms(EmptyDbContext, new ListServices(EmptyDbContext), new AddPlatform(EmptyDbContext)),
+                                   new SeedRecordingRoles(DbContext)));
             
             var result = task.DoTask(null);
             

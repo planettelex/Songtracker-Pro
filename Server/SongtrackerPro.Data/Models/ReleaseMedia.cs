@@ -23,5 +23,11 @@ namespace SongtrackerPro.Data.Models
         [Required]
         [Column("type", Order = 3)]
         public MediaType Type { get; set; }
+
+        [Column("sku", Order = 4)]
+        public string Sku { get; set; }
+
+        [Column("upc", Order = 5)]
+        public string Upc { get; set; }
     }
 }

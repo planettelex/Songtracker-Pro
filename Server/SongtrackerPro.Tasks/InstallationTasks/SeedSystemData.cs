@@ -2,6 +2,7 @@
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
+using SongtrackerPro.Tasks.RecordLabelTasks;
 
 namespace SongtrackerPro.Tasks.InstallationTasks
 {
@@ -13,19 +14,22 @@ namespace SongtrackerPro.Tasks.InstallationTasks
                               ISeedCountriesTask seedCountriesTask,
                               ISeedPerformingRightsOrganizationsTask seedPerformingRightsOrganizationsTask,
                               ISeedServicesTask seedServicesTask,
-                              ISeedPlatformsTask seedPlatformsTask)
+                              ISeedPlatformsTask seedPlatformsTask,
+                              ISeedRecordingRolesTask seedRecordingRolesTask)
         {
             _seedInstallationTask = seedInstallationTask;
             _seedCountriesTask = seedCountriesTask;
             _seedPerformingRightsOrganizationsTask = seedPerformingRightsOrganizationsTask;
             _seedServicesTask = seedServicesTask;
             _seedPlatformsTask = seedPlatformsTask;
+            _seedRecordingRolesTask = seedRecordingRolesTask;
         }
         private readonly ISeedInstallationTask _seedInstallationTask;
         private readonly ISeedCountriesTask _seedCountriesTask;
         private readonly ISeedPerformingRightsOrganizationsTask _seedPerformingRightsOrganizationsTask;
         private readonly ISeedServicesTask _seedServicesTask;
         private readonly ISeedPlatformsTask _seedPlatformsTask;
+        private readonly ISeedRecordingRolesTask _seedRecordingRolesTask;
 
         public TaskResult<bool> DoTask(Nothing nothing)
         {
@@ -34,8 +38,9 @@ namespace SongtrackerPro.Tasks.InstallationTasks
             var prosSeeded = _seedPerformingRightsOrganizationsTask.DoTask(nothing).Success;
             var servicesSeeded = _seedServicesTask.DoTask(nothing).Success;
             var platformsSeeded = _seedPlatformsTask.DoTask(nothing).Success;
+            var recordingRolesSeeded = _seedRecordingRolesTask.DoTask(nothing).Success;
 
-            return new TaskResult<bool>(installationSeeded || countriesSeeded || prosSeeded || servicesSeeded || platformsSeeded);
+            return new TaskResult<bool>(installationSeeded || countriesSeeded || prosSeeded || servicesSeeded || platformsSeeded || recordingRolesSeeded);
         }
     }
 }

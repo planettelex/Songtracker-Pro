@@ -18,6 +18,110 @@
       "Value": "United States"
     },
     {
+      "Key": "RECORDING_ROLE_PRODUCER",
+      "Value": "Producer"
+    },
+    {
+      "Key": "RECORDING_ROLE_RECORDING_ENGINEER",
+      "Value": "Recording Engineer"
+    },
+    {
+      "Key": "RECORDING_ROLE_MIXING_ENGINEER",
+      "Value": "Mixing Engineer"
+    },
+    {
+      "Key": "RECORDING_ROLE_MASTERING_ENGINEER",
+      "Value": "Mastering Engineer"
+    },
+    {
+      "Key": "RECORDING_ROLE_PROGRAMMER",
+      "Value": "Programmer"
+    },
+    {
+      "Key": "RECORDING_ROLE_TURNTABLIST",
+      "Value": "Turntablist"
+    },
+    {
+      "Key": "RECORDING_ROLE_DRUMMER",
+      "Value": "Drummer"
+    },
+    {
+      "Key": "RECORDING_ROLE_PERCUSSIONIST",
+      "Value": "Percussionist"
+    },
+    {
+      "Key": "RECORDING_ROLE_BASSIST",
+      "Value": "Bassist"
+    },
+    {
+      "Key": "RECORDING_ROLE_RHYTHM_GUITARIST",
+      "Value": "Rhythm Guitarist"
+    },
+    {
+      "Key": "RECORDING_ROLE_LEAD_GUITARIST",
+      "Value": "Lead Guitarist"
+    },
+    {
+      "Key": "RECORDING_ROLE_VIOLINIST",
+      "Value": "Violinist"
+    },
+    {
+      "Key": "RECORDING_ROLE_CELLIST",
+      "Value": "Cellist"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_STRINGS",
+      "Value": "Other Strings"
+    },
+    {
+      "Key": "RECORDING_ROLE_PIANIST",
+      "Value": "Pianist"
+    },
+    {
+      "Key": "RECORDING_ROLE_KEYBOARDIST",
+      "Value": "Keyboardist"
+    },
+    {
+      "Key": "RECORDING_ROLE_LEAD_VOCALIST",
+      "Value": "Lead Vocalist"
+    },
+    {
+      "Key": "RECORDING_ROLE_BACKING_VOCALIST",
+      "Value": "Backing Vocalist"
+    },
+    {
+      "Key": "RECORDING_ROLE_TRUMPETER",
+      "Value": "Trumpeter"
+    },
+    {
+      "Key": "RECORDING_ROLE_SAXOPHONIST",
+      "Value": "Saxophonist"
+    },
+    {
+      "Key": "RECORDING_ROLE_CLARINETIST",
+      "Value": "Clarinetist"
+    },
+    {
+      "Key": "RECORDING_ROLE_TROMBONIST",
+      "Value": "Trombonist"
+    },
+    {
+      "Key": "RECORDING_ROLE_HARMONICA",
+      "Value": "Harmonica"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_WIND",
+      "Value": "Other Wind"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_BRASS",
+      "Value": "Other Brass"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_INSTRUMENT",
+      "Value": "Other Instrument"
+    },
+    {
       "Key": "SERVICE_INTERACTIVE_STREAMING",
       "Value": "Interactive Streaming"
     },
