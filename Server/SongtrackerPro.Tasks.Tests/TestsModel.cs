@@ -8,6 +8,7 @@ using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
+using SongtrackerPro.Tasks.MerchandiseTasks;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
@@ -39,6 +40,9 @@ namespace SongtrackerPro.Tasks.Tests
 
             var seedRecordingRoles = new SeedRecordingRoles(_dbContext);
             seedRecordingRoles.DoTask(null);
+
+            var seedMerchandiseCategories = new SeedMerchandiseCategories(_dbContext);
+            seedMerchandiseCategories.DoTask(null);
         }
         private readonly ApplicationDbContext _dbContext;
 

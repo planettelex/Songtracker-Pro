@@ -74,6 +74,10 @@
       "Value": "Recording not found."
     },
     {
+      "Key": "RELEASE_MEDIA_NOT_FOUND",
+      "Value": "Release media not found."
+    },
+    {
       "Key": "RELEASE_NOT_FOUND",
       "Value": "Release not found."
     },

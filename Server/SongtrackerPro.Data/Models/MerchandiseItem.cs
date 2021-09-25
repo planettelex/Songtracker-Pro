@@ -23,5 +23,14 @@ namespace SongtrackerPro.Data.Models
         [Column("category_id", Order = 4)]
         public int? CategoryId { get; set; }
         public MerchandiseCategory Category { get; set; }
+
+        [Required]
+        [Column("is_promotional", Order = 5)]
+        public bool IsPromotional { get; set; }
+
+        [JsonIgnore]
+        [Column("artist_id", Order = 6)]
+        public int? ArtistId { get; set; }
+        public Artist Artist { get; set; }
     }
 }

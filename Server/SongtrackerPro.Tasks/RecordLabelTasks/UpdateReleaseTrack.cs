@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 
@@ -16,18 +17,25 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 
         public TaskResult<Nothing> DoTask(ReleaseTrack update)
         {
-            var track = _dbContext.ReleaseTracks.SingleOrDefault(rt => rt.Id == update.Id);
+            try
+            {
+                var track = _dbContext.ReleaseTracks.SingleOrDefault(rt => rt.Id == update.Id);
 
-            if (track == null)
-                throw new TaskException(SystemMessage("RELEASE_TRACK_NOT_FOUND"));
+                if (track == null)
+                    throw new TaskException(SystemMessage("RELEASE_TRACK_NOT_FOUND"));
 
-            track.RecordingId = update.Recording?.Id ?? update.RecordingId;
-            track.Recording = _dbContext.Recordings.Single(r => r.Id == track.RecordingId);
-            track.TrackNumber = update.TrackNumber;
+                track.RecordingId = update.Recording?.Id ?? update.RecordingId;
+                track.Recording = _dbContext.Recordings.Single(r => r.Id == track.RecordingId);
+                track.TrackNumber = update.TrackNumber;
 
-            _dbContext.SaveChanges();
+                _dbContext.SaveChanges();
 
-            return new TaskResult<Nothing>(true);
+                return new TaskResult<Nothing>(true);
+            }
+            catch (Exception e)
+            {
+                return new TaskResult<Nothing>(new TaskException(e));
+            }
         }
     }
 }

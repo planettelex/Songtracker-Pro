@@ -25,7 +25,6 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                     .SingleOrDefault();
 
                 return new TaskResult<Release>(release);
-
             }
             catch (Exception e)
             {

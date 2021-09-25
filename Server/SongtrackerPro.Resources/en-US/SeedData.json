@@ -18,6 +18,254 @@
       "Value": "United States"
     },
     {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING",
+      "Value": "Clothing"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS",
+      "Value": "Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_TSHIRTS",
+      "Value": "T-Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_LONG_SLEEVED",
+      "Value": "Long Sleeved Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_SLEEVELESS",
+      "Value": "Sleeveless Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_SWEATSHIRTS",
+      "Value": "Sweatshirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HOODIES",
+      "Value": "Hoodies"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SWEATERS",
+      "Value": "Sweaters"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_VESTS",
+      "Value": "Vests"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_JACKETS",
+      "Value": "Jackets"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_PANTS",
+      "Value": "Pants"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_PANTS_JEANS",
+      "Value": "Jeans"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_PANTS_SWEATPANTS",
+      "Value": "Sweatpants"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHORTS",
+      "Value": "Shorts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HATS",
+      "Value": "Hats"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HATS_BASEBALL",
+      "Value": "Baseball Caps"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HATS_BEENIES",
+      "Value": "Beenies"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SOCKS",
+      "Value": "Socks"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHOES",
+      "Value": "Shoes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_UNDERWEAR",
+      "Value": "Underwear"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES",
+      "Value": "Accessories"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_PINS",
+      "Value": "Pins"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_PATCHES",
+      "Value": "Patches"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY",
+      "Value": "Jewelry"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY_BRACELETS",
+      "Value": "Bracelets"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY_NECKLACES",
+      "Value": "Necklaces"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY_RINGS",
+      "Value": "Rings"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_BAGS",
+      "Value": "Bags"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_BAGS_TOTES",
+      "Value": "Totes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_BAGS_PURSES",
+      "Value": "Purses"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS",
+      "Value": "Containers"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_JARS",
+      "Value": "Jars"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_BOXES",
+      "Value": "Boxes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_GLASSES",
+      "Value": "Glasses"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_SHOT_GLASSES",
+      "Value": "Shot Glasses"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_COOZIES",
+      "Value": "Coozies"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_MUGS",
+      "Value": "Mugs"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS",
+      "Value": "Prints"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_POSTERS",
+      "Value": "Posters"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_COASTERS",
+      "Value": "Coasters"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_CARDS",
+      "Value": "Cards"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_STICKERS",
+      "Value": "Stickers"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_FLAGS",
+      "Value": "Flags"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING",
+      "Value": "Books"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_COMICS",
+      "Value": "Comic Books"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_HARDBACKS",
+      "Value": "Hardbacks"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_PAPERBACKS",
+      "Value": "Paperbacks"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_SHEET_MUSIC",
+      "Value": "Sheet Music"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_MAGAZINES",
+      "Value": "Magazines"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA",
+      "Value": "Media"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL",
+      "Value": "Vinyl Records"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL_SEVEN_INCH",
+      "Value": "7\" Vinyl"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL_TEN_INCH",
+      "Value": "10\" Vinyl"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL_TWELVE_INCH",
+      "Value": "12\" Vinyl"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_CDS",
+      "Value": "CDs"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_CASSETTES",
+      "Value": "Cassettes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_DVDS",
+      "Value": "DVDs"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_BLU_RAYS",
+      "Value": "Blu Rays"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS",
+      "Value": "Toys"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS_DOLLS",
+      "Value": "Dolls"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS_FIGURINES",
+      "Value": "Figurines"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS_PUZZLES",
+      "Value": "Puzzles"
+    },
+    {
       "Key": "RECORDING_ROLE_PRODUCER",
       "Value": "Producer"
     },

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
@@ -10,7 +9,7 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
 {
     public interface IAddLegalEntityTask : ITask<LegalEntity, int?> { }
 
-    public class AddLegalEntity : IAddLegalEntityTask
+    public class AddLegalEntity : TaskBase, IAddLegalEntityTask
     {
         public AddLegalEntity(ApplicationDbContext dbContext, IFormattingService formattingService)
         {

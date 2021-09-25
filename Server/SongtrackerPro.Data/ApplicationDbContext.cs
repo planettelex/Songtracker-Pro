@@ -86,7 +86,7 @@ namespace SongtrackerPro.Data
         public DbSet<RecordingRole> RecordingRoles { get; set; }
         public DbSet<RecordLabel> RecordLabels { get; set; }
         public DbSet<Release> Releases { get; set; }
-        public DbSet<ReleaseMedia> ReleaseMedia { get; set; }
+        public DbSet<ReleaseMerchandiseProduct> ReleaseMedia { get; set; }
         public DbSet<ReleaseTrack> ReleaseTracks { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<StorageItem> StorageItems { get; set; }

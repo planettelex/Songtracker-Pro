@@ -10,6 +10,7 @@
         DoubleLp,
         TripleLp,
         BoxSet,
+        Video,
         Special
     }
 }
