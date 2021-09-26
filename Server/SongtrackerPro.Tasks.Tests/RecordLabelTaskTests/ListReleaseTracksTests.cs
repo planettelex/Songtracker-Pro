@@ -147,17 +147,23 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.IsNotNull(releaseTracks[0].Recording);
             Assert.AreEqual(testRecording1.Title, releaseTracks[0].Recording.Title);
             Assert.AreEqual(testRecording1.Isrc, releaseTracks[0].Recording.Isrc);
-            Assert.IsNotNull(releaseTracks[0].Release);
-            Assert.AreEqual(testRelease.Title, releaseTracks[0].Release.Title);
-            Assert.AreEqual(testRelease.Type, releaseTracks[0].Release.Type);
 
             Assert.AreEqual(testReleaseTrack2.TrackNumber, releaseTracks[1].TrackNumber);
             Assert.IsNotNull(releaseTracks[1].Recording);
             Assert.AreEqual(testRecording2.Title, releaseTracks[1].Recording.Title);
             Assert.AreEqual(testRecording2.Isrc, releaseTracks[1].Recording.Isrc);
-            Assert.IsNotNull(releaseTracks[1].Release);
-            Assert.AreEqual(testRelease.Title, releaseTracks[1].Release.Title);
-            Assert.AreEqual(testRelease.Type, releaseTracks[1].Release.Type);
+
+            var removeReleaseTrackTask = new RemoveReleaseTrack(DbContext);
+            var removeReleaseTrackResult = removeReleaseTrackTask.DoTask(testReleaseTrack1);
+
+            Assert.IsTrue(removeReleaseTrackResult.Success);
+            Assert.IsNull(removeReleaseTrackResult.Exception);
+
+            removeReleaseTrackTask = new RemoveReleaseTrack(DbContext);
+            removeReleaseTrackResult = removeReleaseTrackTask.DoTask(testReleaseTrack2);
+
+            Assert.IsTrue(removeReleaseTrackResult.Success);
+            Assert.IsNull(removeReleaseTrackResult.Exception);
 
             var removeReleaseTask = new RemoveRelease(DbContext);
             var removeReleaseResult = removeReleaseTask.DoTask(testRelease);
@@ -186,16 +192,6 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 
             Assert.IsTrue(removeCompositionResult2.Success);
             Assert.IsNull(removeCompositionResult2.Exception);
-
-            var removeRecordingTask = new RemoveRecording(DbContext);
-            var removeRecordingResult1 = removeRecordingTask.DoTask(testRecording1);
-            var removeRecordingResult2 = removeRecordingTask.DoTask(testRecording2);
-
-            Assert.IsTrue(removeRecordingResult1.Success);
-            Assert.IsNull(removeRecordingResult1.Exception);
-
-            Assert.IsTrue(removeRecordingResult2.Success);
-            Assert.IsNull(removeRecordingResult2.Exception);
         }
 
         [TestMethod]

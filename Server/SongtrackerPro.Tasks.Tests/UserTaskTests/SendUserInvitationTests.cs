@@ -2,10 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
-using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
-using SongtrackerPro.Tasks.PublishingTasks;
-using SongtrackerPro.Tasks.RecordLabelTasks;
 using SongtrackerPro.Tasks.UserTasks;
 using SongtrackerPro.Utilities.Services;
 using SongtrackerPro.Utilities.Tests.DummyServices;
@@ -77,42 +74,9 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var resentInvitation = resendResults.Data;
             Assert.IsTrue(resentInvitation.SentOn > testUserInvitation.SentOn);
 
-            var publisher = testUserInvitation.Publisher;
-            var recordLabel = testUserInvitation.RecordLabel;
-            var artist = testUserInvitation.Artist;
-            var invitedByUser = testUserInvitation.InvitedByUser;
-
             var removeUserInvitationTask = new RemoveUserInvitation(DbContext);
             var removed = removeUserInvitationTask.DoTask(testUserInvitation.Uuid).Success;
             Assert.IsTrue(removed);
-
-            if (invitedByUser.AuthenticationId.StartsWith("test"))
-            {
-                var removeUserTask = new RemoveUser(DbContext);
-                removed = removeUserTask.DoTask(invitedByUser).Success;
-                Assert.IsTrue(removed);
-            }
-
-            if (publisher.Name.StartsWith(nameof(Publisher)))
-            {
-                var removePublisherTask = new RemovePublisher(DbContext);
-                removed = removePublisherTask.DoTask(publisher).Success;
-                Assert.IsTrue(removed);
-            }
-
-            if (artist.Name.StartsWith(nameof(Artist)))
-            {
-                var removeArtistTask = new RemoveArtist(DbContext);
-                removed = removeArtistTask.DoTask(artist).Success;
-                Assert.IsTrue(removed);
-            }
-
-            if (recordLabel.Name.StartsWith(nameof(RecordLabel)))
-            {
-                var removeLabelTask = new RemoveRecordLabel(DbContext);
-                removed = removeLabelTask.DoTask(recordLabel).Success;
-                Assert.IsTrue(removed);
-            }
         }
 
         [TestMethod]

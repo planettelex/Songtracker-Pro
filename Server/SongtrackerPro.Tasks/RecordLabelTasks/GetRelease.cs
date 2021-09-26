@@ -21,6 +21,8 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
             try
             {
                 var release = _dbContext.Releases.Where(r => r.Id == releaseId)
+                    .Include(r => r.Artist)
+                    .Include(r => r.Genre)
                     .Include(r => r.RecordLabel).ThenInclude(rl => rl.Address).ThenInclude(a => a.Country)
                     .SingleOrDefault();
 

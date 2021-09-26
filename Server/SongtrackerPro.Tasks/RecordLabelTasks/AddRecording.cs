@@ -21,7 +21,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
             try
             {
                 var artistId = recording.Artist?.Id ?? recording.ArtistId;
-                var recordLabelId = recording.Artist?.Id ?? recording.RecordLabelId;
+                var recordLabelId = recording.RecordLabel?.Id ?? recording.RecordLabelId;
                 var compositionId = recording.Composition?.Id ?? recording.CompositionId;
                 var originalRecordingId = recording.OriginalRecording?.Id ?? recording.OriginalRecordingId;
 

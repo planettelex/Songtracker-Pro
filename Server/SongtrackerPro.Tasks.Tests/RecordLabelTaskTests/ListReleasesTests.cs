@@ -76,8 +76,6 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.AreEqual(testRelease1.Title, release1.Title);
             Assert.AreEqual(testRelease1.CatalogNumber, release1.CatalogNumber);
             Assert.AreEqual(testRelease1.Type, release1.Type);
-            Assert.IsNotNull(release1.RecordLabel);
-            Assert.AreEqual(testRecordLabel.Name, release1.RecordLabel.Name);
             Assert.IsNotNull(release1.Artist);
             Assert.AreEqual(testArtist.Name, release1.Artist.Name);
 
@@ -86,8 +84,6 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.AreEqual(testRelease2.Title, release2.Title);
             Assert.AreEqual(testRelease2.CatalogNumber, release2.CatalogNumber);
             Assert.AreEqual(testRelease2.Type, release2.Type);
-            Assert.IsNotNull(release2.RecordLabel);
-            Assert.AreEqual(testRecordLabel.Name, release2.RecordLabel.Name);
             Assert.IsNull(release2.Artist);
 
             var removeReleaseTask = new RemoveRelease(DbContext);
