@@ -38,6 +38,9 @@ namespace SongtrackerPro.Tasks.Tests
             var seedPlatforms = new SeedPlatforms(_dbContext, new ListServices(_dbContext), new AddPlatform(_dbContext));
             seedPlatforms.DoTask(null);
 
+            var seedGenres = new SeedGenres(_dbContext);
+            seedGenres.DoTask(null);
+
             var seedRecordingRoles = new SeedRecordingRoles(_dbContext);
             seedRecordingRoles.DoTask(null);
 

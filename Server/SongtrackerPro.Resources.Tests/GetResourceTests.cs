@@ -22,6 +22,14 @@ namespace SongtrackerPro.Resources.Tests
         }
 
         [TestMethod]
+        public void CommonWordsTest()
+        {
+            foreach (var culture in AssemblyInfo.SupportedCultures)
+            foreach (var key in AssemblyInfo.CommonWordKeys)
+                Assert.IsNotNull(GetResource.CommonWord(culture, key));
+        }
+
+        [TestMethod]
         public void EmailTemplatesTest()
         {
             foreach (var culture in AssemblyInfo.SupportedCultures)

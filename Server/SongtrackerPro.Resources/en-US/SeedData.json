@@ -18,6 +18,366 @@
       "Value": "United States"
     },
     {
+      "Key": "GENRE_ROCK",
+      "Value": "Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_CLASSIC_ROCK",
+      "Value": "Classic Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_HARD_ROCK",
+      "Value": "Hard Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_FOLK_ROCK",
+      "Value": "Folk Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_GOTH_ROCK",
+      "Value": "Goth Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_GRUNGE",
+      "Value": "Grunge"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK",
+      "Value": "Indie Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK_LO_FI",
+      "Value": "Lo-Fi"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK_NEW_WAVE",
+      "Value": "New Wave"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK_RETRO_VAGUE",
+      "Value": "Retro Vague"
+    },
+    {
+      "Key": "GENRE_ROCK_PROGRESSIVE_ROCK",
+      "Value": "Progressive Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_PSYCHEDELIC_ROCK",
+      "Value": "Psychedelic Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_POP_ROCK",
+      "Value": "Pop Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_ROCKABILLY",
+      "Value": "Rockabilly"
+    },
+    {
+      "Key": "GENRE_POP",
+      "Value": "Pop"
+    },
+    {
+      "Key": "GENRE_POP_ADULT_CONTEMPORARY",
+      "Value": "Adult Contemporary"
+    },
+    {
+      "Key": "GENRE_POP_BRITPOP",
+      "Value": "Britpop"
+    },
+    {
+      "Key": "GENRE_POP_ELECTROPOP",
+      "Value": "Electropop"
+    },
+    {
+      "Key": "GENRE_POP_INDIE_POP",
+      "Value": "Indie Pop"
+    },
+    {
+      "Key": "GENRE_POP_OLDIES",
+      "Value": "Oldies"
+    },
+    {
+      "Key": "GENRE_PUNK",
+      "Value": "Punk"
+    },
+    {
+      "Key": "GENRE_PUNK_POP_PUNK",
+      "Value": "Pop Punk"
+    },
+    {
+      "Key": "GENRE_PUNK_HARDCORE",
+      "Value": "Hardcore Punk"
+    },
+    {
+      "Key": "GENRE_HIP_HOP",
+      "Value": "Hip-Hop"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_RAP",
+      "Value": "Rap"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_RAP_HARDCORE",
+      "Value": "Hardcore Rap"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_TRAP",
+      "Value": "Trap"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_UNDERGROUND",
+      "Value": "Underground Hip-Hop"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC",
+      "Value": "Dance & Electronic"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_BIG_BEAT",
+      "Value": "Big Beat"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_DOWNTEMPO",
+      "Value": "Downtempo"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_HOUSE",
+      "Value": "House"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_JUNGLE",
+      "Value": "Jungle"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_TECHNO",
+      "Value": "Techno"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_TRANCE",
+      "Value": "Trance"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_TRIP_HOP",
+      "Value": "Trip-Hop"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_DRUM_AND_BASS",
+      "Value": "Drum and Bass"
+    },
+    {
+      "Key": "GENRE_COUNTRY",
+      "Value": "Country"
+    },
+    {
+      "Key": "GENRE_COUNTRY_BLUEGRASS",
+      "Value": "Bluegrass"
+    },
+    {
+      "Key": "GENRE_FOLK",
+      "Value": "Folk"
+    },
+    {
+      "Key": "GENRE_FOLK_SKIFFLE",
+      "Value": "Skiffle"
+    },
+    {
+      "Key": "GENRE_FOLK_POLKA",
+      "Value": "Polka"
+    },
+    {
+      "Key": "GENRE_JAZZ",
+      "Value": "Jazz"
+    },
+    {
+      "Key": "GENRE_JAZZ_AVANT_GARDE",
+      "Value": "Avant-Garde"
+    },
+    {
+      "Key": "GENRE_JAZZ_BEBOP",
+      "Value": "Bebop"
+    },
+    {
+      "Key": "GENRE_JAZZ_BIG_BAND",
+      "Value": "Big Band"
+    },
+    {
+      "Key": "GENRE_JAZZ_DIXIELAND",
+      "Value": "Dixieland"
+    },
+    {
+      "Key": "GENRE_JAZZ_SMOOTH",
+      "Value": "Smooth Jazz"
+    },
+    {
+      "Key": "GENRE_JAZZ_VOCAL",
+      "Value": "Vocal Jazz"
+    },
+    {
+      "Key": "GENRE_BLUES",
+      "Value": "Blues"
+    },
+    {
+      "Key": "GENRE_BLUES_DELTA_BLUES",
+      "Value": "Delta Blues"
+    },
+    {
+      "Key": "GENRE_BLUES_MEMPHIS_BLUES",
+      "Value": "Memphis Blues"
+    },
+    {
+      "Key": "GENRE_BLUES_CHICAGO_BLUES",
+      "Value": "Chicago Blues"
+    },
+    {
+      "Key": "GENRE_R&B",
+      "Value": "R&B"
+    },
+    {
+      "Key": "GENRE_R&B_SOUL",
+      "Value": "Soul"
+    },
+    {
+      "Key": "GENRE_R&B_FUNK",
+      "Value": "Funk"
+    },
+    {
+      "Key": "GENRE_METAL",
+      "Value": "Metal"
+    },
+    {
+      "Key": "GENRE_METAL_BLACK_METAL",
+      "Value": "Black Metal"
+    },
+    {
+      "Key": "GENRE_METAL_DEATH_METAL",
+      "Value": "Death Metal"
+    },
+    {
+      "Key": "GENRE_METAL_NU_METAL",
+      "Value": "Nu Metal"
+    },
+    {
+      "Key": "GENRE_METAL_THRASH_METAL",
+      "Value": "Thrash Metal"
+    },
+    {
+      "Key": "GENRE_INDUSTRIAL",
+      "Value": "Industrial"
+    },
+    {
+      "Key": "GENRE_INDUSTRIAL_KRAUTROCK",
+      "Value": "Krautrock"
+    },
+    {
+      "Key": "GENRE_INDUSTRIAL_DARK_WAVE",
+      "Value": "Dark Wave"
+    },
+    {
+      "Key": "GENRE_NEW_AGE",
+      "Value": "New Age"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_AMBIENT",
+      "Value": "Ambient"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_POST_ROCK",
+      "Value": "Post Rock"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD",
+      "Value": "World"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_AFROBEAT",
+      "Value": "Afrobeat"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_CELTIC",
+      "Value": "Celtic"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_ZYDECO",
+      "Value": "Zydeco"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_INDIAN",
+      "Value": "Indian"
+    },
+    {
+      "Key": "GENRE_CLASSICAL",
+      "Value": "Classical"
+    },
+    {
+      "Key": "GENRE_CLASSICAL_BAROQUE",
+      "Value": "Baroque"
+    },
+    {
+      "Key": "GENRE_CLASSICAL_ROMANTIC",
+      "Value": "Romantic"
+    },
+    {
+      "Key": "GENRE_VOCAL",
+      "Value": "Vocal"
+    },
+    {
+      "Key": "GENRE_VOCAL_MUSICAL",
+      "Value": "Musical"
+    },
+    {
+      "Key": "GENRE_VOCAL_SPOKEN_WORD",
+      "Value": "Spoken Word"
+    },
+    {
+      "Key": "GENRE_VOCAL_SPOKEN_WORD_COMEDY",
+      "Value": "Comedy"
+    },
+    {
+      "Key": "GENRE_VOCAL_SPOKEN_WORD_POETRY",
+      "Value": "Poetry"
+    },
+    {
+      "Key": "GENRE_REGGAE",
+      "Value": "Reggae"
+    },
+    {
+      "Key": "GENRE_REGGAE_DUB",
+      "Value": "Dub"
+    },
+    {
+      "Key": "GENRE_REGGAE_DUB_DUBSTEP",
+      "Value": "Dubstep"
+    },
+    {
+      "Key": "GENRE_REGGAE_ROCKSTEADY",
+      "Value": "Rocksteady"
+    },
+    {
+      "Key": "GENRE_REGGAE_DANCEHALL",
+      "Value": "Dancehall"
+    },
+    {
+      "Key": "GENRE_LATIN",
+      "Value": "Latin"
+    },
+    {
+      "Key": "GENRE_LATIN_SALSA",
+      "Value": "Salsa"
+    },
+    {
+      "Key": "GENRE_LATIN_BOSSA_NOVA",
+      "Value": "Bossa Nova"
+    },
+    {
+      "Key": "GENRE_LATIN_RUMBA",
+      "Value": "Rumba"
+    },
+    {
+      "Key": "GENRE_LATIN_MERENGUE",
+      "Value": "Merengue"
+    },
+    {
       "Key": "MERCHANDISE_CATEGORY_CLOTHING",
       "Value": "Clothing"
     },

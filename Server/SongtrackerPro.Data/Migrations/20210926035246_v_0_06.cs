@@ -22,6 +22,26 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "genres",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    parent_genre_id = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_genres", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_genres_genres_parent_genre_id",
+                        column: x => x.parent_genre_id,
+                        principalTable: "genres",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "installation",
                 columns: table => new
                 {
@@ -136,27 +156,6 @@ namespace SongtrackerPro.Data.Migrations
                         name: "FK_performing_rights_organizations_countries_country_id",
                         column: x => x.country_id,
                         principalTable: "countries",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "merchandise",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    category_id = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_merchandise", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_merchandise_merchandise_categories_category_id",
-                        column: x => x.category_id,
-                        principalTable: "merchandise_categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -291,32 +290,6 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "merchandise_products",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    merchandise_item_id = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    sku = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    upc = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    color_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    size = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_merchandise_products", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_merchandise_products_merchandise_merchandise_item_id",
-                        column: x => x.merchandise_item_id,
-                        principalTable: "merchandise",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "legal_entity_services",
                 columns: table => new
                 {
@@ -425,28 +398,6 @@ namespace SongtrackerPro.Data.Migrations
                         principalTable: "record_labels",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "releases",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    record_label_id = table.Column<int>(type: "int", nullable: false),
-                    type = table.Column<int>(type: "int", nullable: false),
-                    catalog_number = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_releases", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_releases_record_labels_record_label_id",
-                        column: x => x.record_label_id,
-                        principalTable: "record_labels",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -662,88 +613,81 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "storage_items",
+                name: "merchandise",
                 columns: table => new
                 {
-                    uuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    publisher_id = table.Column<int>(type: "int", nullable: true),
-                    record_label_id = table.Column<int>(type: "int", nullable: true),
-                    artist_id = table.Column<int>(type: "int", nullable: true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    file_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    folder_path = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    container = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    created_on = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    updated_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    category_id = table.Column<int>(type: "int", nullable: true),
+                    is_promotional = table.Column<bool>(type: "bit", nullable: false),
+                    artist_id = table.Column<int>(type: "int", nullable: true),
                     discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    media_category = table.Column<int>(type: "int", nullable: true),
-                    is_compressed = table.Column<bool>(type: "bit", nullable: true),
-                    document_type = table.Column<int>(type: "int", nullable: true),
-                    version = table.Column<int>(type: "int", nullable: true),
-                    is_template = table.Column<bool>(type: "bit", nullable: true),
-                    promisor_party_type = table.Column<int>(type: "int", nullable: true),
-                    promisee_party_type = table.Column<int>(type: "int", nullable: true),
-                    provided_by_id = table.Column<int>(type: "int", nullable: true),
-                    template_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    contract_status = table.Column<int>(type: "int", nullable: true),
-                    drafted_on = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    provided_on = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    proposed_on = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    rejected_on = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    executed_on = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    expired_on = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    publisher_id = table.Column<int>(type: "int", nullable: true),
+                    record_label_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_storage_items", x => x.uuid);
+                    table.PrimaryKey("PK_merchandise", x => x.id);
                     table.ForeignKey(
-                        name: "FK_storage_items_artists_artist_id",
+                        name: "FK_merchandise_artists_artist_id",
                         column: x => x.artist_id,
                         principalTable: "artists",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_storage_items_legal_entities_provided_by_id",
-                        column: x => x.provided_by_id,
-                        principalTable: "legal_entities",
+                        name: "FK_merchandise_merchandise_categories_category_id",
+                        column: x => x.category_id,
+                        principalTable: "merchandise_categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_storage_items_publishers_publisher_id",
+                        name: "FK_merchandise_publishers_publisher_id",
                         column: x => x.publisher_id,
                         principalTable: "publishers",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_storage_items_record_labels_record_label_id",
+                        name: "FK_merchandise_record_labels_record_label_id",
                         column: x => x.record_label_id,
                         principalTable: "record_labels",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_storage_items_storage_items_template_id",
-                        column: x => x.template_id,
-                        principalTable: "storage_items",
-                        principalColumn: "uuid",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "release_media",
+                name: "releases",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    release_id = table.Column<int>(type: "int", nullable: false),
-                    type = table.Column<int>(type: "int", nullable: false)
+                    title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    artist_id = table.Column<int>(type: "int", nullable: true),
+                    record_label_id = table.Column<int>(type: "int", nullable: false),
+                    genre_id = table.Column<int>(type: "int", nullable: true),
+                    type = table.Column<int>(type: "int", nullable: false),
+                    catalog_number = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_release_media", x => x.id);
+                    table.PrimaryKey("PK_releases", x => x.id);
                     table.ForeignKey(
-                        name: "FK_release_media_releases_release_id",
-                        column: x => x.release_id,
-                        principalTable: "releases",
+                        name: "FK_releases_artists_artist_id",
+                        column: x => x.artist_id,
+                        principalTable: "artists",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_releases_genres_genre_id",
+                        column: x => x.genre_id,
+                        principalTable: "genres",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_releases_record_labels_record_label_id",
+                        column: x => x.record_label_id,
+                        principalTable: "record_labels",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -785,6 +729,7 @@ namespace SongtrackerPro.Data.Migrations
                     artist_id = table.Column<int>(type: "int", nullable: false),
                     record_label_id = table.Column<int>(type: "int", nullable: false),
                     composition_id = table.Column<int>(type: "int", nullable: false),
+                    genre_id = table.Column<int>(type: "int", nullable: true),
                     isrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     seconds_long = table.Column<int>(type: "int", nullable: false),
                     is_live = table.Column<bool>(type: "bit", nullable: false),
@@ -807,6 +752,12 @@ namespace SongtrackerPro.Data.Migrations
                         principalTable: "compositions",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_recordings_genres_genre_id",
+                        column: x => x.genre_id,
+                        principalTable: "genres",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_recordings_record_labels_record_label_id",
                         column: x => x.record_label_id,
@@ -952,6 +903,232 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "merchandise_products",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    merchandise_item_id = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    sku = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    upc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    color_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    size = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    issue_number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    release_id = table.Column<int>(type: "int", nullable: true),
+                    media_type = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_merchandise_products", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_merchandise_products_merchandise_merchandise_item_id",
+                        column: x => x.merchandise_item_id,
+                        principalTable: "merchandise",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_merchandise_products_releases_release_id",
+                        column: x => x.release_id,
+                        principalTable: "releases",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "recording_credits",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    recording_id = table.Column<int>(type: "int", nullable: false),
+                    person_id = table.Column<int>(type: "int", nullable: false),
+                    is_featured = table.Column<bool>(type: "bit", nullable: false),
+                    ownership_percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_recording_credits", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_recording_credits_people_person_id",
+                        column: x => x.person_id,
+                        principalTable: "people",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_recording_credits_recordings_recording_id",
+                        column: x => x.recording_id,
+                        principalTable: "recordings",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "release_tracks",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    release_id = table.Column<int>(type: "int", nullable: false),
+                    recording_id = table.Column<int>(type: "int", nullable: false),
+                    track_number = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_release_tracks", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_release_tracks_recordings_recording_id",
+                        column: x => x.recording_id,
+                        principalTable: "recordings",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_release_tracks_releases_release_id",
+                        column: x => x.release_id,
+                        principalTable: "releases",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "storage_items",
+                columns: table => new
+                {
+                    uuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    publisher_id = table.Column<int>(type: "int", nullable: true),
+                    record_label_id = table.Column<int>(type: "int", nullable: true),
+                    artist_id = table.Column<int>(type: "int", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    file_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    folder_path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    container = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    created_on = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    updated_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    media_category = table.Column<int>(type: "int", nullable: true),
+                    is_compressed = table.Column<bool>(type: "bit", nullable: true),
+                    document_type = table.Column<int>(type: "int", nullable: true),
+                    version = table.Column<int>(type: "int", nullable: true),
+                    is_template = table.Column<bool>(type: "bit", nullable: true),
+                    promisor_party_type = table.Column<int>(type: "int", nullable: true),
+                    promisee_party_type = table.Column<int>(type: "int", nullable: true),
+                    provided_by_id = table.Column<int>(type: "int", nullable: true),
+                    template_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    contract_status = table.Column<int>(type: "int", nullable: true),
+                    drafted_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    provided_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    proposed_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    rejected_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    executed_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    expired_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    composition_id = table.Column<int>(type: "int", nullable: true),
+                    publication_id = table.Column<int>(type: "int", nullable: true),
+                    recording_id = table.Column<int>(type: "int", nullable: true),
+                    release_id = table.Column<int>(type: "int", nullable: true),
+                    merchandise_item_id = table.Column<int>(type: "int", nullable: true),
+                    product_id = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_storage_items", x => x.uuid);
+                    table.ForeignKey(
+                        name: "FK_storage_items_artists_artist_id",
+                        column: x => x.artist_id,
+                        principalTable: "artists",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_compositions_composition_id",
+                        column: x => x.composition_id,
+                        principalTable: "compositions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_legal_entities_provided_by_id",
+                        column: x => x.provided_by_id,
+                        principalTable: "legal_entities",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_merchandise_merchandise_item_id",
+                        column: x => x.merchandise_item_id,
+                        principalTable: "merchandise",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_merchandise_products_product_id",
+                        column: x => x.product_id,
+                        principalTable: "merchandise_products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_publications_publication_id",
+                        column: x => x.publication_id,
+                        principalTable: "publications",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_publishers_publisher_id",
+                        column: x => x.publisher_id,
+                        principalTable: "publishers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_record_labels_record_label_id",
+                        column: x => x.record_label_id,
+                        principalTable: "record_labels",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_recordings_recording_id",
+                        column: x => x.recording_id,
+                        principalTable: "recordings",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_releases_release_id",
+                        column: x => x.release_id,
+                        principalTable: "releases",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_storage_items_storage_items_template_id",
+                        column: x => x.template_id,
+                        principalTable: "storage_items",
+                        principalColumn: "uuid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "recording_credit_roles",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    recording_credit_id = table.Column<int>(type: "int", nullable: false),
+                    recording_role_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_recording_credit_roles", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_recording_credit_roles_recording_credits_recording_credit_id",
+                        column: x => x.recording_credit_id,
+                        principalTable: "recording_credits",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_recording_credit_roles_recording_roles_recording_role_id",
+                        column: x => x.recording_role_id,
+                        principalTable: "recording_roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "contract_parties",
                 columns: table => new
                 {
@@ -1064,61 +1241,6 @@ namespace SongtrackerPro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "recording_credits",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    recording_id = table.Column<int>(type: "int", nullable: false),
-                    person_id = table.Column<int>(type: "int", nullable: false),
-                    is_featured = table.Column<bool>(type: "bit", nullable: false),
-                    ownership_percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_recording_credits", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_recording_credits_people_person_id",
-                        column: x => x.person_id,
-                        principalTable: "people",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_recording_credits_recordings_recording_id",
-                        column: x => x.recording_id,
-                        principalTable: "recordings",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "release_tracks",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    release_id = table.Column<int>(type: "int", nullable: false),
-                    recording_id = table.Column<int>(type: "int", nullable: false),
-                    track_number = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_release_tracks", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_release_tracks_recordings_recording_id",
-                        column: x => x.recording_id,
-                        principalTable: "recordings",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_release_tracks_releases_release_id",
-                        column: x => x.release_id,
-                        principalTable: "releases",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "contract_signatories",
                 columns: table => new
                 {
@@ -1150,32 +1272,6 @@ namespace SongtrackerPro.Data.Migrations
                         column: x => x.storage_item_id,
                         principalTable: "storage_items",
                         principalColumn: "uuid",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "recording_credit_roles",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    recording_credit_id = table.Column<int>(type: "int", nullable: false),
-                    recording_role_id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_recording_credit_roles", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_recording_credit_roles_recording_credits_recording_credit_id",
-                        column: x => x.recording_credit_id,
-                        principalTable: "recording_credits",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_recording_credit_roles_recording_roles_recording_role_id",
-                        column: x => x.recording_role_id,
-                        principalTable: "recording_roles",
-                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1320,6 +1416,11 @@ namespace SongtrackerPro.Data.Migrations
                 column: "uploaded_by_user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_genres_parent_genre_id",
+                table: "genres",
+                column: "parent_genre_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_legal_entities_address_id",
                 table: "legal_entities",
                 column: "address_id");
@@ -1360,9 +1461,24 @@ namespace SongtrackerPro.Data.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_merchandise_artist_id",
+                table: "merchandise",
+                column: "artist_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_merchandise_category_id",
                 table: "merchandise",
                 column: "category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_merchandise_publisher_id",
+                table: "merchandise",
+                column: "publisher_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_merchandise_record_label_id",
+                table: "merchandise",
+                column: "record_label_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_merchandise_categories_parent_category_id",
@@ -1373,6 +1489,11 @@ namespace SongtrackerPro.Data.Migrations
                 name: "IX_merchandise_products_merchandise_item_id",
                 table: "merchandise_products",
                 column: "merchandise_item_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_merchandise_products_release_id",
+                table: "merchandise_products",
+                column: "release_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_people_address_id",
@@ -1455,6 +1576,11 @@ namespace SongtrackerPro.Data.Migrations
                 column: "composition_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_recordings_genre_id",
+                table: "recordings",
+                column: "genre_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_recordings_original_recording_id",
                 table: "recordings",
                 column: "original_recording_id");
@@ -1463,11 +1589,6 @@ namespace SongtrackerPro.Data.Migrations
                 name: "IX_recordings_record_label_id",
                 table: "recordings",
                 column: "record_label_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_release_media_release_id",
-                table: "release_media",
-                column: "release_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_release_tracks_recording_id",
@@ -1480,6 +1601,16 @@ namespace SongtrackerPro.Data.Migrations
                 column: "release_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_releases_artist_id",
+                table: "releases",
+                column: "artist_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_releases_genre_id",
+                table: "releases",
+                column: "genre_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_releases_record_label_id",
                 table: "releases",
                 column: "record_label_id");
@@ -1490,9 +1621,29 @@ namespace SongtrackerPro.Data.Migrations
                 column: "artist_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_storage_items_composition_id",
+                table: "storage_items",
+                column: "composition_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_storage_items_merchandise_item_id",
+                table: "storage_items",
+                column: "merchandise_item_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_storage_items_product_id",
+                table: "storage_items",
+                column: "product_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_storage_items_provided_by_id",
                 table: "storage_items",
                 column: "provided_by_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_storage_items_publication_id",
+                table: "storage_items",
+                column: "publication_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_storage_items_publisher_id",
@@ -1503,6 +1654,16 @@ namespace SongtrackerPro.Data.Migrations
                 name: "IX_storage_items_record_label_id",
                 table: "storage_items",
                 column: "record_label_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_storage_items_recording_id",
+                table: "storage_items",
+                column: "recording_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_storage_items_release_id",
+                table: "storage_items",
+                column: "release_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_storage_items_template_id",
@@ -1607,9 +1768,6 @@ namespace SongtrackerPro.Data.Migrations
                 name: "logins");
 
             migrationBuilder.DropTable(
-                name: "merchandise_products");
-
-            migrationBuilder.DropTable(
                 name: "platform_services");
 
             migrationBuilder.DropTable(
@@ -1617,9 +1775,6 @@ namespace SongtrackerPro.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "recording_credit_roles");
-
-            migrationBuilder.DropTable(
-                name: "release_media");
 
             migrationBuilder.DropTable(
                 name: "release_tracks");
@@ -1634,22 +1789,13 @@ namespace SongtrackerPro.Data.Migrations
                 name: "contract_parties");
 
             migrationBuilder.DropTable(
-                name: "merchandise");
-
-            migrationBuilder.DropTable(
                 name: "services");
-
-            migrationBuilder.DropTable(
-                name: "publications");
 
             migrationBuilder.DropTable(
                 name: "recording_credits");
 
             migrationBuilder.DropTable(
                 name: "recording_roles");
-
-            migrationBuilder.DropTable(
-                name: "releases");
 
             migrationBuilder.DropTable(
                 name: "platforms");
@@ -1661,7 +1807,10 @@ namespace SongtrackerPro.Data.Migrations
                 name: "users");
 
             migrationBuilder.DropTable(
-                name: "merchandise_categories");
+                name: "merchandise_products");
+
+            migrationBuilder.DropTable(
+                name: "publications");
 
             migrationBuilder.DropTable(
                 name: "recordings");
@@ -1670,13 +1819,22 @@ namespace SongtrackerPro.Data.Migrations
                 name: "people");
 
             migrationBuilder.DropTable(
-                name: "artists");
+                name: "merchandise");
+
+            migrationBuilder.DropTable(
+                name: "releases");
 
             migrationBuilder.DropTable(
                 name: "compositions");
 
             migrationBuilder.DropTable(
-                name: "record_labels");
+                name: "merchandise_categories");
+
+            migrationBuilder.DropTable(
+                name: "artists");
+
+            migrationBuilder.DropTable(
+                name: "genres");
 
             migrationBuilder.DropTable(
                 name: "legal_entities");
@@ -1685,10 +1843,13 @@ namespace SongtrackerPro.Data.Migrations
                 name: "publishers");
 
             migrationBuilder.DropTable(
-                name: "addresses");
+                name: "record_labels");
 
             migrationBuilder.DropTable(
                 name: "performing_rights_organizations");
+
+            migrationBuilder.DropTable(
+                name: "addresses");
 
             migrationBuilder.DropTable(
                 name: "countries");

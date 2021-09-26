@@ -28,11 +28,16 @@ namespace SongtrackerPro.Data.Models
         public int RecordLabelId { get; set; }
         public RecordLabel RecordLabel { get; set; }
 
+        [JsonIgnore]
+        [Column("genre_id", Order = 5)]
+        public int? GenreId { get; set; }
+        public Genre Genre { get; set; }
+
         [Required]
-        [Column("type", Order = 5)]
+        [Column("type", Order = 6)]
         public ReleaseType Type { get; set; }
 
-        [Column("catalog_number", Order = 6)]
+        [Column("catalog_number", Order = 7)]
         public string CatalogNumber { get; set; }
     }
 }

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="en-US\CommonWords.json" />
     <None Remove="en-US\EmailTemplates\ArtistManagerInvitation.html" />
     <None Remove="en-US\EmailTemplates\ArtistManagerWelcome.html" />
     <None Remove="en-US\EmailTemplates\ArtistMemberInvitation.html" />
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="en-US\CommonWords.json" />
     <EmbeddedResource Include="en-US\EmailTemplates\LabelAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorInvitation.html" />

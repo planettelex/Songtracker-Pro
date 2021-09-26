@@ -9,6 +9,8 @@ using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
+using SongtrackerPro.Tasks.LegalEntityTasks;
+using SongtrackerPro.Tasks.MerchandiseTasks;
 using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
@@ -81,17 +83,36 @@ namespace SongtrackerPro.Api
             services.AddScoped<ISeedPerformingRightsOrganizationsTask, SeedPerformingRightsOrganizations>();
             services.AddScoped<ISeedServicesTask, SeedServices>();
             services.AddScoped<ISeedPlatformsTask, SeedPlatforms>();
+            services.AddScoped<ISeedGenresTask, SeedGenres>();
+            services.AddScoped<ISeedRecordingRolesTask, SeedRecordingRoles>();
+            services.AddScoped<ISeedMerchandiseCategoriesTask, SeedMerchandiseCategories>();
             services.AddScoped<ISeedSystemDataTask, SeedSystemData>();
 
             services.AddScoped<IGetInstallationTask, GetInstallation>();
             services.AddScoped<IListCountriesTask, ListCountries>();
             services.AddScoped<IListServicesTask, ListServices>();
+            services.AddScoped<IListGenresTask, ListGenres>();
             services.AddScoped<IListPerformingRightsOrganizationsTask, ListPerformingRightsOrganizations>();
+            services.AddScoped<IListMerchandiseCategoriesTask, ListMerchandiseCategories>();
 
             services.AddScoped<IListPlatformsTask, ListPlatforms>();
             services.AddScoped<IGetPlatformTask, GetPlatform>();
             services.AddScoped<IAddPlatformTask, AddPlatform>();
             services.AddScoped<IUpdatePlatformTask, UpdatePlatform>();
+
+            services.AddScoped<IListLegalEntitiesTask, ListLegalEntities>();
+            services.AddScoped<IGetLegalEntityTask, GetLegalEntity>();
+            services.AddScoped<IAddLegalEntityTask, AddLegalEntity>();
+            services.AddScoped<IUpdateLegalEntityTask, UpdateLegalEntity>();
+
+            services.AddScoped<IListLegalEntityClientsTask, ListLegalEntityClients>();
+            services.AddScoped<IGetLegalEntityClientTask, GetLegalEntityClient>();
+            services.AddScoped<IAddLegalEntityClientTask, AddLegalEntityClient>();
+
+            services.AddScoped<IListLegalEntityContactsTask, ListLegalEntityContacts>();
+            services.AddScoped<IGetLegalEntityContactTask, GetLegalEntityContact>();
+            services.AddScoped<IAddLegalEntityContactTask, AddLegalEntityContact>();
+            services.AddScoped<IUpdateLegalEntityContactTask, UpdateLegalEntityContact>();
 
             services.AddScoped<IListPublishersTask, ListPublishers>();
             services.AddScoped<IGetPublisherTask, GetPublisher>();
@@ -154,6 +175,52 @@ namespace SongtrackerPro.Api
             services.AddScoped<IAddUserAccountTask, AddUserAccount>();
             services.AddScoped<IUpdateUserAccountTask, UpdateUserAccount>();
             services.AddScoped<IRemoveUserAccountTask, RemoveUserAccount>();
+
+            services.AddScoped<IListPublicationsTask, ListPublications>();
+            services.AddScoped<IGetPublicationTask, GetPublication>();
+            services.AddScoped<IAddPublicationTask, AddPublication>();
+            services.AddScoped<IUpdatePublicationTask, UpdatePublication>();
+            services.AddScoped<IRemovePublicationTask, RemovePublication>();
+
+            services.AddScoped<IListPublicationAuthorsTask, ListPublicationAuthors>();
+            services.AddScoped<IGetPublicationAuthorTask, GetPublicationAuthor>();
+            services.AddScoped<IAddPublicationAuthorTask, AddPublicationAuthor>();
+            services.AddScoped<IUpdatePublicationAuthorTask, UpdatePublicationAuthor>();
+            services.AddScoped<IRemovePublicationAuthorTask, RemovePublicationAuthor>();
+
+            services.AddScoped<IListCompositionsTask, ListCompositions>();
+            services.AddScoped<IGetCompositionTask, GetComposition>();
+            services.AddScoped<IAddCompositionTask, AddComposition>();
+            services.AddScoped<IUpdateCompositionTask, UpdateComposition>();
+            services.AddScoped<IRemoveCompositionTask, RemoveComposition>();
+
+            services.AddScoped<IListCompositionAuthorsTask, ListCompositionAuthors>();
+            services.AddScoped<IGetCompositionAuthorTask, GetCompositionAuthor>();
+            services.AddScoped<IAddCompositionAuthorTask, AddCompositionAuthor>();
+            services.AddScoped<IUpdateCompositionAuthorTask, UpdateCompositionAuthor>();
+            services.AddScoped<IRemoveCompositionAuthorTask, RemoveCompositionAuthor>();
+
+            services.AddScoped<IListRecordingsTask, ListRecordings>();
+            services.AddScoped<IGetRecordingTask, GetRecording>();
+            services.AddScoped<IAddRecordingTask, AddRecording>();
+            services.AddScoped<IUpdateRecordingTask, UpdateRecording>();
+            services.AddScoped<IRemoveRecordingTask, RemoveRecording>();
+
+            services.AddScoped<IListRecordingCreditsTask, ListRecordingCredits>();
+            services.AddScoped<IAddRecordingCreditTask, AddRecordingCredit>();
+            services.AddScoped<IUpdateRecordingCreditTask, UpdateRecordingCredit>();
+            services.AddScoped<IRemoveRecordingCreditTask, RemoveRecordingCredit>();
+
+            services.AddScoped<IListReleasesTask, ListReleases>();
+            services.AddScoped<IGetReleaseTask, GetRelease>();
+            services.AddScoped<IAddReleaseTask, AddRelease>();
+            services.AddScoped<IUpdateReleaseTask, UpdateRelease>();
+            services.AddScoped<IRemoveReleaseTask, RemoveRelease>();
+
+            services.AddScoped<IListReleaseTracksTask, ListReleaseTracks>();
+            services.AddScoped<IAddReleaseTrackTask, AddReleaseTrack>();
+            services.AddScoped<IUpdateReleaseTrackTask, UpdateReleaseTrack>();
+            services.AddScoped<IRemoveReleaseTrackTask, RemoveReleaseTrack>();
         }
     }
 }

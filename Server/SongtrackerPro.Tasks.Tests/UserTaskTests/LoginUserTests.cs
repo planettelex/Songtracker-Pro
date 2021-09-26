@@ -35,6 +35,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                                    new SeedPerformingRightsOrganizations(DbContext, new SeedCountries(DbContext)), 
                                    new SeedServices(DbContext), 
                                    new SeedPlatforms(DbContext, new ListServices(DbContext), new AddPlatform(DbContext)),
+                                   new SeedGenres(DbContext),
                                    new SeedRecordingRoles(DbContext),
                                    new SeedMerchandiseCategories(DbContext)));
 
@@ -140,6 +141,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                                    new SeedPerformingRightsOrganizations(EmptyDbContext, new SeedCountries(EmptyDbContext)), 
                                    new SeedServices(EmptyDbContext), 
                                    new SeedPlatforms(EmptyDbContext, new ListServices(EmptyDbContext), new AddPlatform(EmptyDbContext)),
+                                   new SeedGenres(EmptyDbContext),
                                    new SeedRecordingRoles(EmptyDbContext),
                                    new SeedMerchandiseCategories(EmptyDbContext)));
             
