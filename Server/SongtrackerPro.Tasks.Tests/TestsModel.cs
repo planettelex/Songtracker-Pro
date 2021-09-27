@@ -293,6 +293,74 @@ namespace SongtrackerPro.Tasks.Tests
             };
         }
 
+        public MerchandiseItem MerchandiseItem(Artist artist)
+        {
+            var categories = new ListMerchandiseCategories(_dbContext).DoTask(null).Data;
+            MerchandiseCategory category = null;
+
+            if (categories != null && categories.Any())
+            {
+                var categoryIndex = new Random().Next(0, categories.Count - 1);
+                category = categories[categoryIndex];
+            }
+
+            var stamp = DateTime.Now.Ticks;
+            return new MerchandiseItem
+            {
+                Artist = artist,
+                ArtistId = artist.Id,
+                Category = category,
+                Name = nameof(MerchandiseItem) + " " + stamp,
+                Description = stamp.ToString()
+            };
+        }
+
+        public PublisherMerchandiseItem PublisherMerchandiseItem(Publisher publisher)
+        {
+            var categories = new ListMerchandiseCategories(_dbContext).DoTask(null).Data;
+            MerchandiseCategory category = null;
+
+            if (categories != null && categories.Any())
+            {
+                var categoryIndex = new Random().Next(0, categories.Count - 1);
+                category = categories[categoryIndex];
+            }
+
+            var stamp = DateTime.Now.Ticks;
+            return new PublisherMerchandiseItem
+            {
+                Publisher = publisher,
+                PublisherId = publisher.Id,
+                Category = category,
+                Name = nameof(MerchandiseItem) + " " + stamp,
+                Description = stamp.ToString()
+            };
+        }
+
+        public RecordLabelMerchandiseItem RecordLabelMerchandiseItem(RecordLabel recordLabel, Artist artist)
+        {
+            var categories = new ListMerchandiseCategories(_dbContext).DoTask(null).Data;
+            MerchandiseCategory category = null;
+
+            if (categories != null && categories.Any())
+            {
+                var categoryIndex = new Random().Next(0, categories.Count - 1);
+                category = categories[categoryIndex];
+            }
+
+            var stamp = DateTime.Now.Ticks;
+            return new RecordLabelMerchandiseItem
+            {
+                Artist = artist,
+                ArtistId = artist.Id,
+                RecordLabel = recordLabel,
+                RecordLabelId = recordLabel.Id,
+                Category = category,
+                Name = nameof(MerchandiseItem) + " " + stamp,
+                Description = stamp.ToString()
+            };
+        }
+
         public Artist Artist
         {
             get
