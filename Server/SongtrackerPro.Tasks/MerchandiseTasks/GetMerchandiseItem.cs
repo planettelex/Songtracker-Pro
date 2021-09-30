@@ -38,7 +38,7 @@ namespace SongtrackerPro.Tasks.MerchandiseTasks
                 if (recordLabelMerchandiseItem != null)
                     return new TaskResult<MerchandiseItem>(recordLabelMerchandiseItem);
                 
-                var merchandiseItem = _dbContext.MerchandiseItems.Where(mi => mi.Id == merchandiseItemId)
+                var merchandiseItem = _dbContext.Merchandise.Where(mi => mi.Id == merchandiseItemId)
                     .Include(mi => mi.Artist)
                     .Include(mi => mi.Category)
                     .SingleOrDefault();

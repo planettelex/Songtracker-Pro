@@ -19,11 +19,11 @@ namespace SongtrackerPro.Tasks.MerchandiseTasks
         {
             try
             {
-                var toRemove = _dbContext.MerchandiseItems.SingleOrDefault(mi => mi.Id == merchandiseItem.Id);
+                var toRemove = _dbContext.Merchandise.SingleOrDefault(mi => mi.Id == merchandiseItem.Id);
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 
-                _dbContext.MerchandiseItems.Remove(toRemove);
+                _dbContext.Merchandise.Remove(toRemove);
                 _dbContext.SaveChanges();
 
                 return new TaskResult<bool>(true);

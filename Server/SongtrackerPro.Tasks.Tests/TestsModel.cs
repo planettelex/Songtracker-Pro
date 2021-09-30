@@ -49,6 +49,8 @@ namespace SongtrackerPro.Tasks.Tests
         }
         private readonly ApplicationDbContext _dbContext;
 
+        public bool FiftyFifty => new Random().Next(0, 1) == 0;
+
         public Address Address
         {
             get
@@ -293,61 +295,47 @@ namespace SongtrackerPro.Tasks.Tests
             };
         }
 
+        public MerchandiseCategory MerchandiseCategory
+        {
+            get
+            {
+                var listCategoriesTask = new ListMerchandiseCategories(_dbContext);
+                var allCategories = listCategoriesTask.DoTask(null).Data;
+                var randomIndex = new Random().Next(allCategories.Count - 1);
+                return allCategories[randomIndex];
+            }
+        }
+
         public MerchandiseItem MerchandiseItem(Artist artist)
         {
-            var categories = new ListMerchandiseCategories(_dbContext).DoTask(null).Data;
-            MerchandiseCategory category = null;
-
-            if (categories != null && categories.Any())
-            {
-                var categoryIndex = new Random().Next(0, categories.Count - 1);
-                category = categories[categoryIndex];
-            }
-
             var stamp = DateTime.Now.Ticks;
             return new MerchandiseItem
             {
                 Artist = artist,
-                ArtistId = artist.Id,
-                Category = category,
+                ArtistId = artist?.Id,
+                Category = MerchandiseCategory,
                 Name = nameof(MerchandiseItem) + " " + stamp,
-                Description = stamp.ToString()
+                Description = stamp.ToString(),
+                IsPromotional = FiftyFifty
             };
         }
 
         public PublisherMerchandiseItem PublisherMerchandiseItem(Publisher publisher)
         {
-            var categories = new ListMerchandiseCategories(_dbContext).DoTask(null).Data;
-            MerchandiseCategory category = null;
-
-            if (categories != null && categories.Any())
-            {
-                var categoryIndex = new Random().Next(0, categories.Count - 1);
-                category = categories[categoryIndex];
-            }
-
             var stamp = DateTime.Now.Ticks;
             return new PublisherMerchandiseItem
             {
                 Publisher = publisher,
                 PublisherId = publisher.Id,
-                Category = category,
+                Category = MerchandiseCategory,
                 Name = nameof(MerchandiseItem) + " " + stamp,
-                Description = stamp.ToString()
+                Description = stamp.ToString(),
+                IsPromotional = FiftyFifty
             };
         }
 
         public RecordLabelMerchandiseItem RecordLabelMerchandiseItem(RecordLabel recordLabel, Artist artist)
         {
-            var categories = new ListMerchandiseCategories(_dbContext).DoTask(null).Data;
-            MerchandiseCategory category = null;
-
-            if (categories != null && categories.Any())
-            {
-                var categoryIndex = new Random().Next(0, categories.Count - 1);
-                category = categories[categoryIndex];
-            }
-
             var stamp = DateTime.Now.Ticks;
             return new RecordLabelMerchandiseItem
             {
@@ -355,9 +343,10 @@ namespace SongtrackerPro.Tasks.Tests
                 ArtistId = artist.Id,
                 RecordLabel = recordLabel,
                 RecordLabelId = recordLabel.Id,
-                Category = category,
+                Category = MerchandiseCategory,
                 Name = nameof(MerchandiseItem) + " " + stamp,
-                Description = stamp.ToString()
+                Description = stamp.ToString(),
+                IsPromotional = FiftyFifty
             };
         }
 
@@ -375,7 +364,6 @@ namespace SongtrackerPro.Tasks.Tests
                 }
 
                 var stamp = DateTime.Now.Ticks;
-                var fiftyFifty = new Random().Next(0, 1) == 0;
                 return new Artist
                 {
                     Name = nameof(Artist) + " " + stamp,
@@ -383,7 +371,7 @@ namespace SongtrackerPro.Tasks.Tests
                     Email = $"test@artist{stamp}.com",
                     Address = Address,
                     RecordLabel = label,
-                    HasServiceMark = fiftyFifty,
+                    HasServiceMark = FiftyFifty,
                     WebsiteUrl = "http://www.artist.com",
                     PressKitUrl = "http://www.presskit.com"
                 };

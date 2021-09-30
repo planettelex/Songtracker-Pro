@@ -57,7 +57,7 @@ namespace SongtrackerPro.Tasks.MerchandiseTasks
                 }
                 else
                 {
-                    _dbContext.MerchandiseItems.Add(merchandiseItem);
+                    _dbContext.Merchandise.Add(merchandiseItem);
                     _dbContext.SaveChanges();
                 }
 
