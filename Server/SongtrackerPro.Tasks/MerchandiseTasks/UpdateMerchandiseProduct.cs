@@ -31,13 +31,13 @@ namespace SongtrackerPro.Tasks.MerchandiseTasks
 
                 if (update is PublicationMerchandiseProduct publicationProductUpdate)
                 {
-                    var  publicationProduct = _dbContext.PublicationProducts.Single(p => p.Id == publicationProductUpdate.Id);
+                    var  publicationProduct = _dbContext.PublicationProducts.Single(pp => pp.Id == publicationProductUpdate.Id);
                     publicationProduct.IssueNumber = publicationProductUpdate.IssueNumber;
                     _dbContext.SaveChanges();
                 }
                 else if (update is ReleaseMerchandiseProduct releaseProductUpdate)
                 {
-                    var  releaseProduct = _dbContext.ReleaseProducts.Single(p => p.Id == releaseProductUpdate.Id);
+                    var  releaseProduct = _dbContext.ReleaseProducts.Single(rp => rp.Id == releaseProductUpdate.Id);
                     releaseProduct.MediaType = releaseProductUpdate.MediaType;
                     _dbContext.SaveChanges();
                 }

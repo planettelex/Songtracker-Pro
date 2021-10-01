@@ -63,6 +63,7 @@ namespace SongtrackerPro.Data
         public DbSet<ContractParty> ContractParties { get; set; }
         public DbSet<ContractSignatory> ContractSignatories { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<DigitalMedia> DigitalMedia { get; set; }
         public DbSet<DigitalMediaUpload> DigitalMediaUploads { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<DocumentUpload> DocumentUploads { get; set; }
