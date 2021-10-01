@@ -32,6 +32,7 @@ namespace SongtrackerPro.Tasks.StorageItemTasks
                 storageItem.RecordLabelId = recordLabelId;
                 storageItem.Publisher = null;
                 storageItem.PublisherId = publisherId;
+                storageItem.Uuid = Guid.NewGuid();
                 storageItem.CreatedOn = DateTime.UtcNow;
                 
                 if (storageItem is RecordLabelContract recordLabelContract)

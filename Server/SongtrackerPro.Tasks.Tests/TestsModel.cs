@@ -511,6 +511,213 @@ namespace SongtrackerPro.Tasks.Tests
         private readonly List<string> _lastNames = new List<string> { "Smith", "Adams", "Douglas", "Rogers", "Long" };
         private readonly List<string> _nameSuffices = new List<string> { null, "Jr.", "III", null, null };
 
+        public StorageItem StorageItem
+        {
+            get
+            {
+                var stamp = DateTime.Now.Ticks;
+                var oneToTwenty = new Random().Next(1, 20);
+                return new StorageItem
+                {
+                    Name = nameof(StorageItem) + " " + stamp,
+                    Container = "Container " + stamp,
+                    FileName = $"filename_{stamp}.pdf",
+                    FolderPath = $"folder/{oneToTwenty}/"
+                };
+            }
+        }
+
+        public DigitalMedia DigitalMedia(Artist artist, RecordLabel recordLabel)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new DigitalMedia
+            {
+                Artist = artist,
+                ArtistId = artist?.Id,
+                RecordLabel = recordLabel,
+                RecordLabelId = recordLabel?.Id,
+                Name = nameof(DigitalMedia) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                IsCompressed = false,
+                MediaCategory = DigitalMediaCategory.Audio
+            };
+        }
+
+        public DigitalMedia DigitalMedia(Publisher publisher)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new DigitalMedia
+            {
+                Publisher = publisher,
+                PublisherId = publisher?.Id,
+                Name = nameof(DigitalMedia) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                IsCompressed = false,
+                MediaCategory = DigitalMediaCategory.Image
+            };
+        }
+
+        public Document Document(Publisher publisher)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new Document
+            {
+                Publisher = publisher,
+                PublisherId = publisher.Id,
+                Name = nameof(Document) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                DocumentType = DocumentType.PublicationMaster
+            };
+        }
+
+        public Document Document(Artist artist)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new Document
+            {
+                Artist = artist,
+                ArtistId = artist.Id,
+                Name = nameof(Document) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                DocumentType = DocumentType.Promotional
+            };
+        }
+
+        public Document Document(RecordLabel recordLabel)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new Document
+            {
+                RecordLabel = recordLabel,
+                RecordLabelId = recordLabel.Id,
+                Name = nameof(Document) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                DocumentType = DocumentType.Metadata
+            };
+        }
+
+        public Contract Contract(Artist artist)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new Contract
+            {
+                Artist = artist,
+                ArtistId = artist.Id,
+                Name = nameof(Contract) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                ContractStatus = ContractStatus.Drafted,
+                PromisorPartyType = ContractPartyType.Individual,
+                PromiseePartyType = ContractPartyType.Artist,
+                DraftedOn = DateTime.UtcNow
+            };
+        }
+
+        public PublisherContract PublisherContract(Publication publication)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new PublisherContract
+            {
+                Publication = publication,
+                PublicationId = publication.Id,
+                Publisher = publication.Publisher,
+                PublisherId = publication.Publisher.Id,
+                Name = nameof(PublisherContract) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                ContractStatus = ContractStatus.Drafted,
+                PromisorPartyType = ContractPartyType.Publisher,
+                PromiseePartyType = ContractPartyType.Individual,
+                DraftedOn = DateTime.UtcNow.AddDays(-3),
+                ProposedOn = DateTime.UtcNow
+            };
+        }
+
+        public PublisherContract PublisherContract(Publisher publisher)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new PublisherContract
+            {
+                Publisher = publisher,
+                PublisherId = publisher.Id,
+                Name = nameof(PublisherContract) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                ContractStatus = ContractStatus.Drafted,
+                PromisorPartyType = ContractPartyType.Publisher,
+                PromiseePartyType = ContractPartyType.Individual,
+                DraftedOn = DateTime.UtcNow.AddDays(-3),
+                ProposedOn = DateTime.UtcNow
+            };
+        }
+
+        public RecordLabelContract RecordLabelContract(Recording recording, Release release)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new RecordLabelContract
+            {
+                Release = release,
+                ReleaseId = release.Id,
+                Recording = recording,
+                RecordingId = recording.Id,
+                RecordLabel = release.RecordLabel ?? recording.RecordLabel,
+                RecordLabelId = release.RecordLabel?.Id ?? recording.RecordLabel?.Id,
+                Name = nameof(RecordLabelContract) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                ContractStatus = ContractStatus.Drafted,
+                PromisorPartyType = ContractPartyType.RecordLabel,
+                PromiseePartyType = ContractPartyType.Artist,
+                DraftedOn = DateTime.UtcNow.AddDays(-3),
+                ProposedOn = DateTime.UtcNow.AddDays(-1),
+                UpdatedOn = DateTime.UtcNow
+            };
+        }
+
+        public RecordLabelContract RecordLabelContract(RecordLabel recordLabel)
+        {
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwenty = new Random().Next(1, 20);
+            return new RecordLabelContract
+            {
+                RecordLabel = recordLabel,
+                RecordLabelId = recordLabel.Id,
+                Name = nameof(RecordLabelContract) + " " + stamp,
+                Container = "Container " + stamp,
+                FileName = $"filename_{stamp}.pdf",
+                FolderPath = $"folder/{oneToTwenty}/",
+                ContractStatus = ContractStatus.Drafted,
+                PromisorPartyType = ContractPartyType.RecordLabel,
+                PromiseePartyType = ContractPartyType.Artist,
+                DraftedOn = DateTime.UtcNow.AddDays(-3),
+                ProposedOn = DateTime.UtcNow.AddDays(-1),
+                UpdatedOn = DateTime.UtcNow
+            };
+        }
+
         public User User
         {
             get

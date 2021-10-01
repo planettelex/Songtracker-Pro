@@ -7,6 +7,11 @@ namespace SongtrackerPro.Data.Models
 {
     public class Contract : Document
     {
+        public Contract()
+        {
+            DocumentType = Enums.DocumentType.Contract;
+        }
+
         [Column("is_template", Order = 16)]
         public bool? IsTemplate { get; set; }
 
