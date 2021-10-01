@@ -15,19 +15,14 @@
     {
         public static ContractStatus[] Phase(ContractPhase contractPhase)
         {
-            switch (contractPhase)
+            return contractPhase switch
             {
-                case ContractPhase.Create:
-                    return new[] { ContractStatus.Drafted, ContractStatus.Provided };
-                case ContractPhase.Negotiate:
-                    return new[] { ContractStatus.Proposed };
-                case ContractPhase.Active:
-                    return new[] { ContractStatus.Executed };
-                case ContractPhase.Obsolete:
-                    return new[] { ContractStatus.Rejected, ContractStatus.Expired };
-            }
-
-            return null;
+                ContractPhase.Create => new[] { ContractStatus.Drafted, ContractStatus.Provided },
+                ContractPhase.Negotiate => new[] { ContractStatus.Proposed },
+                ContractPhase.Active => new[] { ContractStatus.Executed },
+                ContractPhase.Obsolete => new[] { ContractStatus.Rejected, ContractStatus.Expired },
+                _ => null
+            };
         }
     }
 }
