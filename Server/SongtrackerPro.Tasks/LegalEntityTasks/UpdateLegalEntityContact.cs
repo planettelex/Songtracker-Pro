@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Models;
 
@@ -16,18 +17,25 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
 
         public TaskResult<Nothing> DoTask(LegalEntityContact update)
         {
-            var contact = _dbContext.LegalEntityContacts.SingleOrDefault(lec => lec.Id == update.Id);
+            try
+            {
+                var contact = _dbContext.LegalEntityContacts.SingleOrDefault(lec => lec.Id == update.Id);
 
-            if (contact == null)
-                throw new TaskException(SystemMessage("LEGAL_ENTITY_CONTACT_NOT_FOUND"));
+                if (contact == null)
+                    throw new TaskException(SystemMessage("LEGAL_ENTITY_CONTACT_NOT_FOUND"));
 
-            contact.PersonId = update.Person?.Id ?? update.PersonId;
-            contact.Person = _dbContext.People.Single(p => p.Id == contact.PersonId);
-            contact.Position = update.Position;
+                contact.PersonId = update.Person?.Id ?? update.PersonId;
+                contact.Person = _dbContext.People.Single(p => p.Id == contact.PersonId);
+                contact.Position = update.Position;
 
-            _dbContext.SaveChanges();
+                _dbContext.SaveChanges();
 
-            return new TaskResult<Nothing>(true);
+                return new TaskResult<Nothing>(true);
+            }
+            catch (Exception e)
+            {
+                return new TaskResult<Nothing>(new TaskException(e));
+            }
         }
     }
 }

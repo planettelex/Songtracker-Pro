@@ -134,6 +134,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.IsNotNull(testRecordLabel.Address.Country);
             Assert.AreEqual(testRecordLabel.Address.Country.Name, recording.RecordLabel.Address.Country.Name);
             Assert.AreEqual(testRecordLabel.Address.Country.IsoCode, recording.RecordLabel.Address.Country.IsoCode);
+            Assert.IsNotNull(recording.Genre);
 
             var removeRecordingTask = new RemoveRecording(DbContext);
             var removeResult = removeRecordingTask.DoTask(recording);

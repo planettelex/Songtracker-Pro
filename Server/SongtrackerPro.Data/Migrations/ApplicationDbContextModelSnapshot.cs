@@ -1613,6 +1613,12 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("issue_number");
 
+                    b.Property<int?>("PublicationId")
+                        .HasColumnType("int")
+                        .HasColumnName("publication_id");
+
+                    b.HasIndex("PublicationId");
+
                     b.ToTable("merchandise_products");
 
                     b.HasDiscriminator().HasValue("PublicationMerchandiseProduct");
@@ -2480,6 +2486,15 @@ namespace SongtrackerPro.Data.Migrations
                         .HasForeignKey("RecordLabelId");
 
                     b.Navigation("RecordLabel");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.PublicationMerchandiseProduct", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.Publication", "Publication")
+                        .WithMany()
+                        .HasForeignKey("PublicationId");
+
+                    b.Navigation("Publication");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.ReleaseMerchandiseProduct", b =>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
@@ -134,15 +131,11 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.IsTrue(removeArtistResult.Success);
             Assert.IsNull(removeArtistResult.Exception);
 
-            var removeCompositionTask = new RemoveComposition(DbContext);
-            var removeCompositionResult = removeCompositionTask.DoTask(testComposition);
-            Assert.IsTrue(removeCompositionResult.Success);
-            Assert.IsNull(removeCompositionResult.Exception);
+            var removePublisherTask = new RemovePublisher(DbContext);
+            var removePublisherResult = removePublisherTask.DoTask(testPublisher);
 
-            var removeRecordingTask = new RemoveRecording(DbContext);
-            var removeRecordingResult = removeRecordingTask.DoTask(testRecording);
-            Assert.IsTrue(removeRecordingResult.Success);
-            Assert.IsNull(removeRecordingResult.Exception);
+            Assert.IsTrue(removePublisherResult.Success);
+            Assert.IsNull(removePublisherResult.Exception);
         }
 
         [TestMethod]

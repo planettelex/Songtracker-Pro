@@ -21,13 +21,13 @@ namespace SongtrackerPro.Tasks.MerchandiseTasks
         {
             try
             {
-                var merchandiseItems = _dbContext.PublisherMerchandise.Where(mi => mi.PublisherId == publisher.Id)
+                var merchandise = _dbContext.PublisherMerchandise.Where(mi => mi.PublisherId == publisher.Id)
                     .Include(mi => mi.Artist)
                     .Include(mi => mi.Category)
                     .Include(mi => mi.Publisher)
                     .ToList();
 
-                return new TaskResult<List<PublisherMerchandiseItem>>(merchandiseItems);
+                return new TaskResult<List<PublisherMerchandiseItem>>(merchandise);
             }
             catch (Exception e)
             {

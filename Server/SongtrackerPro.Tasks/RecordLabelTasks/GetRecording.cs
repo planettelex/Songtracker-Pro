@@ -23,6 +23,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                 var recording = _dbContext.Recordings.Where(r => r.Id == recordingId)
                     .Include(r => r.Artist).ThenInclude(a => a.Address).ThenInclude(a => a.Country)
                     .Include(r => r.Artist).ThenInclude(a => a.RecordLabel).ThenInclude(rl => rl.Address).ThenInclude(a => a.Country)
+                    .Include(r => r.Genre).ThenInclude(g => g.ParentGenre).ThenInclude(pg => pg.ParentGenre)
                     .Include(r => r.RecordLabel).ThenInclude(rl => rl.Address).ThenInclude(a => a.Country)
                     .Include(r => r.Composition).ThenInclude(c => c.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(r => r.Composition).ThenInclude(c => c.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(o => o.Country)

@@ -23,6 +23,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
             {
                 var recordings = _dbContext.Recordings.Where(r => r.RecordLabelId == recordLabel.Id)
                     .Include(r => r.Artist)
+                    .Include(r => r.Genre)
                     .ToList();
 
                 return new TaskResult<List<Recording>>(recordings);

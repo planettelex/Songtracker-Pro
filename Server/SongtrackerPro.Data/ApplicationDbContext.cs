@@ -76,7 +76,7 @@ namespace SongtrackerPro.Data
         public DbSet<MerchandiseAsset> MerchandiseAssets { get; set; }
         public DbSet<MerchandiseCategory> MerchandiseCategories { get; set; }
         public DbSet<MerchandiseItem> Merchandise { get; set; }
-        public DbSet<MerchandiseProduct> MerchandiseProducts { get; set; }
+        public DbSet<MerchandiseProduct> Products { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<PerformingRightsOrganization> PerformingRightsOrganizations { get; set; }
         public DbSet<Platform> Platforms { get; set; }

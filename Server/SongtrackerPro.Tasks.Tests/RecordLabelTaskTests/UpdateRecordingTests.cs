@@ -95,6 +95,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.AreEqual(testRecording.IsRemix, recording.IsRemix);
             Assert.AreEqual(testRecording.Isrc, recording.Isrc);
             Assert.AreEqual(testRecording.SecondsLong, recording.SecondsLong);
+            Assert.IsNotNull(recording.Genre);
 
             var removeRecordingTask = new RemoveRecording(DbContext);
             var removeResult = removeRecordingTask.DoTask(recording);

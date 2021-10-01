@@ -25,6 +25,8 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                 if (recording == null)
                     throw new TaskException(SystemMessage("RECORDING_NOT_FOUND"));
 
+                recording.GenreId = update.Genre?.Id ?? update.GenreId;
+                recording.Genre = _dbContext.Genres.SingleOrDefault(g => g.Id == recording.GenreId);
                 recording.IsCover = update.IsCover;
                 recording.IsLive = update.IsLive;
                 recording.IsRemix = update.IsRemix;

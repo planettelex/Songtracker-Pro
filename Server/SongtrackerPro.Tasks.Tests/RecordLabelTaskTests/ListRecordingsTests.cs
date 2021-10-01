@@ -118,6 +118,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.AreEqual(testRecording1.SecondsLong, recording1.SecondsLong);
             Assert.IsNotNull(recording1.Artist);
             Assert.AreEqual(testArtist.Name, recording1.Artist.Name);
+            Assert.IsNotNull(recording1.Genre);
 
             var recording2 = recordings.SingleOrDefault(r => r.Id == recording2Id);
             Assert.IsNotNull(recording2);
@@ -129,6 +130,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.AreEqual(testRecording2.SecondsLong, recording2.SecondsLong);
             Assert.IsNotNull(recording2.Artist);
             Assert.AreEqual(testArtist.Name, recording2.Artist.Name);
+            Assert.IsNotNull(recording2.Genre);
 
             var removeRecordingTask = new RemoveRecording(DbContext);
             var removeRecordingResult = removeRecordingTask.DoTask(recording1);

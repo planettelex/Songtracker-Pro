@@ -917,6 +917,7 @@ namespace SongtrackerPro.Data.Migrations
                     color_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     size = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    publication_id = table.Column<int>(type: "int", nullable: true),
                     issue_number = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     release_id = table.Column<int>(type: "int", nullable: true),
                     media_type = table.Column<int>(type: "int", nullable: true)
@@ -930,6 +931,12 @@ namespace SongtrackerPro.Data.Migrations
                         principalTable: "merchandise",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_merchandise_products_publications_publication_id",
+                        column: x => x.publication_id,
+                        principalTable: "publications",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_merchandise_products_releases_release_id",
                         column: x => x.release_id,
@@ -1491,6 +1498,11 @@ namespace SongtrackerPro.Data.Migrations
                 column: "merchandise_item_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_merchandise_products_publication_id",
+                table: "merchandise_products",
+                column: "publication_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_merchandise_products_release_id",
                 table: "merchandise_products",
                 column: "release_id");
@@ -1810,9 +1822,6 @@ namespace SongtrackerPro.Data.Migrations
                 name: "merchandise_products");
 
             migrationBuilder.DropTable(
-                name: "publications");
-
-            migrationBuilder.DropTable(
                 name: "recordings");
 
             migrationBuilder.DropTable(
@@ -1820,6 +1829,9 @@ namespace SongtrackerPro.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "merchandise");
+
+            migrationBuilder.DropTable(
+                name: "publications");
 
             migrationBuilder.DropTable(
                 name: "releases");

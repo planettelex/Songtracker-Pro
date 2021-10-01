@@ -141,6 +141,17 @@ namespace SongtrackerPro.Tasks.Tests
             }
         }
 
+        public Genre Genre
+        {
+            get
+            {
+                var listGenresTask = new ListGenres(_dbContext);
+                var allGenres = listGenresTask.DoTask(null).Data;
+                var randomIndex = new Random().Next(allGenres.Count - 1);
+                return allGenres[randomIndex];
+            }
+        }
+
         public LegalEntity LegalEntity
         {
             get
@@ -208,7 +219,6 @@ namespace SongtrackerPro.Tasks.Tests
                 Isbn = "ISBN" + stamp,
                 CopyrightedOn = DateTime.Today.AddMonths(-3)
             };
-            
         }
 
         public Composition Composition(Publisher publisher)
@@ -221,12 +231,11 @@ namespace SongtrackerPro.Tasks.Tests
             {
                 PublisherId = publisher.Id,
                 Publisher = publisher,
-                Title = nameof(Publication) + " " + stamp,
+                Title = nameof(Composition) + " " + stamp,
                 CatalogNumber = "#" + stamp,
                 Iswc = "ISWC" + stamp,
                 CopyrightedOn = DateTime.Today.AddMonths(-3)
             };
-            
         }
 
         public RecordLabel RecordLabel
@@ -251,6 +260,7 @@ namespace SongtrackerPro.Tasks.Tests
                 return null;
 
             var stamp = DateTime.Now.Ticks;
+            var genre = Genre;
             return new Recording
             {
                 Title = composition.Title,
@@ -260,6 +270,8 @@ namespace SongtrackerPro.Tasks.Tests
                 ArtistId = artist.Id,
                 RecordLabel = recordLabel,
                 RecordLabelId = recordLabel.Id,
+                Genre = genre,
+                GenreId = genre.Id,
                 Isrc = "ISRC" + stamp,
                 SecondsLong = new Random().Next(60, 600)
             };
@@ -271,6 +283,8 @@ namespace SongtrackerPro.Tasks.Tests
                 return null;
 
             var stamp = DateTime.Now.Ticks;
+            var genre = Genre;
+            var oneToEight = new Random().Next(1, 8);
             return new Release
             {
                 Artist = artist,
@@ -278,8 +292,10 @@ namespace SongtrackerPro.Tasks.Tests
                 CatalogNumber = "#" + stamp,
                 RecordLabel = recordLabel,
                 RecordLabelId = recordLabel.Id,
+                Genre = genre,
+                GenreId = genre.Id,
                 Title = nameof(Release) + " " + stamp,
-                Type = ReleaseType.Lp
+                Type = (ReleaseType)oneToEight
             };
         }
 
@@ -349,6 +365,97 @@ namespace SongtrackerPro.Tasks.Tests
                 IsPromotional = FiftyFifty
             };
         }
+
+        public MerchandiseProduct MerchandiseProduct(MerchandiseItem merchandiseItem)
+        {
+            var (colorName, hexValue) = Color;
+            var stamp = DateTime.Now.Ticks;
+            return new MerchandiseProduct
+            {
+                MerchandiseItem = merchandiseItem,
+                MerchandiseItemId = merchandiseItem.Id,
+                Name = nameof(MerchandiseProduct) + " " + stamp,
+                ColorName = colorName,
+                Color = hexValue,
+                Description = stamp.ToString(),
+                Size = Size,
+                Sku = "Sku " + " " + stamp,
+                Upc = "Upc " + " " + stamp
+            };
+        }
+
+        public PublicationMerchandiseProduct PublicationMerchandiseProduct(Publication publication, MerchandiseItem merchandiseItem)
+        {
+            var (colorName, hexValue) = Color;
+            var stamp = DateTime.Now.Ticks;
+            var oneToOneHundred = new Random().Next(1, 100);
+            return new PublicationMerchandiseProduct
+            {
+                Publication = publication,
+                PublicationId = publication.Id,
+                MerchandiseItem = merchandiseItem,
+                MerchandiseItemId = merchandiseItem.Id,
+                Name = nameof(PublicationMerchandiseProduct) + " " + stamp,
+                ColorName = colorName,
+                Color = hexValue,
+                Description = stamp.ToString(),
+                Size = Size,
+                Sku = "Sku " + " " + stamp,
+                Upc = "Upc " + " " + stamp,
+                IssueNumber = "#" + oneToOneHundred
+            };
+        }
+
+        public ReleaseMerchandiseProduct ReleaseMerchandiseProduct(Release release, MerchandiseItem merchandiseItem)
+        {
+            var (colorName, hexValue) = Color;
+            var stamp = DateTime.Now.Ticks;
+            var oneToTwelve = new Random().Next(1, 12);
+            return new ReleaseMerchandiseProduct
+            {
+                Release = release,
+                ReleaseId = release.Id,
+                MerchandiseItem = merchandiseItem,
+                MerchandiseItemId = merchandiseItem.Id,
+                Name = nameof(PublicationMerchandiseProduct) + " " + stamp,
+                ColorName = colorName,
+                Color = hexValue,
+                Description = stamp.ToString(),
+                Size = Size,
+                Sku = "Sku " + " " + stamp,
+                Upc = "Upc " + " " + stamp,
+                MediaType = (MediaType)oneToTwelve
+            };
+        }
+
+        public string Size
+        {
+            get
+            {
+                var randomIndex = new Random().Next(Sizes.Length - 1);
+                return Sizes[randomIndex];
+            }
+        }
+
+        public string[] Sizes => new[] { "S", "M", "L" };
+
+        public KeyValuePair<string, string> Color
+        {
+            get
+            {
+                var randomIndex = new Random().Next(Colors.Count - 1);
+                return Colors.ElementAt(randomIndex);
+            }
+        }
+
+        public Dictionary<string, string> Colors => new Dictionary<string, string>
+        {
+            { "Dark Purple", "#1E152A" },
+            { "Deep Space Sparkle", "#4E6766" },
+            { "Cadet Blue", "#5AB1BB" },
+            { "Pistachio", "#A5C882" },
+            { "Jasmine", "#F7DD72" }
+        };
 
         public Artist Artist
         {

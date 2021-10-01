@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210926035246_v_0_06")]
+    [Migration("20210930204901_v_0_06")]
     partial class v_0_06
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1615,6 +1615,12 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("issue_number");
 
+                    b.Property<int?>("PublicationId")
+                        .HasColumnType("int")
+                        .HasColumnName("publication_id");
+
+                    b.HasIndex("PublicationId");
+
                     b.ToTable("merchandise_products");
 
                     b.HasDiscriminator().HasValue("PublicationMerchandiseProduct");
@@ -2482,6 +2488,15 @@ namespace SongtrackerPro.Data.Migrations
                         .HasForeignKey("RecordLabelId");
 
                     b.Navigation("RecordLabel");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.PublicationMerchandiseProduct", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.Publication", "Publication")
+                        .WithMany()
+                        .HasForeignKey("PublicationId");
+
+                    b.Navigation("Publication");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.ReleaseMerchandiseProduct", b =>

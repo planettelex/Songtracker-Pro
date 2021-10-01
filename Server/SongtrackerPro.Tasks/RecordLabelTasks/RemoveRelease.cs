@@ -23,6 +23,13 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 
+                var tracks = _dbContext.ReleaseTracks.Where(rt => rt.ReleaseId == release.Id);
+                foreach (var track in tracks)
+                {
+                    _dbContext.ReleaseTracks.Remove(track);
+                }
+                _dbContext.SaveChanges();
+
                 _dbContext.Releases.Remove(toRemove);
                 _dbContext.SaveChanges();
 

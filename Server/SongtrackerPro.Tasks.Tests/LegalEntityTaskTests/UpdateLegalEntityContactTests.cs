@@ -88,7 +88,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
         public void TaskFailTest()
         {
             var task = new UpdateLegalEntityContact(EmptyDbContext);
-            var result = task.DoTask(null);
+            var result = task.DoTask(new LegalEntityContact());
             
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Exception);

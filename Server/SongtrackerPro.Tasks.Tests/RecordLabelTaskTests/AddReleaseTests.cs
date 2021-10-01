@@ -63,6 +63,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.AreEqual(testRecordLabel.Name, release.RecordLabel.Name);
             Assert.AreEqual(testRecordLabel.Email, release.RecordLabel.Email);
             Assert.AreEqual(testRecordLabel.TaxId, release.RecordLabel.TaxId);
+            Assert.IsNotNull(release.Genre);
 
             var removeReleaseTask = new RemoveRelease(DbContext);
             var removeResult = removeReleaseTask.DoTask(release);

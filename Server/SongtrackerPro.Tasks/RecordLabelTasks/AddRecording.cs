@@ -21,6 +21,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
             try
             {
                 var artistId = recording.Artist?.Id ?? recording.ArtistId;
+                var genreId = recording.Genre?.Id ?? recording.GenreId;
                 var recordLabelId = recording.RecordLabel?.Id ?? recording.RecordLabelId;
                 var compositionId = recording.Composition?.Id ?? recording.CompositionId;
                 var originalRecordingId = recording.OriginalRecording?.Id ?? recording.OriginalRecordingId;
@@ -29,6 +30,9 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                     .Include(a => a.Address).ThenInclude(a => a.Country)
                     .Include(a => a.RecordLabel).ThenInclude(rl => rl.Address).ThenInclude(a => a.Country)
                     .Single();
+                var genre = _dbContext.Genres.Where(g => g.Id == genreId)
+                    .Include(g => g.ParentGenre).ThenInclude(pg => pg.ParentGenre)
+                    .SingleOrDefault();
                 var recordLabel = _dbContext.RecordLabels.Where(rl => rl.Id == recordLabelId)
                     .Include(rl => rl.Address).ThenInclude(a => a.Country)
                     .Single();
@@ -45,6 +49,8 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
 
                 recording.Artist = null;
                 recording.ArtistId = artistId;
+                recording.Genre = null;
+                recording.GenreId = genreId;
                 recording.RecordLabel = null;
                 recording.RecordLabelId = recordLabelId;
                 recording.Composition = null;
@@ -56,6 +62,7 @@ namespace SongtrackerPro.Tasks.RecordLabelTasks
                 _dbContext.SaveChanges();
 
                 recording.Artist = artist;
+                recording.Genre = genre;
                 recording.RecordLabel = recordLabel;
                 recording.Composition = composition;
                 recording.OriginalRecording = originalRecording;

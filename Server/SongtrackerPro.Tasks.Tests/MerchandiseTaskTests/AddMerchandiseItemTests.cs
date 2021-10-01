@@ -54,10 +54,10 @@ namespace SongtrackerPro.Tasks.Tests.MerchandiseTaskTests
             Assert.AreEqual(testItem.Category.Description, merchandiseItem.Category.Description);
 
             var removeMerchandiseItemTask = new RemoveMerchandiseItem(DbContext);
-            var removeResult = removeMerchandiseItemTask.DoTask(merchandiseItem);
+            var removeMerchandiseItemResult = removeMerchandiseItemTask.DoTask(merchandiseItem);
 
-            Assert.IsTrue(removeResult.Success);
-            Assert.IsNull(removeResult.Exception);
+            Assert.IsTrue(removeMerchandiseItemResult.Success);
+            Assert.IsNull(removeMerchandiseItemResult.Exception);
 
             var removeArtistTask = new RemoveArtist(DbContext);
             var removeArtistResult = removeArtistTask.DoTask(testArtist);
