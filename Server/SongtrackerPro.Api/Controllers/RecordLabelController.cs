@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -15,11 +16,12 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public RecordLabelController(IGetLoginTask getLoginTask,
-            IListRecordLabelsTask listRecordLabelsTask,
-            IGetRecordLabelTask getRecordLabelTask,
-            IAddRecordLabelTask addRecordLabelTask,
-            IUpdateRecordLabelTask updateRecordLabelTask) :
-            base(getLoginTask)
+                                     IListRecordLabelsTask listRecordLabelsTask,
+                                     IGetRecordLabelTask getRecordLabelTask,
+                                     IAddRecordLabelTask addRecordLabelTask,
+                                     IUpdateRecordLabelTask updateRecordLabelTask,
+                                     ILogger<RecordLabelController> logger) :
+        base(getLoginTask, logger)
         {
             _listRecordLabelsTask = listRecordLabelsTask;
             _getRecordLabelTask = getRecordLabelTask;

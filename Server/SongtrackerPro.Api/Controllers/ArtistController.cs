@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -37,8 +38,9 @@ namespace SongtrackerPro.Api.Controllers
                                 IListArtistManagersTask listArtistManagersTask,
                                 IGetArtistManagerTask getArtistManagerTask,
                                 IAddArtistManagerTask addArtistManagerTask,
-                                IUpdateArtistManagerTask updateArtistManagerTask) : 
-        base(getLoginTask)
+                                IUpdateArtistManagerTask updateArtistManagerTask,
+                                ILogger<ArtistController> logger) : 
+        base(getLoginTask, logger)
         {
             _listArtistsTask = listArtistsTask;
             _getArtistTask = getArtistTask;

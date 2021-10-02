@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -14,18 +15,19 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public UserController(IGetLoginTask getLoginTask,
-            IListUsersTask listUsersTask,
-            IGetUserTask getUserTask,
-            IAddUserTask addUserTask,
-            IUpdateUserTask updateUserTask,
-            ILoginUserTask loginUserTask,
-            ILogoutUserTask logoutUserTask,
-            IListUserAccountsTask listUserAccountsTask,
-            IGetUserAccountTask getUserAccountTask,
-            IAddUserAccountTask addUserAccountTask,
-            IUpdateUserAccountTask updateUserAccountTask,
-            IRemoveUserAccountTask removeUserAccountTask) :
-        base(getLoginTask)
+                              IListUsersTask listUsersTask,
+                              IGetUserTask getUserTask,
+                              IAddUserTask addUserTask,
+                              IUpdateUserTask updateUserTask,
+                              ILoginUserTask loginUserTask,
+                              ILogoutUserTask logoutUserTask,
+                              IListUserAccountsTask listUserAccountsTask,
+                              IGetUserAccountTask getUserAccountTask,
+                              IAddUserAccountTask addUserAccountTask,
+                              IUpdateUserAccountTask updateUserAccountTask,
+                              IRemoveUserAccountTask removeUserAccountTask,
+                              ILogger<UserController> logger) :
+        base(getLoginTask, logger)
         {
             _listUsersTask = listUsersTask;
             _getUserTask = getUserTask;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -15,12 +16,13 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public PublishingController(IGetLoginTask getLoginTask,
-            IListPerformingRightsOrganizationsTask listPerformingRightsOrganizationsTask, 
-            IListPublishersTask listPublishersTask,
-            IGetPublisherTask getPublisherTask,
-            IAddPublisherTask addPublisherTask,
-            IUpdatePublisherTask updatePublisherTask) :
-            base (getLoginTask)
+                                    IListPerformingRightsOrganizationsTask listPerformingRightsOrganizationsTask, 
+                                    IListPublishersTask listPublishersTask,
+                                    IGetPublisherTask getPublisherTask,
+                                    IAddPublisherTask addPublisherTask,
+                                    IUpdatePublisherTask updatePublisherTask,
+                                    ILogger<PublishingController> logger) :
+        base (getLoginTask, logger)
         {
             _listPerformingRightsOrganizationsTask = listPerformingRightsOrganizationsTask;
             _listPublishersTask = listPublishersTask;

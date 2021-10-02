@@ -14,7 +14,9 @@ namespace SongtrackerPro.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+            #pragma warning disable EF1001 // Internal EF Core API usage.
             _connectionString = options.FindExtension<SqlServerOptionsExtension>().ConnectionString;
+            #pragma warning restore EF1001 // Internal EF Core API usage.
         }
 
         public ApplicationDbContext(string connectionString)

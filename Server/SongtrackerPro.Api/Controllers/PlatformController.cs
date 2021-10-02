@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -16,19 +17,19 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public PlatformController(IGetLoginTask getLoginTask,
-            IListServicesTask listServicesTask, 
-            IListPlatformsTask listPlatformsTask,
-            IGetPlatformTask getPlatformTask,
-            IAddPlatformTask addPlatformTask,
-            IUpdatePlatformTask updatePlatformTask) :
-            base(getLoginTask)
+                                  IListServicesTask listServicesTask, 
+                                  IListPlatformsTask listPlatformsTask,
+                                  IGetPlatformTask getPlatformTask,
+                                  IAddPlatformTask addPlatformTask,
+                                  IUpdatePlatformTask updatePlatformTask,
+                                  ILogger<PlatformController> logger) :
+        base(getLoginTask, logger)
         {
             _listServicesTask = listServicesTask;
             _listPlatformsTask = listPlatformsTask;
             _getPlatformTask = getPlatformTask;
             _addPlatformTask = addPlatformTask;
             _updatePlatformTask = updatePlatformTask;
-
         }
         private readonly IListServicesTask _listServicesTask;
         private readonly IListPlatformsTask _listPlatformsTask;
