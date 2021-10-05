@@ -626,7 +626,8 @@ namespace SongtrackerPro.Tasks.Tests
                 ContractStatus = ContractStatus.Drafted,
                 PromisorPartyType = ContractPartyType.Individual,
                 PromiseePartyType = ContractPartyType.Artist,
-                DraftedOn = DateTime.UtcNow
+                DraftedOn = DateTime.UtcNow,
+                Parties = new List<ContractParty>()
             };
         }
 

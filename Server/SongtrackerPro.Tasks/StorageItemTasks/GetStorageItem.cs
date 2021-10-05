@@ -55,6 +55,7 @@ namespace SongtrackerPro.Tasks.StorageItemTasks
                     .Include(c => c.Publisher).ThenInclude(p => p.PerformingRightsOrganization)
                     .Include(c => c.RecordLabel)
                     .Include(c => c.Template)
+                    .Include(c => c.Parties).ThenInclude(p => p.LegalEntity).ThenInclude(le => le.Address).ThenInclude(a => a.Country)
                     .SingleOrDefault();
 
                 if (contract != null)

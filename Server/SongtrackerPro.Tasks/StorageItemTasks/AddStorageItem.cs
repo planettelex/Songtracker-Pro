@@ -97,14 +97,35 @@ namespace SongtrackerPro.Tasks.StorageItemTasks
                     var legalEntity = _dbContext.LegalEntities.SingleOrDefault(le => le.Id == legalEntityId);
                     var templateId = contract.Template?.Uuid ?? contract.TemplateId;
                     var template = _dbContext.Contracts.SingleOrDefault(c => c.Uuid == templateId);
+                    var parties = contract.Parties;
 
                     contract.ProvidedBy = null;
                     contract.ProvidedById = legalEntityId;
                     contract.Template = null;
                     contract.TemplateId = templateId;
+                    contract.Parties = null;
 
                     _dbContext.Contracts.Add(contract);
                     _dbContext.SaveChanges();
+
+                    if (parties != null && parties.Any())
+                    {
+                        foreach (var contractParty in parties)
+                        {
+                            var contractPartyLegalEntityId = contractParty.LegalEntity?.Id ?? contractParty.LegalEntityId;
+                            var contractPartyLegalEntity = _dbContext.LegalEntities.SingleOrDefault(le => le.Id == legalEntityId);
+
+                            contractParty.ContractId = contract.Uuid;
+                            contractParty.Contract = null;
+                            contractParty.LegalEntityId = contractPartyLegalEntityId;
+                            contractParty.LegalEntity = null;
+
+                            _dbContext.ContractParties.Add(contractParty);
+                            _dbContext.SaveChanges();
+
+                            contractParty.LegalEntity = contractPartyLegalEntity;
+                        }
+                    }
 
                     contract.ProvidedBy = legalEntity;
                     contract.Template = template;

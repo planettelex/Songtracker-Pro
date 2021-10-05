@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SongtrackerPro.Data.Queries;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.StorageItemTasks;
@@ -50,7 +51,8 @@ namespace SongtrackerPro.Tasks.Tests.StorageItemTaskTests
             Assert.IsTrue(storageItem2Id.Value != Guid.Empty);
 
             var task = new ListPublisherContracts(DbContext);
-            var result = task.DoTask(testPublisher);
+            var query = new PublisherContractsQuery(testPublisher);
+            var result = task.DoTask(query);
 
             Assert.IsTrue(result.Success);
             Assert.IsNull(result.Exception);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -53,5 +54,7 @@ namespace SongtrackerPro.Data.Models
         [Column("user_id", Order = 9)]
         public int? UserId { get; set; }
         public User User { get; set; }
+
+        public ICollection<ContractSignatory> Signatories { get; set; }
     }
 }

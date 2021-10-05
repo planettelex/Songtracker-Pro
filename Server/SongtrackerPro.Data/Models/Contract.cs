@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using SongtrackerPro.Data.Enums;
@@ -51,5 +52,7 @@ namespace SongtrackerPro.Data.Models
 
         [Column("expired_on", Order = 27)]
         public DateTime? ExpiredOn { get; set; }
+
+        public ICollection<ContractParty> Parties { get; set; }
     }
 }

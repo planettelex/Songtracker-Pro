@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
+using SongtrackerPro.Tasks.LegalEntityTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
 using SongtrackerPro.Tasks.StorageItemTasks;
@@ -287,8 +289,38 @@ namespace SongtrackerPro.Tasks.Tests.StorageItemTaskTests
             Assert.IsNotNull(artistId);
             Assert.IsTrue(artistId > 0);
 
+            var testLegalEntity1 = TestsModel.LegalEntity;
+            var addLegalEntityTask = new AddLegalEntity(DbContext, new FormattingService());
+            var addLegalEntityResult = addLegalEntityTask.DoTask(testLegalEntity1);
+
+            var legalEntity1Id = addLegalEntityResult.Data;
+            Assert.IsNotNull(legalEntity1Id);
+            Assert.IsTrue(legalEntity1Id > 0);
+
             var task = new AddStorageItem(DbContext);
             var testItem = TestsModel.Contract(testArtist);
+            var testPromisor = new ContractParty
+            {
+                Role = ContractPartyRole.Promisor,
+                LegalEntity = testLegalEntity1,
+                IsPrincipal = true
+            };
+            testItem.Parties.Add(testPromisor);
+
+            var testLegalEntity2 = TestsModel.LegalEntity;
+            addLegalEntityTask = new AddLegalEntity(DbContext, new FormattingService());
+            addLegalEntityResult = addLegalEntityTask.DoTask(testLegalEntity2);
+
+            var legalEntity2Id = addLegalEntityResult.Data;
+            Assert.IsNotNull(legalEntity2Id);
+            Assert.IsTrue(legalEntity2Id > 0);
+            var testPromisee = new ContractParty
+            {
+                Role = ContractPartyRole.Promisee,
+                LegalEntity = testLegalEntity2,
+                IsPrincipal = true
+            };
+            testItem.Parties.Add(testPromisee);
             var result = task.DoTask(testItem);
 
             Assert.IsTrue(result.Success);
@@ -313,6 +345,23 @@ namespace SongtrackerPro.Tasks.Tests.StorageItemTaskTests
             Assert.IsNotNull(contract.Artist);
             Assert.AreEqual(testArtist.Name, contract.Artist.Name);
             Assert.AreEqual(testArtist.Email, contract.Artist.Email);
+            Assert.IsNotNull(contract.Parties);
+            
+            var contractPromisor = contract.Parties.SingleOrDefault(cp => cp.Id == testPromisor.Id);
+            Assert.IsNotNull(contractPromisor);
+            Assert.IsNotNull(contractPromisor.LegalEntity);
+            Assert.AreEqual(testLegalEntity1.Name, contractPromisor.LegalEntity.Name);
+            Assert.IsNotNull(contractPromisor.LegalEntity.Address);
+            Assert.AreEqual(testLegalEntity1.Address.Street, contractPromisor.LegalEntity.Address.Street);
+            Assert.IsNotNull(contractPromisor.LegalEntity.Address.Country);
+
+            var contractPromisee = contract.Parties.SingleOrDefault(cp => cp.Id == testPromisee.Id);
+            Assert.IsNotNull(contractPromisee);
+            Assert.IsNotNull(contractPromisee.LegalEntity);
+            Assert.AreEqual(testLegalEntity2.Name, contractPromisee.LegalEntity.Name);
+            Assert.IsNotNull(contractPromisee.LegalEntity.Address);
+            Assert.AreEqual(testLegalEntity2.Address.Street, contractPromisee.LegalEntity.Address.Street);
+            Assert.IsNotNull(contractPromisee.LegalEntity.Address.Country);
 
             var removeStorageItemTask = new RemoveStorageItem(DbContext);
             var removeStorageItemResult = removeStorageItemTask.DoTask(contract);
@@ -325,6 +374,18 @@ namespace SongtrackerPro.Tasks.Tests.StorageItemTaskTests
 
             Assert.IsTrue(removeArtistResult.Success);
             Assert.IsNull(removeArtistResult.Exception);
+
+            var removeLegalEntityTask = new RemoveLegalEntity(DbContext);
+            var removeLegalEntityResult = removeLegalEntityTask.DoTask(testLegalEntity1);
+
+            Assert.IsTrue(removeLegalEntityResult.Success);
+            Assert.IsNull(removeLegalEntityResult.Exception);
+
+            removeLegalEntityTask = new RemoveLegalEntity(DbContext);
+            removeLegalEntityResult = removeLegalEntityTask.DoTask(testLegalEntity2);
+
+            Assert.IsTrue(removeLegalEntityResult.Success);
+            Assert.IsNull(removeLegalEntityResult.Exception);
         }
 
         [TestMethod]
