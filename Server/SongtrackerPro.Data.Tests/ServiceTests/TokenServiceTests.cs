@@ -18,7 +18,7 @@ namespace SongtrackerPro.Data.Tests.ServiceTests
                 FirstName = "Sam",
                 LastName = "Adams",
                 UserType = UserType.SystemUser,
-                Roles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember
+                UserRoles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember
             };
             
             var textWithTokens = "Hello {User.FirstName} {User.LastName} ID: {User.Id}";
@@ -28,9 +28,9 @@ namespace SongtrackerPro.Data.Tests.ServiceTests
             textWithTokens = "User Type: {User.UserType}";
             textWithTokens = tokenService.ReplaceTokens(textWithTokens, user);
             Assert.AreEqual("User Type: SystemUser", textWithTokens);
-            Assert.IsTrue(user.Roles.HasFlag(SystemUserRoles.Songwriter));
-            Assert.IsTrue(user.Roles.HasFlag(SystemUserRoles.ArtistMember));
-            Assert.IsFalse(user.Roles.HasFlag(SystemUserRoles.ArtistManager));
+            Assert.IsTrue(user.UserRoles.HasFlag(SystemUserRoles.Songwriter));
+            Assert.IsTrue(user.UserRoles.HasFlag(SystemUserRoles.ArtistMember));
+            Assert.IsFalse(user.UserRoles.HasFlag(SystemUserRoles.ArtistManager));
         }
     }
 }

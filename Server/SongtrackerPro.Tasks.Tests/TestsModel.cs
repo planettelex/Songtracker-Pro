@@ -822,7 +822,7 @@ namespace SongtrackerPro.Tasks.Tests
                     Name = Person.FirstAndLastName,
                     Email = Person.Email,
                     UserType = UserType.SystemUser,
-                    Roles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember,
+                    UserRoles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember,
                     Artist = artist,
                     Publisher = publisher,
                     RecordLabel = recordLabel

@@ -63,7 +63,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 newUser.AuthenticationId = newUser.Email = invitation.Email;
                 newUser.UserType = invitation.UserType;
-                newUser.Roles = invitation.Roles;
+                newUser.UserRoles = invitation.UserRoles;
                 newUser.Email = invitation.Email;
                 newUser.PerformingRightsOrganization = null;
                 newUser.PerformingRightsOrganizationId = proId;
@@ -84,7 +84,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (artistId.HasValue)
                 {
                     var artist = _dbContext.Artists.Single(a => a.Id == artistId.Value);
-                    if (invitation.Roles.HasFlag(SystemUserRoles.ArtistMember))
+                    if (invitation.UserRoles.HasFlag(SystemUserRoles.ArtistMember))
                     {
                         var artistMember = new ArtistMember
                         {
@@ -96,7 +96,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                         if (!addArtistMemberResult.Success)
                             throw addArtistMemberResult.Exception;
                     }
-                    else if (invitation.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    else if (invitation.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                     {
                         var artistManager = new ArtistManager
                         {

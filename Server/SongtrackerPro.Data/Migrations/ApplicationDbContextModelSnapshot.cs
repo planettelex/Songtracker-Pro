@@ -1286,17 +1286,17 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
 
-                    b.Property<int>("Roles")
-                        .HasColumnType("int")
-                        .HasColumnName("roles");
-
                     b.Property<DateTime>("SentOn")
                         .HasColumnType("datetime2")
                         .HasColumnName("sent_on");
 
+                    b.Property<int>("UserRoles")
+                        .HasColumnType("int")
+                        .HasColumnName("user_roles");
+
                     b.Property<int>("UserType")
                         .HasColumnType("int")
-                        .HasColumnName("type");
+                        .HasColumnName("user_type");
 
                     b.HasKey("Uuid");
 
@@ -1594,13 +1594,13 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
 
-                    b.Property<int>("Roles")
-                        .HasColumnType("int")
-                        .HasColumnName("roles");
-
                     b.Property<string>("SoundExchangeAccountNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("sound_exchange_account_number");
+
+                    b.Property<int>("UserRoles")
+                        .HasColumnType("int")
+                        .HasColumnName("user_roles");
 
                     b.Property<int>("UserType")
                         .HasColumnType("int")
@@ -2082,7 +2082,7 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Person", "Author")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Publication", "Publication")
@@ -2146,7 +2146,7 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Recording", "Recording")
                         .WithMany()
                         .HasForeignKey("RecordingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Person");

@@ -103,7 +103,7 @@ namespace SongtrackerPro.Tasks.UserTasks
             switch (userInvitation.UserType)
             {
                 case UserType.SystemUser:
-                    if (userInvitation.Roles.HasFlag(SystemUserRoles.ArtistMember) || userInvitation.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    if (userInvitation.UserRoles.HasFlag(SystemUserRoles.ArtistMember) || userInvitation.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                         replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);
                     break;
                 case UserType.PublisherAdministrator:

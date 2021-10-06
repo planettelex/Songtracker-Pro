@@ -815,7 +815,7 @@ namespace SongtrackerPro.Api.Controllers
             if (AuthenticatedUser.UserType == UserType.LabelAdministrator && artist.RecordLabelId == AuthenticatedUser.RecordLabelId)
                 return true;
             
-            if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+            if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistMember))
             {
                 var artistMemberResults = _listArtistMembersTask.DoTask(artist);
 
@@ -826,7 +826,7 @@ namespace SongtrackerPro.Api.Controllers
                     return true;
             }
 
-            if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+            if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
             {
                 var artistManagerResults = _listArtistManagersTask.DoTask(artist);
 
@@ -845,14 +845,14 @@ namespace SongtrackerPro.Api.Controllers
             switch (AuthenticatedUser.UserType)
             {
                 case UserType.SystemUser:
-                    if (!AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember) ||
-                        !AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    if (!AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistMember) ||
+                        !AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                     {
                         artist.TaxId = null;
                         break;
                     }
                     
-                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+                    if (AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistMember))
                     {
                         var artistMemberResults = _listArtistMembersTask.DoTask(artist);
 
@@ -863,7 +863,7 @@ namespace SongtrackerPro.Api.Controllers
                             artist.TaxId = null;
                     }
 
-                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    if (AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                     {
                         var artistManagerResults = _listArtistManagersTask.DoTask(artist);
 
@@ -890,14 +890,14 @@ namespace SongtrackerPro.Api.Controllers
             switch (AuthenticatedUser.UserType)
             {
                 case UserType.SystemUser:
-                    if (!AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember) ||
-                        !AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    if (!AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistMember) ||
+                        !AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                     {
                         RemoveSensitivePersonData(person);
                         break;
                     }
 
-                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+                    if (AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistMember))
                     {
                         var artistMemberResults = _listArtistMembersTask.DoTask(artist);
 
@@ -908,7 +908,7 @@ namespace SongtrackerPro.Api.Controllers
                             RemoveSensitivePersonData(person);
                     }
 
-                    if (AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    if (AuthenticatedUser.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                     {
                         var artistManagerResults = _listArtistManagersTask.DoTask(artist);
 

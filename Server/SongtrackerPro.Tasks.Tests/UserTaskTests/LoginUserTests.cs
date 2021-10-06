@@ -61,7 +61,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                 Assert.IsTrue(login.LoginAt < DateTime.UtcNow);
 
                 Assert.AreEqual(testUser.UserType, user.UserType);
-                Assert.AreEqual(testUser.Roles, user.Roles);
+                Assert.AreEqual(testUser.UserRoles, user.UserRoles);
                 
                 Assert.IsNotNull(user);
                 Assert.AreEqual(testUser.FirstAndLastName, user.FirstAndLastName);
@@ -98,7 +98,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
                 Assert.IsTrue(login.LoginAt < DateTime.UtcNow);
 
                 Assert.AreEqual(testUser.UserType, user.UserType);
-                Assert.AreEqual(testUser.Roles, user.Roles);
+                Assert.AreEqual(testUser.UserRoles, user.UserRoles);
                 
                 Assert.IsNotNull(user);
                 Assert.AreEqual(testUser.FirstAndLastName, user.FirstAndLastName);

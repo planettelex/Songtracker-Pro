@@ -28,11 +28,11 @@ namespace SongtrackerPro.Data.Models
         public string Email { get; set; }
 
         [Required]
-        [Column("type", Order = 5)]
+        [Column("user_type", Order = 5)]
         public UserType UserType { get; set; }
 
-        [Column("roles", Order = 6)]
-        public SystemUserRoles Roles { get; set; }
+        [Column("user_roles", Order = 6)]
+        public SystemUserRoles UserRoles { get; set; }
 
         [JsonIgnore]
         [Column("publisher_id", Order = 7)]

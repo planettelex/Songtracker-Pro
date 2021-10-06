@@ -38,7 +38,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 user.Phone = update.Phone;
                 user.AuthenticationId = update.AuthenticationId;
                 user.Email = update.Email;
-                user.Roles = update.Roles;
+                user.UserRoles = update.UserRoles;
                 user.PerformingRightsOrganizationMemberNumber = string.IsNullOrWhiteSpace(update.PerformingRightsOrganizationMemberNumber) ? null : update.PerformingRightsOrganizationMemberNumber;
                 user.SoundExchangeAccountNumber = string.IsNullOrWhiteSpace(update.SoundExchangeAccountNumber) ? null : update.SoundExchangeAccountNumber;
                 user.TaxId = _formattingService.FormatSocialSecurityNumber(update.TaxId);

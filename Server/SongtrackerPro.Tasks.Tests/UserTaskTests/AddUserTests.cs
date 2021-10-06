@@ -29,7 +29,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 
             Assert.IsNotNull(user);
             Assert.AreEqual(testUser.UserType, user.UserType);
-            Assert.AreEqual(testUser.Roles, user.Roles);
+            Assert.AreEqual(testUser.UserRoles, user.UserRoles);
             Assert.AreEqual(testUser.AuthenticationId, user.AuthenticationId);
             Assert.AreEqual(testUser.FirstName, user.FirstName);
             Assert.AreEqual(testUser.MiddleName, user.MiddleName);

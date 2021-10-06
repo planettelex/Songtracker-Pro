@@ -117,7 +117,7 @@ export default {
               if (this.LastPageViewed)
                 this.$router.push(this.LastPageViewed);
               else {
-                switch (response.user.type) {
+                switch (response.user.userType) {
                   case UserType.SystemAdministrator:
                     this.$router.push("/system-information");
                     break;

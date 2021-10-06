@@ -10,7 +10,7 @@ using SongtrackerPro.Data;
 namespace SongtrackerPro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211005184149_v_0_06")]
+    [Migration("20211006172955_v_0_06")]
     partial class v_0_06
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1288,17 +1288,17 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
 
-                    b.Property<int>("Roles")
-                        .HasColumnType("int")
-                        .HasColumnName("roles");
-
                     b.Property<DateTime>("SentOn")
                         .HasColumnType("datetime2")
                         .HasColumnName("sent_on");
 
+                    b.Property<int>("UserRoles")
+                        .HasColumnType("int")
+                        .HasColumnName("user_roles");
+
                     b.Property<int>("UserType")
                         .HasColumnType("int")
-                        .HasColumnName("type");
+                        .HasColumnName("user_type");
 
                     b.HasKey("Uuid");
 
@@ -1596,13 +1596,13 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("record_label_id");
 
-                    b.Property<int>("Roles")
-                        .HasColumnType("int")
-                        .HasColumnName("roles");
-
                     b.Property<string>("SoundExchangeAccountNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("sound_exchange_account_number");
+
+                    b.Property<int>("UserRoles")
+                        .HasColumnType("int")
+                        .HasColumnName("user_roles");
 
                     b.Property<int>("UserType")
                         .HasColumnType("int")

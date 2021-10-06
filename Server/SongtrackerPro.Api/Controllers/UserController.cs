@@ -74,8 +74,8 @@ namespace SongtrackerPro.Api.Controllers
                     Json(taskResults) : 
                         taskResults.Exception.InnerException != null && 
                         taskResults.Exception.InnerException.Message == SystemMessage("USER_NOT_FOUND") ?
-                    NotFound() :
-                    Error(taskResults.Exception);
+                            NotFound() :
+                            Error(taskResults.Exception);
             }
             catch (Exception e)
             {

@@ -66,7 +66,7 @@ export default {
   methods: { },
 
   mounted() {
-    this.items = SidebarMenu(this.User.type);
+    this.items = SidebarMenu(this.User.userType);
     this.items.forEach(item => {
       let titleKey = item.titleKey;
       if (titleKey)

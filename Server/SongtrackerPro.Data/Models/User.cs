@@ -16,13 +16,8 @@ namespace SongtrackerPro.Data.Models
         [Column("user_type", Order = 13)]
         public UserType UserType { get; set; }
 
-        [Column("roles", Order = 14)]
-        public SystemUserRoles Roles { get; set; }
-
-        /* TODO:
-        [NotMapped]
-        public string Name => Person != null ? Person.FirstAndLastName : GetResource.SystemMessage(ApplicationSettings.Culture, "SUPERUSER");
-        */
+        [Column("user_roles", Order = 14)]
+        public SystemUserRoles UserRoles { get; set; }
 
         [JsonIgnore]
         [Column("publisher_id", Order = 15)]
