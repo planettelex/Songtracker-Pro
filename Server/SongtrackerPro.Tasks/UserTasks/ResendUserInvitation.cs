@@ -39,8 +39,8 @@ namespace SongtrackerPro.Tasks.UserTasks
             try
             {
                 var userInvitation = _dbContext.UserInvitations.Where(i => i.Uuid == userInvitationUuid)
-                    .Include(i => i.InvitedByUser).ThenInclude(u => u.Person)
-                    .Include(i => i.CreatedUser).ThenInclude(u => u.Person)
+                    .Include(i => i.InvitedByUser)
+                    .Include(i => i.CreatedUser)
                     .SingleOrDefault();
 
                 if (userInvitation == null)
@@ -54,7 +54,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 userInvitation.AcceptLink = ApplicationSettings.Web.Domain + string.Format(WebRoutes.Join, userInvitation.Uuid);
 
-                var emailTemplate = EmailTemplate($"{userInvitation.Type}Invitation.html");
+                var emailTemplate = EmailTemplate($"{userInvitation.UserType}Invitation.html");
                 var installation = _getInstallationTask.DoTask(null).Data;
                 var body = ReplaceTokens(emailTemplate, userInvitation, installation);
                 var subject = ReplaceTokens(_htmlService.GetTitle(emailTemplate), userInvitation, installation);
@@ -75,9 +75,8 @@ namespace SongtrackerPro.Tasks.UserTasks
             var replaced = _tokenService.ReplaceTokens(template, installation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser);
-            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);
 
-            switch (userInvitation.Type)
+            switch (userInvitation.UserType)
             {
                 case UserType.SystemUser:
                     if (userInvitation.Roles.HasFlag(SystemUserRoles.ArtistMember) || userInvitation.Roles.HasFlag(SystemUserRoles.ArtistManager))

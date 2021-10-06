@@ -9,7 +9,6 @@ using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.MerchandiseTasks;
-using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.PublishingTasks;
 using SongtrackerPro.Tasks.RecordLabelTasks;
@@ -170,10 +169,11 @@ namespace SongtrackerPro.Tasks.Tests
                 }
 
                 var stamp = DateTime.Now.Ticks;
+                var phone = new Random().Next(1000000000, int.MaxValue);
                 return new LegalEntity
                 {
                     Name = nameof(Data.Models.LegalEntity) + " " + stamp,
-                    TradeName = nameof(Data.Models.LegalEntity) + " Trade Name",
+                    Phone = phone.ToString(),
                     TaxId = stamp.ToString(),
                     Email = $"test@legalentity{stamp}.com",
                     Address = Address,
@@ -478,7 +478,7 @@ namespace SongtrackerPro.Tasks.Tests
                     Email = $"test@artist{stamp}.com",
                     Address = Address,
                     RecordLabel = label,
-                    HasServiceMark = FiftyFifty,
+                    HasServicemark = FiftyFifty,
                     WebsiteUrl = "http://www.artist.com",
                     PressKitUrl = "http://www.presskit.com"
                 };
@@ -746,19 +746,23 @@ namespace SongtrackerPro.Tasks.Tests
                     new AddRecordLabel(_dbContext, new FormattingService()).DoTask(recordLabel);
                 }
                 
-                var stamp = DateTime.Now.Ticks;
                 var person = Person;
-                var email = "test@" + stamp + ".com";
-                person.Email = email;
                 return new User
                 {
-                    Type = UserType.SystemAdministrator,
-                    AuthenticationId = email,
+                    FirstName = person.FirstName,
+                    MiddleName = person.MiddleName,
+                    LastName = person.LastName,
+                    NameSuffix = person.NameSuffix,
+                    Name = person.FirstAndLastName,
+                    Phone = person.Phone,
+                    Email = person.Email,
+                    AuthenticationId = person.Email,
+                    Address = person.Address,
+                    UserType = UserType.SystemAdministrator,
                     PerformingRightsOrganization = ascap,
                     PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString(),
                     SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString(),
-                    Person = person,
-                    SocialSecurityNumber = SocialSecurityNumber,
+                    TaxId = SocialSecurityNumber,
                     Publisher = publisher,
                     RecordLabel = recordLabel
                 };
@@ -807,7 +811,7 @@ namespace SongtrackerPro.Tasks.Tests
                 else
                 {
                     var user = User;
-                    new AddUser(_dbContext, new AddPerson(_dbContext, new FormattingService()), new FormattingService()).DoTask(user);
+                    new AddUser(_dbContext, new FormattingService()).DoTask(user);
                     invitedByUserId = user.Id;
                 }
 
@@ -817,7 +821,7 @@ namespace SongtrackerPro.Tasks.Tests
                     InvitedByUserId = invitedByUserId,
                     Name = Person.FirstAndLastName,
                     Email = Person.Email,
-                    Type = UserType.SystemUser,
+                    UserType = UserType.SystemUser,
                     Roles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember,
                     Artist = artist,
                     Publisher = publisher,

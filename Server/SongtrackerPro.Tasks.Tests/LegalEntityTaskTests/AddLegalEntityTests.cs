@@ -29,9 +29,9 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
 
             Assert.IsNotNull(legalEntity);
             Assert.AreEqual(testLegalEntity.Name, legalEntity.Name);
-            Assert.AreEqual(testLegalEntity.TradeName, legalEntity.TradeName);
             Assert.AreEqual(formattingService.FormatTaxId(testLegalEntity.TaxId), legalEntity.TaxId);
             Assert.AreEqual(testLegalEntity.Email, legalEntity.Email);
+            Assert.AreEqual(testLegalEntity.Phone, legalEntity.Phone);
             Assert.IsNotNull(legalEntity.Address);
             Assert.AreEqual(testLegalEntity.Address.Street, legalEntity.Address.Street);
             Assert.AreEqual(testLegalEntity.Address.City, legalEntity.Address.City);

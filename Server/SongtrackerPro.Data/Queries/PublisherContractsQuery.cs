@@ -4,12 +4,13 @@ namespace SongtrackerPro.Data.Queries
 {
     public class PublisherContractsQuery
     {
-        public PublisherContractsQuery(Publisher publisher, PublisherContractType type = PublisherContractType.Template)
+        public PublisherContractsQuery(Publisher publisher, PublisherContractQueryType queryType = PublisherContractQueryType.General)
         {
             PublisherId = publisher.Id;
+            QueryType = queryType;
         }
 
-        public enum PublisherContractType
+        public enum PublisherContractQueryType
         {
             Template,
             Client,
@@ -20,6 +21,6 @@ namespace SongtrackerPro.Data.Queries
 
         public int PublisherId { get; set; }
 
-        public PublisherContractType ContractType { get; set; }
+        public PublisherContractQueryType QueryType { get; set; }
     }
 }

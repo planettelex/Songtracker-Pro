@@ -11,6 +11,7 @@ namespace SongtrackerPro.Data.Models
         public Contract()
         {
             DocumentType = Enums.DocumentType.Contract;
+            IsTemplate = false;
         }
 
         [Column("is_template", Order = 16)]

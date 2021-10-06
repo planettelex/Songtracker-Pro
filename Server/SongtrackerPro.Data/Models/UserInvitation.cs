@@ -29,7 +29,7 @@ namespace SongtrackerPro.Data.Models
 
         [Required]
         [Column("type", Order = 5)]
-        public UserType Type { get; set; }
+        public UserType UserType { get; set; }
 
         [Column("roles", Order = 6)]
         public SystemUserRoles Roles { get; set; }

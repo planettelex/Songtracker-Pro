@@ -119,6 +119,12 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.IsTrue(removeReleaseResult.Success);
             Assert.IsNull(removeReleaseResult.Exception);
 
+            var removeRecordingTask = new RemoveRecording(DbContext);
+            var removeRecordingResult = removeRecordingTask.DoTask(testRecording);
+
+            Assert.IsTrue(removeRecordingResult.Success);
+            Assert.IsNull(removeRecordingResult.Exception);
+
             var removeRecordLabelTask = new RemoveRecordLabel(DbContext);
             var removeRecordLabelResult = removeRecordLabelTask.DoTask(testRecordLabel);
 
@@ -130,6 +136,12 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
 
             Assert.IsTrue(removeArtistResult.Success);
             Assert.IsNull(removeArtistResult.Exception);
+
+            var removeCompositionTask = new RemoveComposition(DbContext);
+            var removeCompositionResult = removeCompositionTask.DoTask(testComposition);
+
+            Assert.IsTrue(removeCompositionResult.Success);
+            Assert.IsNull(removeCompositionResult.Exception);
 
             var removePublisherTask = new RemovePublisher(DbContext);
             var removePublisherResult = removePublisherTask.DoTask(testPublisher);

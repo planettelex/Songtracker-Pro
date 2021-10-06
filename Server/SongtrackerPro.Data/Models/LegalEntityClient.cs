@@ -20,8 +20,8 @@ namespace SongtrackerPro.Data.Models
         public LegalEntity LegalEntity { get; set; }
 
         [Required]
-        [Column("person_id", Order = 3)]
-        public int PersonId { get; set; }
-        public Person Person { get; set; }
+        [Column("client_legal_entity_id", Order = 3)]
+        public int ClientId { get; set; }
+        public LegalEntity Client { get; set; }
     }
 }

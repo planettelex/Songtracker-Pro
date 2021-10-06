@@ -24,8 +24,8 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
                 if (contact == null)
                     throw new TaskException(SystemMessage("LEGAL_ENTITY_CONTACT_NOT_FOUND"));
 
-                contact.PersonId = update.Person?.Id ?? update.PersonId;
-                contact.Person = _dbContext.People.Single(p => p.Id == contact.PersonId);
+                contact.ContactId = update.Contact?.Id ?? update.ContactId;
+                contact.Contact = _dbContext.People.Single(p => p.Id == contact.ContactId);
                 contact.Position = update.Position;
 
                 _dbContext.SaveChanges();

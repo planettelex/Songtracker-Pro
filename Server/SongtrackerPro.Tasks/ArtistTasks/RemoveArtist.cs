@@ -23,6 +23,14 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 
+                var members = _dbContext.ArtistMembers.Where(am => am.ArtistId == artist.Id).ToList();
+                _dbContext.ArtistMembers.RemoveRange(members);
+                _dbContext.SaveChanges();
+
+                var managers = _dbContext.ArtistManagers.Where(am => am.ArtistId == artist.Id).ToList();
+                _dbContext.ArtistManagers.RemoveRange(managers);
+                _dbContext.SaveChanges();
+
                 var addressId = toRemove.AddressId;
                 _dbContext.Artists.Remove(toRemove);
                 _dbContext.SaveChanges();

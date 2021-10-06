@@ -107,8 +107,8 @@ namespace SongtrackerPro.Api.Controllers
                 if (taskResults.HasNoData)
                     return NotFound();
 
-                var userIsLabelAdmin = AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id == id;
-                var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsLabelAdmin;
+                var userIsLabelAdmin = AuthenticatedUser.UserType == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id == id;
+                var allowedToSeeSensitiveData = AuthenticatedUser.UserType == UserType.SystemAdministrator || userIsLabelAdmin;
                 if (!allowedToSeeSensitiveData)
                     taskResults.Data.TaxId = null;
 
@@ -133,7 +133,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id != id)
+                if (AuthenticatedUser.UserType == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id != id)
                     return Unauthorized();
 
                 var invalidRecordLabelPathResult = InvalidRecordLabelPathResult(id);

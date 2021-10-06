@@ -17,27 +17,28 @@ namespace SongtrackerPro.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [Column("type", Order = 2)]
-        public LegalEntityType Type { get; set; }
+        [Column("entity_type", Order = 2)]
+        public LegalEntityType EntityType { get; set; }
 
         [Required]
         [Column("name", Order = 3)]
         public string Name { get; set; }
 
-        [Column("trade_name", Order = 4)]
-        public string TradeName { get; set; }
-
         [Encrypted]
-        [Column("tax_id", Order = 5)]
+        [Column("tax_id", Order = 4)]
         public string TaxId { get; set; }
 
-        [Column("email", Order = 6)]
+        [Column("email", Order = 5)]
         public string Email { get; set; }
 
         [JsonIgnore]
-        [Column("address_id", Order = 7)]
+        [Column("address_id", Order = 6)]
         public int? AddressId { get; set; }
         public Address Address { get; set; }
+
+        [Column("phone", Order = 7)]
+        [MaxLength(20)]
+        public string Phone { get; set; }
 
         [JsonIgnore]
         public List<LegalEntityService> LegalEntityServices { get; set; }

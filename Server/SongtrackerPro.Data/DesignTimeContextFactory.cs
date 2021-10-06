@@ -27,7 +27,17 @@ namespace SongtrackerPro.Data
          * --------------
          *
          * 0 to 0.06:
-         *   1) Update ReleaseTrack (release_tracks) release and recording properties from cascade on delete to no action.
+         *   1) Update these properties from cascade on delete to no action.
+         *      * ArtistManager (artist_managers): Artist, Person
+         *      * ArtistMember (artist_members): Artist, Person
+         *      * CompositionAuthor (composition_authors): Author
+         *      * PublicationAuthor (publication_authors): Author
+         *      * LegalEntityClient (legal_entity_clients): LegalEntity, Client
+         *      * LegalEntityContact (legal_entity_contacts): LegalEntity, Contact
+         *      * Recording (recordings): Artist, Composition, RecordLabel
+         *      * RecordingCredit (recording_credits): Person
+         *      * ReleaseTrack (release_tracks): Release, Recording
+         *      * UserInvitation (user_invitations): InvitedByUser
          *   2) Make 'Discriminator' database fields lowercase to follow conventions.
          *
          */

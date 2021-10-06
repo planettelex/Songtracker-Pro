@@ -103,7 +103,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabelId != artist.RecordLabelId)
+                if (AuthenticatedUser.UserType == UserType.LabelAdministrator && AuthenticatedUser.RecordLabelId != artist.RecordLabelId)
                     return Unauthorized();
 
                 var taskResults = _addArtistTask.DoTask(artist);
@@ -797,7 +797,7 @@ namespace SongtrackerPro.Api.Controllers
 
         private bool UserIsAuthorizedForArtist(int artistId)
         {
-            switch (AuthenticatedUser.Type)
+            switch (AuthenticatedUser.UserType)
             {
                 case UserType.SystemAdministrator:
                     return true;
@@ -812,28 +812,28 @@ namespace SongtrackerPro.Api.Controllers
 
             var artist = artistResult.Data;
 
-            if (AuthenticatedUser.Type == UserType.LabelAdministrator && artist.RecordLabelId == AuthenticatedUser.RecordLabelId)
+            if (AuthenticatedUser.UserType == UserType.LabelAdministrator && artist.RecordLabelId == AuthenticatedUser.RecordLabelId)
                 return true;
             
-            if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
+            if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember))
             {
                 var artistMemberResults = _listArtistMembersTask.DoTask(artist);
 
                 if (!artistMemberResults.Success) 
                     throw artistMemberResults.Exception;
 
-                if (artistMemberResults.Data.Any(am => am.PersonId == AuthenticatedUser.PersonId))
+                if (artistMemberResults.Data.Any(am => am.PersonId == AuthenticatedUser.Id))
                     return true;
             }
 
-            if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
+            if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistManager))
             {
                 var artistManagerResults = _listArtistManagersTask.DoTask(artist);
 
                 if (!artistManagerResults.Success) 
                     throw artistManagerResults.Exception;
 
-                if (artistManagerResults.Data.Any(am => am.PersonId == AuthenticatedUser.PersonId))
+                if (artistManagerResults.Data.Any(am => am.PersonId == AuthenticatedUser.Id))
                     return true;
             }
 
@@ -842,7 +842,7 @@ namespace SongtrackerPro.Api.Controllers
 
         private void RedactArtistData(Artist artist)
         {
-            switch (AuthenticatedUser.Type)
+            switch (AuthenticatedUser.UserType)
             {
                 case UserType.SystemUser:
                     if (!AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember) ||
@@ -859,7 +859,7 @@ namespace SongtrackerPro.Api.Controllers
                         if (!artistMemberResults.Success) 
                             throw artistMemberResults.Exception;
 
-                        if (artistMemberResults.Data.All(am => am.PersonId != AuthenticatedUser.PersonId))
+                        if (artistMemberResults.Data.All(am => am.PersonId != AuthenticatedUser.Id))
                             artist.TaxId = null;
                     }
 
@@ -870,7 +870,7 @@ namespace SongtrackerPro.Api.Controllers
                         if (!artistManagerResults.Success) 
                             throw artistManagerResults.Exception;
 
-                        if (artistManagerResults.Data.All(am => am.PersonId != AuthenticatedUser.PersonId))
+                        if (artistManagerResults.Data.All(am => am.PersonId != AuthenticatedUser.Id))
                             artist.TaxId = null;
                     }
                     break;
@@ -884,10 +884,10 @@ namespace SongtrackerPro.Api.Controllers
 
         private void RedactPersonData(Person person, Artist artist)
         {
-            if (AuthenticatedUser.PersonId == person.Id)
+            if (AuthenticatedUser.Id == person.Id)
                 return;
             
-            switch (AuthenticatedUser.Type)
+            switch (AuthenticatedUser.UserType)
             {
                 case UserType.SystemUser:
                     if (!AuthenticatedUser.Roles.HasFlag(SystemUserRoles.ArtistMember) ||

@@ -24,18 +24,18 @@ namespace SongtrackerPro.Tasks.UserTasks
             {
                 List<User> users;
                 if (userType.HasValue) 
-                    users = _dbContext.Users.Where(u => u.Type == userType.Value)
-                        .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    users = _dbContext.Users.Where(u => u.UserType == userType.Value)
+                        .Include(u => u.Address).ThenInclude(a => a.Country)
                         .Include(u => u.PerformingRightsOrganization).ThenInclude(p => p.Country)
                         .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(p => p.Country)
-                        .OrderBy(u => u.Person.FirstName).ThenBy(u => u.Person.LastName)
+                        .OrderBy(u => u.FirstName).ThenBy(u => u.LastName)
                         .ToList();
                 else
                     users = _dbContext.Users
-                        .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                        .Include(u => u.Address).ThenInclude(a => a.Country)
                         .Include(u => u.PerformingRightsOrganization).ThenInclude(p => p.Country)
                         .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(p => p.Country)
-                        .OrderBy(u => u.Person.FirstName).ThenBy(u => u.Person.LastName)
+                        .OrderBy(u => u.FirstName).ThenBy(u => u.LastName)
                         .ToList();
                 
                 return new TaskResult<List<User>>(users);

@@ -35,7 +35,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             const string position = "Potential Lunch Winner";
             var legalEntityContact = new LegalEntityContact
             {
-                Person = testPerson,
+                Contact = testPerson,
                 LegalEntity = testLegalEntity,
                 Position = position
             };
@@ -55,7 +55,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             Assert.IsNotNull(getLegalEntityContactResult.Data);
 
             Assert.AreEqual(legalEntityContact.LegalEntityId, getLegalEntityContactResult.Data.LegalEntityId);
-            Assert.AreEqual(legalEntityContact.PersonId, getLegalEntityContactResult.Data.PersonId);
+            Assert.AreEqual(legalEntityContact.ContactId, getLegalEntityContactResult.Data.ContactId);
             Assert.AreEqual(position, getLegalEntityContactResult.Data.Position);
 
             const string newPosition = "Sponge Shredder";
@@ -74,7 +74,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             Assert.IsNull(getLegalEntityContactResult.Exception);
             Assert.IsNotNull(getLegalEntityContactResult.Data);
             Assert.AreEqual(legalEntityContact.LegalEntityId, getLegalEntityContactResult.Data.LegalEntityId);
-            Assert.AreEqual(legalEntityContact.PersonId, getLegalEntityContactResult.Data.PersonId);
+            Assert.AreEqual(legalEntityContact.ContactId, getLegalEntityContactResult.Data.ContactId);
             Assert.AreEqual(newPosition, getLegalEntityContactResult.Data.Position);
 
             var removeLegalEntityTask = new RemoveLegalEntity(DbContext);

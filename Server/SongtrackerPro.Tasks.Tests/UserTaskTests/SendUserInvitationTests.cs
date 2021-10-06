@@ -29,7 +29,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 
             Assert.IsNotNull(userInvitation);
             Assert.AreEqual(testUserInvitation.InvitedByUserId, userInvitation.InvitedByUserId);
-            Assert.AreEqual(testUserInvitation.Type, userInvitation.Type);
+            Assert.AreEqual(testUserInvitation.UserType, userInvitation.UserType);
             Assert.AreEqual(testUserInvitation.Email, userInvitation.Email);
             Assert.IsNotNull(userInvitation.SentOn);
 
@@ -63,7 +63,7 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             {
                 Assert.AreEqual(testUserInvitation.Artist.Name, userInvitation.Artist.Name);
                 Assert.AreEqual(testUserInvitation.Artist.TaxId, userInvitation.Artist.TaxId);
-                Assert.AreEqual(testUserInvitation.Artist.HasServiceMark, userInvitation.Artist.HasServiceMark);
+                Assert.AreEqual(testUserInvitation.Artist.HasServicemark, userInvitation.Artist.HasServicemark);
                 Assert.AreEqual(testUserInvitation.Artist.WebsiteUrl, userInvitation.Artist.WebsiteUrl);
                 Assert.AreEqual(testUserInvitation.Artist.PressKitUrl, userInvitation.Artist.PressKitUrl);
             }

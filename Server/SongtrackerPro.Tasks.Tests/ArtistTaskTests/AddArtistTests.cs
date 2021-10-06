@@ -39,7 +39,7 @@ namespace SongtrackerPro.Tasks.Tests.ArtistTaskTests
             Assert.IsNotNull(artist.Address.Country);
             Assert.AreEqual(testArtist.Address.Country.Name, artist.Address.Country.Name);
             Assert.AreEqual(testArtist.Address.Country.IsoCode, artist.Address.Country.IsoCode);
-            Assert.AreEqual(testArtist.HasServiceMark, artist.HasServiceMark);
+            Assert.AreEqual(testArtist.HasServicemark, artist.HasServicemark);
             Assert.AreEqual(testArtist.WebsiteUrl, artist.WebsiteUrl);
             Assert.AreEqual(testArtist.PressKitUrl, artist.PressKitUrl);
             if (testArtist.RecordLabel != null)

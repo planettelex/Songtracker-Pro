@@ -16,7 +16,7 @@ namespace SongtrackerPro.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Address", b =>
@@ -57,56 +57,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("addresses");
-                });
-
-            modelBuilder.Entity("SongtrackerPro.Data.Models.Artist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int")
-                        .HasColumnName("address_id");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email");
-
-                    b.Property<bool>("HasServiceMark")
-                        .HasColumnType("bit")
-                        .HasColumnName("has_service_mark");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("PressKitUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("press_kit_url");
-
-                    b.Property<int?>("RecordLabelId")
-                        .HasColumnType("int")
-                        .HasColumnName("record_label_id");
-
-                    b.Property<string>("TaxId")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("tax_id");
-
-                    b.Property<string>("WebsiteUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("website_url");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("RecordLabelId");
-
-                    b.ToTable("artists");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.ArtistAccount", b =>
@@ -326,10 +276,6 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ArtistId")
-                        .HasColumnType("int")
-                        .HasColumnName("artist_id");
-
                     b.Property<Guid>("ContractId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("storage_item_id");
@@ -342,35 +288,15 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("legal_entity_id");
 
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int")
-                        .HasColumnName("publisher_id");
-
-                    b.Property<int?>("RecordLabelId")
-                        .HasColumnType("int")
-                        .HasColumnName("record_label_id");
-
                     b.Property<int>("Role")
                         .HasColumnType("int")
                         .HasColumnName("role");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ArtistId");
 
                     b.HasIndex("ContractId");
 
                     b.HasIndex("LegalEntityId");
-
-                    b.HasIndex("PublisherId");
-
-                    b.HasIndex("RecordLabelId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("contract_parties");
                 });
@@ -570,32 +496,39 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("address_id");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("email");
+
+                    b.Property<int>("EntityType")
+                        .HasColumnType("int")
+                        .HasColumnName("entity_type");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("phone");
+
                     b.Property<string>("TaxId")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("tax_id");
-
-                    b.Property<string>("TradeName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("trade_name");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
                     b.ToTable("legal_entities");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("LegalEntity");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.LegalEntityClient", b =>
@@ -606,19 +539,19 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasColumnName("client_legal_entity_id");
+
                     b.Property<int>("LegalEntityId")
                         .HasColumnType("int")
                         .HasColumnName("legal_entity_id");
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("LegalEntityId");
+                    b.HasIndex("ClientId");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("LegalEntityId");
 
                     b.ToTable("legal_entity_clients");
                 });
@@ -631,13 +564,13 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int")
+                        .HasColumnName("contact_legal_entity_id");
+
                     b.Property<int>("LegalEntityId")
                         .HasColumnType("int")
                         .HasColumnName("legal_entity_id");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
 
                     b.Property<string>("Position")
                         .HasColumnType("nvarchar(max)")
@@ -645,9 +578,9 @@ namespace SongtrackerPro.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LegalEntityId");
+                    b.HasIndex("ContactId");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("LegalEntityId");
 
                     b.ToTable("legal_entity_contacts");
                 });
@@ -863,53 +796,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.ToTable("performing_rights_organizations");
                 });
 
-            modelBuilder.Entity("SongtrackerPro.Data.Models.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int")
-                        .HasColumnName("address_id");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("last_name");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("middle_name");
-
-                    b.Property<string>("NameSuffix")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)")
-                        .HasColumnName("name_suffix");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("phone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("people");
-                });
-
             modelBuilder.Entity("SongtrackerPro.Data.Models.Platform", b =>
                 {
                     b.Property<int>("Id")
@@ -1020,92 +906,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasIndex("PublicationId");
 
                     b.ToTable("publication_authors");
-                });
-
-            modelBuilder.Entity("SongtrackerPro.Data.Models.Publisher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int")
-                        .HasColumnName("address_id");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.Property<int?>("PerformingRightsOrganizationId")
-                        .HasColumnType("int")
-                        .HasColumnName("performing_rights_organization_id");
-
-                    b.Property<string>("PerformingRightsOrganizationPublisherNumber")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("performing_rights_organization_publisher_number");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("phone");
-
-                    b.Property<string>("TaxId")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("tax_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("PerformingRightsOrganizationId");
-
-                    b.ToTable("publishers");
-                });
-
-            modelBuilder.Entity("SongtrackerPro.Data.Models.RecordLabel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int")
-                        .HasColumnName("address_id");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("phone");
-
-                    b.Property<string>("TaxId")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("tax_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("record_labels");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Recording", b =>
@@ -1411,68 +1211,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("StorageItem");
                 });
 
-            modelBuilder.Entity("SongtrackerPro.Data.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AuthenticationId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("authentication_id");
-
-                    b.Property<int?>("PerformingRightsOrganizationId")
-                        .HasColumnType("int")
-                        .HasColumnName("performing_rights_organization_id");
-
-                    b.Property<string>("PerformingRightsOrganizationMemberNumber")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("performing_rights_organization_member_number");
-
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
-
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int")
-                        .HasColumnName("publisher_id");
-
-                    b.Property<int?>("RecordLabelId")
-                        .HasColumnType("int")
-                        .HasColumnName("record_label_id");
-
-                    b.Property<int>("Roles")
-                        .HasColumnType("int")
-                        .HasColumnName("roles");
-
-                    b.Property<string>("SocialSecurityNumber")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("social_security_number");
-
-                    b.Property<string>("SoundExchangeAccountNumber")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("sound_exchange_account_number");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PerformingRightsOrganizationId");
-
-                    b.HasIndex("PersonId");
-
-                    b.HasIndex("PublisherId");
-
-                    b.HasIndex("RecordLabelId");
-
-                    b.ToTable("users");
-                });
-
             modelBuilder.Entity("SongtrackerPro.Data.Models.UserAccount", b =>
                 {
                     b.Property<int>("Id")
@@ -1556,7 +1294,7 @@ namespace SongtrackerPro.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("sent_on");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("UserType")
                         .HasColumnType("int")
                         .HasColumnName("type");
 
@@ -1573,6 +1311,137 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasIndex("RecordLabelId");
 
                     b.ToTable("user_invitations");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Artist", b =>
+                {
+                    b.HasBaseType("SongtrackerPro.Data.Models.LegalEntity");
+
+                    b.Property<bool?>("HasServicemark")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("bit")
+                        .HasColumnName("has_servicemark");
+
+                    b.Property<bool?>("HasTrademark")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("bit")
+                        .HasColumnName("has_trademark");
+
+                    b.Property<string>("PressKitUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("press_kit_url");
+
+                    b.Property<int?>("RecordLabelId")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("int")
+                        .HasColumnName("record_label_id");
+
+                    b.Property<string>("TradeName")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("trade_name");
+
+                    b.Property<string>("WebsiteUrl")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("website_url");
+
+                    b.HasIndex("RecordLabelId");
+
+                    b.ToTable("legal_entities");
+
+                    b.HasDiscriminator().HasValue("Artist");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Person", b =>
+                {
+                    b.HasBaseType("SongtrackerPro.Data.Models.LegalEntity");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("first_name");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("last_name");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("middle_name");
+
+                    b.Property<string>("NameSuffix")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)")
+                        .HasColumnName("name_suffix");
+
+                    b.ToTable("legal_entities");
+
+                    b.HasDiscriminator().HasValue("Person");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Publisher", b =>
+                {
+                    b.HasBaseType("SongtrackerPro.Data.Models.LegalEntity");
+
+                    b.Property<bool?>("HasServicemark")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("bit")
+                        .HasColumnName("has_servicemark");
+
+                    b.Property<bool?>("HasTrademark")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("bit")
+                        .HasColumnName("has_trademark");
+
+                    b.Property<int?>("PerformingRightsOrganizationId")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("int")
+                        .HasColumnName("performing_rights_organization_id");
+
+                    b.Property<string>("PerformingRightsOrganizationPublisherNumber")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("performing_rights_organization_publisher_number");
+
+                    b.Property<string>("TradeName")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("trade_name");
+
+                    b.Property<string>("WebsiteUrl")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("website_url");
+
+                    b.HasIndex("PerformingRightsOrganizationId");
+
+                    b.ToTable("legal_entities");
+
+                    b.HasDiscriminator().HasValue("Publisher");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.RecordLabel", b =>
+                {
+                    b.HasBaseType("SongtrackerPro.Data.Models.LegalEntity");
+
+                    b.Property<bool?>("HasServicemark")
+                        .HasColumnType("bit")
+                        .HasColumnName("has_servicemark");
+
+                    b.Property<bool?>("HasTrademark")
+                        .HasColumnType("bit")
+                        .HasColumnName("has_trademark");
+
+                    b.Property<string>("TradeName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("trade_name");
+
+                    b.Property<string>("WebsiteUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("website_url");
+
+                    b.ToTable("legal_entities");
+
+                    b.HasDiscriminator().HasValue("RecordLabel");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.PublisherMerchandiseItem", b =>
@@ -1628,13 +1497,13 @@ namespace SongtrackerPro.Data.Migrations
                 {
                     b.HasBaseType("SongtrackerPro.Data.Models.MerchandiseProduct");
 
+                    b.Property<int?>("MediaType")
+                        .HasColumnType("int")
+                        .HasColumnName("media_type");
+
                     b.Property<int?>("ReleaseId")
                         .HasColumnType("int")
                         .HasColumnName("release_id");
-
-                    b.Property<int?>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("media_type");
 
                     b.HasIndex("ReleaseId");
 
@@ -1696,6 +1565,56 @@ namespace SongtrackerPro.Data.Migrations
                     b.ToTable("storage_items");
 
                     b.HasDiscriminator().HasValue("MerchandiseAsset");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.User", b =>
+                {
+                    b.HasBaseType("SongtrackerPro.Data.Models.Person");
+
+                    b.Property<string>("AuthenticationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("authentication_id");
+
+                    b.Property<int?>("PerformingRightsOrganizationId")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("int")
+                        .HasColumnName("performing_rights_organization_id");
+
+                    b.Property<string>("PerformingRightsOrganizationMemberNumber")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("performing_rights_organization_member_number");
+
+                    b.Property<int?>("PublisherId")
+                        .HasColumnType("int")
+                        .HasColumnName("publisher_id");
+
+                    b.Property<int?>("RecordLabelId")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("int")
+                        .HasColumnName("record_label_id");
+
+                    b.Property<int>("Roles")
+                        .HasColumnType("int")
+                        .HasColumnName("roles");
+
+                    b.Property<string>("SoundExchangeAccountNumber")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("sound_exchange_account_number");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int")
+                        .HasColumnName("user_type");
+
+                    b.HasIndex("PerformingRightsOrganizationId");
+
+                    b.HasIndex("PublisherId");
+
+                    b.HasIndex("RecordLabelId");
+
+                    b.ToTable("legal_entities");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.Contract", b =>
@@ -1810,21 +1729,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("SongtrackerPro.Data.Models.Artist", b =>
-                {
-                    b.HasOne("SongtrackerPro.Data.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
-                        .WithMany()
-                        .HasForeignKey("RecordLabelId");
-
-                    b.Navigation("Address");
-
-                    b.Navigation("RecordLabel");
-                });
-
             modelBuilder.Entity("SongtrackerPro.Data.Models.ArtistAccount", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
@@ -1868,13 +1772,13 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Person", "Manager")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Artist");
@@ -1887,13 +1791,13 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Person", "Member")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Artist");
@@ -1929,7 +1833,7 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Person", "Author")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -1939,12 +1843,8 @@ namespace SongtrackerPro.Data.Migrations
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.ContractParty", b =>
                 {
-                    b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
-                        .WithMany()
-                        .HasForeignKey("ArtistId");
-
                     b.HasOne("SongtrackerPro.Data.Models.Contract", "Contract")
-                        .WithMany()
+                        .WithMany("Parties")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1953,29 +1853,9 @@ namespace SongtrackerPro.Data.Migrations
                         .WithMany()
                         .HasForeignKey("LegalEntityId");
 
-                    b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("PublisherId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
-                        .WithMany()
-                        .HasForeignKey("RecordLabelId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Artist");
-
                     b.Navigation("Contract");
 
                     b.Navigation("LegalEntity");
-
-                    b.Navigation("Publisher");
-
-                    b.Navigation("RecordLabel");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.ContractSignatory", b =>
@@ -1987,7 +1867,7 @@ namespace SongtrackerPro.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.ContractParty", "SignatoryFor")
-                        .WithMany()
+                        .WithMany("Signatories")
                         .HasForeignKey("ContractPartyId");
 
                     b.HasOne("SongtrackerPro.Data.Models.Person", "Signatory")
@@ -2059,40 +1939,40 @@ namespace SongtrackerPro.Data.Migrations
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.LegalEntityClient", b =>
                 {
+                    b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "LegalEntity")
                         .WithMany()
                         .HasForeignKey("LegalEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SongtrackerPro.Data.Models.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Client");
 
                     b.Navigation("LegalEntity");
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.LegalEntityContact", b =>
                 {
+                    b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "LegalEntity")
                         .WithMany()
                         .HasForeignKey("LegalEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SongtrackerPro.Data.Models.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Contact");
 
                     b.Navigation("LegalEntity");
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.LegalEntityService", b =>
@@ -2167,15 +2047,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("SongtrackerPro.Data.Models.Person", b =>
-                {
-                    b.HasOne("SongtrackerPro.Data.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("SongtrackerPro.Data.Models.PlatformService", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.Platform", "Platform")
@@ -2225,42 +2096,18 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Publication");
                 });
 
-            modelBuilder.Entity("SongtrackerPro.Data.Models.Publisher", b =>
-                {
-                    b.HasOne("SongtrackerPro.Data.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.PerformingRightsOrganization", "PerformingRightsOrganization")
-                        .WithMany()
-                        .HasForeignKey("PerformingRightsOrganizationId");
-
-                    b.Navigation("Address");
-
-                    b.Navigation("PerformingRightsOrganization");
-                });
-
-            modelBuilder.Entity("SongtrackerPro.Data.Models.RecordLabel", b =>
-                {
-                    b.HasOne("SongtrackerPro.Data.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("SongtrackerPro.Data.Models.Recording", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Composition", "Composition")
                         .WithMany()
                         .HasForeignKey("CompositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Genre", "Genre")
@@ -2274,7 +2121,7 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
                         .WithMany()
                         .HasForeignKey("RecordLabelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Artist");
@@ -2293,13 +2140,13 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Recording", "Recording")
                         .WithMany()
                         .HasForeignKey("RecordingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Person");
@@ -2389,33 +2236,6 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("RecordLabel");
                 });
 
-            modelBuilder.Entity("SongtrackerPro.Data.Models.User", b =>
-                {
-                    b.HasOne("SongtrackerPro.Data.Models.PerformingRightsOrganization", "PerformingRightsOrganization")
-                        .WithMany()
-                        .HasForeignKey("PerformingRightsOrganizationId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("PublisherId");
-
-                    b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
-                        .WithMany()
-                        .HasForeignKey("RecordLabelId");
-
-                    b.Navigation("PerformingRightsOrganization");
-
-                    b.Navigation("Person");
-
-                    b.Navigation("Publisher");
-
-                    b.Navigation("RecordLabel");
-                });
-
             modelBuilder.Entity("SongtrackerPro.Data.Models.UserAccount", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.Platform", "Platform")
@@ -2448,7 +2268,7 @@ namespace SongtrackerPro.Data.Migrations
                     b.HasOne("SongtrackerPro.Data.Models.User", "InvitedByUser")
                         .WithMany()
                         .HasForeignKey("InvitedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
@@ -2468,6 +2288,24 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Publisher");
 
                     b.Navigation("RecordLabel");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Artist", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
+                        .WithMany()
+                        .HasForeignKey("RecordLabelId");
+
+                    b.Navigation("RecordLabel");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Publisher", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.PerformingRightsOrganization", "PerformingRightsOrganization")
+                        .WithMany()
+                        .HasForeignKey("PerformingRightsOrganizationId");
+
+                    b.Navigation("PerformingRightsOrganization");
                 });
 
             modelBuilder.Entity("SongtrackerPro.Data.Models.PublisherMerchandiseItem", b =>
@@ -2521,6 +2359,27 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("SongtrackerPro.Data.Models.User", b =>
+                {
+                    b.HasOne("SongtrackerPro.Data.Models.PerformingRightsOrganization", "PerformingRightsOrganization")
+                        .WithMany()
+                        .HasForeignKey("PerformingRightsOrganizationId");
+
+                    b.HasOne("SongtrackerPro.Data.Models.Publisher", "Publisher")
+                        .WithMany()
+                        .HasForeignKey("PublisherId");
+
+                    b.HasOne("SongtrackerPro.Data.Models.RecordLabel", "RecordLabel")
+                        .WithMany()
+                        .HasForeignKey("RecordLabelId");
+
+                    b.Navigation("PerformingRightsOrganization");
+
+                    b.Navigation("Publisher");
+
+                    b.Navigation("RecordLabel");
+                });
+
             modelBuilder.Entity("SongtrackerPro.Data.Models.Contract", b =>
                 {
                     b.HasOne("SongtrackerPro.Data.Models.LegalEntity", "ProvidedBy")
@@ -2566,6 +2425,11 @@ namespace SongtrackerPro.Data.Migrations
                     b.Navigation("Release");
                 });
 
+            modelBuilder.Entity("SongtrackerPro.Data.Models.ContractParty", b =>
+                {
+                    b.Navigation("Signatories");
+                });
+
             modelBuilder.Entity("SongtrackerPro.Data.Models.LegalEntity", b =>
                 {
                     b.Navigation("LegalEntityServices");
@@ -2579,6 +2443,11 @@ namespace SongtrackerPro.Data.Migrations
             modelBuilder.Entity("SongtrackerPro.Data.Models.RecordingCredit", b =>
                 {
                     b.Navigation("RecordingCreditRoles");
+                });
+
+            modelBuilder.Entity("SongtrackerPro.Data.Models.Contract", b =>
+                {
+                    b.Navigation("Parties");
                 });
 #pragma warning restore 612, 618
         }

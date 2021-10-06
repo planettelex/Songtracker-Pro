@@ -40,18 +40,18 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             Assert.IsNotNull(addTestPersonResult2.Data);
 
             var addLegalEntityContactTask = new AddLegalEntityContact(DbContext);
-            var client1 = new LegalEntityContact
+            var contact1 = new LegalEntityContact
             {
                 LegalEntity = testLegalEntity,
-                Person = testPerson1
+                Contact = testPerson1
             };
-            addLegalEntityContactTask.DoTask(client1);
-            var client2 = new LegalEntityContact
+            addLegalEntityContactTask.DoTask(contact1);
+            var contact2 = new LegalEntityContact
             {
                 LegalEntity = testLegalEntity,
-                Person = testPerson2
+                Contact = testPerson2
             };
-            addLegalEntityContactTask.DoTask(client2);
+            addLegalEntityContactTask.DoTask(contact2);
 
             var task = new ListLegalEntityContacts(DbContext);
             var result = task.DoTask(testLegalEntity);

@@ -37,6 +37,7 @@ namespace SongtrackerPro.Tasks.PersonTasks
                 person.Address = null;
                 person.MiddleName = string.IsNullOrWhiteSpace(person.MiddleName) ? null : person.MiddleName;
                 person.NameSuffix = string.IsNullOrWhiteSpace(person.NameSuffix) ? null : person.NameSuffix;
+                person.Name = person.FirstAndLastName;
                 person.Email = string.IsNullOrWhiteSpace(person.Email) ? null : person.Email;
                 person.Phone = _formattingService.FormatPhoneNumber(person.Phone);
 

@@ -116,7 +116,7 @@ namespace SongtrackerPro.Tasks.Tests.RecordLabelTaskTests
             Assert.IsNotNull(recording.Artist.Address.Country);
             Assert.AreEqual(testArtist.Address.Country.Name, recording.Artist.Address.Country.Name);
             Assert.AreEqual(testArtist.Address.Country.IsoCode, recording.Artist.Address.Country.IsoCode);
-            Assert.AreEqual(testArtist.HasServiceMark, recording.Artist.HasServiceMark);
+            Assert.AreEqual(testArtist.HasServicemark, recording.Artist.HasServicemark);
             Assert.AreEqual(testArtist.WebsiteUrl, recording.Artist.WebsiteUrl);
             Assert.AreEqual(testArtist.PressKitUrl, recording.Artist.PressKitUrl);
             if (testArtist.RecordLabel != null)

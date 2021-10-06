@@ -15,21 +15,17 @@ namespace SongtrackerPro.Data.Tests.ServiceTests
             var user = new User
             {
                 Id = 55,
-                Person = new Person
-                {
-                    FirstName = "Sam",
-                    LastName = "Adams"
-                },
-                Type = UserType.SystemUser,
+                FirstName = "Sam",
+                LastName = "Adams",
+                UserType = UserType.SystemUser,
                 Roles = SystemUserRoles.Songwriter | SystemUserRoles.ArtistMember
             };
             
-            var textWithTokens = "Hello {Person.FirstName} {Person.LastName} ID: {User.Id}";
+            var textWithTokens = "Hello {User.FirstName} {User.LastName} ID: {User.Id}";
             textWithTokens = tokenService.ReplaceTokens(textWithTokens, user);
-            textWithTokens = tokenService.ReplaceTokens(textWithTokens, user.Person);
             Assert.AreEqual("Hello Sam Adams ID: 55", textWithTokens);
 
-            textWithTokens = "User Type: {User.Type}";
+            textWithTokens = "User Type: {User.UserType}";
             textWithTokens = tokenService.ReplaceTokens(textWithTokens, user);
             Assert.AreEqual("User Type: SystemUser", textWithTokens);
             Assert.IsTrue(user.Roles.HasFlag(SystemUserRoles.Songwriter));

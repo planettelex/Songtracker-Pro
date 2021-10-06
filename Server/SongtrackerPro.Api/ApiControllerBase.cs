@@ -145,14 +145,14 @@ namespace SongtrackerPro.Api
 
         private bool UserIsAuthorized(ICustomAttributeProvider callingMethod, IEnumerable<UserType> userTypesAllowed)
         {
-            if (AuthenticatedUser.Type == UserType.Unassigned)
+            if (AuthenticatedUser.UserType == UserType.Unassigned)
                 return false;
 
-            var userIsAnAllowedType = userTypesAllowed.Any(userType => AuthenticatedUser.Type == userType);
+            var userIsAnAllowedType = userTypesAllowed.Any(userType => AuthenticatedUser.UserType == userType);
             if (!userIsAnAllowedType)
                 return false;
 
-            if (AuthenticatedUser.Type != UserType.SystemUser)
+            if (AuthenticatedUser.UserType != UserType.SystemUser)
                 return true;
 
             var userRolesAllowedAttributes = (SystemUserRolesAllowedAttribute[]) callingMethod.GetCustomAttributes(typeof(SystemUserRolesAllowedAttribute), true);

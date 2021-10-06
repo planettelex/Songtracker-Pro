@@ -30,10 +30,10 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
                     throw new TaskException(SystemMessage("LEGAL_ENTITY_NOT_FOUND"));
 
                 legalEntity.Name = update.Name;
-                legalEntity.TradeName = update.TradeName;
                 legalEntity.TaxId = _formattingService.FormatTaxId(update.TaxId);
                 legalEntity.Email = string.IsNullOrWhiteSpace(update.Email) ? null : update.Email;
-                legalEntity.Type = update.Type;
+                legalEntity.EntityType = update.EntityType;
+                legalEntity.Phone = update.Phone;
                 _dbContext.SaveChanges();
 
                 if (update.Address != null)

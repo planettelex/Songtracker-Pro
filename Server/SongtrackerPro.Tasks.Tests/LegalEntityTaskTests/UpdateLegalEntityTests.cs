@@ -15,8 +15,9 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
         public void UpdateLegalEntityModel(LegalEntity legalEntity)
         {
             var stamp = DateTime.Now.Ticks;
+            var phone = new Random().Next(1000000000, int.MaxValue);
             legalEntity.Name = "Update " + stamp;
-            legalEntity.TradeName = "Trade name " + stamp;
+            legalEntity.Phone = phone.ToString();
             legalEntity.TaxId = stamp.ToString();
             legalEntity.Email = $"test@update{stamp}.com";
             legalEntity.Address = TestsModel.Address;
@@ -60,7 +61,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
 
             Assert.IsNotNull(legalEntity);
             Assert.AreEqual(toUpdate.Name, legalEntity.Name);
-            Assert.AreEqual(toUpdate.TradeName, legalEntity.TradeName);
+            Assert.AreEqual(toUpdate.Phone, legalEntity.Phone);
             Assert.AreEqual(formattingService.FormatTaxId(toUpdate.TaxId), legalEntity.TaxId);
             Assert.AreEqual(toUpdate.Email, legalEntity.Email);
             Assert.AreEqual(toUpdate.Address.Street, legalEntity.Address.Street);

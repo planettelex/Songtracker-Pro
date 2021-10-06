@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
-using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
 namespace SongtrackerPro.Tasks.Tests.UserTaskTests
@@ -15,17 +14,18 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         {
             var stamp = DateTime.Now.Ticks;
             var newAddress = TestsModel.Address;
-            user.Person.FirstName = "Jack";
-            user.Person.MiddleName = "M.";
-            user.Person.LastName = "Hoff";
-            user.Person.NameSuffix = ";)";
-            user.Person.Phone = TestsModel.PhoneNumber;
-            user.Person.Email = $"test@update{stamp}.com";
-            user.Person.Address.Street = newAddress.Street;
-            user.Person.Address.City = newAddress.City;
-            user.Person.Address.Region = newAddress.Region;
-            user.Person.Address.PostalCode = newAddress.PostalCode;
-            user.SocialSecurityNumber = TestsModel.SocialSecurityNumber;
+            user.FirstName = "Jack";
+            user.MiddleName = "M.";
+            user.LastName = "Hoff";
+            user.NameSuffix = ";)";
+            user.Name = user.FirstAndLastName;
+            user.Phone = TestsModel.PhoneNumber;
+            user.Email = $"test@update{stamp}.com";
+            user.Address.Street = newAddress.Street;
+            user.Address.City = newAddress.City;
+            user.Address.Region = newAddress.Region;
+            user.Address.PostalCode = newAddress.PostalCode;
+            user.TaxId = TestsModel.SocialSecurityNumber;
             user.PerformingRightsOrganizationMemberNumber = new Random().Next(100000, 999999).ToString();
             user.SoundExchangeAccountNumber = new Random().Next(1000000, 9999999).ToString();
         }
@@ -34,14 +34,14 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var testUser = TestsModel.User;
-            testUser.Type = UserType.SystemUser;
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
+            testUser.UserType = UserType.SystemUser;
+            var addUserTask = new AddUser(DbContext, new FormattingService());
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);
             Assert.IsNull(addUserResult.Exception);
 
-            var task = new UpdateUser(DbContext, new UpdatePerson(DbContext, new FormattingService()), new AddPerson(DbContext, new FormattingService()), new FormattingService());
+            var task = new UpdateUser(DbContext, new FormattingService());
             UpdateUserModel(testUser);
             var result = task.DoTask(testUser);
 
@@ -54,46 +54,38 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             var formattingService = new FormattingService();
 
             Assert.IsNotNull(user);
-            Assert.AreEqual(formattingService.FormatSocialSecurityNumber(testUser.SocialSecurityNumber), user.SocialSecurityNumber);
+            Assert.AreEqual(formattingService.FormatSocialSecurityNumber(testUser.TaxId), user.TaxId);
             Assert.AreEqual(testUser.PerformingRightsOrganizationId, user.PerformingRightsOrganizationId);
             Assert.AreEqual(testUser.PerformingRightsOrganizationMemberNumber, user.PerformingRightsOrganizationMemberNumber);
             Assert.AreEqual(testUser.SoundExchangeAccountNumber, user.SoundExchangeAccountNumber);
             Assert.AreEqual(testUser.PublisherId, user.PublisherId);
             Assert.AreEqual(testUser.RecordLabelId, user.RecordLabelId);
-            Assert.IsNotNull(user.Person);
-            Assert.AreEqual(testUser.Person.FirstName, user.Person.FirstName);
-            Assert.AreEqual(testUser.Person.MiddleName, user.Person.MiddleName);
-            Assert.AreEqual(testUser.Person.LastName, user.Person.LastName);
-            Assert.AreEqual(testUser.Person.NameSuffix, user.Person.NameSuffix);
-            Assert.AreEqual(formattingService.FormatPhoneNumber(testUser.Person.Phone), user.Person.Phone);
-            Assert.AreEqual(testUser.Person.Email, user.Person.Email);
-            Assert.IsNotNull(user.Person.Address);
-            Assert.AreEqual(testUser.Person.Address.Street, user.Person.Address.Street);
-            Assert.AreEqual(testUser.Person.Address.City, user.Person.Address.City);
-            Assert.AreEqual(testUser.Person.Address.Region, user.Person.Address.Region);
-            Assert.AreEqual(testUser.Person.Address.PostalCode, user.Person.Address.PostalCode);
-            Assert.IsNotNull(user.Person.Address.Country);
-            Assert.AreEqual(testUser.Person.Address.Country.Name, user.Person.Address.Country.Name);
-            Assert.AreEqual(testUser.Person.Address.Country.IsoCode, user.Person.Address.Country.IsoCode);
+            Assert.AreEqual(testUser.FirstName, user.FirstName);
+            Assert.AreEqual(testUser.MiddleName, user.MiddleName);
+            Assert.AreEqual(testUser.LastName, user.LastName);
+            Assert.AreEqual(testUser.NameSuffix, user.NameSuffix);
+            Assert.AreEqual(formattingService.FormatPhoneNumber(testUser.Phone), user.Phone);
+            Assert.AreEqual(testUser.Email, user.Email);
+            Assert.IsNotNull(user.Address);
+            Assert.AreEqual(testUser.Address.Street, user.Address.Street);
+            Assert.AreEqual(testUser.Address.City, user.Address.City);
+            Assert.AreEqual(testUser.Address.Region, user.Address.Region);
+            Assert.AreEqual(testUser.Address.PostalCode, user.Address.PostalCode);
+            Assert.IsNotNull(user.Address.Country);
+            Assert.AreEqual(testUser.Address.Country.Name, user.Address.Country.Name);
+            Assert.AreEqual(testUser.Address.Country.IsoCode, user.Address.Country.IsoCode);
 
-            var person = user.Person;
             var removeUserTask = new RemoveUser(DbContext);
             var removeUserResult = removeUserTask.DoTask(user);
 
             Assert.IsTrue(removeUserResult.Success);
             Assert.IsNull(removeUserResult.Exception);
-
-            var removePersonTask = new RemovePerson(DbContext);
-            var removePersonResult = removePersonTask.DoTask(person);
-
-            Assert.IsTrue(removePersonResult.Success);
-            Assert.IsNull(removePersonResult.Exception);
         }
 
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new UpdateUser(EmptyDbContext, new UpdatePerson(EmptyDbContext, new FormattingService()), new AddPerson(EmptyDbContext, new FormattingService()), new FormattingService());
+            var task = new UpdateUser(EmptyDbContext, new FormattingService());
             var result = task.DoTask(null);
             
             Assert.IsFalse(result.Success);

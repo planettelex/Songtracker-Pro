@@ -171,7 +171,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != id)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != id)
                     return Unauthorized();
 
                 var taskResults = _getUserTask.DoTask(id);
@@ -203,7 +203,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != id)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != id)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(id);
@@ -236,7 +236,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);
@@ -269,7 +269,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);
@@ -302,7 +302,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);
@@ -347,7 +347,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);

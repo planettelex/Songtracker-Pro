@@ -21,7 +21,7 @@ namespace SongtrackerPro.Tasks.UserTasks
             try
             {
                 var user = _dbContext.Users.Where(u => u.Id == userId)
-                    .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(u => u.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .Include(u => u.RecordLabel).ThenInclude(p => p.Address).ThenInclude(a => a.Country)

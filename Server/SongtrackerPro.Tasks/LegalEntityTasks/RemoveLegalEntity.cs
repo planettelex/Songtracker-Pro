@@ -23,6 +23,14 @@ namespace SongtrackerPro.Tasks.LegalEntityTasks
                 if (toRemove == null)
                     return new TaskResult<bool>(false);
 
+                var clients = _dbContext.LegalEntityClients.Where(c => c.LegalEntityId == toRemove.Id);
+                _dbContext.LegalEntityClients.RemoveRange(clients);
+                _dbContext.SaveChanges();
+
+                var contacts = _dbContext.LegalEntityContacts.Where(c => c.LegalEntityId == toRemove.Id);
+                _dbContext.LegalEntityContacts.RemoveRange(contacts);
+                _dbContext.SaveChanges();
+
                 _dbContext.LegalEntities.Remove(toRemove);
                 _dbContext.SaveChanges();
 

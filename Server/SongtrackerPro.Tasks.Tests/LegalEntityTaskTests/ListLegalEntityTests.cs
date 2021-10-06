@@ -33,7 +33,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             var legalEntity1 = legalEntities.SingleOrDefault(le => le.Id == testLegalEntity1Id.Data.Value);
             Assert.IsNotNull(legalEntity1);
             Assert.AreEqual(testLegalEntity1.Name, legalEntity1.Name);
-            Assert.AreEqual(testLegalEntity1.TradeName, legalEntity1.TradeName);
+            Assert.AreEqual(testLegalEntity1.Phone, legalEntity1.Phone);
             Assert.AreEqual(testLegalEntity1.TaxId, legalEntity1.TaxId);
             Assert.AreEqual(testLegalEntity1.Email, legalEntity1.Email);
             Assert.IsNotNull(legalEntity1.Address);
@@ -48,7 +48,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             var legalEntity2 = legalEntities.SingleOrDefault(le => le.Id == testLegalEntity2Id.Data.Value);
             Assert.IsNotNull(legalEntity2);
             Assert.AreEqual(testLegalEntity2.Name, legalEntity2.Name);
-            Assert.AreEqual(testLegalEntity2.TradeName, legalEntity2.TradeName);
+            Assert.AreEqual(testLegalEntity2.Phone, legalEntity2.Phone);
             Assert.AreEqual(testLegalEntity2.TaxId, legalEntity2.TaxId);
             Assert.AreEqual(testLegalEntity2.Email, legalEntity2.Email);
             Assert.IsNotNull(legalEntity2.Address);

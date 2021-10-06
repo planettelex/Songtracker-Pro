@@ -34,7 +34,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
 
             var legalEntityClient = new LegalEntityClient
             {
-                Person = testPerson,
+                Client = testPerson,
                 LegalEntity = testLegalEntity
             };
 
@@ -53,7 +53,7 @@ namespace SongtrackerPro.Tasks.Tests.LegalEntityTaskTests
             Assert.IsNotNull(getLegalEntityClientResult.Data);
 
             Assert.AreEqual(legalEntityClient.LegalEntityId, getLegalEntityClientResult.Data.LegalEntityId);
-            Assert.AreEqual(legalEntityClient.PersonId, getLegalEntityClientResult.Data.PersonId);
+            Assert.AreEqual(legalEntityClient.ClientId, getLegalEntityClientResult.Data.ClientId);
 
             var removeLegalEntityTask = new RemoveLegalEntity(DbContext);
             var removeLegalEntityResult = removeLegalEntityTask.DoTask(testLegalEntity);

@@ -134,8 +134,8 @@ namespace SongtrackerPro.Api.Controllers
                 if (taskResults.HasNoData)
                     return NotFound();
 
-                var userIsPublisherAdmin = AuthenticatedUser.Type == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id;
-                var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsPublisherAdmin;
+                var userIsPublisherAdmin = AuthenticatedUser.UserType == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id;
+                var allowedToSeeSensitiveData = AuthenticatedUser.UserType == UserType.SystemAdministrator || userIsPublisherAdmin;
                 if (!allowedToSeeSensitiveData)
                     taskResults.Data.TaxId = null;
 
@@ -160,7 +160,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id)
+                if (AuthenticatedUser.UserType == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id)
                     return Unauthorized();
 
                 var invalidPublisherPathResult = InvalidPublisherPathResult(id);
