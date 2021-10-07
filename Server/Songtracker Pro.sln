@@ -15,11 +15,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Tasks.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Utilities.Tests", "SongtrackerPro.Utilities.Tests\SongtrackerPro.Utilities.Tests.csproj", "{00D4A041-3036-4F1F-8B30-064A15FFDF9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Resources", "SongtrackerPro.Resources\SongtrackerPro.Resources.csproj", "{B128D324-EB80-4410-875A-F1677AADAA77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Resources", "SongtrackerPro.Resources\SongtrackerPro.Resources.csproj", "{B128D324-EB80-4410-875A-F1677AADAA77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Resources.Tests", "SongtrackerPro.Resources.Tests\SongtrackerPro.Resources.Tests.csproj", "{9A86F0A4-ADED-4CCC-AD6B-A26FCE16A6FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Resources.Tests", "SongtrackerPro.Resources.Tests\SongtrackerPro.Resources.Tests.csproj", "{9A86F0A4-ADED-4CCC-AD6B-A26FCE16A6FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Data.Tests", "SongtrackerPro.Data.Tests\SongtrackerPro.Data.Tests.csproj", "{A1F88841-341C-419F-A4D9-624339029986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongtrackerPro.Data.Tests", "SongtrackerPro.Data.Tests\SongtrackerPro.Data.Tests.csproj", "{A1F88841-341C-419F-A4D9-624339029986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Storage", "SongtrackerPro.Storage\SongtrackerPro.Storage.csproj", "{4B371022-25D5-4093-96ED-755B0FDBD78F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Storage.Tests", "SongtrackerPro.Storage.Tests\SongtrackerPro.Storage.Tests.csproj", "{B43658EF-20E5-463F-8CC8-70D40A6FE480}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Storage.Azure.Tests", "SongtrackerPro.Storage.Azure.Tests\SongtrackerPro.Storage.Azure.Tests.csproj", "{A1BC00DD-0CDD-485A-A705-F2392F7E6205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongtrackerPro.Storage.Azure", "SongtrackerPro.Storage.Azure\SongtrackerPro.Storage.Azure.csproj", "{6E55F6C1-6B61-489E-A48B-ABD8CA79C73E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +71,22 @@ Global
 		{A1F88841-341C-419F-A4D9-624339029986}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1F88841-341C-419F-A4D9-624339029986}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1F88841-341C-419F-A4D9-624339029986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B371022-25D5-4093-96ED-755B0FDBD78F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B371022-25D5-4093-96ED-755B0FDBD78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B371022-25D5-4093-96ED-755B0FDBD78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B371022-25D5-4093-96ED-755B0FDBD78F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B43658EF-20E5-463F-8CC8-70D40A6FE480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B43658EF-20E5-463F-8CC8-70D40A6FE480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B43658EF-20E5-463F-8CC8-70D40A6FE480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B43658EF-20E5-463F-8CC8-70D40A6FE480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BC00DD-0CDD-485A-A705-F2392F7E6205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BC00DD-0CDD-485A-A705-F2392F7E6205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BC00DD-0CDD-485A-A705-F2392F7E6205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BC00DD-0CDD-485A-A705-F2392F7E6205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E55F6C1-6B61-489E-A48B-ABD8CA79C73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E55F6C1-6B61-489E-A48B-ABD8CA79C73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E55F6C1-6B61-489E-A48B-ABD8CA79C73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E55F6C1-6B61-489E-A48B-ABD8CA79C73E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

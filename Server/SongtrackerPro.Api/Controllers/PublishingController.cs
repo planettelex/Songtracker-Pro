@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -15,12 +16,13 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public PublishingController(IGetLoginTask getLoginTask,
-            IListPerformingRightsOrganizationsTask listPerformingRightsOrganizationsTask, 
-            IListPublishersTask listPublishersTask,
-            IGetPublisherTask getPublisherTask,
-            IAddPublisherTask addPublisherTask,
-            IUpdatePublisherTask updatePublisherTask) :
-            base (getLoginTask)
+                                    IListPerformingRightsOrganizationsTask listPerformingRightsOrganizationsTask, 
+                                    IListPublishersTask listPublishersTask,
+                                    IGetPublisherTask getPublisherTask,
+                                    IAddPublisherTask addPublisherTask,
+                                    IUpdatePublisherTask updatePublisherTask,
+                                    ILogger<PublishingController> logger) :
+        base (getLoginTask, logger)
         {
             _listPerformingRightsOrganizationsTask = listPerformingRightsOrganizationsTask;
             _listPublishersTask = listPublishersTask;
@@ -132,8 +134,8 @@ namespace SongtrackerPro.Api.Controllers
                 if (taskResults.HasNoData)
                     return NotFound();
 
-                var userIsPublisherAdmin = AuthenticatedUser.Type == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id;
-                var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsPublisherAdmin;
+                var userIsPublisherAdmin = AuthenticatedUser.UserType == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id;
+                var allowedToSeeSensitiveData = AuthenticatedUser.UserType == UserType.SystemAdministrator || userIsPublisherAdmin;
                 if (!allowedToSeeSensitiveData)
                     taskResults.Data.TaxId = null;
 
@@ -158,7 +160,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id)
+                if (AuthenticatedUser.UserType == UserType.PublisherAdministrator && AuthenticatedUser.Publisher?.Id != id)
                     return Unauthorized();
 
                 var invalidPublisherPathResult = InvalidPublisherPathResult(id);

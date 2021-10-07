@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Api.ViewModels;
 using SongtrackerPro.Data.Enums;
@@ -16,9 +17,10 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public InstallationController(IGetLoginTask getLoginTask,
-            IGetInstallationTask getInstallationTask,
-            ISeedSystemDataTask seedSystemDataTask) : 
-            base(getLoginTask)
+                                      IGetInstallationTask getInstallationTask,
+                                      ISeedSystemDataTask seedSystemDataTask,
+                                      ILogger<InstallationController> logger) : 
+        base(getLoginTask, logger)
         {
             _seedSystemDataTask = seedSystemDataTask;
             _getInstallationTask = getInstallationTask;

@@ -59,7 +59,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                 _dbContext.SaveChanges();
 
                 userInvitation.InvitedByUser = _dbContext.Users.Where(u => u.Id == invitedByUserId)
-                    .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(p => p.Address).ThenInclude(a => a.Country)
                     .SingleOrDefault();
 
                 if (publisherId != null)
@@ -78,7 +78,7 @@ namespace SongtrackerPro.Tasks.UserTasks
 
                 userInvitation.AcceptLink = ApplicationSettings.Web.Domain + string.Format(WebRoutes.Join, userInvitation.Uuid);
                 
-                var emailTemplate = EmailTemplate($"{userInvitation.Type}Invitation.html");
+                var emailTemplate = EmailTemplate($"{userInvitation.UserType}Invitation.html");
                 var installation = _getInstallationTask.DoTask(null).Data;
                 var body = ReplaceTokens(emailTemplate, userInvitation, installation);
                 var subject = ReplaceTokens(_htmlService.GetTitle(emailTemplate), userInvitation, installation);
@@ -99,12 +99,11 @@ namespace SongtrackerPro.Tasks.UserTasks
             var replaced = _tokenService.ReplaceTokens(template, installation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser);
-            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.InvitedByUser.Person);
 
-            switch (userInvitation.Type)
+            switch (userInvitation.UserType)
             {
                 case UserType.SystemUser:
-                    if (userInvitation.Roles.HasFlag(SystemUserRoles.ArtistMember) || userInvitation.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    if (userInvitation.UserRoles.HasFlag(SystemUserRoles.ArtistMember) || userInvitation.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                         replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);
                     break;
                 case UserType.PublisherAdministrator:

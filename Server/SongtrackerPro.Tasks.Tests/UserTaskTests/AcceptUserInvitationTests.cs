@@ -5,7 +5,6 @@ using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
-using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Tasks.UserTasks;
 using SongtrackerPro.Utilities.Services;
 using SongtrackerPro.Utilities.Tests.DummyServices;
@@ -32,16 +31,18 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 
             Assert.IsNotNull(userInvitation);
             Assert.AreEqual(testUserInvitation.InvitedByUserId, userInvitation.InvitedByUserId);
-            Assert.AreEqual(testUserInvitation.Type, userInvitation.Type);
+            Assert.AreEqual(testUserInvitation.UserType, userInvitation.UserType);
             Assert.AreEqual(testUserInvitation.Email, userInvitation.Email);
             Assert.IsNotNull(userInvitation.SentOn);
 
             userInvitation.CreatedUser = TestsModel.User;
-            userInvitation.CreatedUser.AuthenticationId = userInvitation.CreatedUser.Person.Email = null;
-            userInvitation.CreatedUser.Type = UserType.Unassigned;
+            userInvitation.CreatedUser.AuthenticationId = userInvitation.CreatedUser.Email = null;
+            userInvitation.CreatedUser.UserType = UserType.Unassigned;
 
-            var task = new AcceptUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), new TokenService(), 
-                new AddPerson(DbContext, new FormattingService()), new AddArtistMember(DbContext), new AddArtistManager(DbContext), new GetInstallation(DbContext));
+            var task = new AcceptUserInvitation(DbContext, new DummyEmailService(), new HtmlService(), 
+                new TokenService(), new AddUser(DbContext, new FormattingService()), 
+                new AddArtistMember(DbContext), new AddArtistManager(DbContext), 
+                new GetInstallation(DbContext));
             var result = task.DoTask(userInvitation);
 
             Assert.IsTrue(result.Success);
@@ -50,25 +51,27 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
 
             var newUser = result.Data;
             Assert.AreEqual(userInvitation.Email, newUser.AuthenticationId);
-            Assert.AreEqual(userInvitation.Type, newUser.Type);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.FirstName, newUser.Person.FirstName);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.MiddleName, newUser.Person.MiddleName);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.LastName, newUser.Person.LastName);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.NameSuffix, newUser.Person.NameSuffix);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Email, newUser.Person.Email);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Phone, newUser.Person.Phone);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Address.Street, newUser.Person.Address.Street);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Address.City, newUser.Person.Address.City);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Address.Region, newUser.Person.Address.Region);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Address.Country.Name, newUser.Person.Address.Country.Name);
-            Assert.AreEqual(userInvitation.CreatedUser.Person.Address.Country.IsoCode, newUser.Person.Address.Country.IsoCode);
+            Assert.AreEqual(userInvitation.UserType, newUser.UserType);
+            Assert.AreEqual(userInvitation.CreatedUser.FirstName, newUser.FirstName);
+            Assert.AreEqual(userInvitation.CreatedUser.MiddleName, newUser.MiddleName);
+            Assert.AreEqual(userInvitation.CreatedUser.LastName, newUser.LastName);
+            Assert.AreEqual(userInvitation.CreatedUser.NameSuffix, newUser.NameSuffix);
+            Assert.AreEqual(userInvitation.CreatedUser.Email, newUser.Email);
+            Assert.AreEqual(userInvitation.CreatedUser.Phone, newUser.Phone);
+            Assert.AreEqual(userInvitation.CreatedUser.Address.Street, newUser.Address.Street);
+            Assert.AreEqual(userInvitation.CreatedUser.Address.City, newUser.Address.City);
+            Assert.AreEqual(userInvitation.CreatedUser.Address.Region, newUser.Address.Region);
+            Assert.AreEqual(userInvitation.CreatedUser.Address.Country.Name, newUser.Address.Country.Name);
+            Assert.AreEqual(userInvitation.CreatedUser.Address.Country.IsoCode, newUser.Address.Country.IsoCode);
         }
 
         [TestMethod]
         public void TaskFailTest()
         {
-            var task = new AcceptUserInvitation(EmptyDbContext, new DummyEmailService(), new HtmlService(), new TokenService(), 
-                new AddPerson(EmptyDbContext, new FormattingService()), new AddArtistMember(EmptyDbContext), new AddArtistManager(EmptyDbContext), new GetInstallation(DbContext));
+            var task = new AcceptUserInvitation(EmptyDbContext, new DummyEmailService(), new HtmlService(), 
+                new TokenService(),  new AddUser(DbContext, new FormattingService()), 
+                new AddArtistMember(EmptyDbContext), new AddArtistManager(EmptyDbContext), 
+                new GetInstallation(DbContext));
             var result = task.DoTask(new UserInvitation());
             
             Assert.IsFalse(result.Success);

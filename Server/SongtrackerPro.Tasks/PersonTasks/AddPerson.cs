@@ -15,16 +15,8 @@ namespace SongtrackerPro.Tasks.PersonTasks
             _dbContext = dbContext;
             _formattingService = formattingService;
         }
-
-        public AddPerson(ApplicationDbContext dbContext)
-        {
-            DbContext = dbContext;
-        }
-
         private readonly ApplicationDbContext _dbContext;
         private readonly IFormattingService _formattingService;
-
-        public ApplicationDbContext DbContext { get; }
 
         public TaskResult<int?> DoTask(Person person)
         {
@@ -45,6 +37,7 @@ namespace SongtrackerPro.Tasks.PersonTasks
                 person.Address = null;
                 person.MiddleName = string.IsNullOrWhiteSpace(person.MiddleName) ? null : person.MiddleName;
                 person.NameSuffix = string.IsNullOrWhiteSpace(person.NameSuffix) ? null : person.NameSuffix;
+                person.Name = person.FirstAndLastName;
                 person.Email = string.IsNullOrWhiteSpace(person.Email) ? null : person.Email;
                 person.Phone = _formattingService.FormatPhoneNumber(person.Phone);
 

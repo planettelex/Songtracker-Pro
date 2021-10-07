@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Api.ViewModels;
 using SongtrackerPro.Data.Enums;
@@ -18,11 +19,13 @@ namespace SongtrackerPro.Api
 {
     public abstract class ApiControllerBase : ControllerBase
     {
-        protected ApiControllerBase(IGetLoginTask getLoginTask)
+        protected ApiControllerBase(IGetLoginTask getLoginTask, ILogger<ApiControllerBase> logger)
         {
             _getLoginTask = getLoginTask;
+            _logger = logger;
         }
         private readonly IGetLoginTask _getLoginTask;
+        private readonly ILogger<ApiControllerBase> _logger;
 
         protected const string JsonContentType = "application/json";
 
@@ -69,7 +72,12 @@ namespace SongtrackerPro.Api
 
         protected IActionResult Error(Exception exception)
         {
-            //TODO: Add exception logging here.
+            var innerException = exception.InnerException;
+            if (innerException != null)
+                _logger.LogError(innerException, innerException.Message);
+
+            _logger.LogError(exception, exception.Message);
+
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
@@ -137,14 +145,14 @@ namespace SongtrackerPro.Api
 
         private bool UserIsAuthorized(ICustomAttributeProvider callingMethod, IEnumerable<UserType> userTypesAllowed)
         {
-            if (AuthenticatedUser.Type == UserType.Unassigned)
+            if (AuthenticatedUser.UserType == UserType.Unassigned)
                 return false;
 
-            var userIsAnAllowedType = userTypesAllowed.Any(userType => AuthenticatedUser.Type == userType);
+            var userIsAnAllowedType = userTypesAllowed.Any(userType => AuthenticatedUser.UserType == userType);
             if (!userIsAnAllowedType)
                 return false;
 
-            if (AuthenticatedUser.Type != UserType.SystemUser)
+            if (AuthenticatedUser.UserType != UserType.SystemUser)
                 return true;
 
             var userRolesAllowedAttributes = (SystemUserRolesAllowedAttribute[]) callingMethod.GetCustomAttributes(typeof(SystemUserRolesAllowedAttribute), true);

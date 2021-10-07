@@ -31,7 +31,7 @@ namespace SongtrackerPro.Tasks.ArtistTasks
                 artist.Name = update.Name;
                 artist.TaxId = _formattingService.FormatTaxId(update.TaxId);
                 artist.Email = string.IsNullOrWhiteSpace(update.Email) ? null : update.Email;
-                artist.HasServiceMark = update.HasServiceMark;
+                artist.HasServicemark = update.HasServicemark;
                 artist.WebsiteUrl = string.IsNullOrWhiteSpace(update.WebsiteUrl) ? null : update.WebsiteUrl;
                 artist.PressKitUrl = string.IsNullOrWhiteSpace(update.PressKitUrl) ? null : update.PressKitUrl;
 

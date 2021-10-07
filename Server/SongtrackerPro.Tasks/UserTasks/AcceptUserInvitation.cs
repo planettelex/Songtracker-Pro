@@ -8,7 +8,6 @@ using SongtrackerPro.Data.Services;
 using SongtrackerPro.Resources;
 using SongtrackerPro.Tasks.ArtistTasks;
 using SongtrackerPro.Tasks.InstallationTasks;
-using SongtrackerPro.Tasks.PersonTasks;
 using SongtrackerPro.Utilities;
 using SongtrackerPro.Utilities.Services;
 
@@ -22,7 +21,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                                     IEmailService emailService,
                                     IHtmlService htmlService,
                                     ITokenService tokenService,
-                                    IAddPersonTask addPersonTask,
+                                    IAddUserTask addUser,
                                     IAddArtistMemberTask addArtistMember,
                                     IAddArtistManagerTask addArtistManager,
                                     IGetInstallationTask getInstallationTask)
@@ -31,7 +30,7 @@ namespace SongtrackerPro.Tasks.UserTasks
             _emailService = emailService;
             _htmlService = htmlService;
             _tokenService = tokenService;
-            _addPersonTask = addPersonTask;
+            _addUser = addUser;
             _addArtistMember = addArtistMember;
             _addArtistManager = addArtistManager;
             _getInstallationTask = getInstallationTask;
@@ -40,7 +39,7 @@ namespace SongtrackerPro.Tasks.UserTasks
         private readonly IEmailService _emailService;
         private readonly IHtmlService _htmlService;
         private readonly ITokenService _tokenService;
-        private readonly IAddPersonTask _addPersonTask;
+        private readonly IAddUserTask _addUser;
         private readonly IAddArtistMemberTask _addArtistMember;
         private readonly IAddArtistManagerTask _addArtistManager;
         private readonly IGetInstallationTask _getInstallationTask;
@@ -53,28 +52,19 @@ namespace SongtrackerPro.Tasks.UserTasks
                     .Include(ui => ui.InvitedByUser)
                     .Single();
 
-                if (invitation.Type == UserType.Unassigned)
+                if (invitation.UserType == UserType.Unassigned)
                     throw new TaskException(SystemMessage("USER_INVITATION_UNASSIGNED"));
 
                 var newUser = userInvitation.CreatedUser;
-                newUser.AuthenticationId = invitation.Email;
-                newUser.Type = invitation.Type;
-                newUser.Roles = invitation.Roles;
-
-                var newPerson = newUser.Person;
-                newPerson.Email = invitation.Email;
-                var addPersonResult = _addPersonTask.DoTask(newPerson);
-                if (!addPersonResult.Success)
-                    throw addPersonResult.Exception;
-
-                var personId = addPersonResult.Data;
                 var proId = newUser.PerformingRightsOrganization?.Id ?? newUser.PerformingRightsOrganizationId;
                 var publisherId = invitation.Publisher?.Id ?? invitation.PublisherId;
                 var recordLabelId = invitation.RecordLabel?.Id ?? invitation.RecordLabelId;
                 var artistId = invitation.Artist?.Id ?? invitation.ArtistId;
 
-                newUser.Person = null;
-                newUser.PersonId = personId;
+                newUser.AuthenticationId = newUser.Email = invitation.Email;
+                newUser.UserType = invitation.UserType;
+                newUser.UserRoles = invitation.UserRoles;
+                newUser.Email = invitation.Email;
                 newUser.PerformingRightsOrganization = null;
                 newUser.PerformingRightsOrganizationId = proId;
                 newUser.Publisher = null;
@@ -82,11 +72,10 @@ namespace SongtrackerPro.Tasks.UserTasks
                 newUser.RecordLabel = null;
                 newUser.RecordLabelId = recordLabelId;
 
-                _dbContext.Users.Add(newUser);
-                _dbContext.SaveChanges();
+                var newUserId = _addUser.DoTask(newUser).Data;
 
                 invitation.CreatedUser = null;
-                invitation.CreatedUserId = newUser.Id;
+                invitation.CreatedUserId = newUserId;
                 invitation.AcceptedOn = DateTime.UtcNow;
                 _dbContext.SaveChanges();
 
@@ -95,24 +84,24 @@ namespace SongtrackerPro.Tasks.UserTasks
                 if (artistId.HasValue)
                 {
                     var artist = _dbContext.Artists.Single(a => a.Id == artistId.Value);
-                    if (invitation.Roles.HasFlag(SystemUserRoles.ArtistMember))
+                    if (invitation.UserRoles.HasFlag(SystemUserRoles.ArtistMember))
                     {
                         var artistMember = new ArtistMember
                         {
                             Artist = artist,
-                            Member = newPerson,
+                            Member = newUser,
                             StartedOn = DateTime.Today
                         };
                         var addArtistMemberResult = _addArtistMember.DoTask(artistMember);
                         if (!addArtistMemberResult.Success)
                             throw addArtistMemberResult.Exception;
                     }
-                    else if (invitation.Roles.HasFlag(SystemUserRoles.ArtistManager))
+                    else if (invitation.UserRoles.HasFlag(SystemUserRoles.ArtistManager))
                     {
                         var artistManager = new ArtistManager
                         {
                             Artist = artist,
-                            Manager = newPerson,
+                            Manager = newUser,
                             StartedOn = DateTime.Today
                         };
                         var addArtistManagerResult = _addArtistManager.DoTask(artistManager);
@@ -121,27 +110,13 @@ namespace SongtrackerPro.Tasks.UserTasks
                     }
                 }
 
-                newUser.Person = newPerson;
-                newUser.PerformingRightsOrganization = proId > 0 ?
-                    _dbContext.PerformingRightsOrganizations.Where(p => p.Id == proId)
-                        .Include(p => p.Country)
-                        .SingleOrDefault() : null;
-                newUser.Publisher = publisherId > 0 ?
-                    _dbContext.Publishers.Where(p => p.Id == publisherId)
-                        .Include(p => p.Address).ThenInclude(a => a.Country)
-                        .SingleOrDefault() : null;
-                newUser.RecordLabel = recordLabelId > 0 ? 
-                    _dbContext.RecordLabels.Where(l => l.Id == recordLabelId)
-                        .Include(p => p.Address).ThenInclude(a => a.Country)
-                        .SingleOrDefault() : null;
-
                 userInvitation.LoginLink = ApplicationSettings.Web.Domain + WebRoutes.Login;
                 var installation = _getInstallationTask.DoTask(null).Data;
-                var emailTemplate = EmailTemplate($"{invitation.Type}Welcome.html");
+                var emailTemplate = EmailTemplate($"{invitation.UserType}Welcome.html");
                 var body = ReplaceTokens(emailTemplate, invitation, installation);
                 var subject = ReplaceTokens(_htmlService.GetTitle(emailTemplate), invitation, installation);
 
-                _emailService.SendEmail(newUser.Person.FirstAndLastName, newUser.Person.Email, 
+                _emailService.SendEmail(newUser.FirstAndLastName, newUser.Email, 
                     installation.Name, ApplicationSettings.Mail.From, subject, body);
 
                 return new TaskResult<User>(newUser);
@@ -157,9 +132,8 @@ namespace SongtrackerPro.Tasks.UserTasks
             var replaced = _tokenService.ReplaceTokens(template, installation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation);
             replaced = _tokenService.ReplaceTokens(replaced, userInvitation.CreatedUser);
-            replaced = _tokenService.ReplaceTokens(replaced, userInvitation.CreatedUser.Person);
 
-            switch (userInvitation.Type)
+            switch (userInvitation.UserType)
             {
                 case UserType.SystemUser:
                     replaced = _tokenService.ReplaceTokens(replaced, userInvitation.Artist);

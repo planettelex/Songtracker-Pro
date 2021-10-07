@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Tasks.GeographicTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -11,8 +12,9 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public GeographicController(IGetLoginTask getLoginTask,
-            IListCountriesTask listCountriesTask) : 
-            base(getLoginTask)
+                                    IListCountriesTask listCountriesTask,
+                                    ILogger<GeographicController> logger) : 
+        base(getLoginTask, logger)
         {
             _listCountriesTask = listCountriesTask;
         }

@@ -27,8 +27,6 @@ namespace SongtrackerPro.Tasks.UserTasks
                 _dbContext.Logins.RemoveRange(allUserLogins);
                 _dbContext.SaveChanges();
 
-                toRemove.Person = null;
-                toRemove.PersonId = null;
                 toRemove.PerformingRightsOrganization = null;
                 toRemove.PerformingRightsOrganizationId = null;
                 toRemove.Publisher = null;

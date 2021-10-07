@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -14,18 +15,19 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public UserController(IGetLoginTask getLoginTask,
-            IListUsersTask listUsersTask,
-            IGetUserTask getUserTask,
-            IAddUserTask addUserTask,
-            IUpdateUserTask updateUserTask,
-            ILoginUserTask loginUserTask,
-            ILogoutUserTask logoutUserTask,
-            IListUserAccountsTask listUserAccountsTask,
-            IGetUserAccountTask getUserAccountTask,
-            IAddUserAccountTask addUserAccountTask,
-            IUpdateUserAccountTask updateUserAccountTask,
-            IRemoveUserAccountTask removeUserAccountTask) :
-        base(getLoginTask)
+                              IListUsersTask listUsersTask,
+                              IGetUserTask getUserTask,
+                              IAddUserTask addUserTask,
+                              IUpdateUserTask updateUserTask,
+                              ILoginUserTask loginUserTask,
+                              ILogoutUserTask logoutUserTask,
+                              IListUserAccountsTask listUserAccountsTask,
+                              IGetUserAccountTask getUserAccountTask,
+                              IAddUserAccountTask addUserAccountTask,
+                              IUpdateUserAccountTask updateUserAccountTask,
+                              IRemoveUserAccountTask removeUserAccountTask,
+                              ILogger<UserController> logger) :
+        base(getLoginTask, logger)
         {
             _listUsersTask = listUsersTask;
             _getUserTask = getUserTask;
@@ -72,8 +74,8 @@ namespace SongtrackerPro.Api.Controllers
                     Json(taskResults) : 
                         taskResults.Exception.InnerException != null && 
                         taskResults.Exception.InnerException.Message == SystemMessage("USER_NOT_FOUND") ?
-                    NotFound() :
-                    Error(taskResults.Exception);
+                            NotFound() :
+                            Error(taskResults.Exception);
             }
             catch (Exception e)
             {
@@ -169,7 +171,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != id)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != id)
                     return Unauthorized();
 
                 var taskResults = _getUserTask.DoTask(id);
@@ -201,7 +203,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != id)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != id)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(id);
@@ -234,7 +236,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);
@@ -267,7 +269,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);
@@ -300,7 +302,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);
@@ -345,7 +347,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.SystemUser && AuthenticatedUser.Id != userId)
+                if (AuthenticatedUser.UserType == UserType.SystemUser && AuthenticatedUser.Id != userId)
                     return Unauthorized();
 
                 var invalidUserPathResult = InvalidUserPathResult(userId);

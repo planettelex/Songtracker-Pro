@@ -5,7 +5,7 @@ namespace SongtrackerPro.Data.Enums
     [Flags]
     public enum SystemUserRoles
     {
-        None = 0,
+        Unspecified = 0,
         Songwriter = 1,
         ArtistMember = 2,
         ArtistManager = 4,

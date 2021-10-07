@@ -22,8 +22,8 @@ namespace SongtrackerPro.Tasks.UserTasks
             try
             {
                 var userInvitations = _dbContext.UserInvitations
-                    .Include(i => i.InvitedByUser).ThenInclude(u => u.Person)
-                    .Include(i => i.CreatedUser).ThenInclude(u => u.Person)
+                    .Include(i => i.InvitedByUser)
+                    .Include(i => i.CreatedUser)
                     .Include(i => i.Publisher)
                     .Include(i => i.RecordLabel)
                     .Include(i => i.Artist)

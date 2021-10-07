@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SongtrackerPro.Data;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Resources;
 using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Utilities;
 
@@ -38,7 +39,7 @@ namespace SongtrackerPro.Tasks.UserTasks
                     return new TaskResult<Login>(existingLogin);
                 
                 var user = _dbContext.Users.Where(u => u.AuthenticationId == login.AuthenticationId)
-                    .Include(u => u.Person).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
+                    .Include(u => u.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
                     .Include(u => u.Publisher).ThenInclude(p => p.PerformingRightsOrganization).ThenInclude(r => r.Country)
                     .Include(u => u.RecordLabel).ThenInclude(p => p.Address).ThenInclude(a => a.Country)
@@ -49,7 +50,12 @@ namespace SongtrackerPro.Tasks.UserTasks
                 {
                     if (login.AuthenticationId == ApplicationSettings.Mail.From)
                     {
-                        user = new User { AuthenticationId = login.AuthenticationId, Type = UserType.SystemAdministrator };
+                        user = new User
+                        {
+                            AuthenticationId = login.AuthenticationId, 
+                            UserType = UserType.SystemAdministrator,
+                            Name = GetResource.SystemMessage(ApplicationSettings.Culture, "SUPERUSER")
+                        };
                         _dbContext.Users.Add(user);
                         _dbContext.SaveChanges();
 

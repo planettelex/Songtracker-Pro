@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -15,11 +16,12 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public RecordLabelController(IGetLoginTask getLoginTask,
-            IListRecordLabelsTask listRecordLabelsTask,
-            IGetRecordLabelTask getRecordLabelTask,
-            IAddRecordLabelTask addRecordLabelTask,
-            IUpdateRecordLabelTask updateRecordLabelTask) :
-            base(getLoginTask)
+                                     IListRecordLabelsTask listRecordLabelsTask,
+                                     IGetRecordLabelTask getRecordLabelTask,
+                                     IAddRecordLabelTask addRecordLabelTask,
+                                     IUpdateRecordLabelTask updateRecordLabelTask,
+                                     ILogger<RecordLabelController> logger) :
+        base(getLoginTask, logger)
         {
             _listRecordLabelsTask = listRecordLabelsTask;
             _getRecordLabelTask = getRecordLabelTask;
@@ -105,8 +107,8 @@ namespace SongtrackerPro.Api.Controllers
                 if (taskResults.HasNoData)
                     return NotFound();
 
-                var userIsLabelAdmin = AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id == id;
-                var allowedToSeeSensitiveData = AuthenticatedUser.Type == UserType.SystemAdministrator || userIsLabelAdmin;
+                var userIsLabelAdmin = AuthenticatedUser.UserType == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id == id;
+                var allowedToSeeSensitiveData = AuthenticatedUser.UserType == UserType.SystemAdministrator || userIsLabelAdmin;
                 if (!allowedToSeeSensitiveData)
                     taskResults.Data.TaxId = null;
 
@@ -131,7 +133,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                if (AuthenticatedUser.Type == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id != id)
+                if (AuthenticatedUser.UserType == UserType.LabelAdministrator && AuthenticatedUser.RecordLabel?.Id != id)
                     return Unauthorized();
 
                 var invalidRecordLabelPathResult = InvalidRecordLabelPathResult(id);

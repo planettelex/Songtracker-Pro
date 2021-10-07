@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
 using SongtrackerPro.Data.Services;
-using SongtrackerPro.Tasks.PersonTasks;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -18,14 +18,15 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
         public void TaskSuccessTest()
         {
             var testUser = TestsModel.User;
-            testUser.Type = UserType.PublisherAdministrator;
-            var addUserTask = new AddUser(DbContext, new AddPerson(DbContext, new FormattingService()), new FormattingService());
+            testUser.UserType = UserType.PublisherAdministrator;
+            var addUserTask = new AddUser(DbContext, new FormattingService());
             var addUserResult = addUserTask.DoTask(testUser);
 
             Assert.IsTrue(addUserResult.Success);
             Assert.IsNull(addUserResult.Exception);
 
-            var paymentService = new ListServices(DbContext).DoTask(null).Data.SingleOrDefault(s => s.Name.ToLower() == "payment");
+            var paymentService = new ListServices(DbContext).DoTask(ServiceType.Platform).Data
+                .SingleOrDefault(s => s.Name.ToLower() == "payment");
             Assert.IsNotNull(paymentService);
 
             var allPlatforms = new ListPlatforms(DbContext).DoTask(null).Data.ToList();
@@ -78,18 +79,11 @@ namespace SongtrackerPro.Tasks.Tests.UserTaskTests
             Assert.AreEqual(userAccount.IsPreferred, getUserAccountResult.Data.IsPreferred);
             Assert.AreEqual(userAccount.Username, getUserAccountResult.Data.Username);
 
-            var person = testUser.Person;
             var removeUserTask = new RemoveUser(DbContext);
             var removeUserResult = removeUserTask.DoTask(testUser);
 
             Assert.IsTrue(removeUserResult.Success);
             Assert.IsNull(removeUserResult.Exception);
-
-            var removePersonTask = new RemovePerson(DbContext);
-            var removePersonResult = removePersonTask.DoTask(person);
-
-            Assert.IsTrue(removePersonResult.Success);
-            Assert.IsNull(removePersonResult.Exception);
         }
 
         [TestMethod]

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
+using SongtrackerPro.Tasks.InstallationTasks;
 using SongtrackerPro.Tasks.PlatformTasks;
 using SongtrackerPro.Tasks.UserTasks;
 
@@ -15,19 +17,19 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public PlatformController(IGetLoginTask getLoginTask,
-            IListServicesTask listServicesTask, 
-            IListPlatformsTask listPlatformsTask,
-            IGetPlatformTask getPlatformTask,
-            IAddPlatformTask addPlatformTask,
-            IUpdatePlatformTask updatePlatformTask) :
-            base(getLoginTask)
+                                  IListServicesTask listServicesTask, 
+                                  IListPlatformsTask listPlatformsTask,
+                                  IGetPlatformTask getPlatformTask,
+                                  IAddPlatformTask addPlatformTask,
+                                  IUpdatePlatformTask updatePlatformTask,
+                                  ILogger<PlatformController> logger) :
+        base(getLoginTask, logger)
         {
             _listServicesTask = listServicesTask;
             _listPlatformsTask = listPlatformsTask;
             _getPlatformTask = getPlatformTask;
             _addPlatformTask = addPlatformTask;
             _updatePlatformTask = updatePlatformTask;
-
         }
         private readonly IListServicesTask _listServicesTask;
         private readonly IListPlatformsTask _listPlatformsTask;
@@ -50,7 +52,7 @@ namespace SongtrackerPro.Api.Controllers
                 if (!UserIsAuthenticatedAndAuthorized(MethodBase.GetCurrentMethod()))
                     return Unauthorized();
 
-                var taskResults = _listServicesTask.DoTask(null);
+                var taskResults = _listServicesTask.DoTask(ServiceType.Platform);
 
                 return taskResults.Success ? 
                     Json(taskResults) : 

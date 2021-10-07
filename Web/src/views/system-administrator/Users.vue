@@ -85,7 +85,8 @@
           <v-dialog v-model="editDialog" max-width="800px">
             <v-card>
               <v-card-title class="modal-title pt-2">
-                <span>{{ $t('Edit') }} {{ selectedUserType.name }}</span>
+                <span v-if="editedUser.userType == userType.SystemAdministrator && editedUser.name == $t('Superuser')">{{ $t('Superuser') }}</span>
+                <span v-else>{{ $t('Edit') }} {{ selectedUserType.name }}</span>
               </v-card-title>
               <v-divider />
               <v-tabs v-model="editTab">
@@ -97,22 +98,22 @@
                 <v-container v-if="editTab == 0" class="app-form">
                   <v-row>
                     <v-col cols="2" class="pl-0">
-                      <v-text-field hide-details="true" :label="$t('First')" v-model="editedUser.person.firstName" :disabled="disableSave"></v-text-field>
-                      <span class="validation-error" v-if="v$.editedUser.person.firstName.$error">{{ validationMessages(v$.editedUser.person.firstName.$errors) }}</span>
+                      <v-text-field hide-details="true" :label="$t('First')" v-model="editedUser.firstName" :disabled="disableSave"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedUser.firstName.$error">{{ validationMessages(v$.editedUser.firstName.$errors) }}</span>
                     </v-col>
                     <v-col cols="1">
-                      <v-text-field hide-details="true" :label="$t('MiddleAbbreviation')" v-model="editedUser.person.middleName" :disabled="disableSave"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('MiddleAbbreviation')" v-model="editedUser.middleName" :disabled="disableSave"></v-text-field>
                     </v-col>
                     <v-col cols="2">
-                      <v-text-field hide-details="true" :label="$t('Last')" v-model="editedUser.person.lastName" :disabled="disableSave"></v-text-field>
-                      <span class="validation-error" v-if="v$.editedUser.person.lastName.$error">{{ validationMessages(v$.editedUser.person.lastName.$errors) }}</span>
+                      <v-text-field hide-details="true" :label="$t('Last')" v-model="editedUser.lastName" :disabled="disableSave"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedUser.lastName.$error">{{ validationMessages(v$.editedUser.lastName.$errors) }}</span>
                     </v-col>
                     <v-col cols="1">
-                      <v-text-field hide-details="true" :label="$t('Suffix')" v-model="editedUser.person.nameSuffix" :disabled="disableSave"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Suffix')" v-model="editedUser.nameSuffix" :disabled="disableSave"></v-text-field>
                     </v-col>
                     <v-col cols="3" >
-                      <v-text-field hide-details="true" :label="$t('PhoneNumber')" v-model="editedUser.person.phone" :disabled="disableSave"></v-text-field>
-                      <span class="validation-error" v-if="v$.editedUser.person.phone.$error">{{ validationMessages(v$.editedUser.person.phone.$errors) }}</span>
+                      <v-text-field hide-details="true" :label="$t('PhoneNumber')" v-model="editedUser.phone" :disabled="disableSave"></v-text-field>
+                      <span class="validation-error" v-if="v$.editedUser.phone.$error">{{ validationMessages(v$.editedUser.phone.$errors) }}</span>
                     </v-col>
                     <v-col cols="3" class="pr-0" v-if="showUserFields">
                       <v-text-field hide-details="true" :label="$t('SSN')" v-model="editedUser.socialSecurityNumber" :disabled="disableSave"></v-text-field>
@@ -125,19 +126,19 @@
                       <span class="validation-error" v-if="v$.editedUser.authenticationId.$error">{{ validationMessages(v$.editedUser.authenticationId.$errors) }}</span>
                     </v-col>
                     <v-col cols="6" class="pr-0">
-                      <v-text-field hide-details="true" :label="$t('Address')" v-model="editedUser.person.address.street" :disabled="disableSave"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('Address')" v-model="editedUser.address.street" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="showStreetValidation">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="3" class="pl-0">
-                      <v-text-field hide-details="true" :label="$t('City')" v-model="editedUser.person.address.city" :disabled="disableSave"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('City')" v-model="editedUser.address.city" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="showCityValidation">{{ $t('ValueIsRequired') }}</span>
                     </v-col>
                     <v-col cols="3" >
-                      <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedUser.person.address.postalCode" :disabled="disableSave"></v-text-field>
+                      <v-text-field hide-details="true" :label="$t('PostalCode')" v-model="editedUser.address.postalCode" :disabled="disableSave"></v-text-field>
                       <span class="validation-error" v-if="showPostalCodeValidation">{{ $t('ValueIsRequired') }}&nbsp;</span>
-                      <span class="validation-error" v-if="v$.editedUser.person.address.postalCode.$error">{{ validationMessages(v$.editedUser.person.address.postalCode.$errors) }}</span>
+                      <span class="validation-error" v-if="v$.editedUser.address.postalCode.$error">{{ validationMessages(v$.editedUser.address.postalCode.$errors) }}</span>
                     </v-col>
                     <v-col cols="3">
                       <v-select hide-details="true" :label="$t('Country')" :items="countries" v-model="selectedCountry" item-text="name" item-value="isoCode" return-object :disabled="disableSave"></v-select>
@@ -347,26 +348,23 @@ export default {
     editedUser: {
       id: -1,
       authenticationId: '',
-      type: 0,
+      userType: 0,
       roles: 0,
-      person: {
-        id: -1,
-        firstName: '',
-        middleName: null,
-        lastName: '',
-        nameSuffix: null,
-        email: null,
-        phone: null,
-        address: {
-          street: null,
-          city: null,
-          region: null,
-          postalCode: null,
-          country: {
-            id: -1,
-            name: null,
-            isoCode: null
-          }
+      firstName: '',
+      middleName: null,
+      lastName: '',
+      nameSuffix: null,
+      email: null,
+      phone: null,
+      address: {
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
+        country: {
+          id: -1,
+          name: null,
+          isoCode: null
         },
         socialSecurityNumber: null,
         publisher: null,
@@ -378,25 +376,23 @@ export default {
     },
     defaultUser: {
       authenticationId: '',
-      type: 0,
+      userType: 0,
       roles: 0,
-      person: {
-        firstName: '',
-        middleName: null,
-        lastName: '',
-        nameSuffix: null,
-        email: null,
-        phone: null,
-        address: {
-          street: null,
-          city: null,
-          region: null,
-          postalCode: null,
-          country: {
-            id: -1,
-            name: null,
-            isoCode: null
-          }
+      firstName: '',
+      middleName: null,
+      lastName: '',
+      nameSuffix: null,
+      email: null,
+      phone: null,
+      address: {
+        street: null,
+        city: null,
+        region: null,
+        postalCode: null,
+        country: {
+          id: -1,
+          name: null,
+          isoCode: null
         },
         socialSecurityNumber: null,
         publisher: null,
@@ -474,13 +470,11 @@ export default {
       editedUser: {
         authenticationId: { required, email },
         socialSecurityNumber: { minLengthValue: minLength(9) },
-        person: {
-          firstName: { required },
-          lastName: { required },
-          phone: { minLengthValue: minLength(10) },
-          address: {
-            postalCode: { minLengthValue: minLength(5) }
-          }
+        firstName: { required },
+        lastName: { required },
+        phone: { minLengthValue: minLength(10) },
+        address: {
+          postalCode: { minLengthValue: minLength(5) }
         }
       }
     }
@@ -509,17 +503,17 @@ export default {
       }
     },
 
-    'editedUser.person.address.street'(val) {
+    'editedUser.address.street'(val) {
         const valIsNull = val == null || val.trim() == '';
         this.showStreetValidation = this.hasTriggeredValidation && valIsNull;
     },
 
-    'editedUser.person.address.city'(val) {
+    'editedUser.address.city'(val) {
         const valIsNull = val == null || val.trim() == '';
         this.showCityValidation = this.hasTriggeredValidation && valIsNull;
     },
 
-    'editedUser.person.address.postalCode'(val) {
+    'editedUser.address.postalCode'(val) {
         const valIsNull = val == null || val.trim() == '';
         this.showPostalCodeValidation = this.hasTriggeredValidation && valIsNull;
     },
@@ -604,7 +598,7 @@ export default {
       this.users = await UserModel.config(this.RequestHeaders).all()
         .catch(error => this.handleError(error));
       this.users.forEach(user => {
-        user.typeName = this.getUserType(user.type).name;
+        user.typeName = this.getUserType(user.userType).name;
       });
     },
 
@@ -639,7 +633,7 @@ export default {
       this.platforms = [];
       allPlatforms.forEach(platform => {
         platform.services.forEach(service => {
-          if (service.name.toLowerCase() == 'payment') {
+          if (service.name ==  this.$t('Payment')) {
             this.platforms.push(platform);
           }
         });
@@ -773,20 +767,19 @@ export default {
         this.editedUserData = await UserModel.config(this.RequestHeaders).find(user.id)
           .catch(error => this.handleError(error));
 
-        if (!this.editedUserData.person) {
-          this.disableSave = true; // Initial superuser has no associated person. Don't allow update on this user.
-          this.editedUserData.person = Object.assign({}, this.defaultUser.person);
+        if (this.editedUserData.userType == UserType.SystemAdministrator && this.editedUserData.name == this.$t('Superuser')) {
+          this.disableSave = true; // Don't allow update on superuser.
         }
 
-        if (!this.editedUserData.person.address)
-          this.editedUserData.person.address = Object.assign({}, this.defaultUser.person.address);
+        if (!this.editedUserData.address)
+          this.editedUserData.address = Object.assign({}, this.defaultUser.address);
 
         this.editedUser = Object.assign({}, this.editedUserData);
-        this.selectedUserType = this.getUserType(this.editedUser.type);
-        if (this.editedUser.person.address) {
-          this.selectedCountry = this.editedUser.person.address.country;
+        this.selectedUserType = this.getUserType(this.editedUser.userType);
+        if (this.editedUser.address) {
+          this.selectedCountry = this.editedUser.address.country;
           this.loadCountryRegions();
-          this.selectedCountryRegion = this.getCountryRegion(this.editedUser.person.address.region);
+          this.selectedCountryRegion = this.getCountryRegion(this.editedUser.address.region);
         }
         this.selectedPerformingRightsOrganization = this.editedUser.performingRightsOrganization;
         this.selectedPublisher = this.editedUser.publisher;
@@ -804,7 +797,7 @@ export default {
     },
 
     editedAddressIsValid() {
-      const address = this.editedUser.person.address;
+      const address = this.editedUser.address;
       if (!address) {
         this.editedUserHasNullAddress = true;
         return false;
@@ -946,11 +939,11 @@ export default {
           let userToSave = Object.assign(emptyUser, editedUser);
 
           if (this.editedUserHasNullAddress)
-            userToSave.person.address = null;
+            userToSave.address = null;
           else {
-            userToSave.person.address.country = this.selectedCountry;
+            userToSave.address.country = this.selectedCountry;
             if (this.selectedCountryRegion) 
-              userToSave.person.address.region = this.selectedCountryRegion.code;
+              userToSave.address.region = this.selectedCountryRegion.code;
           }
 
           userToSave.performingRightsOrganization = this.selectedPerformingRightsOrganization;
@@ -961,7 +954,7 @@ export default {
           const userModel = new UserModel(userToSave);
           userModel.config(this.RequestHeaders).save()
             .then (() => {
-              this.lastEditedUserName = userToSave.person.firstName + ' ' + userToSave.person.lastName;
+              this.lastEditedUserName = userToSave.firstName + ' ' + userToSave.lastName;
               this.showInvitedUserAlert = false;
               this.showEditedUserAlert = true;
               this.initialize();

@@ -20,7 +20,8 @@
 		"redhat.vscode-yaml",
 		"ms-dotnettools.csharp",
 		"fernandoescolar.vscode-solution-explorer",
-		"ms-azuretools.vscode-tye"
+		"ms-azuretools.vscode-tye",
+		"octref.vetur"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -11,6 +11,7 @@ namespace SongtrackerPro.Resources
     {
         private const string SystemMessagesFile = "SystemMessages.json";
         private const string SeedDataFile = "SeedData.json";
+        private const string CommonWordsFile = "CommonWords.json";
         private const string EmailTemplatesFolder = "EmailTemplates";
 
         public static string SeedData(string culture, string key)
@@ -73,6 +74,37 @@ namespace SongtrackerPro.Resources
             _systemMessageTranslations = new Dictionary<string, string>();
             foreach (var translation in systemMessages.Translations)
                 _systemMessageTranslations.Add(translation.Key, translation.Value);
+        }
+
+        public static string CommonWord(string culture, string key)
+        {
+            if (_commonWordTranslations == null)
+                LoadCommonWordTranslations(culture);
+
+            if (_commonWordTranslations == null)
+                throw new NullReferenceException();
+
+            return _commonWordTranslations[key];
+        }
+        private static Dictionary<string, string> _commonWordTranslations;
+
+        private static void LoadCommonWordTranslations(string culture)
+        {
+            var _ = AssemblyInfo.SupportedCultures.Single(c => c == culture);
+            culture = culture.Replace('-', '_');
+
+            var embeddedFilePath = $"{AssemblyInfo.Name}.{culture}.{CommonWordsFile}";
+            var assembly = Assembly.GetExecutingAssembly();
+
+            using var stream = assembly.GetManifestResourceStream(embeddedFilePath);
+            using var reader = new StreamReader(stream ?? throw new FileNotFoundException(null, embeddedFilePath));
+            
+            var translationsJson = reader.ReadToEnd();
+            var commonWords = JsonSerializer.Deserialize<CultureTranslations>(translationsJson);
+
+            _commonWordTranslations = new Dictionary<string, string>();
+            foreach (var translation in commonWords.Translations)
+                _commonWordTranslations.Add(translation.Key, translation.Value);
         }
 
         public static string EmailTemplate(string culture, string filename)

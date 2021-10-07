@@ -102,7 +102,7 @@
                         <p class="large-font">
                           <strong>{{ viewingInvitation.name }}&nbsp;</strong>
                           <span>{{ $t('Was') }} {{ $t('Invited').toLowerCase() }}&nbsp;</span>
-                          <span v-if="viewingInvitation.type != userType.SystemUser" >{{ $t('ToBeA') }} {{ viewingInvitation.typeName.toLowerCase() }}&nbsp;</span>
+                          <span v-if="viewingInvitation.userType != userType.SystemUser" >{{ $t('ToBeA') }} {{ viewingInvitation.typeName.toLowerCase() }}&nbsp;</span>
                           <span>{{ $t('By') }} {{ viewingInvitation.invitedByUser.name }}&nbsp;</span>
                           <span>{{ $t('On') }} {{ $d(new Date(viewingInvitation.sentOn), 'long') }}.</span>
                         </p>
@@ -117,7 +117,7 @@
                    <v-row>
                       <v-col cols="12">
                         <p class="large-font label-paragraph"><label>{{ $t('Email') }}:&nbsp;</label><span>{{ viewingInvitation.email }}</span></p>
-                        <p v-if="viewingInvitation.type == userType.SystemUser" class="large-font label-paragraph"><label>{{ $tc('Role', 2) }}:&nbsp;</label><span>{{ getUserRoles(viewingInvitation.roles) }}</span></p>
+                        <p v-if="viewingInvitation.userType == userType.SystemUser" class="large-font label-paragraph"><label>{{ $tc('Role', 2) }}:&nbsp;</label><span>{{ getUserRoles(viewingInvitation.roles) }}</span></p>
                         <p v-if="viewingInvitation.artist.id > 0" class="large-font label-paragraph"><label>{{ $tc('Artist', 1) }}:&nbsp;</label><span>{{ viewingInvitation.artist.name }}</span></p>
                         <p v-if="viewingInvitation.recordLabel.id > 0" class="large-font label-paragraph"><label>{{ $tc('RecordLabel', 1) }}:&nbsp;</label><span>{{ viewingInvitation.recordLabel.name }}</span></p>
                         <p v-if="viewingInvitation.publisher.id > 0" class="large-font label-paragraph"><label>{{ $tc('Publisher', 1) }}:&nbsp;</label><span>{{ viewingInvitation.publisher.name }}</span></p>
@@ -205,7 +205,7 @@ export default {
            uuid: '',
            name: '',
            email: '',
-           type: 0,
+           userType: 0,
            typeName: '',
            roles: 0,
            invitedByUserId: -1,
@@ -218,7 +218,7 @@ export default {
            createdUser: {
              id: -1,
              name: '',
-             type: ''
+             userType: ''
            },
            publisher: {
              id: -1,
@@ -239,7 +239,7 @@ export default {
            uuid: '',
            name: '',
            email: '',
-           type: 0,
+           userType: 0,
            typeName: '',
            roles: 0,
            invitedByUserId: -1,
@@ -252,7 +252,7 @@ export default {
            createdUser: {
              id: -1,
              name: '',
-             type: ''
+             userType: ''
            },
            publisher: {
              id: -1,
@@ -274,7 +274,7 @@ export default {
           invitedByUserId: -1,
           name: '',
           email: '',
-          type: 0,
+          userType: 0,
           roles: 0,
           publisher: null,
           recordLabel: null,
@@ -284,7 +284,7 @@ export default {
           invitedByUserId: -1,
           name: '',
           email: '',
-          type: 0,
+          userType: 0,
           roles: 0,
           publisher: null,
           recordLabel: null,
@@ -295,7 +295,7 @@ export default {
           invitedByUserId: -1,
           name: '',
           email: '',
-          type: 0,
+          userType: 0,
           roles: 0,
           publisher: null,
           recordLabel: null,
@@ -428,7 +428,7 @@ export default {
           this.invitations = await InvitationModel.config(this.RequestHeaders).all()
             .catch(error => this.handleError(error));
           this.invitations.forEach(invitation => {
-            invitation.typeName = this.getUserType(invitation.type).name;
+            invitation.typeName = this.getUserType(invitation.userType).name;
           });   
         },
 
@@ -478,7 +478,7 @@ export default {
             if (this.editedInvitation) {
               this.editedInvitation.invitedByUserId = this.User.id;
               let userRoles = 0;
-              this.editedInvitation.type = userType;
+              this.editedInvitation.userType = userType;
               switch (userType) {
                 case UserType.PublisherAdministrator:
                   this.editedInvitation.publisher = this.selectedPublisher;
@@ -515,6 +515,7 @@ export default {
         },
 
         getUserType(typeValue) {
+          console.log(typeValue);
           let userType = null;
           this.userTypes.forEach(type => {
             if (type.value == typeValue)

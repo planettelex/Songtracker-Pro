@@ -1,45 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+using SongtrackerPro.Data.Enums;
 
 namespace SongtrackerPro.Data.Models
 {
-    [Table("people")]
-    public class Person
+    public class Person : LegalEntity
     {
-        [Key]
-        [Required]
-        [Column("id", Order = 1)]
-        public int Id { get; set; }
+        public Person()
+        {
+            EntityType = LegalEntityType.Person;
+        }
 
-        [Required]
-        [Column("first_name", Order = 2)]
+        [Column("first_name", Order = 8)]
         public string FirstName { get; set; }
 
-        [Column("middle_name", Order = 3)]
+        [Column("middle_name", Order = 9)]
         public string MiddleName { get; set; }
 
-        [Required]
-        [Column("last_name", Order = 4)]
+        [Column("last_name", Order = 10)]
         public string LastName { get; set; }
 
-        [Column("name_suffix", Order = 5)]
+        [Column("name_suffix", Order = 11)]
         [MaxLength(5)]
         public string NameSuffix { get; set; }
 
         [NotMapped]
         public string FirstAndLastName => $"{FirstName} {LastName}";
-
-        [Column("email", Order = 6)]
-        public string Email { get; set; }
-
-        [Column("phone", Order = 7)]
-        [MaxLength(20)]
-        public string Phone { get; set; }
-
-        [JsonIgnore]
-        [Column("address_id", Order = 8)]
-        public int? AddressId { get; set; }
-        public Address Address { get; set; }
     }
 }

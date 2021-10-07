@@ -18,12 +18,28 @@
       "Value": "Artist member not found."
     },
     {
+      "Key": "COMPOSITION_NOT_FOUND",
+      "Value": "Composition not found."
+    },
+    {
+      "Key": "COMPOSITION_AUTHOR_NOT_FOUND",
+      "Value": "Composition author not found."
+    },
+    {
       "Key": "COUNTRY_NOT_FOUND",
       "Value": "Country not found."
     },
     {
       "Key": "INSTALLATION_NOT_FOUND",
       "Value": "Installation not found."
+    },
+    {
+      "Key": "LEGAL_ENTITY_CONTACT_NOT_FOUND",
+      "Value": "Legal entity contact not found."
+    },
+    {
+      "Key": "LEGAL_ENTITY_NOT_FOUND",
+      "Value": "Legal entity not found."
     },
     {
       "Key": "PERSON_NOT_FOUND",
@@ -38,12 +54,36 @@
       "Value": "Performing rights organization not found."
     },
     {
+      "Key": "PUBLICATION_NOT_FOUND",
+      "Value": "Publication not found."
+    },
+    {
+      "Key": "PUBLICATION_AUTHOR_NOT_FOUND",
+      "Value": "Publication author not found."
+    },
+    {
       "Key": "PUBLISHER_NOT_FOUND",
       "Value": "Publisher not found."
     },
     {
       "Key": "RECORD_LABEL_NOT_FOUND",
       "Value": "Record label not found."
+    },
+    {
+      "Key": "RECORDING_NOT_FOUND",
+      "Value": "Recording not found."
+    },
+    {
+      "Key": "RELEASE_PRODUCT_NOT_FOUND",
+      "Value": "Release product not found."
+    },
+    {
+      "Key": "RELEASE_NOT_FOUND",
+      "Value": "Release not found."
+    },
+    {
+      "Key": "RELEASE_TRACK_NOT_FOUND",
+      "Value": "Release track not found."
     },
     {
       "Key": "SUPERUSER",

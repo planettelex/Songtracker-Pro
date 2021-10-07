@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="en-US\CommonWords.json" />
     <None Remove="en-US\EmailTemplates\ArtistManagerInvitation.html" />
     <None Remove="en-US\EmailTemplates\ArtistManagerWelcome.html" />
     <None Remove="en-US\EmailTemplates\ArtistMemberInvitation.html" />
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="en-US\CommonWords.json" />
     <EmbeddedResource Include="en-US\EmailTemplates\LabelAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorWelcome.html" />
     <EmbeddedResource Include="en-US\EmailTemplates\PublisherAdministratorInvitation.html" />
@@ -33,6 +35,10 @@
     <EmbeddedResource Include="en-US\EmailTemplates\SystemUserWelcome.html" />
     <EmbeddedResource Include="en-US\SeedData.json" />
     <EmbeddedResource Include="en-US\SystemMessages.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="en-US\SeedDocuments\" />
   </ItemGroup>
 
 </Project>

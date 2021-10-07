@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SongtrackerPro.Api.Attributes;
 using SongtrackerPro.Data.Enums;
 using SongtrackerPro.Data.Models;
@@ -14,13 +15,14 @@ namespace SongtrackerPro.Api.Controllers
         #region Constructor
 
         public InvitationController(IGetLoginTask getLoginTask,
-            ISendUserInvitationTask sendUserInvitationTask,
-            IResendUserInvitationTask resendUserInvitationTask,
-            IListUserInvitationsTask listUserInvitationsTask,
-            IGetUserInvitationTask getUserInvitationTask,
-            IAcceptUserInvitationTask acceptUserInvitationTask,
-            IRemoveUserInvitationTask removeUserInvitationTask) : 
-        base(getLoginTask)
+                                    ISendUserInvitationTask sendUserInvitationTask,
+                                    IResendUserInvitationTask resendUserInvitationTask,
+                                    IListUserInvitationsTask listUserInvitationsTask,
+                                    IGetUserInvitationTask getUserInvitationTask,
+                                    IAcceptUserInvitationTask acceptUserInvitationTask,
+                                    IRemoveUserInvitationTask removeUserInvitationTask,
+                                    ILogger<InvitationController> logger) : 
+        base(getLoginTask, logger)
         {
             _sendUserInvitationTask = sendUserInvitationTask;
             _resendUserInvitationTask = resendUserInvitationTask;

@@ -15,6 +15,11 @@ namespace SongtrackerPro.Tasks
             return GetResource.SeedData(ApplicationSettings.Culture, key);
         }
 
+        protected string CommonWord(string key)
+        {
+            return GetResource.CommonWord(ApplicationSettings.Culture, key);
+        }
+
         protected string EmailTemplate(string filename)
         {
             return GetResource.EmailTemplate(ApplicationSettings.Culture, filename);

@@ -18,6 +18,718 @@
       "Value": "United States"
     },
     {
+      "Key": "GENRE_ROCK",
+      "Value": "Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_CLASSIC_ROCK",
+      "Value": "Classic Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_HARD_ROCK",
+      "Value": "Hard Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_FOLK_ROCK",
+      "Value": "Folk Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_GOTH_ROCK",
+      "Value": "Goth Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_GRUNGE",
+      "Value": "Grunge"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK",
+      "Value": "Indie Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK_LO_FI",
+      "Value": "Lo-Fi"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK_NEW_WAVE",
+      "Value": "New Wave"
+    },
+    {
+      "Key": "GENRE_ROCK_INDIE_ROCK_RETRO_VAGUE",
+      "Value": "Retro Vague"
+    },
+    {
+      "Key": "GENRE_ROCK_PROGRESSIVE_ROCK",
+      "Value": "Progressive Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_PSYCHEDELIC_ROCK",
+      "Value": "Psychedelic Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_POP_ROCK",
+      "Value": "Pop Rock"
+    },
+    {
+      "Key": "GENRE_ROCK_ROCKABILLY",
+      "Value": "Rockabilly"
+    },
+    {
+      "Key": "GENRE_POP",
+      "Value": "Pop"
+    },
+    {
+      "Key": "GENRE_POP_ADULT_CONTEMPORARY",
+      "Value": "Adult Contemporary"
+    },
+    {
+      "Key": "GENRE_POP_BRITPOP",
+      "Value": "Britpop"
+    },
+    {
+      "Key": "GENRE_POP_ELECTROPOP",
+      "Value": "Electropop"
+    },
+    {
+      "Key": "GENRE_POP_INDIE_POP",
+      "Value": "Indie Pop"
+    },
+    {
+      "Key": "GENRE_POP_OLDIES",
+      "Value": "Oldies"
+    },
+    {
+      "Key": "GENRE_PUNK",
+      "Value": "Punk"
+    },
+    {
+      "Key": "GENRE_PUNK_POP_PUNK",
+      "Value": "Pop Punk"
+    },
+    {
+      "Key": "GENRE_PUNK_HARDCORE",
+      "Value": "Hardcore Punk"
+    },
+    {
+      "Key": "GENRE_HIP_HOP",
+      "Value": "Hip-Hop"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_RAP",
+      "Value": "Rap"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_RAP_HARDCORE",
+      "Value": "Hardcore Rap"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_TRAP",
+      "Value": "Trap"
+    },
+    {
+      "Key": "GENRE_HIP_HOP_UNDERGROUND",
+      "Value": "Underground Hip-Hop"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC",
+      "Value": "Dance & Electronic"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_BIG_BEAT",
+      "Value": "Big Beat"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_DOWNTEMPO",
+      "Value": "Downtempo"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_HOUSE",
+      "Value": "House"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_JUNGLE",
+      "Value": "Jungle"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_TECHNO",
+      "Value": "Techno"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_TRANCE",
+      "Value": "Trance"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_TRIP_HOP",
+      "Value": "Trip-Hop"
+    },
+    {
+      "Key": "GENRE_DANCE_ELECTRONIC_DRUM_AND_BASS",
+      "Value": "Drum and Bass"
+    },
+    {
+      "Key": "GENRE_COUNTRY",
+      "Value": "Country"
+    },
+    {
+      "Key": "GENRE_COUNTRY_BLUEGRASS",
+      "Value": "Bluegrass"
+    },
+    {
+      "Key": "GENRE_FOLK",
+      "Value": "Folk"
+    },
+    {
+      "Key": "GENRE_FOLK_SKIFFLE",
+      "Value": "Skiffle"
+    },
+    {
+      "Key": "GENRE_FOLK_POLKA",
+      "Value": "Polka"
+    },
+    {
+      "Key": "GENRE_JAZZ",
+      "Value": "Jazz"
+    },
+    {
+      "Key": "GENRE_JAZZ_AVANT_GARDE",
+      "Value": "Avant-Garde"
+    },
+    {
+      "Key": "GENRE_JAZZ_BEBOP",
+      "Value": "Bebop"
+    },
+    {
+      "Key": "GENRE_JAZZ_BIG_BAND",
+      "Value": "Big Band"
+    },
+    {
+      "Key": "GENRE_JAZZ_DIXIELAND",
+      "Value": "Dixieland"
+    },
+    {
+      "Key": "GENRE_JAZZ_SMOOTH",
+      "Value": "Smooth Jazz"
+    },
+    {
+      "Key": "GENRE_JAZZ_VOCAL",
+      "Value": "Vocal Jazz"
+    },
+    {
+      "Key": "GENRE_BLUES",
+      "Value": "Blues"
+    },
+    {
+      "Key": "GENRE_BLUES_DELTA_BLUES",
+      "Value": "Delta Blues"
+    },
+    {
+      "Key": "GENRE_BLUES_MEMPHIS_BLUES",
+      "Value": "Memphis Blues"
+    },
+    {
+      "Key": "GENRE_BLUES_CHICAGO_BLUES",
+      "Value": "Chicago Blues"
+    },
+    {
+      "Key": "GENRE_R&B",
+      "Value": "R&B"
+    },
+    {
+      "Key": "GENRE_R&B_SOUL",
+      "Value": "Soul"
+    },
+    {
+      "Key": "GENRE_R&B_FUNK",
+      "Value": "Funk"
+    },
+    {
+      "Key": "GENRE_METAL",
+      "Value": "Metal"
+    },
+    {
+      "Key": "GENRE_METAL_BLACK_METAL",
+      "Value": "Black Metal"
+    },
+    {
+      "Key": "GENRE_METAL_DEATH_METAL",
+      "Value": "Death Metal"
+    },
+    {
+      "Key": "GENRE_METAL_NU_METAL",
+      "Value": "Nu Metal"
+    },
+    {
+      "Key": "GENRE_METAL_THRASH_METAL",
+      "Value": "Thrash Metal"
+    },
+    {
+      "Key": "GENRE_INDUSTRIAL",
+      "Value": "Industrial"
+    },
+    {
+      "Key": "GENRE_INDUSTRIAL_KRAUTROCK",
+      "Value": "Krautrock"
+    },
+    {
+      "Key": "GENRE_INDUSTRIAL_DARK_WAVE",
+      "Value": "Dark Wave"
+    },
+    {
+      "Key": "GENRE_NEW_AGE",
+      "Value": "New Age"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_AMBIENT",
+      "Value": "Ambient"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_POST_ROCK",
+      "Value": "Post Rock"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD",
+      "Value": "World"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_AFROBEAT",
+      "Value": "Afrobeat"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_CELTIC",
+      "Value": "Celtic"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_ZYDECO",
+      "Value": "Zydeco"
+    },
+    {
+      "Key": "GENRE_NEW_AGE_WORLD_INDIAN",
+      "Value": "Indian"
+    },
+    {
+      "Key": "GENRE_CLASSICAL",
+      "Value": "Classical"
+    },
+    {
+      "Key": "GENRE_CLASSICAL_BAROQUE",
+      "Value": "Baroque"
+    },
+    {
+      "Key": "GENRE_CLASSICAL_ROMANTIC",
+      "Value": "Romantic"
+    },
+    {
+      "Key": "GENRE_VOCAL",
+      "Value": "Vocal"
+    },
+    {
+      "Key": "GENRE_VOCAL_MUSICAL",
+      "Value": "Musical"
+    },
+    {
+      "Key": "GENRE_VOCAL_SPOKEN_WORD",
+      "Value": "Spoken Word"
+    },
+    {
+      "Key": "GENRE_VOCAL_SPOKEN_WORD_COMEDY",
+      "Value": "Comedy"
+    },
+    {
+      "Key": "GENRE_VOCAL_SPOKEN_WORD_POETRY",
+      "Value": "Poetry"
+    },
+    {
+      "Key": "GENRE_REGGAE",
+      "Value": "Reggae"
+    },
+    {
+      "Key": "GENRE_REGGAE_DUB",
+      "Value": "Dub"
+    },
+    {
+      "Key": "GENRE_REGGAE_DUB_DUBSTEP",
+      "Value": "Dubstep"
+    },
+    {
+      "Key": "GENRE_REGGAE_ROCKSTEADY",
+      "Value": "Rocksteady"
+    },
+    {
+      "Key": "GENRE_REGGAE_DANCEHALL",
+      "Value": "Dancehall"
+    },
+    {
+      "Key": "GENRE_LATIN",
+      "Value": "Latin"
+    },
+    {
+      "Key": "GENRE_LATIN_SALSA",
+      "Value": "Salsa"
+    },
+    {
+      "Key": "GENRE_LATIN_BOSSA_NOVA",
+      "Value": "Bossa Nova"
+    },
+    {
+      "Key": "GENRE_LATIN_RUMBA",
+      "Value": "Rumba"
+    },
+    {
+      "Key": "GENRE_LATIN_MERENGUE",
+      "Value": "Merengue"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING",
+      "Value": "Clothing"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS",
+      "Value": "Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_TSHIRTS",
+      "Value": "T-Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_LONG_SLEEVED",
+      "Value": "Long Sleeved Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_SLEEVELESS",
+      "Value": "Sleeveless Shirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHIRTS_SWEATSHIRTS",
+      "Value": "Sweatshirts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HOODIES",
+      "Value": "Hoodies"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SWEATERS",
+      "Value": "Sweaters"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_VESTS",
+      "Value": "Vests"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_JACKETS",
+      "Value": "Jackets"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_PANTS",
+      "Value": "Pants"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_PANTS_JEANS",
+      "Value": "Jeans"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_PANTS_SWEATPANTS",
+      "Value": "Sweatpants"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHORTS",
+      "Value": "Shorts"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HATS",
+      "Value": "Hats"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HATS_BASEBALL",
+      "Value": "Baseball Caps"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_HATS_BEENIES",
+      "Value": "Beenies"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SOCKS",
+      "Value": "Socks"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_SHOES",
+      "Value": "Shoes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CLOTHING_UNDERWEAR",
+      "Value": "Underwear"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES",
+      "Value": "Accessories"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_PINS",
+      "Value": "Pins"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_PATCHES",
+      "Value": "Patches"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY",
+      "Value": "Jewelry"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY_BRACELETS",
+      "Value": "Bracelets"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY_NECKLACES",
+      "Value": "Necklaces"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_ACCESSORIES_JEWELRY_RINGS",
+      "Value": "Rings"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_BAGS",
+      "Value": "Bags"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_BAGS_TOTES",
+      "Value": "Totes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_BAGS_PURSES",
+      "Value": "Purses"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS",
+      "Value": "Containers"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_JARS",
+      "Value": "Jars"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_BOXES",
+      "Value": "Boxes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_GLASSES",
+      "Value": "Glasses"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_SHOT_GLASSES",
+      "Value": "Shot Glasses"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_COOZIES",
+      "Value": "Coozies"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_CONTAINERS_MUGS",
+      "Value": "Mugs"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS",
+      "Value": "Prints"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_POSTERS",
+      "Value": "Posters"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_COASTERS",
+      "Value": "Coasters"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_CARDS",
+      "Value": "Cards"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_STICKERS",
+      "Value": "Stickers"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PRINTS_FLAGS",
+      "Value": "Flags"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING",
+      "Value": "Books"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_COMICS",
+      "Value": "Comic Books"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_HARDBACKS",
+      "Value": "Hardbacks"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_PAPERBACKS",
+      "Value": "Paperbacks"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_SHEET_MUSIC",
+      "Value": "Sheet Music"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_PUBLISHING_MAGAZINES",
+      "Value": "Magazines"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA",
+      "Value": "Media"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL",
+      "Value": "Vinyl Records"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL_SEVEN_INCH",
+      "Value": "7\" Vinyl"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL_TEN_INCH",
+      "Value": "10\" Vinyl"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_VINYL_TWELVE_INCH",
+      "Value": "12\" Vinyl"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_CDS",
+      "Value": "CDs"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_CASSETTES",
+      "Value": "Cassettes"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_DVDS",
+      "Value": "DVDs"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_MEDIA_BLU_RAYS",
+      "Value": "Blu Rays"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS",
+      "Value": "Toys"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS_DOLLS",
+      "Value": "Dolls"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS_FIGURINES",
+      "Value": "Figurines"
+    },
+    {
+      "Key": "MERCHANDISE_CATEGORY_TOYS_PUZZLES",
+      "Value": "Puzzles"
+    },
+    {
+      "Key": "RECORDING_ROLE_PRODUCER",
+      "Value": "Producer"
+    },
+    {
+      "Key": "RECORDING_ROLE_RECORDING_ENGINEER",
+      "Value": "Recording Engineer"
+    },
+    {
+      "Key": "RECORDING_ROLE_MIXING_ENGINEER",
+      "Value": "Mixing Engineer"
+    },
+    {
+      "Key": "RECORDING_ROLE_MASTERING_ENGINEER",
+      "Value": "Mastering Engineer"
+    },
+    {
+      "Key": "RECORDING_ROLE_PROGRAMMER",
+      "Value": "Programmer"
+    },
+    {
+      "Key": "RECORDING_ROLE_TURNTABLIST",
+      "Value": "Turntablist"
+    },
+    {
+      "Key": "RECORDING_ROLE_DRUMMER",
+      "Value": "Drummer"
+    },
+    {
+      "Key": "RECORDING_ROLE_PERCUSSIONIST",
+      "Value": "Percussionist"
+    },
+    {
+      "Key": "RECORDING_ROLE_BASSIST",
+      "Value": "Bassist"
+    },
+    {
+      "Key": "RECORDING_ROLE_RHYTHM_GUITARIST",
+      "Value": "Rhythm Guitarist"
+    },
+    {
+      "Key": "RECORDING_ROLE_LEAD_GUITARIST",
+      "Value": "Lead Guitarist"
+    },
+    {
+      "Key": "RECORDING_ROLE_VIOLINIST",
+      "Value": "Violinist"
+    },
+    {
+      "Key": "RECORDING_ROLE_CELLIST",
+      "Value": "Cellist"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_STRINGS",
+      "Value": "Other Strings"
+    },
+    {
+      "Key": "RECORDING_ROLE_PIANIST",
+      "Value": "Pianist"
+    },
+    {
+      "Key": "RECORDING_ROLE_KEYBOARDIST",
+      "Value": "Keyboardist"
+    },
+    {
+      "Key": "RECORDING_ROLE_LEAD_VOCALIST",
+      "Value": "Lead Vocalist"
+    },
+    {
+      "Key": "RECORDING_ROLE_BACKING_VOCALIST",
+      "Value": "Backing Vocalist"
+    },
+    {
+      "Key": "RECORDING_ROLE_TRUMPETER",
+      "Value": "Trumpeter"
+    },
+    {
+      "Key": "RECORDING_ROLE_SAXOPHONIST",
+      "Value": "Saxophonist"
+    },
+    {
+      "Key": "RECORDING_ROLE_CLARINETIST",
+      "Value": "Clarinetist"
+    },
+    {
+      "Key": "RECORDING_ROLE_TROMBONIST",
+      "Value": "Trombonist"
+    },
+    {
+      "Key": "RECORDING_ROLE_HARMONICA",
+      "Value": "Harmonica"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_WIND",
+      "Value": "Other Wind"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_BRASS",
+      "Value": "Other Brass"
+    },
+    {
+      "Key": "RECORDING_ROLE_OTHER_INSTRUMENT",
+      "Value": "Other Instrument"
+    },
+    {
       "Key": "SERVICE_INTERACTIVE_STREAMING",
       "Value": "Interactive Streaming"
     },
@@ -60,6 +772,70 @@
     {
       "Key": "SERVICE_EVENT_MANAGEMENT",
       "Value": "Event Management"
+    },
+    {
+      "Key": "SERVICE_VENUE",
+      "Value": "Venue"
+    },
+    {
+      "Key": "SERVICE_RESTAURANT_BAR",
+      "Value": "Restaurant/Bar"
+    },
+    {
+      "Key": "SERVICE_BOOKING_AGENT",
+      "Value": "Booking Agent"
+    },
+    {
+      "Key": "SERVICE_RECORDING_STUDIO",
+      "Value": "Recording Studio"
+    },
+    {
+      "Key": "SERVICE_PRODUCTION_COMPANY",
+      "Value": "Production Company"
+    },
+    {
+      "Key": "SERVICE_RECORD_LABEL",
+      "Value": "Record Label"
+    },
+    {
+      "Key": "SERVICE_LEGAL_SERVICES",
+      "Value": "Legal Services"
+    },
+    {
+      "Key": "SERVICE_TALENT_AGENCY",
+      "Value": "Talent Agency"
+    },
+    {
+      "Key": "SERVICE_PUBLISHING",
+      "Value": "Publishing"
+    },
+    {
+      "Key": "SERVICE_PROFESSIONAL_SERVICES",
+      "Value": "Professional Services"
+    },
+    {
+      "Key": "SERVICE_RETAIL_SALES",
+      "Value": "Retail Sales"
+    },
+    {
+      "Key": "SERVICE_BROADCASTING",
+      "Value": "Broadcasting"
+    },
+    {
+      "Key": "SERVICE_EVENT_PLANNING",
+      "Value": "Event Planning"
+    },
+    {
+      "Key": "SERVICE_ROYALTY_COLLECTIONS",
+      "Value": "Royalty Collections"
+    },
+    {
+      "Key": "SERVICE_MANUFACTURING",
+      "Value": "Manufacturing"
+    },
+    {
+      "Key": "SERVICE_WHOLESALE_PROVIDER",
+      "Value": "Wholesale Provider"
     }
   ]
 }
