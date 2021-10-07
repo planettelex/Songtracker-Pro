@@ -1,6 +1,13 @@
-FROM steebchen/nginx-spa:stable
+FROM node:latest as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY ./ .
+RUN npm run build
 
-COPY docs/ /app
+FROM steebchen/nginx-spa:stable as final
+WORKDIR /app
+COPY --from=build-stage /app/dist /app
 
 EXPOSE 80
 

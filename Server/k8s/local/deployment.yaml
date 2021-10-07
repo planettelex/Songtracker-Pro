@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: songtracker-pro-api
+spec:
+  selector:
+    matchLabels:
+      app: songtracker-pro-api
+  template:
+    metadata:
+      name: songtracker-pro-api
+      labels:
+        app: songtracker-pro-api
+    spec:
+      volumes:
+        - name: app-settings
+          configMap:
+            name: app-settings
+
+      containers:
+        - name: songtracker-pro-api
+          image: songtracker-pro-api
+          resources: {}
+          volumeMounts:
+            - mountPath: /config
+              name: app-settings

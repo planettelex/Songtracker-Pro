@@ -34,7 +34,7 @@ namespace SongtrackerPro.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer("name=ConnectionStrings:ApplicationDatabase"));
+                options => options.UseNpgsql("name=ConnectionStrings:ApplicationDatabase"));
 
             RegisterTasks(services);
 
