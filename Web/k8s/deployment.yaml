@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: songtracker-pro-web
+spec:
+  selector:
+    matchLabels:
+      app: songtracker-pro-web
+  template:
+    metadata:
+      name: songtracker-pro-web
+      labels:
+        app: songtracker-pro-web
+    spec:
+      containers:
+        - name: songtracker-pro-web
+          image: songtracker-pro-web
+          resources: {}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP

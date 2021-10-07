@@ -1,0 +1,8 @@
+namespace: local
+
+patchesStrategicMerge:
+  - statefulset.yaml
+  - service.yaml
+
+resources:
+  - pvc.yaml

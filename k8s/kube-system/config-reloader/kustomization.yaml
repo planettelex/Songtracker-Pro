@@ -1,0 +1,5 @@
+namespace: kube-system
+
+resources:
+- deployment.yaml
+- rbac.yaml

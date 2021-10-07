@@ -1,0 +1,12 @@
+bases:
+  - ../
+
+namespace: local
+
+resources:
+  - ingress.yaml
+
+configMapGenerator:
+  - name: app-settings
+    files:
+      - appsettings.json

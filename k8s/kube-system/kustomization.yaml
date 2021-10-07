@@ -1,0 +1,9 @@
+bases:
+- config-reloader
+- dashboard
+- sealed-secrets
+
+namespace: kube-system
+
+resources:
+- storage.yaml

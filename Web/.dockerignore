@@ -1,0 +1,9 @@
+
+# Dependency directories
+node_modules/
+.env
+documentation/
+k8s/
+prototype/
+dist/
+Dockerfile

@@ -1,0 +1,6 @@
+bases:
+  - kube-system
+
+resources:
+  - rbac.yaml
+  - namespaces.yaml

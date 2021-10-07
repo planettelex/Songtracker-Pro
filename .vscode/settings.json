@@ -1,0 +1,9 @@
+{
+  "cloudcode.kubeconfigs": [
+    {
+      "name": "/home/vscode/.kube/config",
+      "configPath": "/home/vscode/.kube/config"
+    }
+  ],
+  "cloudcode.active-kubeconfig": "/home/vscode/.kube/config"
+}
