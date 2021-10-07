@@ -15,7 +15,7 @@
 
 # Mono auto generated files
 mono_crash.*
-
+data
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -351,3 +351,4 @@ MigrationBackup/
 /Server/SongtrackerPro.Api/appsettings.Development.json
 /Server/SongtrackerPro.Api/appsettings.json
 /Web/src/appConfig.js
+.DS_Store

@@ -1,11 +1,12 @@
 {
-    "name": "songtracker-pro",
+    "name": "web",
     "version": "0.0.5",
-    "private": false,
+    "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint"
+        "lint": "vue-cli-service lint",
+        "docker:build": "docker build -t songtracker-pro-web ."
     },
     "repository": {
         "type": "git",

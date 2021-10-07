@@ -1,0 +1,14 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+# define global settings here
+# name: exampleapp # application name
+# registry: exampleuser # dockerhub username or container registry hostname
+
+# define multiple services here
+services:
+  - name: songtrackerpro-api
+    project: SongtrackerPro.Api/SongtrackerPro.Api.csproj
