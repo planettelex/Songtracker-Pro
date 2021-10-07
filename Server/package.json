@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "dotnet test",
+    "build": "dotnet build",
+    "docker:build": "docker build -t songtracker-pro-api ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

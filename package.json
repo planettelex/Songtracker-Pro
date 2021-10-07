@@ -1,0 +1,30 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "Music Income Tracking for Record Labels, Publishers, and Artists",
+  "main": "index.js",
+  "private": "true",
+  "scripts": {
+    "start": "skaffold dev",
+    "build": "yarn web build && yarn server build",
+    "test": "yarn web test && yarn server test",
+    "docker:build": "yarn web docker:build && yarn server docker:build",
+    "--- ws": "--- these shortcuts allow 'yarn web|server <cmd>' to mange each from the root project",
+    "web": "yarn workspace web ",
+    "server": "yarn workspace server "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/planettelex/Songtracker-Pro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/planettelex/Songtracker-Pro/issues"
+  },
+  "homepage": "https://github.com/planettelex/Songtracker-Pro#readme",
+  "workspaces": [
+    "Web"
+  ]
+}

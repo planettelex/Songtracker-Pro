@@ -1,0 +1,7 @@
+bases:
+  - ../base
+
+namespace: local
+
+resources:
+  - ingress.yaml

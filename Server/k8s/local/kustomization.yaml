@@ -1,0 +1,18 @@
+bases:
+  - ../base
+
+namespace: local
+
+resources:
+  - ingress.yaml
+
+#patchesStrategicMerge:
+#  - deployment.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: app-settings
+    files:
+      - appsettings.json

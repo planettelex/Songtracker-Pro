@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: songtracker-pro-web
+spec:
+  rules:
+    - host: web.local
+      http:
+        paths:
+          - backend:
+              serviceName: songtracker-pro-web
+              servicePort: http

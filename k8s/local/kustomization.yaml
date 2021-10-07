@@ -1,0 +1,5 @@
+bases:
+  - postgres
+
+generatorOptions:
+  disableNameSuffixHash: true

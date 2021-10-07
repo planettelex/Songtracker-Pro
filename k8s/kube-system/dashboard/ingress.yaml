@@ -1,0 +1,13 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: k8dash
+spec:
+  rules:
+    - host: dashboard.local
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: k8dash
+              servicePort: 4654

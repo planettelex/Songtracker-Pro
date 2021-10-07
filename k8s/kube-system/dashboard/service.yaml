@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: k8dash
+  namespace: kube-system
+spec:
+  selector:
+    k8s-app: k8dash
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - port: 4654
+    targetPort: 4654
+

@@ -1,0 +1,6 @@
+namespace: kube-system
+
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
