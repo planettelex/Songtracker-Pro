@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace SongtrackerPro.Data.Models
@@ -36,5 +38,25 @@ namespace SongtrackerPro.Data.Models
 
         [Column("ended_on", Order = 6)]
         public DateTime? EndedOn { get; set; }
+
+        [JsonIgnore]
+        public List<ArtistMemberRole> ArtistMemberRoles { get; set; }
+
+        [NotMapped]
+        public List<RecordingRole> Roles
+        {
+            get
+            {
+                if (_roles == null && ArtistMemberRoles != null)
+                {
+                    _roles = new List<RecordingRole>();
+                    _roles.AddRange(ArtistMemberRoles.Select(artistMemberRole => artistMemberRole.RecordingRole));
+                }
+
+                return _roles;
+            }
+            set => _roles = value;
+        }
+        private List<RecordingRole> _roles;
     }
 }
