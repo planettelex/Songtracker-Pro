@@ -23,17 +23,23 @@ namespace SongtrackerPro.Data.Models
         public Publisher Publisher { get; set; }
 
         [JsonIgnore]
-        [Column("legal_entity_id", Order = 4)]
-        public int? LegalEntityId { get; set; }
-        public LegalEntity ExternalPublisher { get; set; }
+        [Column("outside_publisher_id", Order = 4)]
+        public int? OutsidePublisherId { get; set; }
+        public LegalEntity OutsidePublisher { get; set; }
 
-        [Column("iswc", Order = 5)]
+        [Column("is_published", Order = 5)]
+        public bool IsPublished { get; set; }
+
+        [Column("iswc", Order = 6)]
         public string Iswc { get; set; }
 
-        [Column("catalog_number", Order = 6)]
+        [Column("catalog_number", Order = 7)]
         public string CatalogNumber { get; set; }
  
-        [Column("copyrighted_on", Order = 7)]
-        public DateTime? CopyrightedOn { get; set; }
+        [Column("copyright_registered_on", Order = 8)]
+        public DateTime? CopyrightRegisteredOn { get; set; }
+
+        [Column("published_on", Order = 9)]
+        public DateTime? PublishedOn { get; set; }
     }
 }
