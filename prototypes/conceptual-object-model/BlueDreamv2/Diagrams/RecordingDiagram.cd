@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.MechanicalLicenseProcured">
+    <Position X="4.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QEAAAAAAAAAAAAAAIAAAAAAAAAAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>MechanicalLicenseProcured.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Recording" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Recording">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAjAAIAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Recording.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Song" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.StudioSession">
+    <Position X="15" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAgAAAAAAAAABAIIAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>StudioSession.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.RecordingRole">
+    <Position X="12.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RecordingRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.RecordingStudioSession">
+    <Position X="10.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RecordingStudioSession.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Recording" />
+      <Property Name="StudioSession" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.StudioSessionCredit">
+    <Position X="15" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAEAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StudioSessionCredit.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="StudioSession" />
+      <Property Name="Role" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Person">
+    <Position X="12.5" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAEABAAAAQAAAAAAAAAACCAAAAAAAAAAg=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.RecordingCredit">
+    <Position X="10.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAgAAAAEAAAAAAAAAAIAAEAAAAAAAAAgAA=</HashCode>
+      <FileName>RecordingCredit.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Recording" />
+      <Property Name="Role" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.RecordingRoyalties">
+    <Position X="7.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAgAAACAAAAAIAAAAAAIIIIAAAAAAAAAAAAA=</HashCode>
+      <FileName>RecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Recording" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Song">
+    <Position X="8" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgCAAAAAACAAAAAQAAIAABAAAIAEAAAAAAAA=</HashCode>
+      <FileName>Song.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.RecordingLicense">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>RecordingLicense.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Recording" />
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="BlueDream.RecordingLicenseType">
+    <Position X="2.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAgAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>RecordingLicenseType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

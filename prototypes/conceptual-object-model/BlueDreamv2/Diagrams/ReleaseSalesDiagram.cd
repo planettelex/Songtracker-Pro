@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.Media">
+    <Position X="24.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAgAAAAAAAAAAAIAAAAAIAAAEBAgAAA=</HashCode>
+      <FileName>Media.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Release" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MediaSales">
+    <Position X="25.25" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAABAAAUAIAAACAAAAAAACAQ=</HashCode>
+      <FileName>MediaSales.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Media" />
+      <Property Name="PublishingRoyaltiesPayment" />
+      <Property Name="RecordingRoyaltiesPayment" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MechanicalRoyalties">
+    <Position X="30.75" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAQAAAgAAACAAAAAIAAiAAAIAIIAAAAAAAgAAAAA=</HashCode>
+      <FileName>MechanicalRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FromMedia" />
+      <Property Name="FromPlatformRelease" />
+      <Property Name="FromPlatformReleaseTrack" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.RecordingRoyalties">
+    <Position X="17.75" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAgAAAKAAAAAIAAAAAAIIIIAAAAAAAAAAAAA=</HashCode>
+      <FileName>RecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Recording" />
+      <Property Name="FromPlatformRelease" />
+      <Property Name="FromPlatformReleaseTrack" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Release">
+    <Position X="16.5" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAQAAIIAAAAAAUQAAAAAAAA=</HashCode>
+      <FileName>Release.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PlatformRelease">
+    <Position X="8.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAQBAAAAA=</HashCode>
+      <FileName>PlatformRelease.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Release" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MediaSale">
+    <Position X="28" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAQAAAAAQAAAAAAAAAAAAAAAAAAAAgAABAAQ=</HashCode>
+      <FileName>MediaSale.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Media" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MediaRecordingRoyalties">
+    <Position X="21" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAACAAAIgIAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>MediaRecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Media" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MediaRecordingRoyaltiesPayment">
+    <Position X="20.5" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAgAAAAA=</HashCode>
+      <FileName>MediaRecordingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MediaRecordingRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ReleaseTrack">
+    <Position X="14.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAAABAAAAA=</HashCode>
+      <FileName>ReleaseTrack.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Release" />
+      <Property Name="Recording" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Recording">
+    <Position X="18" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAjAAIAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Recording.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrack">
+    <Position X="13.75" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrack.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlatformRelease" />
+      <Property Name="ReleaseTrack" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackSales">
+    <Position X="20.75" Y="8.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAEAAAAAAAgAAAAAAAAUAIAAACAAAAAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrackSales.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+      <Property Name="MechanicalRoyaltiesPayment" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackSale">
+    <Position X="16.25" Y="10.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>PlatformReleaseTrackSale.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseSale">
+    <Position X="5.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABABAAA=</HashCode>
+      <FileName>PlatformReleaseSale.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Release" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseSales">
+    <Position X="7.5" Y="10" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAAAAAAAAAAAAAAAAAABAAAUAIAAACAAAAAAACAA=</HashCode>
+      <FileName>PlatformReleaseSales.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlatformRelease" />
+      <Property Name="RecordingRoyaltiesPayment" />
+      <Property Name="PublishingRoyaltiesPayment" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MediaPublishingRoyaltiesPayment">
+    <Position X="29.5" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>MediaPublishingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MediaPublishingRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MediaPublishingRoyalties">
+    <Position X="30.75" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAACAAAIgIAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>MediaPublishingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Media" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MechanicalRoyaltiesPayment">
+    <Position X="26" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>MechanicalRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MechanicalRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseRecordingRoyalties">
+    <Position X="10.25" Y="7.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAAAAAAAAAAAAAAAACAAAIgIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlatformReleaseRecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlatformRelease" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseRecordingRoyaltiesPayment">
+    <Position X="8.5" Y="14.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAACA=</HashCode>
+      <FileName>PlatformReleaseRecordingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlatformReleaseRecordingRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleasePublishingRoyaltiesPayment">
+    <Position X="5.75" Y="12.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAEAA=</HashCode>
+      <FileName>PlatformReleasePublishingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlatformReleasePublishingRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleasePublishingRoyalties">
+    <Position X="4.25" Y="15.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAACAAAIgIAAAAAAAABAAAAA=</HashCode>
+      <FileName>PlatformReleasePublishingRoyalties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackPublishingRoyalties">
+    <Position X="12.5" Y="14" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAEAAAAAAAAAAAACAAAIAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrackPublishingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackRecordingRoyalties">
+    <Position X="17.75" Y="12.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAEAAAAAAAAAAAACAAAIAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrackRecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.RecordingRoyaltiesPayment">
+    <Position X="21.5" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACACAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>RecordingRoyaltiesPayment.cs</FileName>
+      <NewMemberFileName>RecordingLicensePayment.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RecordingRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.SubsidaryEarnings">
+    <Position X="4" Y="2.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAggAAAAAAAAAAAAABAICAAAAAAAIAAAAAAAAAIAAAA=</HashCode>
+      <FileName>SubsidaryEarnings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Subsidiary" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Funding">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Funding.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.FundingLedger">
+    <Position X="12" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAkQAAIAACAAAAAAAAAAAAwBAAAAAA=</HashCode>
+      <FileName>FundingLedger.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Funding" />
+      <Property Name="FromRevenue" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Revenue">
+    <Position X="8.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Revenue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.RevenueLedger">
+    <Position X="8.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAgAAAAAAAAAIAACAAAAAAAAACEAABAAAAAA=</HashCode>
+      <FileName>RevenueLedger.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Revenue" />
+      <Property Name="FromSubsidaryEarnings" />
+      <Property Name="ForFunding" />
+      <Property Name="ForExpense" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Expense">
+    <Position X="9" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Expense.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.Subsidiary">
+    <Position X="4.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Subsidiary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.Platform">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Platform.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.ReleaseTrack">
+    <Position X="9.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAAABAAAAA=</HashCode>
+      <FileName>ReleaseTrack.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Release" />
+      <Property Name="Recording" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrack">
+    <Position X="9" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrack.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlatformRelease" />
+      <Property Name="ReleaseTrack" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Recording">
+    <Position X="9.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAjAAIAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Recording.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackStreamsQuarterly">
+    <Position X="4.75" Y="3.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAEAAAAAAAgAAAAAAAAUAIAAACAAAAAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrackStreamsQuarterly.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackStreamsDaily">
+    <Position X="7.25" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlatformReleaseTrackStreamsDaily.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Artist">
+    <Position X="12.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgARAAAAAAAQAAAAAAAACAAAAAAAAAAE=</HashCode>
+      <FileName>Artist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PlatformRelease">
+    <Position X="12.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAQBAAAAA=</HashCode>
+      <FileName>PlatformRelease.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Platform" />
+      <Property Name="Release" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Release">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAQAAIIAAAAAAUQAAAAAAAA=</HashCode>
+      <FileName>Release.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseTrackSale">
+    <Position X="10.25" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>PlatformReleaseTrackSale.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Track" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PlatformReleaseSale">
+    <Position X="15.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABABAAA=</HashCode>
+      <FileName>PlatformReleaseSale.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Release" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

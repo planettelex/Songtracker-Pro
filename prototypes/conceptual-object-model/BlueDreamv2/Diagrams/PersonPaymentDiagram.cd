@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.Person">
+    <Position X="10.5" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAEABAAAAQAAAAAAAAAACCAAAAAAAAAAg=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.RecordingRoyalties">
+    <Position X="23.25" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAgAAAKAAAAAIAAAAAAIIIIAAAAAAAAAAAAA=</HashCode>
+      <FileName>RecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FiscalQuarter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.RecordingRoyaltiesPayout">
+    <Position X="19.5" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAIAQAACAKAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>RecordingRoyaltiesPayout.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RecordingRoyalties" />
+      <Property Name="Payment" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Artist">
+    <Position X="16.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgARAAAAAAAQAAAAAAAACAAAAAAAAAAE=</HashCode>
+      <FileName>Artist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.ArtistMember">
+    <Position X="14" Y="8.25" Width="1.5" />
+    <AssociationLine Name="Artist" Type="BlueDream.Artist" FixedFromPoint="true">
+      <Path>
+        <Point X="15.5" Y="8.562" />
+        <Point X="16.75" Y="8.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAEAIAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistMember.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+      <Property Name="Member" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistManager">
+    <Position X="13.75" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAEAIAABAAAAAACAAIAAAA=</HashCode>
+      <FileName>ArtistManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+      <Property Name="Manager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PersonPublishingRoyalties">
+    <Position X="6.5" Y="0.5" Width="2.25" />
+    <AssociationLine Name="Person" Type="BlueDream.Person" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="1.218" />
+        <Point X="11.25" Y="1.218" />
+        <Point X="11.25" Y="6.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAABEAAAAAAAAAAAAAYAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PersonPublishingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="FiscalQuarter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PersonMerchandiseRoyaltiesPayment">
+    <Position X="11" Y="10.75" Width="2.75" />
+    <AssociationLine Name="Person" Type="BlueDream.Person" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.062" Y="10.75" />
+        <Point X="12.062" Y="10.004" />
+        <Point X="12.062" Y="10.004" />
+        <Point X="12.062" Y="8.95" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAACAAAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>PersonMerchandiseRoyaltiesPayment.cs</FileName>
+      <NewMemberFileName>PersonRecordingRoyaltiesPayment.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="FromDisbursement" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistMerchandiseRoyaltiesDisbursement">
+    <Position X="10.75" Y="13" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACAQAAAAFARAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistMerchandiseRoyaltiesDisbursement.cs</FileName>
+      <NewMemberFileName>ArtistRecordingRoyaltiesDisbursement.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ArtistMerchandiseRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistMerchandiseRoyalties">
+    <Position X="15.75" Y="13" Width="2.25" />
+    <AssociationLine Name="Artist" Type="BlueDream.Artist" FixedFromPoint="true">
+      <Path>
+        <Point X="17.75" Y="13" />
+        <Point X="17.75" Y="9.507" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAACAAIIAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistMerchandiseRoyalties.cs</FileName>
+      <NewMemberFileName>ArtistRecordingRoyalties.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+      <Property Name="FiscalQuarter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.FiscalQuarter">
+    <Position X="25.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAgAAEAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>FiscalQuarter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PersonPublishingRoyaltiesPayment">
+    <Position X="6.5" Y="2.75" Width="2.75" />
+    <AssociationLine Name="Person" Type="BlueDream.Person" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="3.494" />
+        <Point X="10.688" Y="3.494" />
+        <Point X="10.688" Y="6.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAACAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>PersonPublishingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="ForRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PersonPublishingRoyaltiesWithArtist">
+    <Position X="11.5" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAABEAAAAAAAAAAAAAYAAAAABAAAAAAAA=</HashCode>
+      <FileName>PersonPublishingRoyaltiesWithArtist.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="With" />
+      <Property Name="FiscalQuarter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PublicPerformanceRoyalties">
+    <Position X="7" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAEAAAAAAAAAAAACAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>PublicPerformanceRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ForMember" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PerformingRightsOrganizationMembership">
+    <Position X="6.5" Y="7.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>PerformingRightsOrganizationMembership.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="PerformingRightsOrganization" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MerchandiseRoyaltiesPayout">
+    <Position X="19.5" Y="11.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAgAAAAAAAAAAAIAQAACAIAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>MerchandiseRoyaltiesPayout.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Payment" />
+      <Property Name="MerchandiseItemRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistRecordingRoyalties">
+    <Position X="19.5" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAIAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistRecordingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+      <Property Name="FiscalQuarter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistRecordingRoyaltiesDisbursement">
+    <Position X="19.25" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAAAFAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistRecordingRoyaltiesDisbursement.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ArtistRecordingRoyalties" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PersonRecordingRoyaltiesPayment">
+    <Position X="12" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAACAAAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>PersonRecordingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="FromDisbursement" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PerformingRightsOrganization">
+    <Position X="1.5" Y="7" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PerformingRightsOrganization.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.MerchandiseItemRoyalties">
+    <Position X="23.75" Y="12" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAABAAAAAAAAAAAAAAAAACAAAIAIABAAAAAAAAAAAA=</HashCode>
+      <FileName>MerchandiseItemRoyalties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PersonPerformanceFeesPayment">
+    <Position X="7.75" Y="10.75" Width="2.5" />
+    <AssociationLine Name="Person" Type="BlueDream.Person" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9" Y="10.75" />
+        <Point X="9" Y="9.968" />
+        <Point X="11.062" Y="9.968" />
+        <Point X="11.062" Y="8.95" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAACAAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>PersonPerformanceFeesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FromDispersement" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistPerformanceFeesDisbursement">
+    <Position X="7.5" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAFAQAAAEAAAAQAABAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistPerformanceFeesDisbursement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PersonPerformanceFeesQuarterly">
+    <Position X="3.25" Y="8.5" Width="3" />
+    <AssociationLine Name="Person" Type="BlueDream.Person" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="8.875" />
+        <Point X="10.5" Y="8.875" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PersonPerformanceFeesQuarterly.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.ArtistPerformanceFeesQuarterly">
+    <Position X="14.25" Y="10.75" Width="2.5" />
+    <AssociationLine Name="Artist" Type="BlueDream.Artist" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16.25" Y="10.75" />
+        <Point X="16.25" Y="9.25" />
+        <Point X="16.75" Y="9.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArtistPerformanceFeesQuarterly.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

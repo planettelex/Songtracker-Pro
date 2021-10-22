@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.Subsidiary">
+    <Position X="14.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAE=</HashCode>
+      <FileName>Subsidiary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.MechanicalRoyalties">
+    <Position X="9.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAQAAAgAAACAAAAAIAAiAAAIAIIAAAAAAAgAAAAA=</HashCode>
+      <FileName>MechanicalRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Song" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Song">
+    <Position X="14.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgCAAAAAACAAAAAQAAIAABAAAIAEAAAAAAAA=</HashCode>
+      <FileName>Song.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Artist" />
+      <Property Name="Publisher" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.SongAuthor">
+    <Position X="14.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAgAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SongAuthor.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Song" />
+      <Property Name="Author" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.MechanicalRoyaltiesPayout">
+    <Position X="10.5" Y="7.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAACAAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>MechanicalRoyaltiesPayout.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MechanicalRoyalties" />
+      <Property Name="PaidTo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.SubsidarySongEarnings">
+    <Position X="10.75" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAggAAAAAAAAAAAAAAAIAAgAAAAAIAAAAAAAAAIAAAA=</HashCode>
+      <FileName>SubsidarySongEarnings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Song" />
+      <Property Name="Subsidiary" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.SubsidaryArtistEarnings">
+    <Position X="17" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAggAAAAAAAAAAAAABAIAAAAAIAAIAAAAAAAAAIAAAA=</HashCode>
+      <FileName>SubsidaryArtistEarnings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Subsidiary" />
+      <Property Name="Artist" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Artist">
+    <Position X="20.25" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgARAAAAAAAQAAAAAAAACAAAAAAAAAAE=</HashCode>
+      <FileName>Artist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PrintRoyalties">
+    <Position X="17.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAiAAAIAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PrintRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Song" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PrintRoyaltiesPayout">
+    <Position X="17" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAACAAAAAAAABAAAAAABAAAA=</HashCode>
+      <FileName>PrintRoyaltiesPayout.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PrintRoyalties" />
+      <Property Name="PaidTo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Person">
+    <Position X="14.25" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAEABAAAAQAAAAAAAAAACCAAAAAAAAAAg=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PersonPublishingRoyaltiesWithArtist">
+    <Position X="19.5" Y="9.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAABEAAAAAAAAAAAAAYAAAAABAAAAAAAA=</HashCode>
+      <FileName>PersonPublishingRoyaltiesWithArtist.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="With" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PersonPublishingRoyalties">
+    <Position X="6.5" Y="9.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAABEAAAAAAAAAAAAAYAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PersonPublishingRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PersonPublishingRoyaltiesPayment">
+    <Position X="10.25" Y="10.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAACAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>PersonPublishingRoyaltiesPayment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ForRoyalties" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,9 @@
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\bin\Debug\netcoreapp3.1\BlueDream.deps.json
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\bin\Debug\netcoreapp3.1\BlueDream.dll
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\bin\Debug\netcoreapp3.1\BlueDream.pdb
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\obj\Debug\netcoreapp3.1\BlueDream.AssemblyInfoInputs.cache
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\obj\Debug\netcoreapp3.1\BlueDream.AssemblyInfo.cs
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\obj\Debug\netcoreapp3.1\BlueDream.csproj.CoreCompileInputs.cache
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\obj\Debug\netcoreapp3.1\BlueDream.dll
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\obj\Debug\netcoreapp3.1\BlueDream.pdb
+C:\Projects\BlueDream\BlueDream\BlueDreamv2\obj\Debug\netcoreapp3.1\BlueDream.csprojAssemblyReference.cache

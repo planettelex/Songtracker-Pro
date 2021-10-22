@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlueDream.PerformingRightsOrganization">
+    <Position X="8.75" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PerformingRightsOrganization.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.PerformingRightsOrganizationMembership">
+    <Position X="8.5" Y="4.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>PerformingRightsOrganizationMembership.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PerformingRightsOrganization" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Person">
+    <Position X="9.25" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAEABAAAAQAAAAAAAAAACCAAAAAAAAAAg=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.SubsidaryPerformingRightsOrganziation">
+    <Position X="8.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAQAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>SubsidaryPerformingRightsOrganziation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Subsidiary" />
+      <Property Name="PerformingRightsOrganization" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.Subsidiary">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAE=</HashCode>
+      <FileName>Subsidiary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueDream.SubsidaryPerformingRightsOrganizationEarnings">
+    <Position X="13.5" Y="2.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAACAAAAAIABAAAAAAAAAAAA=</HashCode>
+      <FileName>SubsidaryPerformingRightsOrganizationEarnings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PerformingRightsOrganization" />
+      <Property Name="Subsidiary" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlueDream.PublicPerformanceRoyalties">
+    <Position X="4.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAEAAAAAAAAAAAACAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>PublicPerformanceRoyalties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ForMember" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
