@@ -16,7 +16,7 @@
         "@vue/composition-api": "^1.0.0-rc.12",
         "@vuelidate/core": "^2.0.0-alpha.19",
         "@vuelidate/validators": "^2.0.0-alpha.17",
-        "axios": "^0.21.1",
+        "axios": "^1.6.0",
         "babel-core": "^6.26.3",
         "babel-loader": "^7.1.5",
         "call-bind": "^1.0.2",
